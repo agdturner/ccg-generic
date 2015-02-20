@@ -154,6 +154,48 @@ public class Generic_Collections {
             map.put(key, value);
         }
     }
+    
+    /**
+     * Sets the value in map to the max of map.get(key) and value.
+     * @param map
+     * @param key
+     * @param value 
+     */
+    public static void setMaxValueTreeMapStringInteger(
+            TreeMap<String, Integer> map,
+            String key,
+            Integer value) {
+        Integer currentValue = map.get(key);
+        if (currentValue != null) {
+            Integer newValue = Math.max(currentValue, value);
+            if (!(newValue == currentValue.intValue())) {
+                map.put(key, newValue);
+            }
+        } else {
+            map.put(key, value);
+        }
+    }
+
+    /**
+     * Sets the value in map to the min of map.get(key) and value.
+     * @param map
+     * @param key
+     * @param value 
+     */
+    public static void setMinValueTreeMapStringInteger(
+            TreeMap<String, Integer> map,
+            String key,
+            Integer value) {
+        Integer currentValue = map.get(key);
+        if (currentValue != null) {
+            Integer newValue = Math.min(currentValue, value);
+            if (!(newValue == currentValue.intValue())) {
+                map.put(key, newValue);
+            }
+        } else {
+            map.put(key, value);
+        }
+    }
 
     /**
      * Adds value to the value at a_IntegerBigInteger_TreeMap.get(key) if it 
