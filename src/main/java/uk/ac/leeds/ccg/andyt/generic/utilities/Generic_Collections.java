@@ -156,6 +156,28 @@ public class Generic_Collections {
     }
     
     /**
+     * Adds value to the value at map.get(key) if it 
+     * exists or puts the key, value into map.
+     * @param map
+     * @param key
+     * @param value 
+     */
+    public static TreeMap<String, Integer> addToTreeMapStringInteger(
+            TreeMap<String, Integer> map0,
+            TreeMap<String, Integer> map1) {
+        TreeMap<String, Integer> result;
+        result = deepCopyTreeMapStringInteger(map0);
+        Iterator<String> ite;
+        ite = map1.keySet().iterator();
+        while(ite.hasNext()) {
+            String key = ite.next();
+            Integer value = map1.get(key);
+            addToTreeMapStringInteger(result, key, value);
+        }
+        return result;
+    }
+    
+    /**
      * Sets the value in map to the max of map.get(key) and value.
      * @param map
      * @param key
@@ -267,6 +289,25 @@ public class Generic_Collections {
             keyToCopy = ite.next();
             keyCopy = new Long(keyToCopy);
             valueToCopy = aHashMap.get(keyToCopy);
+            valueCopy = valueToCopy;
+            result.put(keyCopy, valueCopy);
+        }
+        return result;
+    }
+    
+    public static TreeMap<String,Integer> deepCopyTreeMapStringInteger(
+            TreeMap<String,Integer> map){
+        TreeMap<String,Integer> result;
+        result = new TreeMap<String,Integer>();
+        Iterator<String> ite = map.keySet().iterator();
+        String keyToCopy;
+        String keyCopy;
+        Integer valueToCopy;
+        Integer valueCopy;
+        while (ite.hasNext()) {
+            keyToCopy = ite.next();
+            keyCopy = keyToCopy;
+            valueToCopy = map.get(keyToCopy);
             valueCopy = valueToCopy;
             result.put(keyCopy, valueCopy);
         }
