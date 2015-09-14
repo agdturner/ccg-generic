@@ -111,6 +111,7 @@ public class Generic_JApplet_ScatterPlot extends Abstract_Generic_JApplet_Plot {
                 decimalPlacePrecisionForDisplay,
                 aRoundingMode);
         plot.setData(Generic_ScatterPlot.getDefaultData(true));
+        plot.setStartAgeOfEndYearInterval(0);
         plot.run(jFrame);
     }
 

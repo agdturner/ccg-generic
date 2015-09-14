@@ -24,7 +24,7 @@ import java.util.Arrays;
  * A class to be extended so as to handle OutOfMemoryErrors.
  */
 public abstract class Generic_OutOfMemoryErrorHandler
-        implements Serializable {
+        implements Generic_OutOfMemoryErrorHandlerInterface, Serializable {
 
     public transient Generic_TestMemory _Generic_TestMemory;
 

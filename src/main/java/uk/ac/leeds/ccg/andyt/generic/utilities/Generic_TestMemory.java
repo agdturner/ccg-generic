@@ -21,12 +21,12 @@ package uk.ac.leeds.ccg.andyt.generic.utilities;
 /**
  * A class with methods that help in testing computer memory.
  */
-public class TestMemory {
+public class Generic_TestMemory {
 
 	protected transient Runtime _Runtime;
 
 	/** Creates a new instance of TestMemory */
-	public TestMemory() {
+	public Generic_TestMemory() {
 		init_Runtime();
 	}
 

@@ -77,7 +77,7 @@ public abstract class AbstractDataRecord implements Serializable, Comparable {
     }
 
     /**
-     * @return A Comma Seperated Version (CSV) <code>String</code> of the values
+     * @return A Comma Separated Version (CSV) <code>String</code> of the values
      *         of the <code>Fields</code> of <code>this</code>.
      */
     public String toCSVString() {
@@ -86,7 +86,7 @@ public abstract class AbstractDataRecord implements Serializable, Comparable {
     }
 
     /**
-     * @return A Comma Seperated Version (CSV) <code>String</code> of the names
+     * @return A Comma Separated Version (CSV) <code>String</code> of the names
      *         of the Variables as returned in <code>toString()</code>.
      */
     public String toCSVStringFields() {
@@ -156,6 +156,7 @@ public abstract class AbstractDataRecord implements Serializable, Comparable {
      * @param object
      * @see java.lang.Comparable#compareTo(Object)
      */
+    @Override
     public int compareTo(Object object) {
         if (object instanceof AbstractDataRecord) {
             AbstractDataRecord aDataRecord = (AbstractDataRecord) object;

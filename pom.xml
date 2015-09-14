@@ -76,7 +76,6 @@
         </pluginRepository>
     </pluginRepositories>
     
-    <!--
     <distributionManagement>
         <repository>
             <uniqueVersion>false</uniqueVersion>
@@ -86,5 +85,4 @@
             <layout>default</layout>
         </repository>
     </distributionManagement>
-    -->
 </project>
