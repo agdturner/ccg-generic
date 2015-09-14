@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
 
 public class Generic_BigInteger
         extends Generic_Number
@@ -307,7 +307,7 @@ public class Generic_BigInteger
                 powerofTwo = powersOfTwo.get(n);
                 if (powerofTwo.compareTo(remainder) != 1) {
                     remainder = remainder.subtract(powerofTwo);
-                    Generic_Collections.addToTreeMapIntegerInteger(result, n, 1);
+                    Generic_StaticCollections.addToTreeMapIntegerInteger(result, n, 1);
                 }
             } else {
                 break;
@@ -315,7 +315,7 @@ public class Generic_BigInteger
         }
         //System.out.println("remainder " + remainder);
         if (remainder.compareTo(BigInteger.ZERO) == 1) {
-            Generic_Collections.addToTreeMapIntegerInteger(
+            Generic_StaticCollections.addToTreeMapIntegerInteger(
                     result,
                     getPowersOfTwoDecomposition(remainder));
         }

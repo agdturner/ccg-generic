@@ -167,4 +167,24 @@ public class Generic_StaticString {
         result = result.replace('z', 'Z');
         return result;
     }
+    
+    /**
+     * 
+     * @param s The String that's first letter is to be capitalised.
+     * @return s but with the first letter capitalised.
+     */
+    public static String getCapitalFirstLetter(String s) {
+        // Special cases
+        if (s.isEmpty()) {
+            return "";
+        }
+        String firstletter = s.substring(0, 1);
+        String firstletterCapital = getUpperCase(firstletter);
+        // Special cases
+        if (s.length() == 1) {
+            return firstletterCapital;
+        }
+        String remainder = s.substring(1, s.length());
+        return firstletterCapital + remainder;        
+    }
 }

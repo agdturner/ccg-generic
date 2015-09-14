@@ -60,8 +60,8 @@ public class Generic_StaticIO {
         TreeSet<String> result = new TreeSet<String>();
         if (file.isDirectory()) {
             File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                TreeSet<String> subresult = recursiveFileList(files[i]);
+            for (File file1 : files) {
+                TreeSet<String> subresult = recursiveFileList(file1);
                 result.addAll(subresult);
             }
             return result;
@@ -76,8 +76,8 @@ public class Generic_StaticIO {
         if (depth != 0) {
             if (file.isDirectory()) {
                 File[] files = file.listFiles();
-                for (int i = 0; i < files.length; i++) {
-                    TreeSet<String> subresult = recursiveFileList(files[i], depth - 1);
+                for (File f : files) {
+                    TreeSet<String> subresult = recursiveFileList(f, depth - 1);
                     result.addAll(subresult);
                 }
                 return result;
@@ -92,6 +92,7 @@ public class Generic_StaticIO {
 
     /**
      * Write object to file
+     *
      * @param object
      * @param f
      */
@@ -99,7 +100,7 @@ public class Generic_StaticIO {
             Object object,
             File f) {
         try {
-            ObjectOutputStream oos ;
+            ObjectOutputStream oos;
             oos = getObjectOutputStream(f);
             oos.writeObject(object);
             oos.flush();
@@ -113,8 +114,9 @@ public class Generic_StaticIO {
 
     /**
      * Read Object from File
+     *
      * @param f
-     * @return 
+     * @return
      */
     public static Object readObject(
             File f) {
@@ -237,7 +239,7 @@ public class Generic_StaticIO {
         result = new BufferedInputStream(fis);
         return result;
     }
-    
+
     /**
      * @param f
      * @return <code>new FileInputStream(f)</code>
@@ -247,7 +249,65 @@ public class Generic_StaticIO {
         try {
             result = new FileInputStream(f);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Trying to handle " + ex.getLocalizedMessage());
+            System.err.println("Wait for 2 seconds then trying again to getFileInputStream(File " + f.toString() + ").");
+            if (!f.exists()) {
+                //ex.printStackTrace(System.err);
+                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+                // null will be returned...
+            } else {
+                // This can happen because of too many open files.
+                // Try waiting for 2 seconds and then repeating...
+                long wait = 2000L;
+                try {
+                    synchronized (f) {
+                        f.wait(wait);
+                    }
+                } catch (InterruptedException ex2) {
+                    Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex2);
+                }
+                return getFileInputStream(f, wait);
+            }
+//        } catch (IOException e) {
+//            e.printStackTrace(System.err);
+//            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return result;
+    }
+
+    /**
+     * @param f
+     * @param wait
+     * @return 
+     * <code>new BufferedReader(new InputStreamReader(new FileInputStream(file)))</code>
+     */
+    public static FileInputStream getFileInputStream(File f, long wait) {
+        FileInputStream result = null;
+        try {
+            result = new FileInputStream(f);
+        } catch (FileNotFoundException ex) {
+            System.err.println("Trying to handle " + ex.getLocalizedMessage());
+            System.err.println("Wait for " + wait + " miliseconds then trying "
+                    + "again to getBufferedReader(File " + f.toString() + ", long).");
+            if (!f.exists()) {
+                //ex.printStackTrace(System.err);
+                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+                // null will be returned...
+            } else {
+                // This can happen because of too many open files.
+                // Try waiting for 2 seconds and then repeating...
+                try {
+                    synchronized (f) {
+                        f.wait(wait);
+                    }
+                } catch (InterruptedException ex2) {
+                    Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex2);
+                }
+                return getFileInputStream(f, wait * 2);
+            }
+//        } catch (IOException e) {
+//            e.printStackTrace(System.err);
+//            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
         }
         return result;
     }
@@ -265,7 +325,7 @@ public class Generic_StaticIO {
         }
         return result;
     }
-    
+
     /**
      * @param f
      * @return <code>new BufferedInputStream(new FileInputStream(f)))</code>
@@ -277,7 +337,7 @@ public class Generic_StaticIO {
         result = new BufferedOutputStream(fos);
         return result;
     }
-    
+
     /**
      * @param f
      * @return <code>new ObjectInputStream(getBufferedInputStream(f)</code>
@@ -285,7 +345,7 @@ public class Generic_StaticIO {
     public static ObjectInputStream getObjectInputStream(File f) {
         ObjectInputStream result = null;
         BufferedInputStream bis;
-        bis = getBufferedInputStream(f); 
+        bis = getBufferedInputStream(f);
         try {
             result = new ObjectInputStream(bis);
         } catch (IOException ex) {
@@ -293,7 +353,7 @@ public class Generic_StaticIO {
         }
         return result;
     }
-    
+
     /**
      * @param f
      * @return <code>new ObjectOutputStream(getBufferedOutputStream(f)</code>
@@ -301,7 +361,7 @@ public class Generic_StaticIO {
     public static ObjectOutputStream getObjectOutputStream(File f) {
         ObjectOutputStream result = null;
         BufferedOutputStream bos;
-        bos = getBufferedOutputStream(f); 
+        bos = getBufferedOutputStream(f);
         try {
             result = new ObjectOutputStream(bos);
         } catch (IOException ex) {
@@ -309,7 +369,7 @@ public class Generic_StaticIO {
         }
         return result;
     }
-    
+
     private static void copyDirectory(
             File directoryToCopy,
             File directoryToCopyInto) {
@@ -335,17 +395,13 @@ public class Generic_StaticIO {
                     directoryToCopyInto,
                     directoryToCopy.getName());
             copiedDirectory_File.mkdir();
-            File[] a_DirectoryToCopy_File_Files =
-                    directoryToCopy.listFiles();
-            for (int i = 0; i < a_DirectoryToCopy_File_Files.length; i++) {
-                if (a_DirectoryToCopy_File_Files[i].isFile()) {
-                    copyFile(
-                            a_DirectoryToCopy_File_Files[i],
-                            copiedDirectory_File);
+            File[] a_DirectoryToCopy_File_Files
+                    = directoryToCopy.listFiles();
+            for (File f : a_DirectoryToCopy_File_Files) {
+                if (f.isFile()) {
+                    copyFile(f, copiedDirectory_File);
                 } else {
-                    copyDirectory(
-                            a_DirectoryToCopy_File_Files[i],
-                            copiedDirectory_File);
+                    copyDirectory(f, copiedDirectory_File);
                 }
             }
         } catch (IOException e) {
@@ -461,8 +517,8 @@ public class Generic_StaticIO {
         if (file.isDirectory()) {
             // Delete all the files it contains
             File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                long[] deleted = delete(files[i]);
+            for (File file1 : files) {
+                long[] deleted = delete(file1);
                 result[0] += deleted[0];
                 result[1] += deleted[1];
             }
@@ -484,7 +540,8 @@ public class Generic_StaticIO {
     }
 
     /**
-     * @return 
+     * @param dir Directory in which temporary file is created.
+     * @return Temporary file created in dir.
      */
     public static File createTempFile(File dir) {
         return createTempFile(dir, "", "");
@@ -498,7 +555,7 @@ public class Generic_StaticIO {
      * characters.
      * @param suffix If null the _InputFile is appended with ".tmp". Default
      * extension to nothing.
-     * @return 
+     * @return
      */
     public static File createTempFile(
             File parentDirectory,
@@ -588,7 +645,7 @@ public class Generic_StaticIO {
      *
      * @param parentDirectory
      * @param filename
-     * @return 
+     * @return
      */
     public static File createNewFile(
             File parentDirectory,
@@ -614,58 +671,34 @@ public class Generic_StaticIO {
 
     /**
      * @param file
-     * @return <code>new BufferedReader(new InputStreamReader(new FileInputStream(file)))</code>
+     * @return
+     * <code>new BufferedReader(new InputStreamReader(new FileInputStream(file)))</code>
      */
     public static BufferedReader getBufferedReader(File file) {
         BufferedReader result = null;
-        try {
             result = new BufferedReader(
-                    new InputStreamReader(
-                    new FileInputStream(file)));
-        } catch (FileNotFoundException e) {
-            System.err.println("Trying to handle " + e.getLocalizedMessage());
-            System.err.println("Wait for 2 seconds then trying again to getBufferedReader(File " + file.toString() + ").");
-            if (!file.exists()) {
-                e.printStackTrace(System.err);
-                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
-                // null will be returned...
-            } else {
-                // This can happen because of too many open files.
-                // Try waiting for 2 seconds and then repeating...
-                try {
-                    synchronized (file) {
-                        file.wait(2000L);
-                    }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                return getBufferedReader(file);
-            }
-//        } catch (IOException e) {
-//            e.printStackTrace(System.err);
-//            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
-        }
+                    new InputStreamReader(getFileInputStream(file)));
         return result;
     }
 
     /**
      * @param file The file to write to.
-     * @param append If true an existing file will be appended otherwise it will 
+     * @param append If true an existing file will be appended otherwise it will
      * be overwritten.
-     * @return 
+     * @return
      */
     public static PrintWriter getPrintWriter(File file, boolean append) {
         PrintWriter result = null;
         try {
             result = new PrintWriter(
                     new BufferedWriter(
-                    new FileWriter(file, append)));
+                            new FileWriter(file, append)));
         } catch (FileNotFoundException e) {
             System.err.println("Trying to handle " + e.getLocalizedMessage());
             System.err.println("Wait for 2 seconds then trying again to writeToCSV.");
             if (!file.exists()) {
                 e.printStackTrace(System.err);
-                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, e);
                 // null will be returned...
             } else {
                 // This can happen because of too many open files.
@@ -675,13 +708,50 @@ public class Generic_StaticIO {
                         file.wait(2000L);
                     }
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 return getPrintWriter(file, append);
             }
         } catch (IOException e) {
             e.printStackTrace(System.err);
-            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return result;
+    }
+
+    public static int getFileDepth(File f) {
+        return getFileDepth(f.getAbsolutePath());
+    }
+
+    public static int getFileDepth(String absoluteFilePath) {
+        int result;
+        String[] s = absoluteFilePath.split("/");
+        result = s.length;
+        return result;
+    }
+
+    public static String getRelativeFilePath(int depth) {
+        String result = "";
+        for (int i = 0; i < depth; i++) {
+            result += "../";
+        }
+        return result;
+    }
+
+    public static String getRelativeFilePath(
+            int depth,
+            File f) {
+        return getRelativeFilePath(
+                depth,
+                f.getPath());
+    }
+
+    public static String getRelativeFilePath(
+            int depth,
+            String path) {
+        String result = path;
+        for (int i = 0; i < depth; i++) {
+            result += "../";
         }
         return result;
     }
@@ -1039,8 +1109,7 @@ public class Generic_StaticIO {
     }
 
     /**
-     * Initialises a directory in directory and returns result.
-     * <code>
+     * Initialises a directory in directory and returns result.      <code>
      * File result;
      * long start = 0;
      * long end = range - 1;
@@ -1145,10 +1214,10 @@ public class Generic_StaticIO {
         if (archiveFiles.length == 0) {
             return -1L;
         } else {
-            TreeMap<Long, File> numericalOrderFiles_TreeMap =
-                    getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-                    archiveFiles,
-                    underscore);
+            TreeMap<Long, File> numericalOrderFiles_TreeMap
+                    = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
+                            archiveFiles,
+                            underscore);
             File last_File = numericalOrderFiles_TreeMap.lastEntry().getValue();
             if (last_File.getName().contains(underscore)) {
                 return getArchiveHighestLeaf(
@@ -1195,8 +1264,8 @@ public class Generic_StaticIO {
             String underscore) {
         HashSet<File> result = new HashSet<File>();
         File[] topLevelArchiveFiles = directory.listFiles();
-        for (int i = 0; i < topLevelArchiveFiles.length; i++) {
-            HashSet<File> subresult = getArchiveLeafFiles0(topLevelArchiveFiles[i], underscore);
+        for (File topLevelArchiveFile : topLevelArchiveFiles) {
+            HashSet<File> subresult = getArchiveLeafFiles0(topLevelArchiveFile, underscore);
             result.addAll(subresult);
         }
         return result;
@@ -1208,8 +1277,8 @@ public class Generic_StaticIO {
         HashSet<File> result = new HashSet<File>();
         if (file.getName().contains(underscore)) {
             File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                HashSet<File> subresult = getArchiveLeafFiles0(files[i], underscore);
+            for (File file1 : files) {
+                HashSet<File> subresult = getArchiveLeafFiles0(file1, underscore);
                 result.addAll(subresult);
             }
         } else {
@@ -1219,12 +1288,22 @@ public class Generic_StaticIO {
     }
 
     /**
-     * @TODO Untested and potentially slow. This can probably be speeded up by
-     * going through the file tree branch by branch like 
-     * <code>getArchiveLeafFiles(File,String);
-     * @param directory
-     * @param underscore
-     * @return
+     * Potentially slow and could be speeded up by going through the file tree
+     * branch by branch.
+     *
+     * @param directory dir.
+     * @param underscore "_". {@code TreeMap<Long, File> result = new TreeMap<Long, File>();
+     * File[] topLevelArchiveFiles = directory.listFiles();
+     * for (File f : topLevelArchiveFiles) {
+     * TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
+     * f,
+     * underscore);
+     * result.putAll(subresult);
+     * }
+     * return result;
+     * }
+     * @
+     * return result;
      */
 //    public static TreeMap<Long,File> getArchiveLeafFiles_TreeMap(
 //            File directory,
@@ -1247,8 +1326,10 @@ public class Generic_StaticIO {
             String underscore) {
         TreeMap<Long, File> result = new TreeMap<Long, File>();
         File[] topLevelArchiveFiles = directory.listFiles();
-        for (int i = 0; i < topLevelArchiveFiles.length; i++) {
-            TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(topLevelArchiveFiles[i], underscore);
+        for (File f : topLevelArchiveFiles) {
+            TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
+                    f,
+                    underscore);
             result.putAll(subresult);
         }
         return result;
@@ -1260,8 +1341,10 @@ public class Generic_StaticIO {
         TreeMap<Long, File> result = new TreeMap<Long, File>();
         if (file.getName().contains(underscore)) {
             File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(files[i], underscore);
+            for (File f : files) {
+                TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
+                        f,
+                        underscore);
                 result.putAll(subresult);
             }
         } else {
@@ -1277,9 +1360,9 @@ public class Generic_StaticIO {
             long maxID) {
         TreeMap<Long, File> result = new TreeMap<Long, File>();
         File[] topLevelArchiveFiles = directory.listFiles();
-        for (int i = 0; i < topLevelArchiveFiles.length; i++) {
+        for (File f : topLevelArchiveFiles) {
             TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
-                    topLevelArchiveFiles[i],
+                    f,
                     underscore,
                     minID,
                     maxID);
@@ -1296,9 +1379,9 @@ public class Generic_StaticIO {
         TreeMap<Long, File> result = new TreeMap<Long, File>();
         if (file.getName().contains(underscore)) {
             File[] files = file.listFiles();
-            for (int i = 0; i < files.length; i++) {
+            for (File f : files) {
                 TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
-                        files[i],
+                        f,
                         underscore,
                         minID,
                         maxID);
@@ -1330,10 +1413,10 @@ public class Generic_StaticIO {
         if (archiveFiles.length == 0) {
             return null;
         } else {
-            TreeMap<Long, File> numericalOrderFiles_TreeMap =
-                    getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-                    archiveFiles,
-                    underscore);
+            TreeMap<Long, File> numericalOrderFiles_TreeMap
+                    = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
+                            archiveFiles,
+                            underscore);
             File last_File = numericalOrderFiles_TreeMap.lastEntry().getValue();
             if (last_File.getName().contains(underscore)) {
                 return getArchiveHighestLeafFile(
@@ -1368,11 +1451,9 @@ public class Generic_StaticIO {
                 "" + 0 + "_" + (newRange - 1L));
         File newTopOfArchive = new File(newTopOfArchive0.getPath());
         newTopOfArchive0.mkdir();
-        for (int i = 0; i < archiveFiles.length; i++) {
-            File newPath = new File(
-                    newTopOfArchive,
-                    archiveFiles[i].getName());
-            archiveFiles[i].renameTo(newPath);
+        for (File archiveFile : archiveFiles) {
+            File newPath = new File(newTopOfArchive, archiveFile.getName());
+            archiveFile.renameTo(newPath);
         }
         // Create new lower directories for next ID;
         Long next_ID = getArchiveHighestLeaf(
@@ -1381,7 +1462,7 @@ public class Generic_StaticIO {
         next_ID++;
         File newHighestLeaf_Directory = new File(
                 getObjectDirectory(
-                newTopOfArchive, next_ID, next_ID, range),
+                        newTopOfArchive, next_ID, next_ID, range),
                 "" + next_ID);
         newHighestLeaf_Directory.mkdirs();
         return newTopOfArchive0;
@@ -1410,15 +1491,13 @@ public class Generic_StaticIO {
                 "" + 0 + "_" + (newRange - 1L));
         File newTopOfArchive = new File(newTopOfArchive0.getPath());
         newTopOfArchive0.mkdir();
-        for (int i = 0; i < archiveFiles.length; i++) {
-            File newPath = new File(
-                    newTopOfArchive,
-                    archiveFiles[i].getName());
-            archiveFiles[i].renameTo(newPath);
+        for (File archiveFile : archiveFiles) {
+            File newPath = new File(newTopOfArchive, archiveFile.getName());
+            archiveFile.renameTo(newPath);
         }
         File newHighestLeaf_Directory = new File(
                 getObjectDirectory(
-                newTopOfArchive, next_ID, next_ID, range),
+                        newTopOfArchive, next_ID, next_ID, range),
                 "" + next_ID);
         newHighestLeaf_Directory.mkdirs();
         return newTopOfArchive0;
@@ -1434,11 +1513,11 @@ public class Generic_StaticIO {
         next_ID++;
         File newHighestLeaf_Directory = new File(
                 getObjectDirectory(
-                directory0,
-                next_ID,
-                //next_ID + range - 2,
-                next_ID + 1,
-                range),
+                        directory0,
+                        next_ID,
+                        //next_ID + range - 2,
+                        next_ID + 1,
+                        range),
                 "" + next_ID);
         String filename = getFilename(
                 directory0,
@@ -1456,7 +1535,7 @@ public class Generic_StaticIO {
                 underscore);
         Iterator<Integer> a_iterator = numericalAndNumericalUnderscoreFilenames_HashMap.keySet().iterator();
         int index;
-        String filename0 = null;
+        String filename0 = "";
         while (a_iterator.hasNext()) {
             index = a_iterator.next();
             filename0 = numericalAndNumericalUnderscoreFilenames_HashMap.get(index);
@@ -1470,8 +1549,8 @@ public class Generic_StaticIO {
 //            filename0 = filename;
 //        }
         String[] splitold = filename0.split(underscore);
-        long startold = new Long(splitold[0]).longValue();
-        long endold = new Long(splitold[1]).longValue();
+        long startold = Long.parseLong(splitold[0]);
+        long endold = Long.parseLong(splitold[1]);
         long rangeold = endold - startold;
         if (rangenew > rangeold) {
             growArchiveBase(directory0, range);
@@ -1487,11 +1566,11 @@ public class Generic_StaticIO {
         String underscore = "_";
         File newHighestLeaf_Directory = new File(
                 getObjectDirectory(
-                directory0,
-                next_ID,
-                //next_ID + range - 2,
-                next_ID + 1,
-                range),
+                        directory0,
+                        next_ID,
+                        //next_ID + range - 2,
+                        next_ID + 1,
+                        range),
                 "" + next_ID);
         String filename = getFilename(
                 directory0,
@@ -1919,22 +1998,14 @@ public class Generic_StaticIO {
      * }
      * }
      *
-     *
-     *
-     *
-     *
-
-     *
      * @param files
      * @return TreeMap<Long, File>
      */
     public static TreeMap<Long, File> getNumericalOrderFilesWithNumericalFilenames_TreeMap(
             File[] files) {
         TreeMap<Long, File> result = new TreeMap<Long, File>();
-        for (int i = 0; i < files.length; i++) {
-            result.put(
-                    new Long(files[i].getName()),
-                    files[i]);
+        for (File file : files) {
+            result.put(new Long(file.getName()), file);
         }
         return result;
     }
@@ -1953,20 +2024,18 @@ public class Generic_StaticIO {
         TreeMap<Long, File> result = new TreeMap<Long, File>();
         String filename;
         String[] split;
-        for (int i = 0; i < files.length; i++) {
-            filename = files[i].getName();
+        for (File file : files) {
+            filename = file.getName();
             if (filename.contains(underscore)) {
                 split = filename.split("_");
                 if (split.length <= 2) {
                     long start;
                     try {
-                        start = new Long(split[0]).longValue();
+                        start = Long.parseLong(split[0]);
                         if (split.length == 2) {
-                            new Long(split[1]).longValue();
+                            Long.parseLong(split[1]);
                         }
-                        result.put(
-                                start,
-                                files[i]);
+                        result.put(start, file);
                     } catch (NumberFormatException a_NumberFormatException) {
                         // Ignore
                     }
@@ -1974,9 +2043,7 @@ public class Generic_StaticIO {
             } else {
                 try {
                     long name = new Long(filename);
-                    result.put(
-                            name,
-                            files[i]);
+                    result.put(name, file);
                 } catch (NumberFormatException a_NumberFormatException) {
                     // Ignore
                 }

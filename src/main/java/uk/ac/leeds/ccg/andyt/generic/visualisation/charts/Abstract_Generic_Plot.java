@@ -108,7 +108,7 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
         return data;
     }
 
-    protected void setData(Object[] data) {
+    public void setData(Object[] data) {
         initData(data);
         initialiseParameters(data);
     }
@@ -538,6 +538,7 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
         this.dataStartCol = 0;
         this.dataEndCol = dataStartCol + dataWidth;
         this.decimalPlacePrecisionForCalculations = decimalPlacePrecisionForCalculations;
+        this.decimalPlacePrecisionForDisplay = significantDigits;
         this.significantDigits = significantDigits;
         this._RoundingMode = roundingMode;
 //        if (data == null) {

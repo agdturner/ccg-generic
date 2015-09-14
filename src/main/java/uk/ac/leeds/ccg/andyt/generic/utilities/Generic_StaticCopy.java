@@ -12,7 +12,7 @@ import java.util.Vector;
 /**
  * Class of static methods for copying Objects.
  */
-public class StaticCopy {
+public class Generic_StaticCopy {
 
     public static HashMap copy_Key_Vector_HashMap(
             HashMap aKey_Vector_Hashmap) {

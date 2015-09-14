@@ -17,20 +17,14 @@ package uk.ac.leeds.ccg.andyt.generic.visualisation.charts;
 
 import java.awt.Color;
 import java.io.File;
-import java.lang.Runnable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
@@ -40,8 +34,8 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
  * <code>Generic_AgeGenderBarChart<\code>
  *
  * If you run this class it will attempt to generate an Age by Gender
- * Population Bar Chart Visualization of some default data and display it on
- * screen.
+ * Population Bar Chart Visualization of some default data and write it out 
+ * to file as a PNG.
  */
 public class Generic_AgeGenderBarChart extends Abstract_Generic_AgeGenderPlot {
 
@@ -71,7 +65,7 @@ public class Generic_AgeGenderBarChart extends Abstract_Generic_AgeGenderPlot {
                 dataWidth,
                 dataHeight,
                 xAxisLabel,
-                xAxisLabel,
+                yAxisLabel,
                 drawOriginLinesOnPlot,
                 ageInterval,
                 startAgeOfEndYearInterval,
@@ -123,7 +117,16 @@ public class Generic_AgeGenderBarChart extends Abstract_Generic_AgeGenderPlot {
         ite = femaleAgeInYearsPopulationCount_TreeMap.entrySet().iterator();
         while (ite.hasNext()) {
             entry = ite.next();
-            age = entry.getKey();
+            
+            // For some reason sometimes we get a Integer instead of a Long!
+            if (!(entry.getKey() instanceof Long)) {
+                System.out.println(entry.getKey());
+                String s = String.valueOf(entry.getKey());
+                age = Long.valueOf(s);
+            } else {
+                age = entry.getKey();
+            }
+            
             population = entry.getValue();
             int barWidth = Generic_BigDecimal.divideRoundIfNecessary(
                     population,
@@ -155,7 +158,16 @@ public class Generic_AgeGenderBarChart extends Abstract_Generic_AgeGenderPlot {
         ite = maleAgeInYearsPopulationCount_TreeMap.entrySet().iterator();
         while (ite.hasNext()) {
             entry = ite.next();
-            age = entry.getKey();
+            
+            // For some reason sometimes we get a Integer instead of a Long!
+            if (!(entry.getKey() instanceof Long)) {
+                System.out.println(entry.getKey());
+                String s = String.valueOf(entry.getKey());
+                age = Long.valueOf(s);
+            } else {
+                age = entry.getKey();
+            }
+
             population = entry.getValue();
             int barWidth = Generic_BigDecimal.divideRoundIfNecessary(
                     population,
@@ -273,15 +285,15 @@ public class Generic_AgeGenderBarChart extends Abstract_Generic_AgeGenderPlot {
             int startAgeOfEndYearInterval) {
         Object[] result = new Object[3];
         Object[] data = getDefaultData(femalePopAge0, malePopAge0);
-        TreeMap<Integer, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<Integer, BigDecimal>();
-        TreeMap<Integer, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<Integer, BigDecimal>();
-        TreeMap<Integer, BigDecimal> singleYearFemaleAgeInYearsPopulationCount_TreeMap = (TreeMap<Integer, BigDecimal>) data[0];
-        TreeMap<Integer, BigDecimal> singleYearMaleAgeInYearsPopulationCount_TreeMap = (TreeMap<Integer, BigDecimal>) data[1];
-        Iterator<Integer> ite;
-        Integer age;
+        TreeMap<Long, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<Long, BigDecimal>();
+        TreeMap<Long, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<Long, BigDecimal>();
+        TreeMap<Long, BigDecimal> singleYearFemaleAgeInYearsPopulationCount_TreeMap = (TreeMap<Long, BigDecimal>) data[0];
+        TreeMap<Long, BigDecimal> singleYearMaleAgeInYearsPopulationCount_TreeMap = (TreeMap<Long, BigDecimal>) data[1];
+        Iterator<Long> ite;
+        Long age;
         BigDecimal pop;
         BigDecimal maxPop = BigDecimal.ZERO;
-        int ageGroup;
+        long ageGroup;
         BigDecimal popGroup;
         ageGroup = 0;
         popGroup = BigDecimal.ZERO;
@@ -354,11 +366,11 @@ public class Generic_AgeGenderBarChart extends Abstract_Generic_AgeGenderPlot {
             int femalePopAge0,
             int malePopAge0) {
         Object[] result = new Object[2];
-        TreeMap<Integer, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<Integer, BigDecimal>();
-        TreeMap<Integer, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<Integer, BigDecimal>();
+        TreeMap<Long, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<Long, BigDecimal>();
+        TreeMap<Long, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<Long, BigDecimal>();
         BigDecimal population_BigDecimal;
         BigDecimal change_BigDecimal;
-        int age;
+        long age;
         population_BigDecimal = new BigDecimal("" + femalePopAge0);
         change_BigDecimal = new BigDecimal("0.94");
         for (age = 0; age < 5; age++) {
