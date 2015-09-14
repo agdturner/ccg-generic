@@ -18,11 +18,13 @@ package uk.ac.leeds.ccg.andyt.generic.visualisation.charts;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.lang.Runnable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 
 /**
@@ -102,19 +104,18 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         maxY = (BigDecimal) data[2];
         minX = (BigDecimal) data[3];
         maxX = (BigDecimal) data[4];
-        
+
         Color[] colours;
         colours = getColours();
-        
-        for (int i = 0; i < maps.length; i ++) {
+
+        for (int i = 0; i < maps.length; i++) {
             TreeMap<BigDecimal, BigDecimal> map;
             map = (TreeMap<BigDecimal, BigDecimal>) maps[i];
             drawMap(map, colours[i]);
         }
-        
-        
+
     }
-    
+
     public void drawMap(
             TreeMap<BigDecimal, BigDecimal> map,
             Color c) {
@@ -150,16 +151,6 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         }
     }
 
-    public Color[] getColours() {
-        Color[] result;
-        result = new Color[4];
-        result[0] = Color.BLACK;
-        result[1] = Color.BLUE;
-        result[2] = Color.CYAN;
-        result[3] = Color.GREEN;
-        return result;
-    }
-        
     public static void main(String[] args) {
         Generic_Visualisation.getHeadlessEnvironment();
 
@@ -235,6 +226,7 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         drawTitle(getTitle());
         drawAxes();
         drawData();
+        drawLegend();
         Dimension newDim = new Dimension(getImageWidth(), getImageHeight());
         return newDim;
     }
@@ -314,10 +306,7 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
             setExtraWidthRight(extraWidthRight);
         }
         setImageWidth(imageWidth);
-        int xAxisHeight;
-        xAxisHeight = getxAxisHeight();
-        xAxisHeight += xAxisExtraHeightBottom;
-        setxAxisHeight(xAxisHeight);
+        setxAxisHeight(xAxisExtraHeightBottom);
         int extraHeightBottom;
         extraHeightBottom = getExtraHeightBottom();
         int imageHeight;
@@ -381,12 +370,12 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         map2.put(new BigDecimal(54.0d), new BigDecimal(37.0d));
         maps[1] = map2;
         BigDecimal[] minMaxBigDecimal;
-        minMaxBigDecimal = Generic_StaticCollections.getMinMaxBigDecimal(map);
+        minMaxBigDecimal = Generic_Collections.getMinMaxBigDecimal(map);
         BigDecimal minY = minMaxBigDecimal[0];
         BigDecimal maxY = minMaxBigDecimal[1];
         BigDecimal minX = map.firstKey();
         BigDecimal maxX = map.lastKey();
-        minMaxBigDecimal = Generic_StaticCollections.getMinMaxBigDecimal(map2);
+        minMaxBigDecimal = Generic_Collections.getMinMaxBigDecimal(map2);
         if (minY.compareTo(minMaxBigDecimal[0]) == 1) {
             minY = minMaxBigDecimal[0];
         }
@@ -399,12 +388,41 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         if (maxX.compareTo(map2.lastKey()) == -1) {
             maxX = map2.lastKey();
         }
-
         result[0] = maps;
         result[1] = minY;
         result[2] = maxY;
         result[3] = minX;
         result[4] = maxX;
+        ArrayList<String> labels;
+        labels = new ArrayList<String>();
+        labels.add("Values1");
+        labels.add("Values2");
+        setLabels(labels);
+        
+        // Comment out the following section to have a normal axis instead of labels.
+        TreeMap<BigDecimal, String> xAxisLabels;
+        xAxisLabels = new TreeMap<BigDecimal, String>();
+        xAxisLabels.put(new BigDecimal(0.0d), "2008 April");
+        xAxisLabels.put(new BigDecimal(6.0d), "2008 October");
+        xAxisLabels.put(new BigDecimal(12.0d), "2009 April");
+        xAxisLabels.put(new BigDecimal(18.0d), "2009 October");
+        xAxisLabels.put(new BigDecimal(24.0d), "2010 April");
+        xAxisLabels.put(new BigDecimal(27.0d), "2010 July");
+        xAxisLabels.put(new BigDecimal(30.0d), "2010 October");
+        xAxisLabels.put(new BigDecimal(33.0d), "2010 January");
+        xAxisLabels.put(new BigDecimal(36.0d), "2011 April");
+        xAxisLabels.put(new BigDecimal(39.0d), "2011 July");
+        xAxisLabels.put(new BigDecimal(42.0d), "2011 October");
+        xAxisLabels.put(new BigDecimal(45.0d), "2012 January");
+        xAxisLabels.put(new BigDecimal(48.0d), "2012 April");
+        xAxisLabels.put(new BigDecimal(49.0d), "2012 May");
+        xAxisLabels.put(new BigDecimal(50.0d), "2012 June");
+        xAxisLabels.put(new BigDecimal(51.0d), "2012 April");
+        xAxisLabels.put(new BigDecimal(52.0d), "2012 August");
+        xAxisLabels.put(new BigDecimal(53.0d), "2012 September");
+        xAxisLabels.put(new BigDecimal(54.0d), "2012 October");
+        setxAxisLabels(xAxisLabels);
+        
         return result;
     }
 
@@ -417,5 +435,68 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
                 0,
                 getRoundingMode()).intValue();
         setExtraHeightTop(getExtraHeightTop() + barHeight);
+    }
+
+    protected void drawLegend() {
+        ArrayList<String> labels;
+        labels = getLabels();
+            Color[] colours;
+            colours = getColours();
+        int newLegendWidth = 0;
+        int newLegendHeight = 0;
+        int legendExtraWidthLeft = 0;
+        int legendExtraWidthRight = 0;
+        int textHeight = getTextHeight();
+        int legendExtraHeightBottom = textHeight;
+        int legendStartRow = getDataEndRow() + getxAxisHeight();
+
+        int symbolRow;
+        int symbolCol;
+        int row;
+        int col;
+        int symbolWidth = 10;
+        // Legend Title
+        int legendItemWidth = 0;
+        String text = "Legend";
+        int textWidth = getTextWidth(text);
+        newLegendHeight += textHeight;
+        row = legendStartRow;
+        //col = dataStartCol - yAxisWidth;
+        col = textHeight;
+        legendItemWidth += textWidth;
+        newLegendWidth = Math.max(newLegendWidth, legendItemWidth);
+//        System.out.println("row " + row);
+//        System.out.println("col " + col);
+        setPaint(Color.DARK_GRAY);
+        drawString(
+                text,
+                col,
+                row);
+        row += 2; // gap between "Legend" and first line
+        int i = 0;
+        Iterator<String> ite;
+        ite = labels.iterator();
+        while (ite.hasNext()) {
+            String label = ite.next();
+            col = textHeight + symbolWidth + 2;
+            row += textHeight + 2;
+            setPaint(Color.DARK_GRAY);
+            drawString(
+                    label,
+                    col,
+                    row);
+            setPaint(colours[i]);
+            Line2D line;
+            line = new Line2D.Double(
+                    textHeight,
+                    row,
+                    col - 2,
+                    row - textHeight);
+            draw(line);
+            newLegendHeight += textHeight + 2;
+            i ++;
+        }
+        setLegendHeight(newLegendHeight);
+        setImageHeight(getImageHeight() + newLegendHeight);
     }
 }

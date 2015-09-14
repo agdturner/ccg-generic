@@ -4,6 +4,10 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.utilities;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 /**
  *
  * @author geoagdt
@@ -44,5 +48,65 @@ public class Generic_Time {
                 minutes + " minute(s) " +
                 seconds + " second(s) " +
                 millis2 + " millisecond(s)");
+    }
+
+    /**
+     * @return
+     * {@code
+    ArrayList<String> result;
+    result = new ArrayList<String>();
+    result.add("Jan");
+    result.add("Feb");
+    result.add("Mar");
+    result.add("Apr");
+    result.add("May");
+    result.add("Jun");
+    result.add("Jul");
+    result.add("Aug");
+    result.add("Sep");
+    result.add("Oct");
+    result.add("Nov");
+    result.add("Dec");
+    return result;
+    }
+     */
+    public static ArrayList<String> getMonths3Letters() {
+        ArrayList<String> result;
+        result = new ArrayList<String>();
+        result.add("Jan");
+        result.add("Feb");
+        result.add("Mar");
+        result.add("Apr");
+        result.add("May");
+        result.add("Jun");
+        result.add("Jul");
+        result.add("Aug");
+        result.add("Sep");
+        result.add("Oct");
+        result.add("Nov");
+        result.add("Dec");
+        return result;
+    }
+    
+    public static int getMonthDiff(
+            int year0,
+            int year1,
+            int month0,
+            int month1) {
+       int result;
+       result = (year1 - year0) * 12;
+       result += month1 - month0;
+       return result;
+    }
+
+    /**
+     * @return Current clock date as yyyy-MM-dd format
+     */
+    public static String getDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String formatted = format1.format(cal.getTime());
+        return formatted;
     }
 }

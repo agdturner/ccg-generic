@@ -35,7 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 
 /**
@@ -358,7 +358,7 @@ public class Generic_BarChart extends Abstract_Generic_BarChart {
         map.put("Y", new BigDecimal(16.0d));
         map.put("Z", new BigDecimal(4.0d));
         BigDecimal[] minMaxBigDecimal;
-        minMaxBigDecimal = Generic_StaticCollections.getMinMaxBigDecimal(map);
+        minMaxBigDecimal = Generic_Collections.getMinMaxBigDecimal(map);
         Object[] intervalCountsLabelsMins;
         BigDecimal min = minMaxBigDecimal[0];
         //BigDecimal max = minMaxBigDEcimal[1];
@@ -366,7 +366,7 @@ public class Generic_BarChart extends Abstract_Generic_BarChart {
         MathContext mc;
         mc = new MathContext(getDecimalPlacePrecisionForCalculations(), getRoundingMode());
 
-        intervalCountsLabelsMins = Generic_StaticCollections.getIntervalCountsLabelsMins(
+        intervalCountsLabelsMins = Generic_Collections.getIntervalCountsLabelsMins(
                 min, intervalWidth, map, mc);
         result[0] = intervalCountsLabelsMins;
         result[1] = minMaxBigDecimal;

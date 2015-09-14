@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.logging.Generic_Log;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 
 /**
  *
@@ -719,7 +719,7 @@ public class Generic_Statistics {
         BigDecimal sumDifference = BigDecimal.ZERO;
         BigDecimal sumDifferenceSquared = BigDecimal.ZERO;
         Integer key;
-        HashSet<Integer> completeKeySet_HashSet = Generic_StaticCollections.getCompleteKeySet_HashSet(
+        HashSet<Integer> completeKeySet_HashSet = Generic_Collections.getCompleteKeySet_HashSet(
                 map0.keySet(),
                 map1.keySet());
         result[0] = completeKeySet_HashSet;
@@ -791,7 +791,7 @@ public class Generic_Statistics {
         BigDecimal sumDifference = BigDecimal.ZERO;
         BigDecimal sumDifferenceSquared = BigDecimal.ZERO;
         Integer key;
-        HashSet<Integer> completeKeySet_HashSet = Generic_StaticCollections.getCompleteKeySet_HashSet(
+        HashSet<Integer> completeKeySet_HashSet = Generic_Collections.getCompleteKeySet_HashSet(
                 map0.keySet(),
                 map1.keySet());
         result[0] = completeKeySet_HashSet;

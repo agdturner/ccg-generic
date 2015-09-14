@@ -21,11 +21,12 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 
 /**
  * An abstract class for creating Age by Gender Population visualisations and
@@ -38,7 +39,16 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
     private BigDecimal yPin;
     private BigDecimal yIncrement;
     private int numberOfYAxisTicks;
-    
+
+    private TreeMap<BigDecimal, String> xAxisLabels;
+    private BigDecimal xMax;
+    private BigDecimal xPin;
+    private BigDecimal xIncrement;
+    private int numberOfXAxisTicks;
+
+    private Color[] colours;
+    private ArrayList<String> labels;
+
     protected final void init(
             ExecutorService executorService,
             File file,
@@ -86,7 +96,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
         setMinX(minX);
         setMaxX(maxX);
         setMinY(minY);
-            setMaxY(maxY);
+        setMaxY(maxY);
         setCellHeight();
         setCellWidth();
         setOriginRow();
@@ -167,7 +177,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
                             rowValue = rowValue.subtract(yIncrement);
                         }
                     } else {
-                        throw new UnsupportedOperationException(this.getClass().getName() + ".drawYAxis(int, BigDecimal, BigDecimal, int, int, int, int)");
+                        throw new UnsupportedOperationException(this.getClass().getName() + ".drawYAxis(int, int, int, int, int)");
                     }
                 } else {
                     rowValue = pin;
@@ -296,108 +306,185 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
             int scaleTickAndTextSeparation,
             int partTitleGap,
             int seperationDistanceOfAxisAndData) {
-int[] result = new int[3];
-//        
-////        MathContext mc;
-////        mc = new MathContext(getDecimalPlacePrecisionForCalculations(), getRoundingMode());               
-//        Object[] data = getData();
-//        Object[] intervalCountsLabelsMins;
-//        intervalCountsLabelsMins = (Object[]) data[0];
-//        TreeMap<Integer, Integer> counts;
-//        counts = (TreeMap<Integer, Integer>) intervalCountsLabelsMins[0];
-//        TreeMap<Integer, String> labels;
-//        labels = (TreeMap<Integer, String>) intervalCountsLabelsMins[1];
-//        TreeMap<Integer, BigDecimal> mins;
-//        mins = (TreeMap<Integer, BigDecimal>) intervalCountsLabelsMins[2];
-////        int xIncrement;
-////        xIncrement = getxIncrement();
-////        if (xIncrement == 0) {
-////            xIncrement = 1;
-////            setxIncrement(xIncrement);
-////        }
-//        int xAxisTickIncrement = getxIncrement();
-//        int dataStartCol = getDataStartCol();        
-//        int xIncrementWidth = coordinateToScreenCol(
-//                BigDecimal.valueOf(xAxisTickIncrement)) - dataStartCol;
-//        int xAxisExtraWidthLeft = 0;
-//        int extraAxisLength;
-//        //extraAxisLength = xIncrementWidth + (barGap * 2) + (barWidth / 2);
-//        extraAxisLength = xIncrementWidth + (barGap * 2);
-//        int xAxisExtraWidthRight = extraAxisLength;
-//        int xAxisExtraHeightBottom = seperationDistanceOfAxisAndData
-//                + scaleTickLength + scaleTickAndTextSeparation;
-//        int dataEndRow = getDataEndRow();
-//        int dataEndCol = getDataEndCol();
-//        Line2D ab;
-//        setPaint(Color.GRAY);
-//        int row = dataEndRow + seperationDistanceOfAxisAndData;
-//        // draw XAxis Line
-//        ab = new Line2D.Double(
-//                dataStartCol,
-//                row,
-//                dataEndCol + extraAxisLength,
-//                row);
-//        draw(ab);
-//        // Add ticks and labels
-//        int textRow = row + scaleTickLength + scaleTickAndTextSeparation;
-//        String text_String;
-//        int textWidth;
-//        int maxWidth = 0;
-//        double angle = 3.0d * Math.PI / 2.0d;
-//        //int colCenterer = getBarGap() + getBarWidth() / 2;
-//        int col = getDataStartCol() + colCenterer;
-//        int previousCol = col;
-//        boolean first = true;
-//        Iterator<Integer> ite2;
-//        ite2 = counts.keySet().iterator();
-//        while (ite2.hasNext()) {
-//            Integer value = ite2.next();
-//            String label = labels.get(value);
-//            BigDecimal min = mins.get(value);
-//            col = coordinateToScreenCol(min) + colCenterer;
-//            //col = value * xAxisTickIncrement + col0;
-//            //System.out.println("" + value + ", " + count + ", \"" + label +  "\"");        
-//            ab = new Line2D.Double(
-//                    col,
-//                    row,
-//                    col,
-//                    row + scaleTickLength);
-//            draw(ab);
-//            if (first || (col - previousCol) > textHeight) {
-//                text_String = label;
-//                textWidth = getTextWidth(text_String);
-//                writeText(
-//                        text_String,
-//                        angle,
-//                        col + (textHeight / 3),
-//                        textRow + textWidth);
-//
-//                maxWidth = Math.max(maxWidth, textWidth);
-//                previousCol = col;
-//                first = false;
-//            }
-//        }
-//        xAxisExtraWidthLeft += textHeight;
-//        xAxisExtraHeightBottom += maxWidth;
-//        xAxisExtraWidthRight += textHeight / 2;
-//        textRow += maxWidth + partTitleGap + textHeight;
-//        xAxisExtraHeightBottom += partTitleGap + textHeight;
-//        setPaint(Color.BLACK);
-//        text_String = getxAxisLabel();
-//        textWidth = getTextWidth(text_String);
-//        drawString(
-//                text_String,
-//                (dataEndCol - dataStartCol) / 2 + dataStartCol - textWidth / 2,
-//                textRow);
-//        int endOfAxisLabelCol = (dataEndCol - dataStartCol) / 2 + dataStartCol + textWidth / 2 + 1; // Add one to cover rounding issues.
-//        if (endOfAxisLabelCol > dataEndCol + xAxisExtraWidthRight) {
-//            int diff = endOfAxisLabelCol - (dataEndCol + xAxisExtraWidthRight);
-//            xAxisExtraWidthRight += diff;
-//        }
-//        xAxisExtraHeightBottom += textHeight + 2;
-//        result[0] = xAxisExtraWidthLeft;
-//        result[1] = xAxisExtraWidthRight;
-//        result[2] = xAxisExtraHeightBottom;
+        int[] result = new int[3];
+        Object[] data = getData();
+
+        MathContext mc;
+        mc = new MathContext(
+                getDecimalPlacePrecisionForCalculations(),
+                RoundingMode.HALF_UP);
+
+        BigDecimal xMax;
+        xMax = getxMax();
+
+        BigDecimal colValue;
+        BigDecimal minX;
+        minX = getMinX();
+        BigDecimal maxX;
+        maxX = getMaxX();
+
+        BigDecimal pin;
+        BigDecimal xIncrement;
+        pin = getxPin();
+        xIncrement = getxIncrement();
+
+        if (pin != null) {
+            // Initialise colValue
+            int pinCompareToMinX;
+            pinCompareToMinX = pin.compareTo(minX);
+            if (pinCompareToMinX != 0) {
+                if (pinCompareToMinX == 1) {
+                    int pinCompareToMaxX;
+                    pinCompareToMaxX = pin.compareTo(maxX);
+                    if (pinCompareToMaxX != 1) {
+                        colValue = pin;
+                        while (colValue.compareTo(minX) != 1) {
+                            colValue = colValue.subtract(xIncrement);
+                        }
+                    } else {
+                        throw new UnsupportedOperationException(this.getClass().getName() + ".drawXAxis(int, int, int, int, int)");
+                    }
+                } else {
+                    colValue = pin;
+                    while (colValue.compareTo(minX) == -1) {
+                        colValue = colValue.add(xIncrement);
+                    }
+                }
+            } else {
+                colValue = minX;
+            }
+        } else {
+            colValue = minX;
+        }
+
+        int numberOfTicks;
+        if (getxIncrement() != null) {
+            if (colValue != null) {
+                numberOfTicks = ((maxX.subtract(colValue)).divide(xIncrement, mc)).intValue();
+            } else {
+                numberOfTicks = ((maxX.subtract(minX)).divide(xIncrement, mc)).intValue();
+            }
+        } else {
+            numberOfTicks = getNumberOfYAxisTicks();
+            if (colValue != null) {
+                xIncrement = (maxX.subtract(colValue)).divide(new BigDecimal(numberOfTicks), mc);
+            } else {
+                xIncrement = (maxX.subtract(minX)).divide(new BigDecimal(numberOfTicks), mc);
+            }
+        }
+
+        int dataStartCol = getDataStartCol();
+        int xAxisExtraWidthLeft = 0;
+        int extraAxisLength;
+        extraAxisLength = 0;
+        int xAxisExtraWidthRight = extraAxisLength;
+        int xAxisExtraHeightBottom = seperationDistanceOfAxisAndData
+                + scaleTickLength + scaleTickAndTextSeparation;
+        int dataEndRow = getDataEndRow();
+        int dataEndCol = getDataEndCol();
+        Line2D ab;
+        setPaint(Color.GRAY);
+        int row = dataEndRow + seperationDistanceOfAxisAndData;
+        // draw XAxis Line
+        ab = new Line2D.Double(
+                dataStartCol,
+                row,
+                dataEndCol + extraAxisLength,
+                row);
+        draw(ab);
+        // Add ticks and labels
+        int textRow = row + scaleTickLength + scaleTickAndTextSeparation;
+        String text_String;
+        int textWidth;
+        int maxWidth = 0;
+        double angle = 3.0d * Math.PI / 2.0d;
+        //int colCenterer = getBarGap() + getBarWidth() / 2;
+        int col = getDataStartCol();
+        int previousCol = col;
+
+        TreeMap<BigDecimal, String> xAxisLabels;
+        xAxisLabels = getxAxisLabels();
+        if (xAxisLabels != null) {
+            boolean first = true;
+            Iterator<BigDecimal> ite;
+            ite = xAxisLabels.keySet().iterator();
+            while (ite.hasNext()) {
+                BigDecimal x;
+                x = ite.next();
+                String label = xAxisLabels.get(x);
+                col = coordinateToScreenCol(x);
+                ab = new Line2D.Double(
+                        col,
+                        row,
+                        col,
+                        row + scaleTickLength);
+                draw(ab);
+                if (first || (col - previousCol) > textHeight) {
+                    text_String = label;
+                    textWidth = getTextWidth(text_String);
+                    writeText(
+                            text_String,
+                            angle,
+                            col + (textHeight / 3),
+                            textRow + textWidth);
+
+                    maxWidth = Math.max(maxWidth, textWidth);
+                    previousCol = col;
+                    first = false;
+                }
+            }
+        } else {
+            boolean first = true;
+            BigDecimal x = minX;
+            int i = 0;
+            while (x.compareTo(maxX) != 1) {
+//        for (int i = 0; i < numberOfTicks; i ++) {
+                //String label = labels.get(value);
+                x = minX.add(BigDecimal.valueOf(i));
+                col = coordinateToScreenCol(x.multiply(xIncrement));
+                ab = new Line2D.Double(
+                        col,
+                        row,
+                        col,
+                        row + scaleTickLength);
+                draw(ab);
+                if (first || (col - previousCol) > textHeight) {
+                    text_String = x.toPlainString();
+                    textWidth = getTextWidth(text_String);
+                    writeText(
+                            text_String,
+                            angle,
+                            col + (textHeight / 3),
+                            textRow + textWidth);
+
+                    maxWidth = Math.max(maxWidth, textWidth);
+                    previousCol = col;
+                    first = false;
+                }
+                i++;
+            }
+        }
+        xAxisExtraWidthLeft += textHeight;
+        xAxisExtraHeightBottom += maxWidth;
+        xAxisExtraWidthRight += textHeight / 2;
+        textRow += maxWidth + partTitleGap + textHeight;
+        xAxisExtraHeightBottom += partTitleGap + textHeight;
+        setPaint(Color.BLACK);
+        text_String = getxAxisLabel();
+        textWidth = getTextWidth(text_String);
+        drawString(
+                text_String,
+                (dataEndCol - dataStartCol) / 2 + dataStartCol - textWidth / 2,
+                textRow);
+        int endOfAxisLabelCol = (dataEndCol - dataStartCol) / 2 + dataStartCol + textWidth / 2 + 1; // Add one to cover rounding issues.
+        if (endOfAxisLabelCol > dataEndCol + xAxisExtraWidthRight) {
+            int diff = endOfAxisLabelCol - (dataEndCol + xAxisExtraWidthRight);
+            xAxisExtraWidthRight += diff;
+        }
+        xAxisExtraHeightBottom += textHeight + 2;
+        result[0] = xAxisExtraWidthLeft;
+        result[1] = xAxisExtraWidthRight;
+        result[2] = xAxisExtraHeightBottom;
         return result;
     }
 
@@ -546,7 +633,6 @@ int[] result = new int[3];
 //        result[2] = xAxisExtraHeightBottom;
 //        return result;
 //    }
-
     /**
      * @return the yMax
      */
@@ -602,6 +688,114 @@ int[] result = new int[3];
     public void setNumberOfYAxisTicks(int numberOfYAxisTicks) {
         this.numberOfYAxisTicks = numberOfYAxisTicks;
     }
-    
+
+    /**
+     * @return the xMax
+     */
+    public BigDecimal getxMax() {
+        return xMax;
+    }
+
+    /**
+     * @param xMax the xMax to set
+     */
+    public void setxMax(BigDecimal xMax) {
+        this.xMax = xMax;
+    }
+
+    /**
+     * @return the xPin
+     */
+    public BigDecimal getxPin() {
+        return xPin;
+    }
+
+    /**
+     * @param xPin the xPin to set
+     */
+    public void setxPin(BigDecimal xPin) {
+        this.xPin = xPin;
+    }
+
+    /**
+     * @return the xIncrement
+     */
+    public BigDecimal getxIncrement() {
+        return xIncrement;
+    }
+
+    /**
+     * @param xIncrement the xIncrement to set
+     */
+    public void setxIncrement(BigDecimal xIncrement) {
+        this.xIncrement = xIncrement;
+    }
+
+    /**
+     * @return the numberOfXAxisTicks
+     */
+    public int getNumberOfXAxisTicks() {
+        return numberOfXAxisTicks;
+    }
+
+    /**
+     * @param numberOfXAxisTicks the numberOfXAxisTicks to set
+     */
+    public void setNumberOfXAxisTicks(int numberOfXAxisTicks) {
+        this.numberOfXAxisTicks = numberOfXAxisTicks;
+    }
+
+    /**
+     * @return the colours
+     */
+    public Color[] getColours() {
+        if (colours == null) {
+            initColours();
+        }
+        return colours;
+    }
+
+    /**
+     * @param colours the colours to set
+     */
+    public void setColours(Color[] colours) {
+        this.colours = colours;
+    }
+
+    public void initColours() {
+        colours = new Color[4];
+        colours[0] = Color.BLACK;
+        colours[1] = Color.BLUE;
+        colours[2] = Color.CYAN;
+        colours[3] = Color.GREEN;
+    }
+
+    /**
+     * @return the labels
+     */
+    public ArrayList<String> getLabels() {
+        return labels;
+    }
+
+    /**
+     * @param labels the labels to set
+     */
+    public void setLabels(ArrayList<String> labels) {
+        this.labels = labels;
+    }
+
+    /**
+     * @return the xAxisLabels
+     */
+    public TreeMap<BigDecimal, String> getxAxisLabels() {
+        return xAxisLabels;
+    }
+
+    /**
+     * @param xAxisLabels the xAxisLabels to set
+     */
+    public void setxAxisLabels(TreeMap<BigDecimal, String> xAxisLabels) {
+        this.xAxisLabels = xAxisLabels;
+    }
 
 }

@@ -35,7 +35,7 @@ import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigInteger;
  *
  * @author geoagdt
  */
-public class Generic_StaticCollections {
+public class Generic_Collections {
 
     public static Object[] getIntervalCountsLabelsMins(
             BigDecimal min,

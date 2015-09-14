@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 
 /**
  * An abstract class for creating Age by Gender Population visualisations and
@@ -89,7 +89,7 @@ public abstract class Abstract_Generic_BarChart extends Generic_Plot {
         BigDecimal maxX;
         maxX = new BigDecimal(map.lastKey()).multiply(intervalWidth);
         setMaxX(maxX);
-        int[] minMax = Generic_StaticCollections.getMinMaxInteger(map);
+        int[] minMax = Generic_Collections.getMinMaxInteger(map);
         BigDecimal minY = BigDecimal.ZERO;
         setMinY(minY);
         BigDecimal maxY = BigDecimal.valueOf(minMax[1]);
