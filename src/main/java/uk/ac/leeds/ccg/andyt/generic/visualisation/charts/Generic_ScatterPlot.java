@@ -118,6 +118,7 @@ public class Generic_ScatterPlot extends Generic_Plot {
                 decimalPlacePrecisionForDisplay,
                 aRoundingMode);
         plot.setData(plot.getDefaultData());
+        plot.setStartAgeOfEndYearInterval(0); // To avoid null pointer
         plot.run();
     }
 
