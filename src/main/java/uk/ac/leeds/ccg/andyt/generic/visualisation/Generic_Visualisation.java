@@ -49,9 +49,9 @@ public class Generic_Visualisation {
             try {
                 aBufferedImage = ImageIO.read(aFile);
             } catch (IIOException e) {
-            //} catch (FileNotFoundException e) {
-            //} catch (IOException e) {
-            //} catch (Exception e) {
+                //} catch (FileNotFoundException e) {
+                //} catch (IOException e) {
+                //} catch (Exception e) {
                 // This can happen because of too many open files.
                 // Try waiting for a 2 seconds and then repeating...
                 try {
@@ -85,51 +85,51 @@ public class Generic_Visualisation {
             String format,
             File aFile) {
 //        try {
-            if (bi != null) {
+        System.out.println("<Generic_Visualisation.saveImage(BufferedImage,String,File)>");
+        if (bi != null) {
+            try {
+                System.out.println("File " + aFile.toString());
+                ImageIO.write(bi, format, aFile);
+            } catch (IIOException e) {
+                System.err.println("Trying to handle " + e.getLocalizedMessage());
+                System.err.println("Wait for 2 seconds then trying again to saveImage.");
+                //e.printStackTrace(System.err);
+                // This can happen because of too many open files.
+                // Try waiting for 2 seconds and then repeating...
                 try {
-                    System.out.println("ImageIO.write(BufferedImage,String,File)");
-                    //System.err.println("Not really an error, just a statement to help with debugging");
-                    ImageIO.write(bi, format, aFile);
-                } catch (IIOException e) {
-                    System.err.println("Trying to handle " + e.getLocalizedMessage());
-                    System.err.println("Wait for 2 seconds then trying again to saveImage.");
-                    //e.printStackTrace(System.err);
-                    // This can happen because of too many open files.
-                    // Try waiting for 2 seconds and then repeating...
-                    try {
-                        synchronized (bi) {
-                            bi.wait(2000L);
-                        }
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Generic_Visualisation.class.getName()).log(Level.SEVERE, null, ex);
+                    synchronized (bi) {
+                        bi.wait(2000L);
                     }
-                    saveImage(
-                            bi,
-                            format,
-                            aFile);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Generic_Visualisation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                saveImage(
+                        bi,
+                        format,
+                        aFile);
                 //} catch (FileNotFoundException e) {
                 //} catch (IOException e) {
-                } catch (Exception e) {
-                    System.err.println("Trying to handle " + e.getLocalizedMessage());
-                    System.err.println("Wait for 2 seconds then trying again to saveImage.");
-                    //e.printStackTrace(System.err);
-                    // This can happen because of too many open files.
-                    // Try waiting for 2 seconds and then repeating...
-                    try {
-                        synchronized (bi) {
-                            bi.wait(2000L);
-                        }
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Generic_Visualisation.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception e) {
+                System.err.println("Trying to handle " + e.getLocalizedMessage());
+                System.err.println("Wait for 2 seconds then trying again to saveImage.");
+                //e.printStackTrace(System.err);
+                // This can happen because of too many open files.
+                // Try waiting for 2 seconds and then repeating...
+                try {
+                    synchronized (bi) {
+                        bi.wait(2000L);
                     }
-                    saveImage(
-                            bi,
-                            format,
-                            aFile);
-                } finally {
-                    // There is nothing to go in here as IMAGEIO deals with the stream.
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Generic_Visualisation.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                saveImage(
+                        bi,
+                        format,
+                        aFile);
+            } finally {
+                // There is nothing to go in here as IMAGEIO deals with the stream.
             }
+        }
 //        } catch (IOException e) {
 //            Generic_Log.logger.log(
 //                    Generic_Log.Generic_DefaultLogLevel, //Level.ALL,
@@ -140,18 +140,20 @@ public class Generic_Visualisation {
 //            e.printStackTrace(System.err);
 //            System.exit(Generic_ErrorAndExceptionHandler.IOException);
 //        }
+        System.out.println("</Generic_Visualisation.saveImage(BufferedImage,String,File)>");
     }
 
     /**
      * Saves image bi to file file in format after a timeInMilliseconds delay
      * which is intended to be long enough for all graphics to be drawn.
      *
+     * @param executorService
+     * @param obj
      * @param timeInMilliseconds
      * @param format
      * @param bi
-     * @param file
      * @param aFile
-     * @return 
+     * @return
      */
 //    public void saveImage(
 //            long timeInMilliseconds,
