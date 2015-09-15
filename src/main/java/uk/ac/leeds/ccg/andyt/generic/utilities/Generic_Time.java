@@ -88,6 +88,11 @@ public class Generic_Time {
         return result;
     }
     
+    public static int getMonth(
+            String month,
+            ArrayList<String> month3Letters) {
+        return month3Letters.indexOf(month.substring(0, 3)) + 1;
+    }
     public static int getMonthDiff(
             int year0,
             int year1,

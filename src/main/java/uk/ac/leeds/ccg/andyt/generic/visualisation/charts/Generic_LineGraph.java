@@ -94,12 +94,12 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
     public void drawData() {
         Object[] data;
         data = getData();
-        Object[] maps;
+        TreeMap<String, TreeMap<BigDecimal, BigDecimal>> maps;
         BigDecimal minY;
         BigDecimal maxY;
         BigDecimal minX;
         BigDecimal maxX;
-        maps = (Object[]) data[0];
+        maps = (TreeMap<String, TreeMap<BigDecimal, BigDecimal>>) data[0];
         minY = (BigDecimal) data[1];
         maxY = (BigDecimal) data[2];
         minX = (BigDecimal) data[3];
@@ -108,10 +108,20 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         Color[] colours;
         colours = getColours();
 
-        for (int i = 0; i < maps.length; i++) {
+        int i = 1;
+        Iterator<String> ite;
+        ite = maps.keySet().iterator();
+        while (ite.hasNext()) {
+            String type;
+            type = ite.next();
             TreeMap<BigDecimal, BigDecimal> map;
-            map = (TreeMap<BigDecimal, BigDecimal>) maps[i];
-            drawMap(map, colours[i]);
+            map = maps.get(type);
+            int j = i;
+            while (j >= colours.length) {
+                j -= colours.length;
+            }
+            drawMap(map, colours[j]);
+            i ++;
         }
 
     }
@@ -322,9 +332,9 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
     @Override
     public Object[] getDefaultData() {
         Object[] result;
-        result = new Object[5];
-        Object[] maps;
-        maps = new Object[2];
+        result = new Object[7];
+        TreeMap<String, TreeMap<BigDecimal, BigDecimal>> maps;
+        maps = new TreeMap<String, TreeMap<BigDecimal, BigDecimal>>();
         TreeMap<BigDecimal, BigDecimal> map;
         map = new TreeMap<BigDecimal, BigDecimal>();
         map.put(new BigDecimal(0.0d), new BigDecimal(10.0d));
@@ -346,7 +356,7 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         map.put(new BigDecimal(52.0d), new BigDecimal(35.0d));
         map.put(new BigDecimal(53.0d), new BigDecimal(36.0d));
         map.put(new BigDecimal(54.0d), new BigDecimal(37.0d));
-        maps[0] = map;
+        maps.put("map1", map);
         TreeMap<BigDecimal, BigDecimal> map2;
         map2 = new TreeMap<BigDecimal, BigDecimal>();
         map2.put(new BigDecimal(0.0d), new BigDecimal(9.0d));
@@ -368,7 +378,7 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         map2.put(new BigDecimal(52.0d), new BigDecimal(25.0d));
         map2.put(new BigDecimal(53.0d), new BigDecimal(37.0d));
         map2.put(new BigDecimal(54.0d), new BigDecimal(37.0d));
-        maps[1] = map2;
+        maps.put("map2", map2);
         BigDecimal[] minMaxBigDecimal;
         minMaxBigDecimal = Generic_Collections.getMinMaxBigDecimal(map);
         BigDecimal minY = minMaxBigDecimal[0];
@@ -395,9 +405,8 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         result[4] = maxX;
         ArrayList<String> labels;
         labels = new ArrayList<String>();
-        labels.add("Values1");
-        labels.add("Values2");
-        setLabels(labels);
+        labels.addAll(maps.keySet());
+        result[5] = labels;
         
         // Comment out the following section to have a normal axis instead of labels.
         TreeMap<BigDecimal, String> xAxisLabels;
@@ -421,7 +430,7 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         xAxisLabels.put(new BigDecimal(52.0d), "2012 August");
         xAxisLabels.put(new BigDecimal(53.0d), "2012 September");
         xAxisLabels.put(new BigDecimal(54.0d), "2012 October");
-        setxAxisLabels(xAxisLabels);
+        result[6] = xAxisLabels;
         
         return result;
     }
@@ -485,7 +494,11 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
                     label,
                     col,
                     row);
-            setPaint(colours[i]);
+            int j = i; 
+            while (j >= colours.length) {
+                j -= colours.length;
+            }
+            setPaint(colours[j]);
             Line2D line;
             line = new Line2D.Double(
                     textHeight,

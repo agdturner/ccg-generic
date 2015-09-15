@@ -83,20 +83,24 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
 
     @Override
     public void initialiseParameters(Object[] data) {
-        Object[] map;
         BigDecimal minY;
         BigDecimal maxY;
         BigDecimal minX;
         BigDecimal maxX;
-        map = (Object[]) data[0];
         minY = (BigDecimal) data[1];
         maxY = (BigDecimal) data[2];
         minX = (BigDecimal) data[3];
         maxX = (BigDecimal) data[4];
-        setMinX(minX);
-        setMaxX(maxX);
+        ArrayList<String> labels;
+        labels = (ArrayList<String>) data[5];
+        TreeMap<BigDecimal, String> xAxisLabels;
+        xAxisLabels = (TreeMap<BigDecimal, String>) data[6];
         setMinY(minY);
         setMaxY(maxY);
+        setMinX(minX);
+        setMaxX(maxX);
+        setLabels(labels);
+        setxAxisLabels(xAxisLabels);
         setCellHeight();
         setCellWidth();
         setOriginRow();
@@ -763,11 +767,16 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
     }
 
     public void initColours() {
-        colours = new Color[4];
+        colours = new Color[9];
         colours[0] = Color.BLACK;
         colours[1] = Color.BLUE;
         colours[2] = Color.CYAN;
         colours[3] = Color.GREEN;
+        colours[4] = Color.MAGENTA;
+        colours[5] = Color.ORANGE;
+        colours[6] = Color.PINK;
+        colours[7] = Color.RED;
+        colours[8] = Color.YELLOW;
     }
 
     /**
