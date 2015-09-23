@@ -151,8 +151,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
         MathContext mc;
         mc = new MathContext(
                 getDecimalPlacePrecisionForCalculations(),
-                RoundingMode.HALF_UP);
-
+                RoundingMode.HALF_UP);        
         BigDecimal yMax;
         yMax = getyMax();
 
@@ -243,7 +242,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
                     row);
             draw(ab);
             if (first || (previousRow - row) > textHeight) {
-                text_String = "" + rowValue;
+                text_String = "" + Generic_BigDecimal.roundIfNecessary(rowValue, 2, RoundingMode.HALF_UP);
                 textWidth = getTextWidth(text_String);
                 drawString(
                         text_String,
@@ -266,7 +265,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
                 row);
         draw(ab);
         if ((previousRow - row) > textHeight) {
-            text_String = "" + rowValue;;
+            text_String = "" + Generic_BigDecimal.roundIfNecessary(rowValue, 2, RoundingMode.HALF_UP);
             textWidth = getTextWidth(text_String);
             drawString(
                     text_String,
@@ -768,6 +767,13 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
 
     public void initColours() {
         colours = new Color[9];
+        //        ColorBrewer brewer = ColorBrewer.instance();
+//        //String[] paletteNames = brewer.getPaletteNames(0, nClasses);
+//        String[] paletteNames = brewer.getPaletteNames();
+//        for (int i = 0; i < paletteNames.length; i++) {
+//            System.out.println(paletteNames[i]);
+//        }
+
         colours[0] = Color.BLACK;
         colours[1] = Color.BLUE;
         colours[2] = Color.CYAN;

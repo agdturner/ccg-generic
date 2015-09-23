@@ -71,7 +71,7 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
     private int decimalPlacePrecisionForCalculations;
     private int decimalPlacePrecisionForDisplay;
     private int significantDigits;
-    private RoundingMode _RoundingMode;
+    private RoundingMode roundingMode;
     /**
      * cellHeight is for storing the height of a pixel in the data units of y
      */
@@ -390,14 +390,14 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
     }
 
     public RoundingMode getRoundingMode() {
-        if (_RoundingMode == null) {
+        if (roundingMode == null) {
             return getDefaultRoundingMode();
         }
-        return _RoundingMode;
+        return roundingMode;
     }
 
     protected void setRoundingMode(RoundingMode _RoundingMode) {
-        this._RoundingMode = _RoundingMode;
+        this.roundingMode = _RoundingMode;
     }
 
     public BigDecimal getCellHeight() {
@@ -540,7 +540,7 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
         this.decimalPlacePrecisionForCalculations = decimalPlacePrecisionForCalculations;
         this.decimalPlacePrecisionForDisplay = significantDigits;
         this.significantDigits = significantDigits;
-        this._RoundingMode = roundingMode;
+        this.roundingMode = roundingMode;
 //        if (data == null) {
 //            setData(getDefaultData());
 //        } else {
@@ -627,8 +627,8 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
 
     /**
      * Calculates and returns the row and column in the image for the data at
-     * coordinate titleTextWidth, titleTextHeight as a Point2D.Double using
-     * RoundingMode _RoundingMode
+ coordinate titleTextWidth, titleTextHeight as a Point2D.Double using
+ RoundingMode roundingMode
      *
      * @param p
      * @return a Point2D.Double located at pixel(col, row)
@@ -645,7 +645,7 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
 
     /**
      * Calculates and returns the column in the image for the data with value
-     * titleTextWidth RoundingMode _RoundingMode is used.
+ titleTextWidth RoundingMode roundingMode is used.
      *
      * @param x
      * @return the column in the image for the data with value titleTextWidth
@@ -692,7 +692,7 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
 
     /**
      * Calculates and returns the row in the image for the data with value
-     * titleTextHeight. RoundingMode _RoundingMode is used.
+     * titleTextHeight. RoundingMode roundingMode is used.
      *
      * @param y
      * @return the row in the image for the data with value titleTextHeight
@@ -739,8 +739,8 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
 
     /**
      * Calculates and returns the row and column in the image for the data at
-     * coordinate titleTextWidth, titleTextHeight as a Point2D.Double using
-     * RoundingMode _RoundingMode
+ coordinate titleTextWidth, titleTextHeight as a Point2D.Double using
+ RoundingMode roundingMode
      *
      * @param x
      * @param titleTextWidth
@@ -819,7 +819,7 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
 //                        maxY,
 //                        cellHeight,
 //                        0,
-//                        _RoundingMode).intValueExact()
+//                        roundingMode).intValueExact()
 //                        + dataStartRow;
                     originRow = coordinateToScreenRow(BigDecimal.ZERO);
                 }

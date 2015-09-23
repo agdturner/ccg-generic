@@ -100,7 +100,7 @@ public class Generic_Collections {
         result = intervalMin.add(intervalWidth);
         return result;
     }
-    
+
     public static int getInterval(
             BigDecimal min,
             BigDecimal intervalWidth,
@@ -456,6 +456,42 @@ public class Generic_Collections {
         while (ite.hasNext()) {
             keyToCopy = ite.next();
             keyCopy = new Long(keyToCopy);
+            valueToCopy = aHashMap.get(keyToCopy);
+            valueCopy = valueToCopy;
+            result.put(keyCopy, valueCopy);
+        }
+        return result;
+    }
+
+    public static HashMap<String, String> deepCopyHashMapStringString(
+            HashMap<String, String> aHashMap) {
+        HashMap<String, String> result = new HashMap<String, String>();
+        Iterator<String> ite = aHashMap.keySet().iterator();
+        String keyToCopy;
+        String keyCopy;
+        String valueToCopy;
+        String valueCopy;
+        while (ite.hasNext()) {
+            keyToCopy = ite.next();
+            keyCopy = keyToCopy;
+            valueToCopy = aHashMap.get(keyToCopy);
+            valueCopy = valueToCopy;
+            result.put(keyCopy, valueCopy);
+        }
+        return result;
+    }
+
+    public static HashMap<String, Integer> deepCopyHashMapStringInteger(
+            HashMap<String, Integer> aHashMap) {
+        HashMap<String, Integer> result = new HashMap<String, Integer>();
+        Iterator<String> ite = aHashMap.keySet().iterator();
+        String keyToCopy;
+        String keyCopy;
+        Integer valueToCopy;
+        Integer valueCopy;
+        while (ite.hasNext()) {
+            keyToCopy = ite.next();
+            keyCopy = keyToCopy;
             valueToCopy = aHashMap.get(keyToCopy);
             valueCopy = valueToCopy;
             result.put(keyCopy, valueCopy);
