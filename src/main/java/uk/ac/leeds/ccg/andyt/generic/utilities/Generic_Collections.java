@@ -426,6 +426,119 @@ public class Generic_Collections {
             a_IntegerBigDecimal_TreeMap.put(key, value);
         }
     }
+    
+    
+    /**
+     * For all values in set1 we count how many values are in set0, and deduce 
+     * how many are not. Also we check how many values that are in set0 that are 
+     * not in set1.
+     * @param set0
+     * @param set1
+     * @return long[3] result {@code 
+     * result[0] = Count of how many values are in both set 0 and set 1;
+     * result[1] = Count of how many values are in set 1, but not in set 0;
+     * result[2] = Count of how many values are in set 0, but not in set 1;
+     * }
+     */
+    public static long[] getCounts(
+            HashSet set0, 
+            HashSet set1) {
+        long[] result;
+        result = new long[3];
+        result[0] = 0;
+        result[1] = 0;
+        result[2] = 0;        
+        Iterator ite;
+        ite = set1.iterator();
+        while (ite.hasNext()) {
+            Object o = ite.next();
+            if (set0.contains(o)) {
+                result[0] ++;
+            } else {
+                result[1] ++;
+            }
+        }
+        ite = set0.iterator();
+        while (ite.hasNext()) {
+            Object o = ite.next();
+            if (!set1.contains(o)) {
+                result[2] ++;
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * For all values in set1 we count how many values are in set0, and deduce 
+     * how many are not. Also we check how many values that are in set0 that are 
+     * not in set1.
+     * @param set0
+     * @param set1
+     * @return Object[2] result {@code
+     * Object[0] = union set view of elements in both set0 and set1
+     * Object[1] = counts
+     * counts[0] = Count of how many values are in both set 0 and set 1;
+     * counts[1] = Count of how many values are in set 1, but not in set 0;
+     * counts[2] = Count of how many values are in set 0, but not in set 1;
+     * }
+     */
+    public static Object[] getUnionAndCounts(
+            HashSet set0, 
+            HashSet set1) {
+        Object[] result;
+        result = new Object[2];
+        HashSet union;
+        union = new HashSet();
+        union.addAll(set1);
+        union.retainAll(set0);
+        long[] counts;
+        counts = new long[3];
+        int unionSize;
+        unionSize = union.size();
+        counts[0] = unionSize;
+        counts[1] = set1.size() - unionSize;
+        counts[2] = set0.size() - unionSize;
+        result[0] = union;
+        result[1] = counts;
+        return result;
+    }
+    
+    /**
+     * For all values in set1 we count how many values are in set0, and deduce 
+     * how many are not. Also we check how many values that are in set0 that are 
+     * not in set1.
+     * @param set0
+     * @param set1
+     * @return Object[2] result {@code
+     * Object[0] = union set view of elements in both set0 and set1
+     * Object[1] = counts
+     * counts[0] = Count of how many values are in both set 0 and set 1;
+     * counts[1] = Count of how many values are in set 1, but not in set 0;
+     * counts[2] = Count of how many values are in set 0, but not in set 1;
+     * }
+     */
+    public static Object[] getUnionAndUniques(
+            HashSet set0, 
+            HashSet set1) {
+        Object[] result;
+        result = new Object[3];
+        HashSet union;
+        union = new HashSet();
+        union.addAll(set1);
+        union.retainAll(set0);
+        HashSet set1unique;
+        set1unique = new HashSet();
+        set1unique.addAll(set1);
+        set1unique.removeAll(set0);
+        HashSet set0unique;
+        set0unique = new HashSet();
+        set0unique.addAll(set0);
+        set0unique.removeAll(set1);
+        result[0] = union;
+        result[1] = set1unique;
+        result[2] = set0unique;
+        return result;
+    }
 
     public static TreeMap<Integer, BigInteger> deepCopy_Integer_BigInteger(
             TreeMap<Integer, BigInteger> a_TreeMap) {

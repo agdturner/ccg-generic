@@ -93,6 +93,89 @@ public class Generic_Time {
             ArrayList<String> month3Letters) {
         return month3Letters.indexOf(month.substring(0, 3)) + 1;
     }
+    
+    public static String getMonth3Letters(
+            String monthNumber) {
+        if (monthNumber.equalsIgnoreCase("01")) {
+            return "Jan";
+        }
+        if (monthNumber.equalsIgnoreCase("02")) {
+            return "Feb";
+        }
+        if (monthNumber.equalsIgnoreCase("03")) {
+            return "Mar";
+        }
+        if (monthNumber.equalsIgnoreCase("04")) {
+            return "Apr";
+        }
+        if (monthNumber.equalsIgnoreCase("05")) {
+            return "May";
+        }
+        if (monthNumber.equalsIgnoreCase("06")) {
+            return "Jun";
+        }
+        if (monthNumber.equalsIgnoreCase("07")) {
+            return "Jul";
+        }
+        if (monthNumber.equalsIgnoreCase("08")) {
+            return "Aug";
+        }
+        if (monthNumber.equalsIgnoreCase("09")) {
+            return "Sep";
+        }
+        if (monthNumber.equalsIgnoreCase("10")) {
+            return "Oct";
+        }
+        if (monthNumber.equalsIgnoreCase("11")) {
+            return "Nov";
+        }
+        if (monthNumber.equalsIgnoreCase("12")) {
+            return "Dec";
+        }
+        return null;
+    }
+    
+    public static String getMonthNumber(String month3Letters) {
+        if (month3Letters.equalsIgnoreCase("Jan")) {
+            return "01";
+        }
+        if (month3Letters.equalsIgnoreCase("Feb")) {
+            return "02";
+        }
+        if (month3Letters.equalsIgnoreCase("Mar")) {
+            return "03";
+        }
+        if (month3Letters.equalsIgnoreCase("Apr")) {
+            return "04";
+        }
+        if (month3Letters.equalsIgnoreCase("May")) {
+            return "05";
+        }
+        if (month3Letters.equalsIgnoreCase("Jun")) {
+            return "06";
+        }
+        if (month3Letters.equalsIgnoreCase("Jul")) {
+            return "07";
+        }
+        if (month3Letters.equalsIgnoreCase("Aug")) {
+            return "08";
+        }
+        if (month3Letters.equalsIgnoreCase("Sep")) {
+            return "09";
+        }
+        if (month3Letters.equalsIgnoreCase("Oct")) {
+            return "10";
+        }
+        if (month3Letters.equalsIgnoreCase("Nov")) {
+            return "11";
+        }
+        if (month3Letters.equalsIgnoreCase("Dec")) {
+            return "12";
+        }
+        return null;
+    }
+    
+    
     public static int getMonthDiff(
             int year0,
             int year1,
@@ -109,7 +192,7 @@ public class Generic_Time {
      */
     public static String getDate() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 1);
+        //cal.add(Calendar.DATE, 1);
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         String formatted = format1.format(cal.getTime());
         return formatted;

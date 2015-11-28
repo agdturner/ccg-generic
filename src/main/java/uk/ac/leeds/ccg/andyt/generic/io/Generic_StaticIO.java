@@ -695,7 +695,8 @@ public class Generic_StaticIO {
                             new FileWriter(file, append)));
         } catch (FileNotFoundException e) {
             System.err.println("Trying to handle " + e.getLocalizedMessage());
-            System.err.println("Wait for 2 seconds then trying again to writeToCSV.");
+            System.err.println("Wait for 2 seconds then trying again to "
+                    + "Generic_StaticIO.getPrintWriter(File, boolean).");
             if (!file.exists()) {
                 e.printStackTrace(System.err);
                 Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, e);
@@ -820,6 +821,7 @@ public class Generic_StaticIO {
         aStreamTokenizer.wordChars('9', '9');
         aStreamTokenizer.wordChars('.', '.');
         aStreamTokenizer.wordChars('-', '-');
+        aStreamTokenizer.wordChars('_', '_');
         aStreamTokenizer.wordChars('+', '+');
         aStreamTokenizer.wordChars('a', 'z');
         aStreamTokenizer.wordChars('A', 'Z');

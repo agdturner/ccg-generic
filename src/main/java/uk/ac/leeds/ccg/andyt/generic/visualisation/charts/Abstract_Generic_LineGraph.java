@@ -147,11 +147,12 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
             int scaleTickAndTextSeparation,
             int partTitleGap,
             int seperationDistanceOfAxisAndData) {
-        int[] result = new int[1];
+//        int[] result;
+//        result = new int[1];
         MathContext mc;
         mc = new MathContext(
                 getDecimalPlacePrecisionForCalculations(),
-                RoundingMode.HALF_UP);        
+                RoundingMode.HALF_UP);
         BigDecimal yMax;
         yMax = getyMax();
 
@@ -288,6 +289,8 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
                 col,
                 getDataMiddleRow() + (textWidth / 2));
         yAxisExtraWidthLeft += (textHeight * 2) + partTitleGap;
+        int[] result;
+        result = new int[1];
         result[0] = yAxisExtraWidthLeft;
         return result;
     }
@@ -416,24 +419,26 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
                 x = ite.next();
                 String label = xAxisLabels.get(x);
                 col = coordinateToScreenCol(x);
-                ab = new Line2D.Double(
-                        col,
-                        row,
-                        col,
-                        row + scaleTickLength);
-                draw(ab);
-                if (first || (col - previousCol) > textHeight) {
-                    text_String = label;
-                    textWidth = getTextWidth(text_String);
-                    writeText(
-                            text_String,
-                            angle,
-                            col + (textHeight / 3),
-                            textRow + textWidth);
+                if (col >= dataStartCol) {
+                    ab = new Line2D.Double(
+                            col,
+                            row,
+                            col,
+                            row + scaleTickLength);
+                    draw(ab);
+                    if (first || (col - previousCol) > textHeight) {
+                        text_String = label;
+                        textWidth = getTextWidth(text_String);
+                        writeText(
+                                text_String,
+                                angle,
+                                col + (textHeight / 3),
+                                textRow + textWidth);
 
-                    maxWidth = Math.max(maxWidth, textWidth);
-                    previousCol = col;
-                    first = false;
+                        maxWidth = Math.max(maxWidth, textWidth);
+                        previousCol = col;
+                        first = false;
+                    }
                 }
             }
         } else {
@@ -445,24 +450,26 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
                 //String label = labels.get(value);
                 x = minX.add(BigDecimal.valueOf(i));
                 col = coordinateToScreenCol(x.multiply(xIncrement));
-                ab = new Line2D.Double(
-                        col,
-                        row,
-                        col,
-                        row + scaleTickLength);
-                draw(ab);
-                if (first || (col - previousCol) > textHeight) {
-                    text_String = x.toPlainString();
-                    textWidth = getTextWidth(text_String);
-                    writeText(
-                            text_String,
-                            angle,
-                            col + (textHeight / 3),
-                            textRow + textWidth);
+                if (col >= dataStartCol) {
+                    ab = new Line2D.Double(
+                            col,
+                            row,
+                            col,
+                            row + scaleTickLength);
+                    draw(ab);
+                    if (first || (col - previousCol) > textHeight) {
+                        text_String = x.toPlainString();
+                        textWidth = getTextWidth(text_String);
+                        writeText(
+                                text_String,
+                                angle,
+                                col + (textHeight / 3),
+                                textRow + textWidth);
 
-                    maxWidth = Math.max(maxWidth, textWidth);
-                    previousCol = col;
-                    first = false;
+                        maxWidth = Math.max(maxWidth, textWidth);
+                        previousCol = col;
+                        first = false;
+                    }
                 }
                 i++;
             }
@@ -766,7 +773,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
     }
 
     public void initColours() {
-        colours = new Color[9];
+        colours = new Color[11];
         //        ColorBrewer brewer = ColorBrewer.instance();
 //        //String[] paletteNames = brewer.getPaletteNames(0, nClasses);
 //        String[] paletteNames = brewer.getPaletteNames();
@@ -783,6 +790,8 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
         colours[6] = Color.PINK;
         colours[7] = Color.RED;
         colours[8] = Color.YELLOW;
+        colours[9] = Color.DARK_GRAY;
+        colours[10] = Color.LIGHT_GRAY;
     }
 
     /**

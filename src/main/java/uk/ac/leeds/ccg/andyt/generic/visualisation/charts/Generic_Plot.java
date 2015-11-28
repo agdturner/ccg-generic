@@ -27,6 +27,7 @@ import javax.print.StreamPrintServiceFactory;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Canvas;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Printable;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
@@ -46,44 +47,44 @@ public class Generic_Plot extends Abstract_Generic_Plot {
 
     @Override
     public void run() {
-        File theFile = getFile();
-        String theFormat = getFormat();
-        _Generic_Canvas = new Generic_Canvas();
-        _Generic_Canvas._Generic_Plot = this;
-        _Generic_Canvas._Rectangle = new Rectangle(0, 0, getDataWidth(), getDataHeight());
+        try {
+            File theFile = getFile();
+            String theFormat = getFormat();
+            _Generic_Canvas = new Generic_Canvas();
+            _Generic_Canvas._Generic_Plot = this;
+            _Generic_Canvas._Rectangle = new Rectangle(0, 0, getDataWidth(), getDataHeight());
 
 //        Graphics2D g2 = (Graphics2D) _Generic_Canvas.getGraphics();
 //            setG2(g2);
 //            //_Generic_Canvas.paint(g2);
 //            Dimension dim = draw();
 //            _Generic_Canvas.setDimension(dim);
+            PrinterJob printerJob = PrinterJob.getPrinterJob();
+            Generic_Printable theGeneric_Printable = new Generic_Printable(_Generic_Canvas);
+            printerJob.setPrintable(theGeneric_Printable);
 
-        PrinterJob printerJob = PrinterJob.getPrinterJob();
-        Generic_Printable theGeneric_Printable = new Generic_Printable(_Generic_Canvas);
-        printerJob.setPrintable(theGeneric_Printable);
+            String psMimeType = "application/postscript";
 
-        String psMimeType = "application/postscript";
-
-        FileOutputStream fileOutputStream = null;
+            FileOutputStream fileOutputStream = null;
 //        PrintService[] printServices = PrinterJob.lookupPrintServices();
-        StreamPrintService streamPrintService = null;
-        StreamPrintServiceFactory[] streamPrintServiceFactories =
-                PrinterJob.lookupStreamPrintServices(psMimeType);
-        File psFile = new File(theFile.getParentFile(), theFile.getName() + ".ps");
-        System.out.println("psFile " + psFile.toString());
-        if (streamPrintServiceFactories.length > 0) {
-            try {
-                psFile.createNewFile();
-                fileOutputStream = new FileOutputStream(psFile);
-                streamPrintService = streamPrintServiceFactories[0].getPrintService(fileOutputStream);
-                // streamPrintService can now be set as the service on a PrinterJob 
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-                e.printStackTrace(System.err);
+            StreamPrintService streamPrintService = null;
+            StreamPrintServiceFactory[] streamPrintServiceFactories
+                    = PrinterJob.lookupStreamPrintServices(psMimeType);
+            File psFile = new File(theFile.getParentFile(), theFile.getName() + ".ps");
+            System.out.println("psFile " + psFile.toString());
+            if (streamPrintServiceFactories.length > 0) {
+                try {
+                    psFile.createNewFile();
+                    fileOutputStream = new FileOutputStream(psFile);
+                    streamPrintService = streamPrintServiceFactories[0].getPrintService(fileOutputStream);
+                    // streamPrintService can now be set as the service on a PrinterJob 
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                    e.printStackTrace(System.err);
+                }
             }
-        }
 
-        try {
+            try {
 //            PrintRequestAttributeSet pras;
 //            PrintService printService = printerJob.getPrintService();
 //            PrintServiceAttributeSet psas = printService.getAttributes();
@@ -93,11 +94,11 @@ public class Generic_Plot extends Abstract_Generic_Plot {
 //            System.out.println("pj.getJobName()" + printerJob.getJobName());
 //            System.out.println("pj.isCancelled()" + printerJob.isCancelled());
 //            printerJob.setPrintService(printServices[0]);
-            printerJob.setPrintService(streamPrintService);
-            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
-            printRequestAttributeSet.add(new Copies(1));
-            printerJob.print(printRequestAttributeSet);
-            setBufferedImage(_Generic_Canvas.getBufferedImage());
+                printerJob.setPrintService(streamPrintService);
+                PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+                printRequestAttributeSet.add(new Copies(1));
+                printerJob.print(printRequestAttributeSet);
+                setBufferedImage(_Generic_Canvas.getBufferedImage());
 //            Rectangle r = _Generic_Canvas.getBounds();
 
 //            Graphics2D g2 = (Graphics2D) _Generic_Canvas.getGraphics();
@@ -105,19 +106,18 @@ public class Generic_Plot extends Abstract_Generic_Plot {
 //            //_Generic_Canvas.paint(g2);
 //            Dimension dim = draw();
 //            _Generic_Canvas.setDimension(dim);
-
             //_Generic_Canvas.setDimension(_Generic_Canvas.paintAndGetNewDimensions(g2));
-            //_Generic_Canvas._Rectangle = new Rectangle(dim);
-            //_Generic_Canvas.setSize(dataWidth, dataHeight);
-            // _Generic_Canvas.paint(g2);
-            long arbitraryTimeInMillisecondsToWaitForRendering = 10000;
-            future = Generic_Visualisation.saveImage(
-                    executorService,
-                    this,
-                    _Generic_Canvas.getBufferedImage(),
-                    arbitraryTimeInMillisecondsToWaitForRendering,
-                    theFormat,
-                    theFile);
+                //_Generic_Canvas._Rectangle = new Rectangle(dim);
+                //_Generic_Canvas.setSize(dataWidth, dataHeight);
+                // _Generic_Canvas.paint(g2);
+                long arbitraryTimeInMillisecondsToWaitForRendering = 10000;
+                future = Generic_Visualisation.saveImage(
+                        executorService,
+                        this,
+                        _Generic_Canvas.getBufferedImage(),
+                        arbitraryTimeInMillisecondsToWaitForRendering,
+                        theFormat,
+                        theFile);
 
 //            fileOutputStream.close();
 //            printerJob.cancel();
@@ -127,17 +127,28 @@ public class Generic_Plot extends Abstract_Generic_Plot {
 //        } catch (IOException e) {
 //            System.err.println(e.getMessage());
 //            e.printStackTrace(System.err);
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-        } finally {
-            //printerJob.cancel();
-            try {
-                fileOutputStream.close();
-                printerJob.cancel();
-                psFile.delete();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace(System.err);
+            } finally {
+                //printerJob.cancel();
+                try {
+                    fileOutputStream.close();
+                    printerJob.cancel();
+                    psFile.delete();
+                } catch (IOException e) {
+                    e.printStackTrace(System.err);
+                }
             }
+        } catch (OutOfMemoryError e) {
+            long time;
+            //time = 60000L;
+            //time = 120000L;
+            time = 240000L;
+            System.out.println("OutOfMemoryError1, waiting " + time / 1000 + " secs "
+                    + "before trying Generic_Plot.run again...");
+            Generic_Execution.waitSychronized(this, time); // wait a minute
+            System.out.println("...on we go.");
+            run();
         }
     }
 
@@ -163,7 +174,8 @@ public class Generic_Plot extends Abstract_Generic_Plot {
 
     /**
      * Implementations are expected to override this.
-     * @return 
+     *
+     * @return
      */
     @Override
     public Object[] getDefaultData() {
@@ -187,12 +199,13 @@ public class Generic_Plot extends Abstract_Generic_Plot {
 
     /**
      * Implementations are expected to override this.
+     *
      * @param textHeight
      * @param scaleTickLength
      * @param scaleTickAndTextSeparation
      * @param seperationDistanceOfAxisAndData
      * @param partTitleGap
-     * @return 
+     * @return
      */
     @Override
     public int[] drawXAxis(
@@ -207,8 +220,14 @@ public class Generic_Plot extends Abstract_Generic_Plot {
 
     /**
      * Implementations are expected to override this.
-     * @param seperationDistanceOfAxisAndData
+     *
+     * @param interval
+     * @param textHeight
+     * @param startOfEndInterval
+     * @param scaleTickLength
+     * @param scaleTickAndTextSeparation
      * @param partTitleGap
+     * @param seperationDistanceOfAxisAndData
      * @return 
      */
     @Override

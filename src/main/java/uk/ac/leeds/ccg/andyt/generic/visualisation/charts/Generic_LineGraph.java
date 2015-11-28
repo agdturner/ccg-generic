@@ -93,6 +93,10 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         data = getData();
         TreeMap<String, TreeMap<BigDecimal, BigDecimal>> maps;
         maps = (TreeMap<String, TreeMap<BigDecimal, BigDecimal>>) data[0];
+
+        TreeMap<String, Boolean> nonZero;
+        nonZero = (TreeMap<String, Boolean>) data[7];
+
         Color[] colours;
         colours = getColours();
         int i = 1;
@@ -101,14 +105,19 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
         while (ite.hasNext()) {
             String type;
             type = ite.next();
-            TreeMap<BigDecimal, BigDecimal> map;
-            map = maps.get(type);
-            int j = i;
-            while (j >= colours.length) {
-                j -= colours.length;
+
+            if (nonZero.get(type)) {
+
+                TreeMap<BigDecimal, BigDecimal> map;
+                map = maps.get(type);
+                int j = i;
+                while (j >= colours.length) {
+                    j -= colours.length;
+                }
+                drawMap(map, colours[j]);
+                i++;
+                
             }
-            drawMap(map, colours[j]);
-            i++;
         }
 
     }
@@ -461,10 +470,14 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
     }
 
     protected void drawLegend() {
-//        Object[] data;
-//        data = getData();
+        Object[] data;
+        data = getData();
 //        TreeMap<String, TreeMap<BigDecimal, BigDecimal>> maps;
 //        maps = (TreeMap<String, TreeMap<BigDecimal, BigDecimal>>) data[0];
+        
+        TreeMap<String, Boolean> nonZero2;
+        nonZero2 = (TreeMap<String, Boolean>) data[8];
+        
         ArrayList<String> labels;
         labels = getLabels();
         Color[] colours;
@@ -517,10 +530,13 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
             }
             String label;
             label = ite.next();
+            
+            if (nonZero2.get(label)) {
+            
             col = textHeight + symbolWidth + 2;
             row += textHeight + 2;
             setPaint(Color.DARK_GRAY);
-            
+
             drawString(
                     label,
                     col,
@@ -535,6 +551,9 @@ public class Generic_LineGraph extends Abstract_Generic_LineGraph {
             draw(line);
             newLegendHeight += textHeight + 2;
             i++;
+            
+            }
+            
         }
         setLegendHeight(newLegendHeight);
         setImageHeight(getImageHeight() + newLegendHeight);

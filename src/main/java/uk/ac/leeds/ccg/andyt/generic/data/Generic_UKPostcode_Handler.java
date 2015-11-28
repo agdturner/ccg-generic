@@ -78,7 +78,7 @@ public class Generic_UKPostcode_Handler {
 
     }
 
-    public boolean isValidPostcodeForm(String postcode) {
+    public static boolean isValidPostcodeForm(String postcode) {
         if (postcode == null) {
             return false;
         }
@@ -103,10 +103,21 @@ public class Generic_UKPostcode_Handler {
         if (secondPartPostcodeType.equalsIgnoreCase("")) {
             return false;
         }
-        return true;
+        Object[] postcodeForm;
+        postcodeForm = getPostcodeForm(postcode);
+        if (((Integer) postcodeForm[0]) == 4) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public Object[] getPostcodeForm(String postcode) {
+    /**
+     *
+     * @param postcode
+     * @return
+     */
+    public static Object[] getPostcodeForm(String postcode) {
         Object[] result;
         result = new Object[2];
         // Do any modification?
@@ -128,7 +139,7 @@ public class Generic_UKPostcode_Handler {
         String secondPartPostcodeType;
         secondPartPostcodeType = getSecondPartPostcodeType(secondPartPostcode);
         if (firstPartPostcodeType.equalsIgnoreCase("")) {
-            if (secondPartPostcodeType.equalsIgnoreCase("")) {
+            if (secondPartPostcodeType.equalsIgnoreCase("NAA")) {
                 result[0] = 1;
                 result[1] = "Incorrect form of firstPartPostcode (" + firstPartPostcode + "). Incorrect form of secondPartPostcode (" + secondPartPostcode + ").";
                 return result;
@@ -155,7 +166,7 @@ public class Generic_UKPostcode_Handler {
      * @param secondPartPostcode
      * @return
      */
-    public String getSecondPartPostcodeType(String secondPartPostcode) {
+    public static String getSecondPartPostcodeType(String secondPartPostcode) {
         if (secondPartPostcode.length() < 4) {
             if (secondPartPostcode.length() == 3) {
                 String _0 = secondPartPostcode.substring(0, 1);
@@ -196,12 +207,12 @@ public class Generic_UKPostcode_Handler {
      * @param firstPartPostcode
      * @return
      */
-    public String getFirstPartPostcodeType(String firstPartPostcode) {
+    public static String getFirstPartPostcodeType(String firstPartPostcode) {
         // Resolve type from firstPartPostcode
-        String unresolvedMessage = firstPartPostcode + " is not recognised as a first part of a postcode";
+//        String unresolvedMessage = firstPartPostcode + " is not recognised as a first part of a postcode";
         // Return a String or null (AANN, AANA, ANN, ANA, AAN, AN)
         if (firstPartPostcode.length() > 4 || firstPartPostcode.length() < 2) {
-            System.err.println(unresolvedMessage);
+//            System.err.println(unresolvedMessage);
             return "";
         }
         if (firstPartPostcode.length() == 4) {
@@ -221,7 +232,7 @@ public class Generic_UKPostcode_Handler {
                         && get_ABEHMNPRVWXY().contains(_3)) {
                     return "ANNA";
                 } else {
-                    System.err.println(unresolvedMessage);
+//                    System.err.println(unresolvedMessage);
                     return "";
                 }
             }
@@ -238,7 +249,7 @@ public class Generic_UKPostcode_Handler {
                         if (get_ABCDEFGHJKSTUW().contains(_2)) {
                             return "ANA";
                         } else {
-                            System.err.println(unresolvedMessage);
+//                            System.err.println(unresolvedMessage);
                             return "";
                         }
                     }
@@ -250,14 +261,14 @@ public class Generic_UKPostcode_Handler {
                             if (get_ABCDEFGHJKSTUW().contains(_2)) {
                                 return "ANA";
                             } else {
-                                System.err.println(unresolvedMessage);
+//                                System.err.println(unresolvedMessage);
                                 return "";
                             }
                         }
                     }
                 }
             } else {
-                System.err.println(unresolvedMessage);
+//                System.err.println(unresolvedMessage);
                 return "";
             }
         }
@@ -270,81 +281,81 @@ public class Generic_UKPostcode_Handler {
                 }
             }
         }
-        System.err.println(unresolvedMessage);
+//        System.err.println(unresolvedMessage);
         return "";
     }
 
-    private void init_NAA() {
+    private static void init_NAA() {
         _NAA = Generic_UKPostcode_Handler.getTreeSet_String_NAA();
     }
 
-    private TreeSet<String> get_NAA() {
+    private static TreeSet<String> get_NAA() {
         if (_NAA == null) {
             init_NAA();
         }
         return _NAA;
     }
 
-    private void init_AtoZ_not_QVX() {
+    private static void init_AtoZ_not_QVX() {
         _AtoZ_not_QVX = getTreeSet_String_AtoZ_not_QVX();
     }
 
-    private TreeSet<String> get_AtoZ_not_QVX() {
+    private static TreeSet<String> get_AtoZ_not_QVX() {
         if (_AtoZ_not_QVX == null) {
             init_AtoZ_not_QVX();
         }
         return _AtoZ_not_QVX;
     }
 
-    private void init_AtoZ_not_IJZ() {
+    private static void init_AtoZ_not_IJZ() {
         _AtoZ_not_IJZ = getTreeSet_String_AtoZ_not_IJZ();
     }
 
-    private TreeSet<String> get_AtoZ_not_IJZ() {
+    private static TreeSet<String> get_AtoZ_not_IJZ() {
         if (_AtoZ_not_IJZ == null) {
             init_AtoZ_not_IJZ();
         }
         return _AtoZ_not_IJZ;
     }
 
-    private void init_ABCDEFGHJKSTUW() {
+    private static void init_ABCDEFGHJKSTUW() {
         _ABCDEFGHJKSTUW = getTreeSet_String_ABCDEFGHJKSTUW();
     }
 
-    private TreeSet<String> get_ABCDEFGHJKSTUW() {
+    private static TreeSet<String> get_ABCDEFGHJKSTUW() {
         if (_ABCDEFGHJKSTUW == null) {
             init_ABCDEFGHJKSTUW();
         }
         return _ABCDEFGHJKSTUW;
     }
 
-    private void init_ABEHMNPRVWXY() {
+    private static void init_ABEHMNPRVWXY() {
         _ABEHMNPRVWXY = getTreeSet_String_ABEHMNPRVWXY();
     }
 
-    private TreeSet<String> get_ABEHMNPRVWXY() {
+    private static TreeSet<String> get_ABEHMNPRVWXY() {
         if (_ABEHMNPRVWXY == null) {
             init_ABEHMNPRVWXY();
         }
         return _ABEHMNPRVWXY;
     }
 
-    private void init_AtoZ_not_CIKMOV() {
+    private static void init_AtoZ_not_CIKMOV() {
         _AtoZ_not_CIKMOV = getTreeSet_String_AtoZ_not_CIKMOV();
     }
 
-    private TreeSet<String> get_AtoZ_not_CIKMOV() {
+    private static TreeSet<String> get_AtoZ_not_CIKMOV() {
         if (_AtoZ_not_CIKMOV == null) {
             init_AtoZ_not_CIKMOV();
         }
         return _AtoZ_not_CIKMOV;
     }
 
-    private void init_0to9() {
+    private static void init_0to9() {
         _0to9 = getTreeSet_String_0to9();
     }
 
-    private TreeSet<String> get_0to9() {
+    private static TreeSet<String> get_0to9() {
         if (_0to9 == null) {
             init_0to9();
         }
