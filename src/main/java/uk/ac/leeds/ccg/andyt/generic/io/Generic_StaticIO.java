@@ -278,7 +278,7 @@ public class Generic_StaticIO {
     /**
      * @param f
      * @param wait
-     * @return 
+     * @return
      * <code>new BufferedReader(new InputStreamReader(new FileInputStream(file)))</code>
      */
     public static FileInputStream getFileInputStream(File f, long wait) {
@@ -311,7 +311,7 @@ public class Generic_StaticIO {
         }
         return result;
     }
-    
+
     /**
      * @param f
      * @return <code>new FileOutputStream(f)</code>
@@ -676,8 +676,8 @@ public class Generic_StaticIO {
      */
     public static BufferedReader getBufferedReader(File file) {
         BufferedReader result = null;
-            result = new BufferedReader(
-                    new InputStreamReader(getFileInputStream(file)));
+        result = new BufferedReader(
+                new InputStreamReader(getFileInputStream(file)));
         return result;
     }
 
@@ -777,273 +777,298 @@ public class Generic_StaticIO {
     }
 
     /**
-     * Sets the syntax of aStreamTokenizer as follows: <ul>
-     * <li>aStreamTokenizer.resetSyntax();</li> <li>aStreamTokenizer.wordChars(
-     * ',', ',' );</li> <li>aStreamTokenizer.wordChars( '"', '"' );</li>
-     * <li>aStreamTokenizer.wordChars( '0', '0' );</li>
-     * <li>aStreamTokenizer.wordChars( '1', '1' );</li>
-     * <li>aStreamTokenizer.wordChars( '2', '2' );</li>
-     * <li>aStreamTokenizer.wordChars( '3', '3' );</li>
-     * <li>aStreamTokenizer.wordChars( '4', '4' );</li>
-     * <li>aStreamTokenizer.wordChars( '5', '5' );</li>
-     * <li>aStreamTokenizer.wordChars( '6', '6' );</li>
-     * <li>aStreamTokenizer.wordChars( '7', '7' );</li>
-     * <li>aStreamTokenizer.wordChars( '8', '8' );</li>
-     * <li>aStreamTokenizer.wordChars( '9', '9' );</li>
-     * <li>aStreamTokenizer.wordChars( '.', '.' );</li>
-     * <li>aStreamTokenizer.wordChars( '-', '-' );</li>
-     * <li>aStreamTokenizer.wordChars( '+', '+' );</li>
-     * <li>aStreamTokenizer.wordChars( 'a', 'z' );</li>
-     * <li>aStreamTokenizer.wordChars( 'A', 'Z' );</li>
-     * <li>aStreamTokenizer.wordChars( '\t', '\t' );</li>
-     * <li>aStreamTokenizer.wordChars( ' ', ' ' );</li>
-     * <li>aStreamTokenizer.eolIsSignificant( true );</li> </ul>
-     *
-     * @param aStreamTokenizer <code>StreamTokenizer</code> thats syntax is set
+     * Sets the syntax of st as follows:
+     * @code {
+     * <ul>
+     * <li>st.resetSyntax();</li>
+     * <li>st.wordChars( ',', ',' );</li>
+     * <li>st.wordChars( '"', '"' );</li>
+     * <li>st.wordChars( '0', '0' );</li>
+     * <li>st.wordChars( '1', '1' );</li>
+     * <li>st.wordChars( '2', '2' );</li>
+     * <li>st.wordChars( '3', '3' );</li>
+     * <li>st.wordChars( '4', '4' );</li>
+     * <li>st.wordChars( '5', '5' );</li>
+     * <li>st.wordChars( '6', '6' );</li>
+     * <li>st.wordChars( '7', '7' );</li>
+     * <li>st.wordChars( '8', '8' );</li>
+     * <li>st.wordChars( '9', '9' );</li>
+     * <li>st.wordChars( '.', '.' );</li>
+     * <li>st.wordChars( '-', '-' );</li>
+     * <li>st.wordChars( '+', '+' );</li>
+     * <li>st.wordChars( 'a', 'z' );</li>
+     * <li>st.wordChars( 'A', 'Z' );</li>
+     * <li>st.wordChars( '\t', '\t' );</li>
+     * <li>st.wordChars( ' ', ' ' );</li>
+     * <li>st.eolIsSignificant( true );</li>
+     * </ul>
+     * }
+     * 
+     * @param st <code>StreamTokenizer</code> thats syntax is set.
      */
     public static void setStreamTokenizerSyntax1(
-            StreamTokenizer aStreamTokenizer) {
-        aStreamTokenizer.resetSyntax();
-        // aStreamTokenizer.parseNumbers();
-        aStreamTokenizer.wordChars(',', ',');
-        aStreamTokenizer.wordChars('"', '"');
-        // aStreamTokenizer.whitespaceChars( '"', '"' );
-        // aStreamTokenizer.wordChars( '0', '9' );
-        aStreamTokenizer.wordChars('0', '0');
-        aStreamTokenizer.wordChars('1', '1');
-        aStreamTokenizer.wordChars('2', '2');
-        aStreamTokenizer.wordChars('3', '3');
-        aStreamTokenizer.wordChars('4', '4');
-        aStreamTokenizer.wordChars('5', '5');
-        aStreamTokenizer.wordChars('6', '6');
-        aStreamTokenizer.wordChars('7', '7');
-        aStreamTokenizer.wordChars('8', '8');
-        aStreamTokenizer.wordChars('9', '9');
-        aStreamTokenizer.wordChars('.', '.');
-        aStreamTokenizer.wordChars('-', '-');
-        aStreamTokenizer.wordChars('_', '_');
-        aStreamTokenizer.wordChars('+', '+');
-        aStreamTokenizer.wordChars('a', 'z');
-        aStreamTokenizer.wordChars('A', 'Z');
+            StreamTokenizer st) {
+        st.resetSyntax();
+        // st.parseNumbers();
+        st.wordChars(',', ',');
+        st.wordChars('"', '"');
+        // st.whitespaceChars( '"', '"' );
+        // st.wordChars( '0', '9' );
+        st.wordChars('0', '0');
+        st.wordChars('1', '1');
+        st.wordChars('2', '2');
+        st.wordChars('3', '3');
+        st.wordChars('4', '4');
+        st.wordChars('5', '5');
+        st.wordChars('6', '6');
+        st.wordChars('7', '7');
+        st.wordChars('8', '8');
+        st.wordChars('9', '9');
+        st.wordChars('.', '.');
+        st.wordChars('-', '-');
+        st.wordChars('_', '_');
+        st.wordChars('+', '+');
+        st.wordChars('a', 'z');
+        st.wordChars('A', 'Z');
         // char[] tab = new char[1];
         // tab[0] = '\t';
-        aStreamTokenizer.wordChars('\t', '\t');
-        aStreamTokenizer.wordChars(' ', ' ');
-        // aStreamTokenizer.ordinaryChar( ' ' );
-        aStreamTokenizer.eolIsSignificant(true);
+        st.wordChars('\t', '\t');
+        st.wordChars(' ', ' ');
+        // st.ordinaryChar( ' ' );
+        st.eolIsSignificant(true);
     }
 
     /**
-     * Sets the syntax of aStreamTokenizer as follows: <ul>
-     * <li>aStreamTokenizer.resetSyntax();</li> <li>aStreamTokenizer.wordChars(
-     * '"', '"' );</li> <li>aStreamTokenizer.wordChars( '0', '0' );</li>
-     * <li>aStreamTokenizer.wordChars( '1', '1' );</li>
-     * <li>aStreamTokenizer.wordChars( '2', '2' );</li>
-     * <li>aStreamTokenizer.wordChars( '3', '3' );</li>
-     * <li>aStreamTokenizer.wordChars( '4', '4' );</li>
-     * <li>aStreamTokenizer.wordChars( '5', '5' );</li>
-     * <li>aStreamTokenizer.wordChars( '6', '6' );</li>
-     * <li>aStreamTokenizer.wordChars( '7', '7' );</li>
-     * <li>aStreamTokenizer.wordChars( '8', '8' );</li>
-     * <li>aStreamTokenizer.wordChars( '9', '9' );</li>
-     * <li>aStreamTokenizer.wordChars( '.', '.' );</li>
-     * <li>aStreamTokenizer.wordChars( '-', '-' );</li>
-     * <li>aStreamTokenizer.wordChars( '+', '+' );</li>
-     * <li>aStreamTokenizer.wordChars( 'e', 'e' );</li>
-     * <li>aStreamTokenizer.wordChars( 'E', 'E' );</li>
-     * <li>aStreamTokenizer.wordChars( '\t', '\t' );</li>
-     * <li>aStreamTokenizer.wordChars( ' ', ' ' );</li>
-     * <li>aStreamTokenizer.eolIsSignificant( true );</li> </ul>
-     *
-     * @param aStreamTokenizer <code>StreamTokenizer</code> thats syntax is set
+     * Sets the syntax of st as follows:
+     * @code {
+     * <ul>
+     * <li>st.resetSyntax();</li>
+     * <li>st.wordChars( '"', '"' );</li>
+     * <li>st.wordChars( '0', '0' );</li>
+     * <li>st.wordChars( '1', '1' );</li>
+     * <li>st.wordChars( '2', '2' );</li>
+     * <li>st.wordChars( '3', '3' );</li>
+     * <li>st.wordChars( '4', '4' );</li>
+     * <li>st.wordChars( '5', '5' );</li>
+     * <li>st.wordChars( '6', '6' );</li>
+     * <li>st.wordChars( '7', '7' );</li>
+     * <li>st.wordChars( '8', '8' );</li>
+     * <li>st.wordChars( '9', '9' );</li>
+     * <li>st.wordChars( '.', '.' );</li>
+     * <li>st.wordChars( '-', '-' );</li>
+     * <li>st.wordChars( '+', '+' );</li>
+     * <li>st.wordChars( 'e', 'e' );</li>
+     * <li>st.wordChars( 'E', 'E' );</li>
+     * <li>st.wordChars( '\t', '\t' );</li>
+     * <li>st.wordChars( ' ', ' ' );</li>
+     * <li>st.eolIsSignificant( true );</li>
+     * </ul>
+     * }
+     * 
+     * @param st <code>StreamTokenizer</code> thats syntax is set
      */
     public static void setStreamTokenizerSyntax2(
-            StreamTokenizer aStreamTokenizer) {
-        aStreamTokenizer.resetSyntax();
-        aStreamTokenizer.wordChars('"', '"');
-        aStreamTokenizer.wordChars('0', '0');
-        aStreamTokenizer.wordChars('1', '1');
-        aStreamTokenizer.wordChars('2', '2');
-        aStreamTokenizer.wordChars('3', '3');
-        aStreamTokenizer.wordChars('4', '4');
-        aStreamTokenizer.wordChars('5', '5');
-        aStreamTokenizer.wordChars('6', '6');
-        aStreamTokenizer.wordChars('7', '7');
-        aStreamTokenizer.wordChars('8', '8');
-        aStreamTokenizer.wordChars('9', '9');
-        aStreamTokenizer.wordChars('.', '.');
-        aStreamTokenizer.wordChars('-', '-');
-        aStreamTokenizer.wordChars('+', '+');
-        aStreamTokenizer.wordChars('e', 'e');
-        aStreamTokenizer.wordChars('E', 'E');
-        aStreamTokenizer.wordChars('\t', '\t');
-        aStreamTokenizer.wordChars(' ', ' ');
-        aStreamTokenizer.eolIsSignificant(true);
+            StreamTokenizer st) {
+        st.resetSyntax();
+        st.wordChars('"', '"');
+        st.wordChars('0', '0');
+        st.wordChars('1', '1');
+        st.wordChars('2', '2');
+        st.wordChars('3', '3');
+        st.wordChars('4', '4');
+        st.wordChars('5', '5');
+        st.wordChars('6', '6');
+        st.wordChars('7', '7');
+        st.wordChars('8', '8');
+        st.wordChars('9', '9');
+        st.wordChars('.', '.');
+        st.wordChars('-', '-');
+        st.wordChars('+', '+');
+        st.wordChars('e', 'e');
+        st.wordChars('E', 'E');
+        st.wordChars('\t', '\t');
+        st.wordChars(' ', ' ');
+        st.eolIsSignificant(true);
     }
 
     /**
-     * Sets the syntax of aStreamTokenizer as follows: <ul>
-     * <li>aStreamTokenizer.resetSyntax();</li> <li>aStreamTokenizer.wordChars(
-     * ',', ',' );</li> <li>aStreamTokenizer.wordChars( '"', '"' );</li>
-     * <li>aStreamTokenizer.wordChars( '0', '0' );</li>
-     * <li>aStreamTokenizer.wordChars( '1', '1' );</li>
-     * <li>aStreamTokenizer.wordChars( '2', '2' );</li>
-     * <li>aStreamTokenizer.wordChars( '3', '3' );</li>
-     * <li>aStreamTokenizer.wordChars( '4', '4' );</li>
-     * <li>aStreamTokenizer.wordChars( '5', '5' );</li>
-     * <li>aStreamTokenizer.wordChars( '6', '6' );</li>
-     * <li>aStreamTokenizer.wordChars( '7', '7' );</li>
-     * <li>aStreamTokenizer.wordChars( '8', '8' );</li>
-     * <li>aStreamTokenizer.wordChars( '9', '9' );</li>
-     * <li>aStreamTokenizer.wordChars( '.', '.' );</li>
-     * <li>aStreamTokenizer.wordChars( '-', '-' );</li>
-     * <li>aStreamTokenizer.wordChars( '+', '+' );</li>
-     * <li>aStreamTokenizer.wordChars( 'a', 'z' );</li>
-     * <li>aStreamTokenizer.wordChars( 'A', 'Z' );</li>
-     * <li>aStreamTokenizer.wordChars( '\t', '\t' );</li>
-     * <li>aStreamTokenizer.wordChars( ' ', ' ' );</li>
-     * <li>aStreamTokenizer.wordChars( '_', '_' );</li>
-     * <li>aStreamTokenizer.eolIsSignificant( true );</li> </ul>
-     *
-     * @param aStreamTokenizer <code>StreamTokenizer</code> thats syntax is set
+     * Sets the syntax of st as follows:
+     * @code {
+     * <ul>
+     * <li>st.resetSyntax();</li>
+     * <li>st.wordChars( ',', ',' );</li>
+     * <li>st.wordChars( '"', '"' );</li>
+     * <li>st.wordChars( '0', '0' );</li>
+     * <li>st.wordChars( '1', '1' );</li>
+     * <li>st.wordChars( '2', '2' );</li>
+     * <li>st.wordChars( '3', '3' );</li>
+     * <li>st.wordChars( '4', '4' );</li>
+     * <li>st.wordChars( '5', '5' );</li>
+     * <li>st.wordChars( '6', '6' );</li>
+     * <li>st.wordChars( '7', '7' );</li>
+     * <li>st.wordChars( '8', '8' );</li>
+     * <li>st.wordChars( '9', '9' );</li>
+     * <li>st.wordChars( '.', '.' );</li>
+     * <li>st.wordChars( '-', '-' );</li>
+     * <li>st.wordChars( '+', '+' );</li>
+     * <li>st.wordChars( 'a', 'z' );</li>
+     * <li>st.wordChars( 'A', 'Z' );</li>
+     * <li>st.wordChars( '\t', '\t' );</li>
+     * <li>st.wordChars( ' ', ' ' );</li>
+     * <li>st.wordChars( '_', '_' );</li>
+     * <li>st.eolIsSignificant( true );</li>
+     * </ul>
+     * }
+     * 
+     * @param st <code>StreamTokenizer</code> thats syntax is set
      */
     public static void setStreamTokenizerSyntax3(
-            StreamTokenizer aStreamTokenizer) {
-        aStreamTokenizer.resetSyntax();
-        // aStreamTokenizer.parseNumbers();
-        aStreamTokenizer.wordChars(',', ',');
-        aStreamTokenizer.wordChars('"', '"');
-        // aStreamTokenizer.whitespaceChars( '"', '"' );
-        // aStreamTokenizer.wordChars( '0', '9' );
-        aStreamTokenizer.wordChars('0', '0');
-        aStreamTokenizer.wordChars('1', '1');
-        aStreamTokenizer.wordChars('2', '2');
-        aStreamTokenizer.wordChars('3', '3');
-        aStreamTokenizer.wordChars('4', '4');
-        aStreamTokenizer.wordChars('5', '5');
-        aStreamTokenizer.wordChars('6', '6');
-        aStreamTokenizer.wordChars('7', '7');
-        aStreamTokenizer.wordChars('8', '8');
-        aStreamTokenizer.wordChars('9', '9');
-        aStreamTokenizer.wordChars('.', '.');
-        aStreamTokenizer.wordChars('-', '-');
-        aStreamTokenizer.wordChars('+', '+');
-        aStreamTokenizer.wordChars('a', 'z');
-        aStreamTokenizer.wordChars('A', 'Z');
+            StreamTokenizer st) {
+        st.resetSyntax();
+        // st.parseNumbers();
+        st.wordChars(',', ',');
+        st.wordChars('"', '"');
+        // st.whitespaceChars( '"', '"' );
+        // st.wordChars( '0', '9' );
+        st.wordChars('0', '0');
+        st.wordChars('1', '1');
+        st.wordChars('2', '2');
+        st.wordChars('3', '3');
+        st.wordChars('4', '4');
+        st.wordChars('5', '5');
+        st.wordChars('6', '6');
+        st.wordChars('7', '7');
+        st.wordChars('8', '8');
+        st.wordChars('9', '9');
+        st.wordChars('.', '.');
+        st.wordChars('-', '-');
+        st.wordChars('+', '+');
+        st.wordChars('a', 'z');
+        st.wordChars('A', 'Z');
         // char[] tab = new char[1];
         // tab[0] = '\t';
-        aStreamTokenizer.wordChars('\t', '\t');
-        aStreamTokenizer.wordChars(' ', ' ');
-        aStreamTokenizer.wordChars('_', '_');
-        // aStreamTokenizer.ordinaryChar( ' ' );
-        aStreamTokenizer.eolIsSignificant(true);
+        st.wordChars('\t', '\t');
+        st.wordChars(' ', ' ');
+        st.wordChars('_', '_');
+        // st.ordinaryChar( ' ' );
+        st.eolIsSignificant(true);
     }
 
     /**
-     * Sets the syntax of aStreamTokenizer as follows: <ul>
-     * <li>aStreamTokenizer.resetSyntax();</li> <li>aStreamTokenizer.wordChars(
-     * ',', ',' );</li> <li>aStreamTokenizer.wordChars( '"', '"' );</li>
-     * <li>aStreamTokenizer.wordChars( '0', '0' );</li>
-     * <li>aStreamTokenizer.wordChars( '1', '1' );</li>
-     * <li>aStreamTokenizer.wordChars( '2', '2' );</li>
-     * <li>aStreamTokenizer.wordChars( '3', '3' );</li>
-     * <li>aStreamTokenizer.wordChars( '4', '4' );</li>
-     * <li>aStreamTokenizer.wordChars( '5', '5' );</li>
-     * <li>aStreamTokenizer.wordChars( '6', '6' );</li>
-     * <li>aStreamTokenizer.wordChars( '7', '7' );</li>
-     * <li>aStreamTokenizer.wordChars( '8', '8' );</li>
-     * <li>aStreamTokenizer.wordChars( '9', '9' );</li>
-     * <li>aStreamTokenizer.wordChars( '.', '.' );</li>
-     * <li>aStreamTokenizer.wordChars( '-', '-' );</li>
-     * <li>aStreamTokenizer.wordChars( '+', '+' );</li>
-     * <li>aStreamTokenizer.wordChars( 'a', 'z' );</li>
-     * <li>aStreamTokenizer.wordChars( 'A', 'Z' );</li>
-     * <li>aStreamTokenizer.eolIsSignificant( true );</li> </ul>
+     * Sets the syntax of st as follows:
+     * @code {
+     * <ul>
+     * <li>st.resetSyntax();</li>
+     * <li>st.wordChars( ',', ',' );</li>
+     * <li>st.wordChars( '"', '"' );</li>
+     * <li>st.wordChars( '0', '0' );</li>
+     * <li>st.wordChars( '1', '1' );</li>
+     * <li>st.wordChars( '2', '2' );</li>
+     * <li>st.wordChars( '3', '3' );</li>
+     * <li>st.wordChars( '4', '4' );</li>
+     * <li>st.wordChars( '5', '5' );</li>
+     * <li>st.wordChars( '6', '6' );</li>
+     * <li>st.wordChars( '7', '7' );</li>
+     * <li>st.wordChars( '8', '8' );</li>
+     * <li>st.wordChars( '9', '9' );</li>
+     * <li>st.wordChars( '.', '.' );</li>
+     * <li>st.wordChars( '-', '-' );</li>
+     * <li>st.wordChars( '+', '+' );</li>
+     * <li>st.wordChars( 'a', 'z' );</li>
+     * <li>st.wordChars( 'A', 'Z' );</li>
+     * <li>st.eolIsSignificant( true );</li> </ul>
+     * }
      *
-     * @param aStreamTokenizer <code>StreamTokenizer</code> thats syntax is set
+     * @param st <code>StreamTokenizer</code> thats syntax is set
      */
     public static void setStreamTokenizerSyntax4(
-            StreamTokenizer aStreamTokenizer) {
-        aStreamTokenizer.resetSyntax();
-        aStreamTokenizer.wordChars(',', ',');
-        aStreamTokenizer.wordChars('"', '"');
-        aStreamTokenizer.wordChars('0', '0');
-        aStreamTokenizer.wordChars('1', '1');
-        aStreamTokenizer.wordChars('2', '2');
-        aStreamTokenizer.wordChars('3', '3');
-        aStreamTokenizer.wordChars('4', '4');
-        aStreamTokenizer.wordChars('5', '5');
-        aStreamTokenizer.wordChars('6', '6');
-        aStreamTokenizer.wordChars('7', '7');
-        aStreamTokenizer.wordChars('8', '8');
-        aStreamTokenizer.wordChars('9', '9');
-        aStreamTokenizer.wordChars('.', '.');
-        aStreamTokenizer.wordChars('-', '-');
-        aStreamTokenizer.wordChars('+', '+');
-        aStreamTokenizer.wordChars('a', 'z');
-        aStreamTokenizer.wordChars('A', 'Z');
-        aStreamTokenizer.eolIsSignificant(true);
+            StreamTokenizer st) {
+        st.resetSyntax();
+        st.wordChars(',', ',');
+        st.wordChars('"', '"');
+        st.wordChars('0', '0');
+        st.wordChars('1', '1');
+        st.wordChars('2', '2');
+        st.wordChars('3', '3');
+        st.wordChars('4', '4');
+        st.wordChars('5', '5');
+        st.wordChars('6', '6');
+        st.wordChars('7', '7');
+        st.wordChars('8', '8');
+        st.wordChars('9', '9');
+        st.wordChars('.', '.');
+        st.wordChars('-', '-');
+        st.wordChars('+', '+');
+        st.wordChars('a', 'z');
+        st.wordChars('A', 'Z');
+        st.eolIsSignificant(true);
     }
 
     /**
-     * Sets the syntax of aStreamTokenizer as follows: <ul>
-     * <li>aStreamTokenizer.resetSyntax();</li> <li>aStreamTokenizer.wordChars(
-     * ',', ',' );</li> <li>aStreamTokenizer.wordChars( '"', '"' );</li>
-     * <li>aStreamTokenizer.wordChars( '0', '0' );</li>
-     * <li>aStreamTokenizer.wordChars( '1', '1' );</li>
-     * <li>aStreamTokenizer.wordChars( '2', '2' );</li>
-     * <li>aStreamTokenizer.wordChars( '3', '3' );</li>
-     * <li>aStreamTokenizer.wordChars( '4', '4' );</li>
-     * <li>aStreamTokenizer.wordChars( '5', '5' );</li>
-     * <li>aStreamTokenizer.wordChars( '6', '6' );</li>
-     * <li>aStreamTokenizer.wordChars( '7', '7' );</li>
-     * <li>aStreamTokenizer.wordChars( '8', '8' );</li>
-     * <li>aStreamTokenizer.wordChars( '9', '9' );</li>
-     * <li>aStreamTokenizer.wordChars( '.', '.' );</li>
-     * <li>aStreamTokenizer.wordChars( '-', '-' );</li>
-     * <li>aStreamTokenizer.wordChars( '+', '+' );</li>
-     * <li>aStreamTokenizer.wordChars( 'a', 'z' );</li>
-     * <li>aStreamTokenizer.wordChars( 'A', 'Z' );</li>
-     * <li>aStreamTokenizer.wordChars( '\t', '\t' );</li>
-     * <li>aStreamTokenizer.wordChars( ' ', ' ' );</li>
-     * <li>aStreamTokenizer.wordChars( ':', ':' );</li>
-     * <li>aStreamTokenizer.wordChars( '/', '/' );</li>
-     * <li>aStreamTokenizer.wordChars( '_', '_' );</li> </ul>
+     * Sets the syntax of st as follows:
+     * @code {
+     * <ul>
+     * <li>st.resetSyntax();</li>
+     * <li>st.wordChars(',', ',' );</li>
+     * <li>st.wordChars( '"', '"' );</li>
+     * <li>st.wordChars( '0', '0' );</li>
+     * <li>st.wordChars( '1', '1' );</li>
+     * <li>st.wordChars( '2', '2' );</li>
+     * <li>st.wordChars( '3', '3' );</li>
+     * <li>st.wordChars( '4', '4' );</li>
+     * <li>st.wordChars( '5', '5' );</li>
+     * <li>st.wordChars( '6', '6' );</li>
+     * <li>st.wordChars( '7', '7' );</li>
+     * <li>st.wordChars( '8', '8' );</li>
+     * <li>st.wordChars( '9', '9' );</li>
+     * <li>st.wordChars( '.', '.' );</li>
+     * <li>st.wordChars( '-', '-' );</li>
+     * <li>st.wordChars( '+', '+' );</li>
+     * <li>st.wordChars( 'a', 'z' );</li>
+     * <li>st.wordChars( 'A', 'Z' );</li>
+     * <li>st.wordChars( '\t', '\t' );</li>
+     * <li>st.wordChars( ' ', ' ' );</li>
+     * <li>st.wordChars( ':', ':' );</li>
+     * <li>st.wordChars( '/', '/' );</li>
+     * <li>st.wordChars( '_', '_' );</li>
+     * </ul>
+     * }
      *
-     * @param aStreamTokenizer <code>StreamTokenizer</code> thats syntax is set
+     * @param st <code>StreamTokenizer</code> thats syntax is set
      */
     public static void setStreamTokenizerSyntax5(
-            StreamTokenizer aStreamTokenizer) {
-        aStreamTokenizer.resetSyntax();
-        // aStreamTokenizer.parseNumbers();
-        aStreamTokenizer.wordChars(',', ',');
-        aStreamTokenizer.wordChars('"', '"');
-        // aStreamTokenizer.whitespaceChars( '"', '"' );
-        // aStreamTokenizer.wordChars( '0', '9' );
-        aStreamTokenizer.wordChars('0', '0');
-        aStreamTokenizer.wordChars('1', '1');
-        aStreamTokenizer.wordChars('2', '2');
-        aStreamTokenizer.wordChars('3', '3');
-        aStreamTokenizer.wordChars('4', '4');
-        aStreamTokenizer.wordChars('5', '5');
-        aStreamTokenizer.wordChars('6', '6');
-        aStreamTokenizer.wordChars('7', '7');
-        aStreamTokenizer.wordChars('8', '8');
-        aStreamTokenizer.wordChars('9', '9');
-        aStreamTokenizer.wordChars('.', '.');
-        aStreamTokenizer.wordChars('-', '-');
-        aStreamTokenizer.wordChars('+', '+');
-        aStreamTokenizer.wordChars('a', 'z');
-        aStreamTokenizer.wordChars('A', 'Z');
+            StreamTokenizer st) {
+        st.resetSyntax();
+        // st.parseNumbers();
+        st.wordChars(',', ',');
+        //st.ordinaryChar(',');
+        st.wordChars('"', '"');
+        // st.whitespaceChars( '"', '"' );
+        // st.wordChars( '0', '9' );
+        st.wordChars('0', '0');
+        st.wordChars('1', '1');
+        st.wordChars('2', '2');
+        st.wordChars('3', '3');
+        st.wordChars('4', '4');
+        st.wordChars('5', '5');
+        st.wordChars('6', '6');
+        st.wordChars('7', '7');
+        st.wordChars('8', '8');
+        st.wordChars('9', '9');
+        st.wordChars('.', '.');
+        st.wordChars('-', '-');
+        st.wordChars('+', '+');
+        st.wordChars('a', 'z');
+        st.wordChars('A', 'Z');
         // char[] tab = new char[1];
         // tab[0] = '\t';
-        aStreamTokenizer.wordChars('\t', '\t');
-        aStreamTokenizer.wordChars(' ', ' ');
-        aStreamTokenizer.wordChars(':', ':');
-        aStreamTokenizer.wordChars('/', '/');
-        aStreamTokenizer.wordChars('_', '_');
-        // aStreamTokenizer.ordinaryChar( ' ' );
-        aStreamTokenizer.eolIsSignificant(true);
+        st.wordChars('\t', '\t');
+        st.wordChars(' ', ' ');
+        st.wordChars(':', ':');
+        st.wordChars('/', '/');
+        st.wordChars('_', '_');
+        // st.ordinaryChar( ' ' );
+        st.eolIsSignificant(true);
     }
 
     /**

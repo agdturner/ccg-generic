@@ -13,62 +13,97 @@ import java.util.Calendar;
  * @author geoagdt
  */
 public class Generic_Time {
+
     public static final int SecondsInMinute = 60;
     public static final int MinutesInHour = 60;
     public static final int SecondsInHour = SecondsInMinute * MinutesInHour;
     public static final int MilliSecondsInSecond = 1000;
     public static final int MilliSecondsInHour = MilliSecondsInSecond * SecondsInHour;
+
+    private int day;
+    private int month;
+    private int year;
+
+    public Generic_Time() {
+    }
+
+    public Generic_Time(
+            int day,
+            int month,
+            int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
     
+    public static int getAgeInYears(
+            Generic_Time timeNow,
+            Generic_Time timeCreated) {
+        if (timeNow.month > timeCreated.month) {
+            return timeNow.year - timeCreated.year;
+        } else {
+            if (timeNow.month == timeCreated.month) {
+                if (timeNow.day >= timeCreated.day) {
+                    return timeNow.year - timeCreated.year;
+                } else {
+                    return timeNow.year - timeCreated.year - 1;
+                }
+            } else {
+                return timeNow.year - timeCreated.year - 1;
+            }
+        }
+    }
+    
+
     public static void printTime(long millis) {
         int MilliSecondsInDay = 24 * MilliSecondsInHour;
-        int MilliSecondsInMinute = 60000; 
+        int MilliSecondsInMinute = 60000;
         long millis2 = millis;
         int days = 0;
         while (millis2 > MilliSecondsInDay) {
-            days ++;
+            days++;
             millis2 -= MilliSecondsInDay;
         }
         int hours = 0;
         while (millis2 > MilliSecondsInHour) {
-            hours ++;
+            hours++;
             millis2 -= MilliSecondsInHour;
         }
         int minutes = 0;
         while (millis2 > MilliSecondsInMinute) {
-            minutes ++;
+            minutes++;
             millis2 -= MilliSecondsInMinute;
         }
         int seconds = 0;
         while (millis2 > 1000) {
-            seconds ++;
-            millis2 -= MilliSecondsInSecond;            
+            seconds++;
+            millis2 -= MilliSecondsInSecond;
         }
-        System.out.println("" + days + " day(s) " +
-                hours + " hour(s) " +
-                minutes + " minute(s) " +
-                seconds + " second(s) " +
-                millis2 + " millisecond(s)");
+        System.out.println("" + days + " day(s) "
+                + hours + " hour(s) "
+                + minutes + " minute(s) "
+                + seconds + " second(s) "
+                + millis2 + " millisecond(s)");
     }
 
     /**
-     * @return
-     * {@code
+     * @return      * {@code
     ArrayList<String> result;
-    result = new ArrayList<String>();
-    result.add("Jan");
-    result.add("Feb");
-    result.add("Mar");
-    result.add("Apr");
-    result.add("May");
-    result.add("Jun");
-    result.add("Jul");
-    result.add("Aug");
-    result.add("Sep");
-    result.add("Oct");
-    result.add("Nov");
-    result.add("Dec");
-    return result;
-    }
+     * result = new ArrayList<String>();
+     * result.add("Jan");
+     * result.add("Feb");
+     * result.add("Mar");
+     * result.add("Apr");
+     * result.add("May");
+     * result.add("Jun");
+     * result.add("Jul");
+     * result.add("Aug");
+     * result.add("Sep");
+     * result.add("Oct");
+     * result.add("Nov");
+     * result.add("Dec");
+     * return result;
+     * }
      */
     public static ArrayList<String> getMonths3Letters() {
         ArrayList<String> result;
@@ -87,13 +122,13 @@ public class Generic_Time {
         result.add("Dec");
         return result;
     }
-    
+
     public static int getMonth(
             String month,
             ArrayList<String> month3Letters) {
         return month3Letters.indexOf(month.substring(0, 3)) + 1;
     }
-    
+
     public static String getMonth3Letters(
             String monthNumber) {
         if (monthNumber.equalsIgnoreCase("01")) {
@@ -134,7 +169,7 @@ public class Generic_Time {
         }
         return null;
     }
-    
+
     public static String getMonthNumber(String month3Letters) {
         if (month3Letters.equalsIgnoreCase("Jan")) {
             return "01";
@@ -174,17 +209,16 @@ public class Generic_Time {
         }
         return null;
     }
-    
-    
+
     public static int getMonthDiff(
             int year0,
             int year1,
             int month0,
             int month1) {
-       int result;
-       result = (year1 - year0) * 12;
-       result += month1 - month0;
-       return result;
+        int result;
+        result = (year1 - year0) * 12;
+        result += month1 - month0;
+        return result;
     }
 
     /**

@@ -133,6 +133,10 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
         this.file = file;
     }
 
+    /**
+     *
+     * @param data
+     */
     protected abstract void initialiseParameters(Object[] data);
 
     public Graphics2D getG2image() {

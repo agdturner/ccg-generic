@@ -129,9 +129,10 @@ public class Generic_ScatterPlot extends Generic_Plot {
 
     /**
      * Draws the X axis returns the height
+     *
      * @param seperationDistanceOfAxisAndData
      * @param partTitleGap
-     * @return 
+     * @return
      */
     @Override
     public int[] drawXAxis(
@@ -150,7 +151,6 @@ public class Generic_ScatterPlot extends Generic_Plot {
         int xAxisExtraHeightBottom = scaleTickLength + scaleTickAndTextSeparation + seperationDistanceOfAxisAndData;
 //                    row + scaleTickLength + (textHeight / 3));;
         setPaint(Color.LIGHT_GRAY);
-        //int dataStartRow = getDataStartRow();
         int originRow = getOriginRow();
         int dataStartRow = getDataStartRow();
         int dataStartCol = getDataStartCol();
@@ -178,68 +178,73 @@ public class Generic_ScatterPlot extends Generic_Plot {
         int textWidth;
         double angle;
         // From the origin right
-        int originCol = getOriginCol();
+        int startCol = getOriginCol();
+        //int startCol = getDataStartCol();
         RoundingMode roundingMode = getRoundingMode();
-        for (int col = originCol; col <= getDataEndCol(); col += increment) {
-            ab = new Line2D.Double(
-                    col,
-                    row,
-                    col,
-                    row + scaleTickLength);
-            draw(ab);
-            BigDecimal x = imageColToXCoordinate(col);
-            if (x.compareTo(BigDecimal.ZERO) == 0 || col == originCol) {
-                text_String = "0";
-            } else {
+        for (int col = startCol; col <= getDataEndCol(); col += increment) {
+            if (col >= dataStartCol) {
+                ab = new Line2D.Double(
+                        col,
+                        row,
+                        col,
+                        row + scaleTickLength);
+                draw(ab);
+                BigDecimal x = imageColToXCoordinate(col);
+                if (x.compareTo(BigDecimal.ZERO) == 0 || col == startCol) {
+                    text_String = "0";
+                } else {
                 //text_String = "" + x.stripTrailingZeros().toPlainString();
-                //text_String = "" + x.round(mc).stripTrailingZeros().toString();
-                //text_String = "" + x.stripTrailingZeros().toString();
-                text_String = "" + Generic_BigDecimal.roundStrippingTrailingZeros(
-                        x,
-                        Generic_BigDecimal.getDecimalPlacePrecision(x, significantDigits),
-                        roundingMode).toString();
-            }
-            textWidth = getTextWidth(text_String);
-            xAxisMaxLabelHeight = Math.max(xAxisMaxLabelHeight, textWidth);
-            angle = Math.PI / 2;
-            writeText(
-                    text_String,
-                    angle,
-                    col - (textHeight / 3),
-                    row + scaleTickAndTextSeparation + scaleTickLength);
+                    //text_String = "" + x.round(mc).stripTrailingZeros().toString();
+                    //text_String = "" + x.stripTrailingZeros().toString();
+                    text_String = "" + Generic_BigDecimal.roundStrippingTrailingZeros(
+                            x,
+                            Generic_BigDecimal.getDecimalPlacePrecision(x, significantDigits),
+                            roundingMode).toString();
+                }
+                textWidth = getTextWidth(text_String);
+                xAxisMaxLabelHeight = Math.max(xAxisMaxLabelHeight, textWidth);
+                angle = Math.PI / 2;
+                writeText(
+                        text_String,
+                        angle,
+                        col - (textHeight / 3),
+                        row + scaleTickAndTextSeparation + scaleTickLength);
 //                    row + scaleTickLength + (textHeight / 3));
+            }
         }
         // From the origin left
-        for (int col = originCol; col >= dataStartCol; col -= increment) {
-            ab = new Line2D.Double(
-                    col,
-                    row,
-                    col,
-                    row + scaleTickLength);
-            draw(ab);
-            BigDecimal x = imageColToXCoordinate(col);
-            if (x.compareTo(BigDecimal.ZERO) == 0 || col == originCol) {
-                text_String = "0";
-            } else {
+        for (int col = startCol; col >= dataStartCol; col -= increment) {
+            if (col >= dataStartCol) {
+                ab = new Line2D.Double(
+                        col,
+                        row,
+                        col,
+                        row + scaleTickLength);
+                draw(ab);
+                BigDecimal x = imageColToXCoordinate(col);
+                if (x.compareTo(BigDecimal.ZERO) == 0 || col == startCol) {
+                    text_String = "0";
+                } else {
                 //text_String = "" + x.stripTrailingZeros().toPlainString();
-                //text_String = "" + x.round(mc).stripTrailingZeros().toString();
-                //text_String = "" + x.stripTrailingZeros().toString();
-                text_String = "" + Generic_BigDecimal.roundStrippingTrailingZeros(
-                        x,
-                        Generic_BigDecimal.getDecimalPlacePrecision(
-                        x,
-                        significantDigits),
-                        roundingMode).toString();
-            }
-            textWidth = getTextWidth(text_String);
-            xAxisMaxLabelHeight = Math.max(xAxisMaxLabelHeight, textWidth);
-            angle = Math.PI / 2;
-            writeText(
-                    text_String,
-                    angle,
-                    col - (textHeight / 3),
-                    row + scaleTickAndTextSeparation + scaleTickLength);
+                    //text_String = "" + x.round(mc).stripTrailingZeros().toString();
+                    //text_String = "" + x.stripTrailingZeros().toString();
+                    text_String = "" + Generic_BigDecimal.roundStrippingTrailingZeros(
+                            x,
+                            Generic_BigDecimal.getDecimalPlacePrecision(
+                                    x,
+                                    significantDigits),
+                            roundingMode).toString();
+                }
+                textWidth = getTextWidth(text_String);
+                xAxisMaxLabelHeight = Math.max(xAxisMaxLabelHeight, textWidth);
+                angle = Math.PI / 2;
+                writeText(
+                        text_String,
+                        angle,
+                        col - (textHeight / 3),
+                        row + scaleTickAndTextSeparation + scaleTickLength);
 //                    row + scaleTickLength + (textHeight / 3));
+            }
         }
         xAxisExtraHeightBottom += xAxisMaxLabelHeight;
         //xAxisExtraHeightBottom += scaleTickAndTextSeparation + scaleTickLength + seperationDistanceOfAxisAndData;
@@ -330,55 +335,59 @@ public class Generic_ScatterPlot extends Generic_Plot {
         int yAxisMaxLabelWidth = 0;
         // From the origin up
         for (row = originRow; row >= dataStartRow; row -= increment) {
-            ab = new Line2D.Double(
-                    col,
-                    row,
-                    col - scaleTickLength,
-                    row);
-            draw(ab);
-            BigDecimal y = imageRowToYCoordinate(row);
-            if (y.compareTo(BigDecimal.ZERO) == 0 || row == originRow) {
-                text_String = "0";
-            } else {
-                //text_String = "" + y.stripTrailingZeros().toPlainString();
-                //text_String = "" + y.round(mc).stripTrailingZeros().toString();
-                text_String = "" + Generic_BigDecimal.roundStrippingTrailingZeros(
-                        y,
-                        Generic_BigDecimal.getDecimalPlacePrecision(y, significantDigits),
-                        roundingMode).toString();
+            if (row <= dataEndRow) {
+                ab = new Line2D.Double(
+                        col,
+                        row,
+                        col - scaleTickLength,
+                        row);
+                draw(ab);
+                BigDecimal y = imageRowToYCoordinate(row);
+                if (y.compareTo(BigDecimal.ZERO) == 0 || row == originRow) {
+                    text_String = "0";
+                } else {
+                    //text_String = "" + y.stripTrailingZeros().toPlainString();
+                    //text_String = "" + y.round(mc).stripTrailingZeros().toString();
+                    text_String = "" + Generic_BigDecimal.roundStrippingTrailingZeros(
+                            y,
+                            Generic_BigDecimal.getDecimalPlacePrecision(y, significantDigits),
+                            roundingMode).toString();
+                }
+                text_Width = getTextWidth(text_String);
+                yAxisMaxLabelWidth = Math.max(yAxisMaxLabelWidth, text_Width);
+                drawString(
+                        text_String,
+                        col - scaleTickAndTextSeparation - scaleTickLength - text_Width,
+                        row + (textHeight / 3));
             }
-            text_Width = getTextWidth(text_String);
-            yAxisMaxLabelWidth = Math.max(yAxisMaxLabelWidth, text_Width);
-            drawString(
-                    text_String,
-                    col - scaleTickAndTextSeparation - scaleTickLength - text_Width,
-                    row + (textHeight / 3));
         }
         // From the origin down
-        for (row = originRow; row <= dataEndRow; row += increment) {
-            ab = new Line2D.Double(
-                    col,
-                    row,
-                    col - scaleTickLength,
-                    row);
-            draw(ab);
-            BigDecimal y = imageRowToYCoordinate(row);
-            if (y.compareTo(BigDecimal.ZERO) == 0 || row == originRow) {
-                text_String = "0";
-            } else {
-                //text_String = "" + y.stripTrailingZeros().toPlainString();
-                //text_String = "" + y.round(mc).stripTrailingZeros().toString();
-                text_String = "" + Generic_BigDecimal.roundStrippingTrailingZeros(
-                        y,
-                        Generic_BigDecimal.getDecimalPlacePrecision(y, significantDigits),
-                        roundingMode).toString();
+        if (originRow > dataEndRow) {
+            for (row = originRow; row <= dataEndRow; row += increment) {
+                ab = new Line2D.Double(
+                        col,
+                        row,
+                        col - scaleTickLength,
+                        row);
+                draw(ab);
+                BigDecimal y = imageRowToYCoordinate(row);
+                if (y.compareTo(BigDecimal.ZERO) == 0 || row == originRow) {
+                    text_String = "0";
+                } else {
+                    //text_String = "" + y.stripTrailingZeros().toPlainString();
+                    //text_String = "" + y.round(mc).stripTrailingZeros().toString();
+                    text_String = "" + Generic_BigDecimal.roundStrippingTrailingZeros(
+                            y,
+                            Generic_BigDecimal.getDecimalPlacePrecision(y, significantDigits),
+                            roundingMode).toString();
+                }
+                text_Width = getTextWidth(text_String);
+                yAxisMaxLabelWidth = Math.max(yAxisMaxLabelWidth, text_Width);
+                drawString(
+                        text_String,
+                        col - scaleTickAndTextSeparation - scaleTickLength - text_Width,
+                        row + (textHeight / 3));
             }
-            text_Width = getTextWidth(text_String);
-            yAxisMaxLabelWidth = Math.max(yAxisMaxLabelWidth, text_Width);
-            drawString(
-                    text_String,
-                    col - scaleTickAndTextSeparation - scaleTickLength - text_Width,
-                    row + (textHeight / 3));
         }
         yAxisExtraWidthLeft += scaleTickLength + scaleTickAndTextSeparation + yAxisMaxLabelWidth;
         // Add the Y axis label
@@ -627,7 +636,8 @@ public class Generic_ScatterPlot extends Generic_Plot {
             Color color,
             Object[] data) {
         if (data != null) {
-            ArrayList<Generic_XYNumericalData> theGeneric_XYNumericalData = (ArrayList<Generic_XYNumericalData>) data[0];
+            ArrayList<Generic_XYNumericalData> theGeneric_XYNumericalData;
+            theGeneric_XYNumericalData = (ArrayList<Generic_XYNumericalData>) data[0];
             Iterator<Generic_XYNumericalData> ite = theGeneric_XYNumericalData.iterator();
             Generic_XYNumericalData aGeneric_XYNumericalData;
             setPaint(color);
