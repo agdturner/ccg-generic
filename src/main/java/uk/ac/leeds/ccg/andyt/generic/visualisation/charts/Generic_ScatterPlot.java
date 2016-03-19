@@ -362,8 +362,8 @@ public class Generic_ScatterPlot extends Generic_Plot {
             }
         }
         // From the origin down
-        if (originRow > dataEndRow) {
-            for (row = originRow; row <= dataEndRow; row += increment) {
+        for (row = originRow; row <= dataEndRow; row += increment) {
+            if (row <= dataEndRow) {
                 ab = new Line2D.Double(
                         col,
                         row,
