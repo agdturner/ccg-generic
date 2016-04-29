@@ -45,6 +45,9 @@ public class Generic_Plot extends Abstract_Generic_Plot {
     public Generic_Plot() {
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         try {
@@ -141,12 +144,12 @@ public class Generic_Plot extends Abstract_Generic_Plot {
             }
         } catch (OutOfMemoryError e) {
             long time;
-            //time = 60000L;
-            //time = 120000L;
-            time = 240000L;
+            //time = 60000L; // 1 minute
+            //time = 120000L;// 2 minutes
+            time = 240000L;  // 4 minutes
             System.out.println("OutOfMemoryError1, waiting " + time / 1000 + " secs "
                     + "before trying Generic_Plot.run again...");
-            Generic_Execution.waitSychronized(this, time); // wait a minute
+            Generic_Execution.waitSychronized(this, time); // wait a time
             System.out.println("...on we go.");
             run();
         }

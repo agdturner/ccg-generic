@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.JFrame;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_XYNumericalData;
+import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Runnable;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Drawable_Interface;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
@@ -20,7 +21,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 /**
  * An class for creating 2D plot visualisations.
  */
-public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interface, Runnable {
+public abstract class Abstract_Generic_Plot extends Generic_Runnable implements Generic_Drawable_Interface, Runnable {
 
     private Object[] data;
     private String format;
@@ -330,7 +331,7 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
         this.extraHeightBottom = extraHeightBottom;
     }
 
-    public BigDecimal getMaxX() {
+    public final BigDecimal getMaxX() {
         if (maxX == null) {
             return new BigDecimal("0");
         }
@@ -341,7 +342,10 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
         this.maxX = maxX;
     }
 
-    public BigDecimal getMinX() {
+    public final BigDecimal getMinX() {
+//        if (minX == null) {
+//            return new BigDecimal("0");
+//        }
         return minX;
     }
 
@@ -497,18 +501,19 @@ public abstract class Abstract_Generic_Plot implements Generic_Drawable_Interfac
     }
 
     /**
-     *
+     * 
+     * @param executorService
+     * @param file
+     * @param format
      * @param title
      * @param dataWidth
-     * @param format
      * @param dataHeight
      * @param xAxisLabel
      * @param yAxisLabel
+     * @param drawOriginLinesOnPlot
      * @param decimalPlacePrecisionForCalculations
      * @param significantDigits
-     * @param aRoundingMode
-     * @param drawOriginLinesOnPlot
-     * @param roundingMode
+     * @param roundingMode 
      */
     protected void init(
             ExecutorService executorService,
