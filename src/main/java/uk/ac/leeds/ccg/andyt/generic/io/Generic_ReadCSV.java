@@ -34,17 +34,17 @@ import java.util.logging.Logger;
  * @author geoagdt
  */
 public class Generic_ReadCSV {
- 
+
     public static boolean testRead(
             File f,
-    File testDir,
-    int syntax) {
-        
+            File testDir,
+            int syntax) {
+
         ArrayList<String> result = null;
-        
-        
+
         File test;
-        test = new File("test.csv");
+        test = new File(testDir,
+                "test" + syntax + ".csv");
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(test);
@@ -62,19 +62,25 @@ public class Generic_ReadCSV {
                     switch (syntax) {
                         case 1:
                             Generic_StaticIO.setStreamTokenizerSyntax1(st);
-        break;
+                            break;
                         case 2:
                             Generic_StaticIO.setStreamTokenizerSyntax2(st);
-        break;
+                            break;
                         case 3:
                             Generic_StaticIO.setStreamTokenizerSyntax3(st);
-        break;
+                            break;
                         case 4:
                             Generic_StaticIO.setStreamTokenizerSyntax4(st);
-        break;
-                        default:
+                            break;
+                        case 5:
                             Generic_StaticIO.setStreamTokenizerSyntax5(st);
-        break;
+                            break;
+                        case 6:
+                            Generic_StaticIO.setStreamTokenizerSyntax6(st);
+                            break;
+                        default:
+                            System.out.println("No Special StreamTokenizerSyntax");
+
                     }
                     int token = st.nextToken();
 //                    long RecordID = 0;
@@ -82,20 +88,26 @@ public class Generic_ReadCSV {
                     while (!(token == StreamTokenizer.TT_EOF)) {
                         switch (token) {
                             case StreamTokenizer.TT_EOL:
+                                result.add(line);
+                                pw.println(line);
+                                line = "";
 //                                if (RecordID % 100 == 0) {
 //                                    System.out.println(line);
 //                                }
 //                                RecordID++;
                                 break;
                             case StreamTokenizer.TT_WORD:
-                                line = st.sval;
-                                result.add(line);
-                                pw.println(line);
+                                line += st.sval;
                                 break;
                             case StreamTokenizer.TT_NUMBER:
-                            break;
+                                break;
                             default:
-                                System.err.println("error");
+                                if (token == 13 || token == 26 || token == 160) {
+                                    // These are returns or tabs or something...
+                                    line += (char) token;
+                                } else {
+                                    System.out.println((char) token + " encountered.");
+                                }
                         }
                         token = st.nextToken();
                     }
@@ -106,12 +118,12 @@ public class Generic_ReadCSV {
                 System.err.println(e.getMessage());
             }
         }
-        
+
         long length0;
         length0 = test.length();
         long length1;
         length1 = f.length();
-        
+
         if (length0 == length1) {
             System.out.println("length0 == length1");
             return true;
@@ -120,5 +132,5 @@ public class Generic_ReadCSV {
         }
         //return result;
     }
-    
+
 }

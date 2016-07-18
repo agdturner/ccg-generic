@@ -780,9 +780,6 @@ public class Generic_StaticIO {
      * Sets the syntax of st as follows:
      * @code {
      * <ul>
-     * <li>st.resetSyntax();</li>
-     * <li>st.wordChars( ',', ',' );</li>
-     * <li>st.wordChars( '"', '"' );</li>
      * <li>st.wordChars( '0', '0' );</li>
      * <li>st.wordChars( '1', '1' );</li>
      * <li>st.wordChars( '2', '2' );</li>
@@ -793,26 +790,13 @@ public class Generic_StaticIO {
      * <li>st.wordChars( '7', '7' );</li>
      * <li>st.wordChars( '8', '8' );</li>
      * <li>st.wordChars( '9', '9' );</li>
-     * <li>st.wordChars( '.', '.' );</li>
-     * <li>st.wordChars( '-', '-' );</li>
-     * <li>st.wordChars( '+', '+' );</li>
-     * <li>st.wordChars( 'a', 'z' );</li>
-     * <li>st.wordChars( 'A', 'Z' );</li>
-     * <li>st.wordChars( '\t', '\t' );</li>
-     * <li>st.wordChars( ' ', ' ' );</li>
-     * <li>st.eolIsSignificant( true );</li>
      * </ul>
      * }
-     * 
+     *
      * @param st <code>StreamTokenizer</code> thats syntax is set.
      */
-    public static void setStreamTokenizerSyntax1(
+    public static void setStreamTokenizerSyntaxNumbersAsWords1(
             StreamTokenizer st) {
-        st.resetSyntax();
-        // st.parseNumbers();
-        st.wordChars(',', ',');
-        st.wordChars('"', '"');
-        // st.whitespaceChars( '"', '"' );
         // st.wordChars( '0', '9' );
         st.wordChars('0', '0');
         st.wordChars('1', '1');
@@ -824,6 +808,37 @@ public class Generic_StaticIO {
         st.wordChars('7', '7');
         st.wordChars('8', '8');
         st.wordChars('9', '9');
+    }
+
+    /**
+     * Sets the syntax of st as follows:
+     * @code {
+     * <ul>
+     * <li>st.resetSyntax();</li>
+     * <li>st.wordChars( ',', ',' );</li>
+     * <li>st.wordChars( '"', '"' );</li>
+     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
+     * <li>st.wordChars( '.', '.' );</li>
+     * <li>st.wordChars( '-', '-' );</li>
+     * <li>st.wordChars( '+', '+' );</li>
+     * <li>st.wordChars( 'a', 'z' );</li>
+     * <li>st.wordChars( 'A', 'Z' );</li>
+     * <li>st.wordChars( '\t', '\t' );</li>
+     * <li>st.wordChars( ' ', ' ' );</li>
+     * <li>st.eolIsSignificant( true );</li>
+     * </ul>
+     * }
+     *
+     * @param st <code>StreamTokenizer</code> thats syntax is set.
+     */
+    public static void setStreamTokenizerSyntax1(
+            StreamTokenizer st) {
+        st.resetSyntax();
+        // st.parseNumbers();
+        st.wordChars(',', ',');
+        st.wordChars('"', '"');
+        // st.whitespaceChars( '"', '"' );
+        setStreamTokenizerSyntaxNumbersAsWords1(st);
         st.wordChars('.', '.');
         st.wordChars('-', '-');
         st.wordChars('_', '_');
@@ -844,16 +859,7 @@ public class Generic_StaticIO {
      * <ul>
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars( '"', '"' );</li>
-     * <li>st.wordChars( '0', '0' );</li>
-     * <li>st.wordChars( '1', '1' );</li>
-     * <li>st.wordChars( '2', '2' );</li>
-     * <li>st.wordChars( '3', '3' );</li>
-     * <li>st.wordChars( '4', '4' );</li>
-     * <li>st.wordChars( '5', '5' );</li>
-     * <li>st.wordChars( '6', '6' );</li>
-     * <li>st.wordChars( '7', '7' );</li>
-     * <li>st.wordChars( '8', '8' );</li>
-     * <li>st.wordChars( '9', '9' );</li>
+     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
      * <li>st.wordChars( '.', '.' );</li>
      * <li>st.wordChars( '-', '-' );</li>
      * <li>st.wordChars( '+', '+' );</li>
@@ -864,23 +870,14 @@ public class Generic_StaticIO {
      * <li>st.eolIsSignificant( true );</li>
      * </ul>
      * }
-     * 
+     *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
     public static void setStreamTokenizerSyntax2(
             StreamTokenizer st) {
         st.resetSyntax();
         st.wordChars('"', '"');
-        st.wordChars('0', '0');
-        st.wordChars('1', '1');
-        st.wordChars('2', '2');
-        st.wordChars('3', '3');
-        st.wordChars('4', '4');
-        st.wordChars('5', '5');
-        st.wordChars('6', '6');
-        st.wordChars('7', '7');
-        st.wordChars('8', '8');
-        st.wordChars('9', '9');
+        setStreamTokenizerSyntaxNumbersAsWords1(st);
         st.wordChars('.', '.');
         st.wordChars('-', '-');
         st.wordChars('+', '+');
@@ -898,16 +895,7 @@ public class Generic_StaticIO {
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars( ',', ',' );</li>
      * <li>st.wordChars( '"', '"' );</li>
-     * <li>st.wordChars( '0', '0' );</li>
-     * <li>st.wordChars( '1', '1' );</li>
-     * <li>st.wordChars( '2', '2' );</li>
-     * <li>st.wordChars( '3', '3' );</li>
-     * <li>st.wordChars( '4', '4' );</li>
-     * <li>st.wordChars( '5', '5' );</li>
-     * <li>st.wordChars( '6', '6' );</li>
-     * <li>st.wordChars( '7', '7' );</li>
-     * <li>st.wordChars( '8', '8' );</li>
-     * <li>st.wordChars( '9', '9' );</li>
+     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
      * <li>st.wordChars( '.', '.' );</li>
      * <li>st.wordChars( '-', '-' );</li>
      * <li>st.wordChars( '+', '+' );</li>
@@ -919,7 +907,7 @@ public class Generic_StaticIO {
      * <li>st.eolIsSignificant( true );</li>
      * </ul>
      * }
-     * 
+     *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
     public static void setStreamTokenizerSyntax3(
@@ -929,17 +917,7 @@ public class Generic_StaticIO {
         st.wordChars(',', ',');
         st.wordChars('"', '"');
         // st.whitespaceChars( '"', '"' );
-        // st.wordChars( '0', '9' );
-        st.wordChars('0', '0');
-        st.wordChars('1', '1');
-        st.wordChars('2', '2');
-        st.wordChars('3', '3');
-        st.wordChars('4', '4');
-        st.wordChars('5', '5');
-        st.wordChars('6', '6');
-        st.wordChars('7', '7');
-        st.wordChars('8', '8');
-        st.wordChars('9', '9');
+        setStreamTokenizerSyntaxNumbersAsWords1(st);
         st.wordChars('.', '.');
         st.wordChars('-', '-');
         st.wordChars('+', '+');
@@ -961,16 +939,7 @@ public class Generic_StaticIO {
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars( ',', ',' );</li>
      * <li>st.wordChars( '"', '"' );</li>
-     * <li>st.wordChars( '0', '0' );</li>
-     * <li>st.wordChars( '1', '1' );</li>
-     * <li>st.wordChars( '2', '2' );</li>
-     * <li>st.wordChars( '3', '3' );</li>
-     * <li>st.wordChars( '4', '4' );</li>
-     * <li>st.wordChars( '5', '5' );</li>
-     * <li>st.wordChars( '6', '6' );</li>
-     * <li>st.wordChars( '7', '7' );</li>
-     * <li>st.wordChars( '8', '8' );</li>
-     * <li>st.wordChars( '9', '9' );</li>
+     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
      * <li>st.wordChars( '.', '.' );</li>
      * <li>st.wordChars( '-', '-' );</li>
      * <li>st.wordChars( '+', '+' );</li>
@@ -986,16 +955,7 @@ public class Generic_StaticIO {
         st.resetSyntax();
         st.wordChars(',', ',');
         st.wordChars('"', '"');
-        st.wordChars('0', '0');
-        st.wordChars('1', '1');
-        st.wordChars('2', '2');
-        st.wordChars('3', '3');
-        st.wordChars('4', '4');
-        st.wordChars('5', '5');
-        st.wordChars('6', '6');
-        st.wordChars('7', '7');
-        st.wordChars('8', '8');
-        st.wordChars('9', '9');
+        setStreamTokenizerSyntaxNumbersAsWords1(st);
         st.wordChars('.', '.');
         st.wordChars('-', '-');
         st.wordChars('+', '+');
@@ -1011,16 +971,7 @@ public class Generic_StaticIO {
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars(',', ',' );</li>
      * <li>st.wordChars( '"', '"' );</li>
-     * <li>st.wordChars( '0', '0' );</li>
-     * <li>st.wordChars( '1', '1' );</li>
-     * <li>st.wordChars( '2', '2' );</li>
-     * <li>st.wordChars( '3', '3' );</li>
-     * <li>st.wordChars( '4', '4' );</li>
-     * <li>st.wordChars( '5', '5' );</li>
-     * <li>st.wordChars( '6', '6' );</li>
-     * <li>st.wordChars( '7', '7' );</li>
-     * <li>st.wordChars( '8', '8' );</li>
-     * <li>st.wordChars( '9', '9' );</li>
+     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
      * <li>st.wordChars( '.', '.' );</li>
      * <li>st.wordChars( '-', '-' );</li>
      * <li>st.wordChars( '+', '+' );</li>
@@ -1044,17 +995,7 @@ public class Generic_StaticIO {
         //st.ordinaryChar(',');
         st.wordChars('"', '"');
         // st.whitespaceChars( '"', '"' );
-        // st.wordChars( '0', '9' );
-        st.wordChars('0', '0');
-        st.wordChars('1', '1');
-        st.wordChars('2', '2');
-        st.wordChars('3', '3');
-        st.wordChars('4', '4');
-        st.wordChars('5', '5');
-        st.wordChars('6', '6');
-        st.wordChars('7', '7');
-        st.wordChars('8', '8');
-        st.wordChars('9', '9');
+        setStreamTokenizerSyntaxNumbersAsWords1(st);
         st.wordChars('.', '.');
         st.wordChars('-', '-');
         st.wordChars('+', '+');
@@ -1069,6 +1010,49 @@ public class Generic_StaticIO {
         st.wordChars('_', '_');
         // st.ordinaryChar( ' ' );
         st.eolIsSignificant(true);
+    }
+
+    /**
+     * Sets the syntax of st as follows:
+     * @code {
+     * <ul>
+     * <li>st.resetSyntax();</li>
+     * <li>st.wordChars(',', ',' );</li>
+     * <li>st.wordChars( '"', '"' );</li>
+     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
+     * <li>st.wordChars( '.', '.' );</li>
+     * <li>st.wordChars( '-', '-' );</li>
+     * <li>st.wordChars( '+', '+' );</li>
+     * <li>st.wordChars( 'a', 'z' );</li>
+     * <li>st.wordChars( 'A', 'Z' );</li>
+     * <li>st.wordChars( '\t', '\t' );</li>
+     * <li>st.wordChars( ' ', ' ' );</li>
+     * <li>st.wordChars( ':', ':' );</li>
+     * <li>st.wordChars( '/', '/' );</li>
+     * <li>st.wordChars( '_', '_' );</li>
+     * </ul>
+     * }
+     *
+     * @param st <code>StreamTokenizer</code> thats syntax is set
+     */
+    public static void setStreamTokenizerSyntax6(
+            StreamTokenizer st) {
+        setStreamTokenizerSyntax5(st);
+        st.wordChars('&', '&');
+        st.wordChars('(', '(');
+        st.wordChars(')', ')');
+        st.wordChars('?', '?');
+        st.wordChars('\'', '\'');
+        st.wordChars('*', '*');
+        st.wordChars('\\', '\\');
+        st.wordChars('/', '/');
+        st.wordChars(';', ';');
+        st.wordChars('%', '%');
+        st.wordChars('"', '"');
+        st.wordChars('£', '£');
+        st.wordChars('|', '|');
+        st.wordChars('@', '@');
+        st.wordChars('=', '=');
     }
 
     /**
