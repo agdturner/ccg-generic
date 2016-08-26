@@ -1053,6 +1053,7 @@ public class Generic_StaticIO {
         st.wordChars('|', '|');
         st.wordChars('@', '@');
         st.wordChars('=', '=');
+        //st.wordChars('', '');
     }
 
     /**
@@ -1541,7 +1542,8 @@ public class Generic_StaticIO {
         long startnew = new Long(splitnew[0]);
         long endnew = new Long(splitnew[1]);
         long rangenew = endnew - startnew;
-        HashMap<Integer, String> numericalAndNumericalUnderscoreFilenames_HashMap = getNumericalAndNumericalUnderscoreFilenames_HashMap(
+        HashMap<Integer, String> numericalAndNumericalUnderscoreFilenames_HashMap;
+        numericalAndNumericalUnderscoreFilenames_HashMap = getNumericalAndNumericalUnderscoreFilenames_HashMap(
                 directory0,
                 underscore);
         Iterator<Integer> a_iterator = numericalAndNumericalUnderscoreFilenames_HashMap.keySet().iterator();

@@ -102,12 +102,18 @@ public class Generic_ReadCSV {
                             case StreamTokenizer.TT_NUMBER:
                                 break;
                             default:
-                                if (token == 13 || token == 26 || token == 160) {
-                                    // These are returns or tabs or something...
+                                if (token == 26 || token == 160) {
+                                    // A type of space " ". It is unusual as st 
+                                    // probably already set to parse space as
+                                    // words.
                                     line += (char) token;
-                                } else {
-                                    System.out.println((char) token + " encountered.");
                                 }
+                                if (token == 13) {
+                                    // These are returns or tabs or something...
+                                    //line += (char) token;
+                                }
+                                System.out.println("line so far " + line);
+                                System.out.println("Odd token " + token +  " \"" + (char) token + "\" encountered.");
                         }
                         token = st.nextToken();
                     }
@@ -121,8 +127,11 @@ public class Generic_ReadCSV {
 
         long length0;
         length0 = test.length();
+        System.out.println("length of test file = " + length0);
+
         long length1;
         length1 = f.length();
+        System.out.println("length of original file = " + length1);
 
         if (length0 == length1) {
             System.out.println("length0 == length1");
