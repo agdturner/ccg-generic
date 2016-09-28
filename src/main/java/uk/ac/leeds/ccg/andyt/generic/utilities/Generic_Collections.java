@@ -18,7 +18,7 @@ package uk.ac.leeds.ccg.andyt.generic.utilities;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
-import java.math.RoundingMode;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,6 +36,24 @@ import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigInteger;
  * @author geoagdt
  */
 public class Generic_Collections {
+
+    /**
+     * Returns a key in M that is mapped to the value input. If there are
+     * multiple keys mapped to the value, this returns the first one that is
+     * come across.
+     *
+     * @param m
+     * @param value
+     * @return
+     */
+    public static Object getKeyFromValue(Map m, Object value) {
+        for (Object o : m.keySet()) {
+            if (m.get(o).equals(value)) {
+                return o;
+            }
+        }
+        return null;
+    }
 
     public static Object[] getIntervalCountsLabelsMins(
             BigDecimal min,
@@ -426,52 +444,53 @@ public class Generic_Collections {
             a_IntegerBigDecimal_TreeMap.put(key, value);
         }
     }
-    
-    
+
     /**
-     * For all values in set1 we count how many values are in set0, and deduce 
-     * how many are not. Also we check how many values that are in set0 that are 
+     * For all values in set1 we count how many values are in set0, and deduce
+     * how many are not. Also we check how many values that are in set0 that are
      * not in set1.
+     *
      * @param set0
      * @param set1
-     * @return long[3] result {@code 
+     * @return long[3] result {@code
      * result[0] = Count of how many values are in both set 0 and set 1;
      * result[1] = Count of how many values are in set 1, but not in set 0;
      * result[2] = Count of how many values are in set 0, but not in set 1;
      * }
      */
     public static long[] getCounts(
-            HashSet set0, 
+            HashSet set0,
             HashSet set1) {
         long[] result;
         result = new long[3];
         result[0] = 0;
         result[1] = 0;
-        result[2] = 0;        
+        result[2] = 0;
         Iterator ite;
         ite = set1.iterator();
         while (ite.hasNext()) {
             Object o = ite.next();
             if (set0.contains(o)) {
-                result[0] ++;
+                result[0]++;
             } else {
-                result[1] ++;
+                result[1]++;
             }
         }
         ite = set0.iterator();
         while (ite.hasNext()) {
             Object o = ite.next();
             if (!set1.contains(o)) {
-                result[2] ++;
+                result[2]++;
             }
         }
         return result;
     }
-    
+
     /**
-     * For all values in set1 we count how many values are in set0, and deduce 
-     * how many are not. Also we check how many values that are in set0 that are 
+     * For all values in set1 we count how many values are in set0, and deduce
+     * how many are not. Also we check how many values that are in set0 that are
      * not in set1.
+     *
      * @param set0
      * @param set1
      * @return Object[2] result {@code
@@ -483,7 +502,7 @@ public class Generic_Collections {
      * }
      */
     public static Object[] getUnionAndCounts(
-            HashSet set0, 
+            HashSet set0,
             HashSet set1) {
         Object[] result;
         result = new Object[2];
@@ -502,11 +521,12 @@ public class Generic_Collections {
         result[1] = counts;
         return result;
     }
-    
+
     /**
-     * For all values in set1 we count how many values are in set0, and deduce 
-     * how many are not. Also we check how many values that are in set0 that are 
+     * For all values in set1 we count how many values are in set0, and deduce
+     * how many are not. Also we check how many values that are in set0 that are
      * not in set1.
+     *
      * @param set0
      * @param set1
      * @return Object[2] result {@code
@@ -518,7 +538,7 @@ public class Generic_Collections {
      * }
      */
     public static Object[] getUnionAndUniques(
-            HashSet set0, 
+            HashSet set0,
             HashSet set1) {
         Object[] result;
         result = new Object[3];

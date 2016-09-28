@@ -2109,4 +2109,48 @@ public class Generic_StaticIO {
         }
         return result;
     }
+    
+    /**
+     * Method to calculate the length of the file path.
+     * The Windows 7 operating systems has a technical restriction of 260 
+     * characters or less for file paths. So a file path that is greater than 
+     * 250 characters is a worry especially if results are going to be zipped 
+     * up and transferred to a Windows 7 machine.
+     * @param f
+     * @return 
+     */
+    public static int getFilePathLength(File f) {
+        int result;
+        String s;
+        try {
+            s = f.getCanonicalPath();
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Returning absolute path as getCanonicalPath() resulted in IOException.");
+            s = f.getAbsolutePath();
+        }
+        result = s.length();
+        return result;
+    }
+    
+    /**
+     * Method to calculate the length of the file path.
+     * The Windows 7 operating systems has a technical restriction of 260 
+     * characters or less for file paths. So a file path that is greater than 
+     * 250 characters is a worry especially if results are going to be zipped 
+     * up and transferred to a Windows 7 machine.
+     * @param f
+     * @return 
+     */
+    public static int getFilePathLength(File f, File dir) {
+        int fileFilePathLength;
+        fileFilePathLength = getFilePathLength(f);
+        int dirFilePathLength;
+        dirFilePathLength = getFilePathLength(dir);
+        return fileFilePathLength - dirFilePathLength;
+    }
+    
+//    public static boolean isStandardFileName(File f){
+//        return isStandardFileName(f.toString());
+//    } 
 }

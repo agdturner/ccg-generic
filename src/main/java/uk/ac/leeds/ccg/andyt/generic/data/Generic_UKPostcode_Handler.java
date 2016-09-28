@@ -78,6 +78,11 @@ public class Generic_UKPostcode_Handler {
 
     }
 
+    /**
+     * 
+     * @param postcode
+     * @return True iff postcode has a valid Postcode Form.
+     */
     public static boolean isValidPostcodeForm(String postcode) {
         if (postcode == null) {
             return false;
