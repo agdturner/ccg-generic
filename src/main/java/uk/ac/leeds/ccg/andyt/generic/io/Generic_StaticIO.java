@@ -141,6 +141,25 @@ public class Generic_StaticIO {
     }
 
     /**
+     * Read Object from File
+     *
+     * @param f
+     * @return
+     */
+    public static Object readObject(
+            File f,
+            boolean throwException) throws IOException, ClassNotFoundException {
+        Object result = null;
+        if (f.length() != 0) {
+                ObjectInputStream ois;
+                ois = getObjectInputStream(f);
+                result = ois.readObject();
+                ois.close();
+        }
+        return result;
+    }
+    
+    /**
      * @param input_File A File which is not a Directory to be copied
      * @param outputDirectory_File The Directory to copy to.
      */

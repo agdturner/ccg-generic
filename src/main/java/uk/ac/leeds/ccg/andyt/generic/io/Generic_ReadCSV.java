@@ -123,6 +123,8 @@ public class Generic_ReadCSV {
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
+        } else {
+            System.out.println("File " + f + " does not exist!");
         }
 
         long length0;
@@ -140,6 +142,98 @@ public class Generic_ReadCSV {
             return false;
         }
         //return result;
+    }
+    
+    public static ArrayList<String> read(
+            File f,
+            File testDir,
+            int syntax) {
+        ArrayList<String> result = null;
+        File test;
+        test = new File(testDir,
+                "test" + syntax + ".csv");
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(test);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Generic_ReadCSV.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (f.exists()) {
+            try {
+                BufferedReader br;
+                StreamTokenizer st;
+                br = Generic_StaticIO.getBufferedReader(f);
+                if (br != null) {
+                    result = new ArrayList<String>();
+                    st = new StreamTokenizer(br);
+                    switch (syntax) {
+                        case 1:
+                            Generic_StaticIO.setStreamTokenizerSyntax1(st);
+                            break;
+                        case 2:
+                            Generic_StaticIO.setStreamTokenizerSyntax2(st);
+                            break;
+                        case 3:
+                            Generic_StaticIO.setStreamTokenizerSyntax3(st);
+                            break;
+                        case 4:
+                            Generic_StaticIO.setStreamTokenizerSyntax4(st);
+                            break;
+                        case 5:
+                            Generic_StaticIO.setStreamTokenizerSyntax5(st);
+                            break;
+                        case 6:
+                            Generic_StaticIO.setStreamTokenizerSyntax6(st);
+                            break;
+                        default:
+                            System.out.println("No Special StreamTokenizerSyntax");
+
+                    }
+                    int token = st.nextToken();
+//                    long RecordID = 0;
+                    String line = "";
+                    while (!(token == StreamTokenizer.TT_EOF)) {
+                        switch (token) {
+                            case StreamTokenizer.TT_EOL:
+                                result.add(line);
+                                //pw.println(line);
+                                line = "";
+//                                if (RecordID % 100 == 0) {
+//                                    System.out.println(line);
+//                                }
+//                                RecordID++;
+                                break;
+                            case StreamTokenizer.TT_WORD:
+                                line += st.sval;
+                                break;
+                            case StreamTokenizer.TT_NUMBER:
+                                break;
+                            default:
+                                if (token == 26 || token == 160) {
+                                    // A type of space " ". It is unusual as st 
+                                    // probably already set to parse space as
+                                    // words.
+                                    line += (char) token;
+                                }
+                                if (token == 13) {
+                                    // These are returns or tabs or something...
+                                    //line += (char) token;
+                                }
+                                //System.out.println("line so far " + line);
+                                //System.out.println("Odd token " + token +  " \"" + (char) token + "\" encountered.");
+                        }
+                        token = st.nextToken();
+                    }
+                    br.close();
+                }
+                pw.close();
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
+        } else {
+            System.out.println("File " + f + " does not exist!");
+        }
+        return result;
     }
 
 }
