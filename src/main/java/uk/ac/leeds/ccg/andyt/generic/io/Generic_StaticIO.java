@@ -143,6 +143,7 @@ public class Generic_StaticIO {
     }
 
     /**
+<<<<<<< HEAD
      * Read File into an ArrayList<String>. The ArrayList will have a size equal
      * to the number of lines in the file and each element will have all the
      * characters in a line represented as Strings.
@@ -341,6 +342,25 @@ public class Generic_StaticIO {
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
+        }
+        return result;
+    }
+        
+    /**
+     * Read Object from File
+     *
+     * @param f
+     * @return
+     */
+    public static Object readObject(
+            File f,
+            boolean throwException) throws IOException, ClassNotFoundException {
+        Object result = null;
+        if (f.length() != 0) {
+                ObjectInputStream ois;
+                ois = getObjectInputStream(f);
+                result = ois.readObject();
+                ois.close();
         }
         return result;
     }
@@ -2328,4 +2348,48 @@ public class Generic_StaticIO {
         }
         return result;
     }
+    
+    /**
+     * Method to calculate the length of the file path.
+     * The Windows 7 operating systems has a technical restriction of 260 
+     * characters or less for file paths. So a file path that is greater than 
+     * 250 characters is a worry especially if results are going to be zipped 
+     * up and transferred to a Windows 7 machine.
+     * @param f
+     * @return 
+     */
+    public static int getFilePathLength(File f) {
+        int result;
+        String s;
+        try {
+            s = f.getCanonicalPath();
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Returning absolute path as getCanonicalPath() resulted in IOException.");
+            s = f.getAbsolutePath();
+        }
+        result = s.length();
+        return result;
+    }
+    
+    /**
+     * Method to calculate the length of the file path.
+     * The Windows 7 operating systems has a technical restriction of 260 
+     * characters or less for file paths. So a file path that is greater than 
+     * 250 characters is a worry especially if results are going to be zipped 
+     * up and transferred to a Windows 7 machine.
+     * @param f
+     * @return 
+     */
+    public static int getFilePathLength(File f, File dir) {
+        int fileFilePathLength;
+        fileFilePathLength = getFilePathLength(f);
+        int dirFilePathLength;
+        dirFilePathLength = getFilePathLength(dir);
+        return fileFilePathLength - dirFilePathLength;
+    }
+    
+//    public static boolean isStandardFileName(File f){
+//        return isStandardFileName(f.toString());
+//    } 
 }
