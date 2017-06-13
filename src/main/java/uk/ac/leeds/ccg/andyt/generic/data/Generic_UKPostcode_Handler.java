@@ -409,7 +409,7 @@ public class Generic_UKPostcode_Handler {
         return _AtoZ_not_CIKMOV;
     }
 
-    protected TreeSet<String> get_0to9() {
+    public TreeSet<String> get_0to9() {
         if (_0to9 == null) {
             _0to9 = new TreeSet<String>();
             _0to9.add("0");
