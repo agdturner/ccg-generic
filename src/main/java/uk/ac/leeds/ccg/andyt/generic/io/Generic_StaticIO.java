@@ -30,6 +30,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -140,6 +142,209 @@ public class Generic_StaticIO {
         return result;
     }
 
+    /**
+     * Read File into an ArrayList<String>. The ArrayList will have a size equal
+     * to the number of lines in the file and each element will have all the
+     * characters in a line represented as Strings.
+     *
+     * @param f The file to be returned as a String.
+     * @param n The number of lines after the first is printed to std_out using
+     * System.out.println(line).
+     * @return
+     */
+    public static ArrayList<String> readIntoArrayList_String(
+            File f) {
+        return readIntoArrayList_String(f, 1);
+    }
+
+    /**
+     * Read File into an ArrayList<String>. The ArrayList will have a size equal
+     * to the number of lines in the file and each element will have all the
+     * characters in a line represented as Strings.
+     *
+     * @param f The file to be returned as a String.
+     * @param n The number of lines after the first is printed to std_out using
+     * System.out.println(line). (n should not be equal to 0)
+     * @return
+     */
+    public static ArrayList<String> readIntoArrayList_String(
+            File f, int n) {
+        ArrayList<String> result = null;
+        if (f.exists()) {
+            try {
+                BufferedReader br;
+                StreamTokenizer st;
+                br = Generic_StaticIO.getBufferedReader(f);
+                if (br != null) {
+                    result = new ArrayList<String>();
+                    st = new StreamTokenizer(br);
+                    int token = st.nextToken();
+                    st.eolIsSignificant(true);
+//                    st.wordChars('0', '0');
+//                    st.wordChars('1', '1');
+//                    st.wordChars('2', '2');
+//                    st.wordChars('3', '3');
+//                    st.wordChars('4', '4');
+//                    st.wordChars('5', '5');
+//                    st.wordChars('6', '6');
+//                    st.wordChars('7', '7');
+//                    st.wordChars('8', '8');
+//                    st.wordChars('9', '9');
+//                    st.wordChars('-', '-');
+                    String line = "";
+                    int RecordID;
+                    RecordID = 0;
+                    boolean lastTokenBeforeEndOfFileIsEndOfLine = false;
+                    while (!(token == StreamTokenizer.TT_EOF)) {
+                        switch (token) {
+                            case StreamTokenizer.TT_EOL:
+                                result.add(line);
+                                System.out.println(line);
+                                line = "";
+                                if (RecordID % n == 0) {
+                                    System.out.println(line);
+                                }
+                                RecordID++;
+                                lastTokenBeforeEndOfFileIsEndOfLine = true;
+                                break;
+                            case StreamTokenizer.TT_WORD:
+                                line += st.sval;
+                                lastTokenBeforeEndOfFileIsEndOfLine = false;
+                                break;
+                            case StreamTokenizer.TT_NUMBER:
+                                double number;
+                                number = st.nval;
+                                if (number == (long) number) {
+                                    line += (long) st.nval;
+                                } else {
+                                    line += st.nval;
+                                }
+                                lastTokenBeforeEndOfFileIsEndOfLine = false;
+                                break;
+                            default:
+                                if (token == 26 || token == 160) {
+                                    // A type of space " ". It is unusual as st 
+                                    // probably already set to parse space as
+                                    // words.
+                                    line += (char) token;
+                                } else if (token == 13) {
+                                    // These are returns or tabs or something...
+                                    //line += (char) token;
+                                } else {
+                                    //line += (char) token;
+                                }
+//                                System.out.println("line so far " + line);
+//                                System.out.println("Odd token " + token + " \"" + (char) token + "\" encountered.");
+                                lastTokenBeforeEndOfFileIsEndOfLine = false;
+                        }
+                        token = st.nextToken();
+                    }
+                    if (lastTokenBeforeEndOfFileIsEndOfLine == false) {
+                        result.add(line);
+                    }
+                    br.close();
+                }
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Read File into an ArrayList<String>. The ArrayList will have a size equal
+     * to the number of lines in the file and each element will have all the
+     * characters in a line represented as Strings.
+     *
+     * @param f The file to be returned as a String.
+     * @param n The number of lines after the first is printed to std_out using
+     * System.out.println(line).
+     * @param firstLine The first line (counting from 0) that is included.
+     * @param lastLine The last line (counting from 0) that is included.
+     * @return
+     */
+    public static ArrayList<String> readIntoArrayList_String(
+            File f, int n, int firstLine, int lastLine) {
+        ArrayList<String> result = null;
+        if (f.exists()) {
+            try {
+                BufferedReader br;
+                StreamTokenizer st;
+                br = Generic_StaticIO.getBufferedReader(f);
+                if (br != null) {
+                    result = new ArrayList<String>();
+                    st = new StreamTokenizer(br);
+                    int token = st.nextToken();
+                    st.eolIsSignificant(true);
+                    String line = "";
+                    int RecordID;
+                    RecordID = firstLine;
+                    int lineNumber;
+                    lineNumber = 0;
+                    boolean lastTokenBeforeEndOfFileIsEndOfLine = false;
+                    while (!(token == StreamTokenizer.TT_EOF)) {
+                        switch (token) {
+                            case StreamTokenizer.TT_EOL:
+                                lineNumber++;
+                                if (lineNumber >= firstLine) {
+                                    result.add(line);
+                                    System.out.println(line);
+                                    line = "";
+                                    if (RecordID % n == 0) {
+                                        System.out.println(line);
+                                    }
+                                    RecordID++;
+                                    lastTokenBeforeEndOfFileIsEndOfLine = true;
+                                }
+                                break;
+                            case StreamTokenizer.TT_WORD:
+                                line += st.sval;
+                                lastTokenBeforeEndOfFileIsEndOfLine = false;
+                                break;
+                            case StreamTokenizer.TT_NUMBER:
+                                double number;
+                                number = st.nval;
+                                if (number == (long) number) {
+                                    line += (long) st.nval;
+                                } else {
+                                    line += st.nval;
+                                }
+                                lastTokenBeforeEndOfFileIsEndOfLine = false;
+                                break;
+                            default:
+                                if (token == 26 || token == 160) {
+                                    // A type of space " ". It is unusual as st 
+                                    // probably already set to parse space as
+                                    // words.
+                                    line += (char) token;
+                                } else if (token == 13) {
+                                    // These are returns or tabs or something...
+                                    //line += (char) token;
+                                } else {
+                                    //line += (char) token;
+                                }
+//                                System.out.println("line so far " + line);
+//                                System.out.println("Odd token " + token + " \"" + (char) token + "\" encountered.");
+                                lastTokenBeforeEndOfFileIsEndOfLine = false;
+                        }
+                        if (lineNumber < lastLine) {
+                            token = st.nextToken();
+                        } else {
+                            break;
+                        }
+                    }
+                    if (lastTokenBeforeEndOfFileIsEndOfLine == false) {
+                        result.add(line);
+                    }
+                    br.close();
+                }
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+        return result;
+    }
+    
     /**
      * @param input_File A File which is not a Directory to be copied
      * @param outputDirectory_File The Directory to copy to.
@@ -336,6 +541,20 @@ public class Generic_StaticIO {
         fos = getFileOutputStream(f);
         result = new BufferedOutputStream(fos);
         return result;
+    }
+
+    /**
+     * The Writer used here is a PrintWriter.
+     *
+     * @param f
+     * @param append if true then file is to be appended to otherwise file is to
+     * be overwritten.
+     * @return <code>new BufferedWriter(new FileInputStream(f)))</code>
+     */
+    public static BufferedWriter getBufferedWriter(File f, boolean append) {
+        PrintWriter pw;
+        pw = getPrintWriter(f, append);
+        return new BufferedWriter(pw);
     }
 
     /**
