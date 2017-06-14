@@ -314,7 +314,7 @@ public class Generic_UKPostcode_Handler {
         return "";
     }
 
-    protected TreeSet<String> get_NAA() {
+    public static TreeSet<String> get_NAA() {
         if (_NAA == null) {
             _NAA = new TreeSet<String>();
             _AtoZ_not_CIKMOV = get_AtoZ_not_CIKMOV();
@@ -336,7 +336,7 @@ public class Generic_UKPostcode_Handler {
         return _NAA;
     }
 
-    protected TreeSet<String> get_AtoZ_not_QVX() {
+    public static TreeSet<String> get_AtoZ_not_QVX() {
         if (_AtoZ_not_QVX == null) {
             _AtoZ_not_QVX = Generic_StaticString.getUpperCaseStringAlphabet_TreeSet();
             _AtoZ_not_QVX.remove("Q");
@@ -346,7 +346,7 @@ public class Generic_UKPostcode_Handler {
         return _AtoZ_not_QVX;
     }
 
-    protected TreeSet<String> get_AtoZ_not_IJZ() {
+    public static TreeSet<String> get_AtoZ_not_IJZ() {
         if (_AtoZ_not_IJZ == null) {
             _AtoZ_not_IJZ = Generic_StaticString.getUpperCaseStringAlphabet_TreeSet();
             _AtoZ_not_IJZ.remove("I");
@@ -356,7 +356,7 @@ public class Generic_UKPostcode_Handler {
         return _AtoZ_not_IJZ;
     }
 
-    protected TreeSet<String> get_ABCDEFGHJKSTUW() {
+    public static TreeSet<String> get_ABCDEFGHJKSTUW() {
         if (_ABCDEFGHJKSTUW == null) {
             _ABCDEFGHJKSTUW = new TreeSet<String>();
             _ABCDEFGHJKSTUW.add("A");
@@ -377,7 +377,7 @@ public class Generic_UKPostcode_Handler {
         return _ABCDEFGHJKSTUW;
     }
 
-    protected TreeSet<String> get_ABEHMNPRVWXY() {
+    public static TreeSet<String> get_ABEHMNPRVWXY() {
         if (_ABEHMNPRVWXY == null) {
             _ABEHMNPRVWXY = new TreeSet<String>();
             _ABEHMNPRVWXY.add("A");
@@ -396,7 +396,7 @@ public class Generic_UKPostcode_Handler {
         return _ABEHMNPRVWXY;
     }
 
-    protected TreeSet<String> get_AtoZ_not_CIKMOV() {
+    public static TreeSet<String> get_AtoZ_not_CIKMOV() {
         if (_AtoZ_not_CIKMOV == null) {
             _AtoZ_not_CIKMOV = Generic_StaticString.getUpperCaseStringAlphabet_TreeSet();
             _AtoZ_not_CIKMOV.remove("C");
@@ -409,7 +409,7 @@ public class Generic_UKPostcode_Handler {
         return _AtoZ_not_CIKMOV;
     }
 
-    public TreeSet<String> get_0to9() {
+    public static TreeSet<String> get_0to9() {
         if (_0to9 == null) {
             _0to9 = new TreeSet<String>();
             _0to9.add("0");
