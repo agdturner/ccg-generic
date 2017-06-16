@@ -41,7 +41,7 @@ public abstract class Generic_XMLDOMReader {
     protected DocumentBuilder aDocumentBuilder;
     protected Document aDocument;
 
-    protected void init(
+    protected final void init(
             File file,
             String nodeName) {
         this.file = file;
