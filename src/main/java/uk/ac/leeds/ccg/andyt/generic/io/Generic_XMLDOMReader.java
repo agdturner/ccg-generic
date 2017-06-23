@@ -41,6 +41,13 @@ public abstract class Generic_XMLDOMReader {
     protected DocumentBuilder aDocumentBuilder;
     protected Document aDocument;
 
+    /**
+     * if nodeName is "*" this will initialise the node list for all nodes 
+     * otherwise it will only initialise the node list for those nodes with 
+     * the given name. 
+     * @param file
+     * @param nodeName 
+     */
     protected final void init(
             File file,
             String nodeName) {
