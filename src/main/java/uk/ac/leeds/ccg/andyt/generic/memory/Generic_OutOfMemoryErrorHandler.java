@@ -26,19 +26,19 @@ import java.util.Arrays;
 public abstract class Generic_OutOfMemoryErrorHandler
         implements Generic_OutOfMemoryErrorHandlerInterface, Serializable {
 
-    public transient Generic_TestMemory _Generic_TestMemory;
+    public transient Generic_TestMemory Generic_TestMemory;
 
-    public boolean _HandleOutOfMemoryError_boolean;
+    public boolean HandleOutOfMemoryError_boolean;
 
-    public static final int Default_Memory_Threshold = 6000000;//4000000;
+    public final int Default_Memory_Threshold = 6000000;//4000000;
     /**
      * For ease of search and replace coding.
      */
-    public static final boolean HandleOutOfMemoryErrorFalse = false;
+    public final boolean HandleOutOfMemoryErrorFalse = false;
     /**
      * For ease of search and replace coding.
      */
-    public static final boolean HandleOutOfMemoryErrorTrue = true;
+    public final boolean HandleOutOfMemoryErrorTrue = true;
     /**
      * Reserve memory that can be set to null and garbage collected
      * so as to handle OutOfMemoryErrors.
@@ -50,8 +50,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
     public abstract boolean swapToFile_DataAny(boolean handleOutOfMemoryError);
 
     /**
-     * May initialise _Generic_TestMemory and _Generic_TestMemory._Runtime.
-     * @return _Generic_TestMemory._Runtime
+     * May initialise Generic_TestMemory and Generic_TestMemory._Runtime.
+     * @return Generic_TestMemory._Runtime
      */
     public Runtime getRuntime() {
         return get_Generic_TestMemory()._Runtime;
@@ -96,6 +96,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      */
 //    public abstract void init_MemoryReserve(
 //            boolean handleOutOfMemoryError);
+    @Override
     public void init_MemoryReserve(
             boolean handleOutOfMemoryError) {
         try {
@@ -152,14 +153,14 @@ public abstract class Generic_OutOfMemoryErrorHandler
     protected abstract boolean tryToEnsureThereIsEnoughMemoryToContinue();
 
     /**
-     * For initialising and returning _Generic_TestMemory.
-     * @return _Generic_TestMemory (after default construction if null)
+     * For initialising and returning Generic_TestMemory.
+     * @return Generic_TestMemory (after default construction if null)
      */
     protected Generic_TestMemory get_Generic_TestMemory() {
-        if (_Generic_TestMemory == null) {
-            _Generic_TestMemory = new Generic_TestMemory();
+        if (Generic_TestMemory == null) {
+            Generic_TestMemory = new Generic_TestMemory();
         }
-        return _Generic_TestMemory;
+        return Generic_TestMemory;
     }
 
     /**
@@ -167,6 +168,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @param handleOutOfMemoryError
      * @return true if ensured there is enough memory to continue
      */
+    @Override
     public abstract boolean tryToEnsureThereIsEnoughMemoryToContinue(
             boolean handleOutOfMemoryError);
 
