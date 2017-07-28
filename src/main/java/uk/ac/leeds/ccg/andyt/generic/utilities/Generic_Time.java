@@ -7,7 +7,7 @@ package uk.ac.leeds.ccg.andyt.generic.utilities;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+//
 /**
  *
  * @author geoagdt
@@ -56,6 +56,13 @@ public class Generic_Time {
     
 
     public static void printTime(long millis) {
+        String time;
+        time = getTime(millis);
+        System.out.println(time);
+    }
+    
+    public static String getTime(long millis) {
+        
         int MilliSecondsInDay = 24 * MilliSecondsInHour;
         int MilliSecondsInMinute = 60000;
         long millis2 = millis;
@@ -79,11 +86,13 @@ public class Generic_Time {
             seconds++;
             millis2 -= MilliSecondsInSecond;
         }
-        System.out.println("" + days + " day(s) "
+        String result;
+        result = "" + days + " day(s) "
                 + hours + " hour(s) "
                 + minutes + " minute(s) "
                 + seconds + " second(s) "
-                + millis2 + " millisecond(s)");
+                + millis2 + " millisecond(s)";
+        return result;
     }
 
     /**
@@ -231,4 +240,30 @@ public class Generic_Time {
         String formatted = format1.format(cal.getTime());
         return formatted;
     }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+    
+    
 }
