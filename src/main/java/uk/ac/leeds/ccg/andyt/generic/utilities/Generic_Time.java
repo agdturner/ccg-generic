@@ -240,6 +240,28 @@ public class Generic_Time {
         String formatted = format1.format(cal.getTime());
         return formatted;
     }
+    
+    /**
+     * @return Current clock date as yyyy-MM-dd HH:mm:ss format
+     */
+    public static String getDateAndTime() {
+        Calendar cal = Calendar.getInstance();
+        //cal.add(Calendar.DATE, 1);
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formatted = format1.format(cal.getTime());
+        return formatted;
+    }
+
+    /**
+     * @return Current clock date as yyyy-MM-dd-HH format
+     */
+    public static String getDateAndTimeHourDir() {
+        Calendar cal = Calendar.getInstance();
+        //cal.add(Calendar.DATE, 1);
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd-HH");
+        String formatted = format1.format(cal.getTime());
+        return formatted;
+    }
 
     public int getDay() {
         return day;
