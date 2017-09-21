@@ -326,7 +326,14 @@ public class Generic_Collections {
     public static void addToTreeMapStringInteger(
             TreeMap<String, Integer> map,
             String key,
-            Integer value) {
+            Integer value) { 
+//        // DEBUG
+//        if (map == null) {
+//            int debug = 1;
+//        }
+//        if (key == null) {
+//            int debug = 1;
+//        }
         Integer currentValue = map.get(key);
         if (currentValue != null) {
             Integer newValue = currentValue + value;

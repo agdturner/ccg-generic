@@ -26,7 +26,7 @@ import java.util.Arrays;
 public abstract class Generic_OutOfMemoryErrorHandler
         implements Generic_OutOfMemoryErrorHandlerInterface, Serializable {
 
-    public transient Generic_TestMemory Generic_TestMemory;
+    public transient Generic_TestMemory _Generic_TestMemory;
 
     public boolean _HandleOutOfMemoryError_boolean;
 
@@ -50,8 +50,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
     public abstract boolean swapToFile_DataAny(boolean handleOutOfMemoryError);
 
     /**
-     * May initialise Generic_TestMemory and Generic_TestMemory._Runtime.
-     * @return Generic_TestMemory._Runtime
+     * May initialise _Generic_TestMemory and _Generic_TestMemory._Runtime.
+     * @return _Generic_TestMemory._Runtime
      */
     public Runtime getRuntime() {
         return get_Generic_TestMemory()._Runtime;
@@ -153,14 +153,14 @@ public abstract class Generic_OutOfMemoryErrorHandler
     protected abstract boolean tryToEnsureThereIsEnoughMemoryToContinue();
 
     /**
-     * For initialising and returning Generic_TestMemory.
-     * @return Generic_TestMemory (after default construction if null)
+     * For initialising and returning _Generic_TestMemory.
+     * @return _Generic_TestMemory (after default construction if null)
      */
     protected Generic_TestMemory get_Generic_TestMemory() {
-        if (Generic_TestMemory == null) {
-            Generic_TestMemory = new Generic_TestMemory();
+        if (_Generic_TestMemory == null) {
+            _Generic_TestMemory = new Generic_TestMemory();
         }
-        return Generic_TestMemory;
+        return _Generic_TestMemory;
     }
 
     /**
