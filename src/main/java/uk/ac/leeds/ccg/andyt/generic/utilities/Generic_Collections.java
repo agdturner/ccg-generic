@@ -323,10 +323,11 @@ public class Generic_Collections {
      * @param key
      * @param value
      */
-    public static void addToTreeMapStringInteger(
+    public static int addToTreeMapStringInteger(
             TreeMap<String, Integer> map,
             String key,
             Integer value) { 
+        int result;
 //        // DEBUG
 //        if (map == null) {
 //            int debug = 1;
@@ -336,11 +337,12 @@ public class Generic_Collections {
 //        }
         Integer currentValue = map.get(key);
         if (currentValue != null) {
-            Integer newValue = currentValue + value;
-            map.put(key, newValue);
+            result = currentValue + value;
         } else {
-            map.put(key, value);
+            result = 0;
         }
+        map.put(key, result);
+        return result;
     }
 
     /**

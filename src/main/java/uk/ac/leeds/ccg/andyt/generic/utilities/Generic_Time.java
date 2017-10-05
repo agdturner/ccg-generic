@@ -178,6 +178,47 @@ public class Generic_Time {
         }
         return null;
     }
+    
+    public static String getMonth3Letters(
+            int monthNumber) {
+        if (monthNumber == 1) {
+            return "Jan";
+        }
+        if (monthNumber == 2) {
+            return "Feb";
+        }
+        if (monthNumber == 3) {
+            return "Mar";
+        }
+        if (monthNumber == 4) {
+            return "Apr";
+        }
+        if (monthNumber == 5) {
+            return "May";
+        }
+        if (monthNumber == 6) {
+            return "Jun";
+        }
+        if (monthNumber == 7) {
+            return "Jul";
+        }
+        if (monthNumber == 8) {
+            return "Aug";
+        }
+        if (monthNumber == 9) {
+            return "Sep";
+        }
+        if (monthNumber == 10) {
+            return "Oct";
+        }
+        if (monthNumber == 11) {
+            return "Nov";
+        }
+        if (monthNumber == 12) {
+            return "Dec";
+        }
+        return null;
+    }
 
     public static String getMonthNumber(String month3Letters) {
         if (month3Letters.equalsIgnoreCase("Jan")) {
@@ -219,6 +260,46 @@ public class Generic_Time {
         return null;
     }
 
+    public static int getMonthInt(String month3Letters) {
+        if (month3Letters.equalsIgnoreCase("Jan")) {
+            return 1;
+        }
+        if (month3Letters.equalsIgnoreCase("Feb")) {
+            return 2;
+        }
+        if (month3Letters.equalsIgnoreCase("Mar")) {
+            return 3;
+        }
+        if (month3Letters.equalsIgnoreCase("Apr")) {
+            return 4;
+        }
+        if (month3Letters.equalsIgnoreCase("May")) {
+            return 5;
+        }
+        if (month3Letters.equalsIgnoreCase("Jun")) {
+            return 6;
+        }
+        if (month3Letters.equalsIgnoreCase("Jul")) {
+            return 7;
+        }
+        if (month3Letters.equalsIgnoreCase("Aug")) {
+            return 8;
+        }
+        if (month3Letters.equalsIgnoreCase("Sep")) {
+            return 9;
+        }
+        if (month3Letters.equalsIgnoreCase("Oct")) {
+            return 10;
+        }
+        if (month3Letters.equalsIgnoreCase("Nov")) {
+            return 11;
+        }
+        if (month3Letters.equalsIgnoreCase("Dec")) {
+            return 12;
+        }
+        return -1;
+    }
+    
     public static int getMonthDiff(
             int year0,
             int year1,
