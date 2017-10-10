@@ -18,7 +18,6 @@ package uk.ac.leeds.ccg.andyt.generic.utilities;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -322,6 +321,7 @@ public class Generic_Collections {
      * @param map
      * @param key
      * @param value
+     * @return 
      */
     public static int addToTreeMapStringInteger(
             TreeMap<String, Integer> map,
