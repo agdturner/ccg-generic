@@ -40,7 +40,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
     private BigDecimal yIncrement;
     private int numberOfYAxisTicks;
 
-    private TreeMap<BigDecimal, String> xAxisLabels;
+    private TreeMap<BigDecimal, ?> xAxisLabels;
     private BigDecimal xMax;
     private BigDecimal xPin;
     private BigDecimal xIncrement;
@@ -408,8 +408,8 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
         int col = getDataStartCol();
         int previousCol = col;
 
-        TreeMap<BigDecimal, String> xAxisLabels;
-        xAxisLabels = getxAxisLabels();
+        //TreeMap<BigDecimal, ?> xAxisLabels;
+        //xAxisLabels = getxAxisLabels();
         if (xAxisLabels != null) {
             boolean first = true;
             Iterator<BigDecimal> ite;
@@ -417,7 +417,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
             while (ite.hasNext()) {
                 BigDecimal x;
                 x = ite.next();
-                String label = xAxisLabels.get(x);
+                Object label = xAxisLabels.get(x);
                 col = coordinateToScreenCol(x);
                 if (col >= dataStartCol) {
                     ab = new Line2D.Double(
@@ -427,7 +427,7 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
                             row + scaleTickLength);
                     draw(ab);
                     if (first || (col - previousCol) > textHeight) {
-                        text_String = label;
+                        text_String = label.toString();
                         textWidth = getTextWidth(text_String);
                         writeText(
                                 text_String,
@@ -811,14 +811,14 @@ public abstract class Abstract_Generic_LineGraph extends Generic_Plot {
     /**
      * @return the xAxisLabels
      */
-    public TreeMap<BigDecimal, String> getxAxisLabels() {
+    public TreeMap<BigDecimal, ?> getxAxisLabels() {
         return xAxisLabels;
     }
 
     /**
      * @param xAxisLabels the xAxisLabels to set
      */
-    public void setxAxisLabels(TreeMap<BigDecimal, String> xAxisLabels) {
+    public void setxAxisLabels(TreeMap<BigDecimal, ?> xAxisLabels) {
         this.xAxisLabels = xAxisLabels;
     }
 
