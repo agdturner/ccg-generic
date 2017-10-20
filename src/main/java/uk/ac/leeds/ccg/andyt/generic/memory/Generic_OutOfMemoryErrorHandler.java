@@ -28,7 +28,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
 
     public transient Generic_TestMemory _Generic_TestMemory;
 
-    public boolean _HandleOutOfMemoryError_boolean;
+    public boolean HandleOutOfMemoryError;
 
     public final int Default_Memory_Threshold = 6000000;//4000000;
     /**
