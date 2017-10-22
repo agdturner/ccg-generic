@@ -21,93 +21,126 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * A class to be extended so as to handle OutOfMemoryErrors.
+ * A class to be extended for memory management involving the controlled
+ * swapping of parts of data from the fast access memory to the filespace and
+ * the handling of OutOfMemoryErrors should they be encountered.
  */
 public abstract class Generic_OutOfMemoryErrorHandler
         implements Generic_OutOfMemoryErrorHandlerInterface, Serializable {
 
-    public transient Generic_TestMemory _Generic_TestMemory;
+    /**
+     * For tests on the available memory.
+     */
+    public transient Generic_TestMemory Generic_TestMemory;
 
+    /**
+     * For storing the default as to whether OutOfMemoryErrors are handled.
+     */
     public boolean HandleOutOfMemoryError;
 
-    public final int Default_Memory_Threshold = 6000000;//4000000;
     /**
-     * For ease of search and replace coding.
+     * A default controlling the amount of memory that is reserved and cleared
+     * for handling OutOfMemoryErrors should they be encountered.
+     */
+    public final int Default_Memory_Threshold = 6000000;//4000000;
+
+    /**
+     * For use when OutOfMemory handling is definitely not wanted. It is thought
+     * better to have this rather than use a false value as and when as it
+     * allows for finding those parts of the code that are actually used in this
+     * regard.
      */
     public final boolean HandleOutOfMemoryErrorFalse = false;
+
     /**
-     * For ease of search and replace coding.
+     * For use when OutOfMemory handling is definitely wanted. It is thought
+     * better to have this rather than use a false value as and when as it
+     * allows for finding those parts of the code that are actually used in this
+     * regard.
      */
     public final boolean HandleOutOfMemoryErrorTrue = true;
+
     /**
-     * Reserve memory that can be set to null and garbage collected
-     * so as to handle OutOfMemoryErrors.
+     * Reserve memory that can be set to null and garbage collected so as to
+     * provide room in memory for handling OutOfMemoryErrors involving the
+     * identification and writing of parts of data to filespace.
      */
-    protected transient int[] _MemoryReserve;
-    //protected transient int[] _MemoryReserve;
-
-    public abstract boolean swapToFile_DataAny();
-    public abstract boolean swapToFile_DataAny(boolean handleOutOfMemoryError);
+    protected transient int[] MemoryReserve;
 
     /**
-     * May initialise _Generic_TestMemory and _Generic_TestMemory._Runtime.
-     * @return _Generic_TestMemory._Runtime
+     * A method which will try to swap any data.
+     *
+     * @return an indication if some data was swapped.
+     */
+    protected abstract boolean swapDataAny();
+
+    /**
+     * A method which will try to swap any data.
+     *
+     * @param handleOutOfMemoryError If true this will try to handle any
+     * OutOfMemoryError encountered in attempting to swap any data.
+     * @return an indication if some data was swapped.
+     */
+    public abstract boolean swapDataAny(boolean handleOutOfMemoryError);
+
+    /**
+     * May initialise Generic_TestMemory and Generic_TestMemory.Runtime.
+     *
+     * @return Generic_TestMemory.Runtime
      */
     public Runtime getRuntime() {
-        return get_Generic_TestMemory()._Runtime;
+        return getGeneric_TestMemory().Runtime;
     }
 
     /**
-     * Initialises _MemoryReserve as an array of size given by size.
+     * Initialises MemoryReserve as an array of size given by size.
      *
-     * @param size Size that _MemoryReserve is initialised to.
+     * @param size Size that MemoryReserve is initialised to.
      */
-    protected final void init_MemoryReserve(
-            int size) {
-        if (this._MemoryReserve == null) {
-            this._MemoryReserve = new int[size];
-            Arrays.fill(
-                    this._MemoryReserve,
-                    Integer.MIN_VALUE);
+    protected final void initMemoryReserve(int size) {
+        if (MemoryReserve == null) {
+            MemoryReserve = new int[size];
+            Arrays.fill(MemoryReserve,Integer.MIN_VALUE);
         }
     }
 
     /**
-     * @return this._MemoryReserve.
+     * @return this.MemoryReserve.
      */
-    public int[] get_MemoryReserve() {
-        return this._MemoryReserve;
+    public int[] getMemoryReserve() {
+        return MemoryReserve;
     }
 
     /**
-     * this._MemoryReserve = a_MemoryReserve;
+     * this.MemoryReserve = a_MemoryReserve;
+     *
      * @param a_MemoryReserve
      */
     public void set_MemoryReserve(int[] a_MemoryReserve) {
-        this._MemoryReserve = a_MemoryReserve;
+        this.MemoryReserve = a_MemoryReserve;
     }
 
     /**
-     * Initialises _MemoryReserve.
-     * @param handleOutOfMemoryError
-     *   If true then OutOfMemoryErrors are caught, swap operations are initiated,
-     *     then the method is re-called.
-     *   If false then OutOfMemoryErrors are caught and thrown.
+     * Initialises MemoryReserve.
+     *
+     * @param handleOutOfMemoryError If true then OutOfMemoryErrors are caught,
+     * swap operations are initiated, then the method is re-called. If false
+     * then OutOfMemoryErrors are caught and thrown.
      */
-//    public abstract void init_MemoryReserve(
+//    public abstract void initMemoryReserve(
 //            boolean handleOutOfMemoryError);
     @Override
-    public void init_MemoryReserve(
+    public void initMemoryReserve(
             boolean handleOutOfMemoryError) {
         try {
-            init_MemoryReserve();
+            initMemoryReserve();
             tryToEnsureThereIsEnoughMemoryToContinue();
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                        HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -118,28 +151,28 @@ public abstract class Generic_OutOfMemoryErrorHandler
     }
 
     /**
-     * Initialises _MemoryReserve as an int[] of size Default_Memory_Threshold.
-     * _MemoryReserve is for use when an OutOfMemoryError is handled. This
-     * involves clear_MemoryReserve() which sets _MemoryReserve to null 
-     * providing memory for swapping operations that move data from one location
-     * (memory/RAM) to another location (disk). The swapping may involve
-     * accounting the amount and details of the data swapped and the locations
-     * and returning this information.
+     * Initialises MemoryReserve as an int[] of size Default_Memory_Threshold.
+     * MemoryReserve is for use when an OutOfMemoryError is handled. This
+ involves clearMemoryReserve() which sets MemoryReserve to null providing
+ memory for swapping operations that move data from one location
+ (memory/RAM) to another location (disk). The swapping may involve
+ accounting the amount and details of the data swapped and the locations
+ and returning this information.
      */
-    protected void init_MemoryReserve() {
-        init_MemoryReserve(Default_Memory_Threshold);
+    protected void initMemoryReserve() {
+        Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(Default_Memory_Threshold);
     }
 
     /**
-     * Clears _MemoryReserve by setting it to null and calling the garbage
-     * collector. After this method is executed then no further method calls 
-     * will handle OutOfMemoryError until _MemoryReserve is initialised again.
-     * Generally, the assumption is that _MemoryReserve is not null before this
+     * Clears MemoryReserve by setting it to null and calling the garbage
+     * collector. After this method is executed then no further method calls
+     * will handle OutOfMemoryError until MemoryReserve is initialised again.
+     * Generally, the assumption is that MemoryReserve is not null before this
      * is called.
      */
-    public final void clear_MemoryReserve() {
+    public final void clearMemoryReserve() {
         //log(Runtime.getRuntime().freeMemory());
-        this._MemoryReserve = null;
+        this.MemoryReserve = null;
         System.gc();
     }
 
@@ -148,23 +181,26 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * prevent them being thrown. If this method returns false then it may be
      * best to write all data to persistent memory and restart the JVM with a
      * increased heap size before attempting to continue.
+     *
      * @return true if there is enough memory to continue and false otherwise.
      */
     protected abstract boolean tryToEnsureThereIsEnoughMemoryToContinue();
 
     /**
-     * For initialising and returning _Generic_TestMemory.
-     * @return _Generic_TestMemory (after default construction if null)
+     * For initialising and returning Generic_TestMemory.
+     *
+     * @return Generic_TestMemory (after default construction if null)
      */
-    protected Generic_TestMemory get_Generic_TestMemory() {
-        if (_Generic_TestMemory == null) {
-            _Generic_TestMemory = new Generic_TestMemory();
+    protected Generic_TestMemory getGeneric_TestMemory() {
+        if (Generic_TestMemory == null) {
+            Generic_TestMemory = new Generic_TestMemory();
         }
-        return _Generic_TestMemory;
+        return Generic_TestMemory;
     }
 
     /**
      * A method to ensure there is enough memory to continue.
+     *
      * @param handleOutOfMemoryError
      * @return true if ensured there is enough memory to continue
      */
@@ -174,20 +210,22 @@ public abstract class Generic_OutOfMemoryErrorHandler
 
     /**
      * <code>
-     * return get_Generic_TestMemory().getTotalFreeMemory();
-     * </code>
-     * @return 
+ return getGeneric_TestMemory().getTotalFreeMemory();
+ </code>
+     *
+     * @return
      */
     protected long getTotalFreeMemory() {
-        return get_Generic_TestMemory().getTotalFreeMemory();
+        return getGeneric_TestMemory().getTotalFreeMemory();
     }
 
     /**
      * For returning the total free memory available to the JVM. This method
      * will try to swap data if handleOutOfMemory is true, but if it finds no
      * data to swap will throw an OutOfMemoryError.
+     *
      * @param handleOutOfMemoryError
-     * @return 
+     * @return
      */
     public long getTotalFreeMemory(
             boolean handleOutOfMemoryError) {
@@ -197,12 +235,12 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return result;
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                boolean swapSuccess = swapToFile_DataAny();
-                if (!swapSuccess){
-                        throw new OutOfMemoryError();
+                clearMemoryReserve();
+                boolean swapSuccess = Generic_OutOfMemoryErrorHandler.this.swapDataAny();
+                if (!swapSuccess) {
+                    throw new OutOfMemoryError();
                 }
-                init_MemoryReserve(HandleOutOfMemoryErrorFalse);
+                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HandleOutOfMemoryErrorFalse);
                 return getTotalFreeMemory(
                         handleOutOfMemoryError);
             } else {
@@ -213,9 +251,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
 
     /**
      * For initialising a String of length length.
+     *
      * @param length
      * @param handleOutOfMemoryError
-     * @return 
+     * @return
      */
     public String initString(
             int length,
@@ -229,10 +268,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                       HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -261,10 +300,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                       HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -280,10 +319,11 @@ public abstract class Generic_OutOfMemoryErrorHandler
 
     /**
      * For initialising a File from String _String.
+     *
      * @param a_String
      * @param handleOutOfMemoryError
-     * @return 
-     * @throws java.io.IOException 
+     * @return
+     * @throws java.io.IOException
      */
     public File initFile(
             String a_String,
@@ -297,14 +337,14 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                       HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
-                init_MemoryReserve(
+                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
                         handleOutOfMemoryError);
                 return initFile(
                         a_String,
@@ -317,11 +357,12 @@ public abstract class Generic_OutOfMemoryErrorHandler
 
     /**
      * For initialising a File from File _File and String _String.
+     *
      * @param a_File
      * @param a_String
      * @param handleOutOfMemoryError
-     * @return 
-     * @throws java.io.IOException 
+     * @return
+     * @throws java.io.IOException
      */
     public File initFile(
             File a_File,
@@ -336,10 +377,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                       HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -353,12 +394,14 @@ public abstract class Generic_OutOfMemoryErrorHandler
     }
 
     /**
-     * For initialising a File Directory from File _ParentFile and String _String.
+     * For initialising a File Directory from File _ParentFile and String
+     * _String.
+     *
      * @param _ParentFile
      * @param _String
      * @param handleOutOfMemoryError
-     * @return 
-     * @throws java.io.IOException 
+     * @return
+     * @throws java.io.IOException
      */
     public File initFileDirectory(
             File _ParentFile,
@@ -372,10 +415,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                       HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -399,10 +442,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                       HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -423,14 +466,14 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return Math.sin(value);
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                       HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
-                init_MemoryReserve(
+                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
                         handleOutOfMemoryError);
                 return sin(
                         value,
@@ -448,14 +491,14 @@ public abstract class Generic_OutOfMemoryErrorHandler
             return Double.toString(a_double);
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (swapToFile_DataAny()){
-                    init_MemoryReserve(
-                       HandleOutOfMemoryErrorFalse);
+                clearMemoryReserve();
+                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                            HandleOutOfMemoryErrorFalse);
                 } else {
                     throw a_OutOfMemoryError;
                 }
-                init_MemoryReserve(
+                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
                         handleOutOfMemoryError);
                 return toString(
                         a_double,

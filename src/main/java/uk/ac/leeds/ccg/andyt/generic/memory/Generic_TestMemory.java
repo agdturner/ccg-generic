@@ -20,31 +20,47 @@ package uk.ac.leeds.ccg.andyt.generic.memory;
  */
 public class Generic_TestMemory {
 
-    protected transient Runtime _Runtime;
-    private long _maxMemory;
+    /**
+     * A reference to the Runtime.
+     */
+    protected transient Runtime Runtime;
 
-    /** Creates a new instance of Generic_TestMemory */
+    /**
+     * For storing a record of the maximum amount of memory available to the
+     * JVM. By default a java process is given a maximum allowed amount of
+     * memory so it is failsafe. A user can control how much this maximum in
+     * the java run command options.
+     */
+    private final long MaxMemory;
+
+    /**
+     * Creates a new instance of Generic_TestMemory
+     */
     public Generic_TestMemory() {
-        this._Runtime = Runtime.getRuntime();
-        this._maxMemory = this._Runtime.maxMemory();
+        Runtime = Runtime.getRuntime();
+        MaxMemory = Runtime.maxMemory();
     }
-    
-    /** Creates a new instance of Generic_TestMemory
-     * @param aRuntime */
-    public Generic_TestMemory(Runtime aRuntime) {
-        this._Runtime = aRuntime;
-        this._maxMemory = this._Runtime.maxMemory();
+
+    /**
+     * Creates a new instance of Generic_TestMemory using runtime.
+     *
+     * @param runtime
+     */
+    public Generic_TestMemory(Runtime runtime) {
+        Runtime = runtime;
+        MaxMemory = Runtime.maxMemory();
     }
-    
+
     /**
      * For returning the total free memory.
-     * @return The TotalFreeMemory available as calculated from _Runtime.
+     *
+     * @return The TotalFreeMemory available as calculated from Runtime.
      */
     public long getTotalFreeMemory() {
         long result;
-        long allocatedMemory = _Runtime.totalMemory();
-        long freeMemory = _Runtime.freeMemory();
-        result = freeMemory + (_maxMemory - allocatedMemory);
+        long allocatedMemory = Runtime.totalMemory();
+        long freeMemory = Runtime.freeMemory();
+        result = freeMemory + (MaxMemory - allocatedMemory);
         return result;
     }
 }

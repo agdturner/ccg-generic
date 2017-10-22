@@ -20,15 +20,24 @@ package uk.ac.leeds.ccg.andyt.generic.memory;
 
 public interface Generic_OutOfMemoryErrorHandlerInterface {
 
-    static final long serialVersionUID = 1L;
-
+    //static final long serialVersionUID = 1L;
+    /**
+     * For a method that will try to ensure there is enough memory to continue.
+     *
+     * @param handleOutOfMemoryError If true then this method will try to handle
+     * any OutOfMemoryError encountered whilst trying to ensure there is enough
+     * memory to continue.
+     * @return True if successful and false otherwise.
+     */
     boolean tryToEnsureThereIsEnoughMemoryToContinue(
             boolean handleOutOfMemoryError);
 
     /**
-     * Initialises _MemoryReserve.
+     * For a method that will initialise the MemoryReserve.
      *
-     * @param handleOutOfMemoryError
+     * @param handleOutOfMemoryError If true then this method will try to handle
+     * any OutOfMemoryError encountered whilst trying to initialise the
+     * MemoryReserve.
      */
-    void init_MemoryReserve(boolean handleOutOfMemoryError);
+    void initMemoryReserve(boolean handleOutOfMemoryError);
 }
