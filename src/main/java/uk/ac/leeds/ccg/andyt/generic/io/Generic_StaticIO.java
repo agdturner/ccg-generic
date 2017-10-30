@@ -31,6 +31,10 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.io.Writer;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -143,10 +147,9 @@ public class Generic_StaticIO {
     }
 
     /**
-<<<<<<< HEAD
-     * Read File into an ArrayList<String>. The ArrayList will have a size equal
-     * to the number of lines in the file and each element will have all the
-     * characters in a line represented as Strings.
+     * <<<<<<< HEAD Read File into an ArrayList<String>. The ArrayList will have
+     * a size equal to the number of lines in the file and each element will
+     * have all the characters in a line represented as Strings.
      *
      * @param f The file to be returned as a String.
      * @param n The number of lines after the first is printed to std_out using
@@ -345,7 +348,7 @@ public class Generic_StaticIO {
         }
         return result;
     }
-        
+
     /**
      * Read Object from File
      *
@@ -360,14 +363,14 @@ public class Generic_StaticIO {
             boolean throwException) throws IOException, ClassNotFoundException {
         Object result = null;
         if (f.length() != 0) {
-                ObjectInputStream ois;
-                ois = getObjectInputStream(f);
-                result = ois.readObject();
-                ois.close();
+            ObjectInputStream ois;
+            ois = getObjectInputStream(f);
+            result = ois.readObject();
+            ois.close();
         }
         return result;
     }
-    
+
     /**
      * @param input_File A File which is not a Directory to be copied
      * @param outputDirectory_File The Directory to copy to.
@@ -1707,7 +1710,8 @@ public class Generic_StaticIO {
         newTopOfArchive0.mkdir();
         for (File archiveFile : archiveFiles) {
             File newPath = new File(newTopOfArchive, archiveFile.getName());
-            archiveFile.renameTo(newPath);
+            //archiveFile.renameTo(newPath);
+            move(archiveFile, newPath);
         }
         // Create new lower directories for next ID;
         Long next_ID = getArchiveHighestLeaf(
@@ -1747,7 +1751,8 @@ public class Generic_StaticIO {
         newTopOfArchive0.mkdir();
         for (File archiveFile : archiveFiles) {
             File newPath = new File(newTopOfArchive, archiveFile.getName());
-            archiveFile.renameTo(newPath);
+            //archiveFile.renameTo(newPath);
+            move(archiveFile, newPath);
         }
         File newHighestLeaf_Directory = new File(
                 getObjectDirectory(
@@ -1755,6 +1760,31 @@ public class Generic_StaticIO {
                 "" + next_ID);
         newHighestLeaf_Directory.mkdirs();
         return newTopOfArchive0;
+    }
+
+    public static void move(File origin, File destination) {
+        if (origin.isDirectory()) {
+            destination.mkdir();
+            for (File file : origin.listFiles()) {
+                move(
+                        file,
+                        new File(destination, file.getName()));
+            }
+            try {
+                Files.delete(origin.toPath());
+            } catch (IOException ex) {
+                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                Files.move(
+                        Paths.get(origin.getPath()),
+                        Paths.get(destination.getPath()),
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public static File addToArchive(
@@ -2351,15 +2381,16 @@ public class Generic_StaticIO {
         }
         return result;
     }
-    
+
     /**
-     * Method to calculate the length of the file path.
-     * The Windows 7 operating systems has a technical restriction of 260 
-     * characters or less for file paths. So a file path that is greater than 
-     * 250 characters is a worry especially if results are going to be zipped 
-     * up and transferred to a Windows 7 machine.
+     * Method to calculate the length of the file path. The Windows 7 operating
+     * systems has a technical restriction of 260 characters or less for file
+     * paths. So a file path that is greater than 250 characters is a worry
+     * especially if results are going to be zipped up and transferred to a
+     * Windows 7 machine.
+     *
      * @param f
-     * @return 
+     * @return
      */
     public static int getFilePathLength(File f) {
         int result;
@@ -2374,15 +2405,16 @@ public class Generic_StaticIO {
         result = s.length();
         return result;
     }
-    
+
     /**
-     * Method to calculate the length of the file path.
-     * The Windows 7 operating systems has a technical restriction of 260 
-     * characters or less for file paths. So a file path that is greater than 
-     * 250 characters is a worry especially if results are going to be zipped 
-     * up and transferred to a Windows 7 machine.
+     * Method to calculate the length of the file path. The Windows 7 operating
+     * systems has a technical restriction of 260 characters or less for file
+     * paths. So a file path that is greater than 250 characters is a worry
+     * especially if results are going to be zipped up and transferred to a
+     * Windows 7 machine.
+     *
      * @param f
-     * @return 
+     * @return
      */
     public static int getFilePathLength(File f, File dir) {
         int fileFilePathLength;
@@ -2391,7 +2423,7 @@ public class Generic_StaticIO {
         dirFilePathLength = getFilePathLength(dir);
         return fileFilePathLength - dirFilePathLength;
     }
-    
+
 //    public static boolean isStandardFileName(File f){
 //        return isStandardFileName(f.toString());
 //    } 
