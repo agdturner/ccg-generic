@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * For converting and classifying age groups.
  */
-public class AgeConverter {
+public class Generic_AgeConverter {
 
     /**
      * @param age

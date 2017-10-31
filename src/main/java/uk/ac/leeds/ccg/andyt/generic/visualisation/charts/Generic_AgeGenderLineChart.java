@@ -37,7 +37,7 @@ import uk.ac.leeds.ccg.andyt.generic.math.statistics.Generic_Statistics;
  * Population Line Chart Visualization of some default data and display it on
  * screen.
  */
-public class Generic_AgeGenderLineChart extends Abstract_Generic_AgeGenderPlot {
+public class Generic_AgeGenderLineChart extends Generic_AbstractAgeGenderPlot {
 
     public Generic_AgeGenderLineChart() {
     }

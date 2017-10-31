@@ -37,7 +37,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
  * Population Bar Chart Visualization of some default data and write it out 
  * to file as a PNG.
  */
-public class Generic_AgeGenderBarChart extends Abstract_Generic_AgeGenderPlot {
+public class Generic_AgeGenderBarChart extends Generic_AbstractAgeGenderPlot {
 
     public Generic_AgeGenderBarChart() {
     }

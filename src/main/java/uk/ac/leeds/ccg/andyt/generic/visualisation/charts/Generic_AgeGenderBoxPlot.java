@@ -38,7 +38,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
  * For generating an Age by Gender Population Box Plot Visualization of some default data and display it on
  * screen.
  */
-public class Generic_AgeGenderBoxPlot extends Abstract_Generic_AgeGenderPlot {
+public class Generic_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlot {
 
     public Generic_AgeGenderBoxPlot() {
     }

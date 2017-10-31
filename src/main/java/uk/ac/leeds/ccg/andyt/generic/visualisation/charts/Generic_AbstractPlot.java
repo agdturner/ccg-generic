@@ -21,7 +21,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 /**
  * An class for creating 2D plot visualisations.
  */
-public abstract class Abstract_Generic_Plot extends Generic_Runnable implements Generic_Drawable_Interface, Runnable {
+public abstract class Generic_AbstractPlot extends Generic_Runnable implements Generic_Drawable_Interface, Runnable {
 
     private Object[] data;
     private String format;
@@ -1017,7 +1017,7 @@ public abstract class Abstract_Generic_Plot extends Generic_Runnable implements 
     }
 
     public void drawAxes(
-            Abstract_Generic_Plot plot,
+            Generic_AbstractPlot plot,
             int interval,
             int startAgeOfEndYearInterval) {
         int yAxisExtraWidthLeft;

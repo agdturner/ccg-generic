@@ -28,7 +28,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
  * Population Line Chart Visualization of some default data and display it on
  * screen.
  */
-public class Generic_JApplet_ScatterPlot extends Abstract_Generic_JApplet_Plot {
+public class Generic_JApplet_ScatterPlot extends Generic_AbstractPlotApplet {
 
     public Generic_JApplet_ScatterPlot() {
     }

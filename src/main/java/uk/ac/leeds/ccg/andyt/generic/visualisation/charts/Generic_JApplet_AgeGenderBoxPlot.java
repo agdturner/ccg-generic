@@ -28,7 +28,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
  * Population Box Plot Visualization of some default data and display it on
  * screen.
  */
-public class Generic_JApplet_AgeGenderBoxPlot extends Abstract_Generic_JApplet_AgeGenderPlot {
+public class Generic_JApplet_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlotApplet {
 
     public Generic_JApplet_AgeGenderBoxPlot() {
     }

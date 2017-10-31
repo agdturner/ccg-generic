@@ -24,14 +24,14 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Abstract_Generic_Plot;
+import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_AbstractPlot;
 
 public class Generic_Canvas extends Canvas {
 
     public Generic_Canvas() {
     }
     
-    public Abstract_Generic_Plot _Generic_Plot;
+    public Generic_AbstractPlot _Generic_Plot;
     public Graphics2D _Graphics2D;
     public BufferedImage _BufferedImage;
     public Rectangle _Rectangle;

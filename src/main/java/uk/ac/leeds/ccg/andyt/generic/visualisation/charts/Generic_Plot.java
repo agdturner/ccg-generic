@@ -37,7 +37,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
  * In part it acts as an interface and is extended by other classes for
  * generating specific data plots.
  */
-public class Generic_Plot extends Abstract_Generic_Plot {
+public class Generic_Plot extends Generic_AbstractPlot {
 
     public Generic_Canvas _Generic_Canvas;
     public Future future;

@@ -45,7 +45,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
  * If you run this class it will attempt to generate an Bar Chart Visualization 
  * of some default data and write it out to file as a PNG.
  */
-public class Generic_BarChart extends Abstract_Generic_BarChart {
+public class Generic_BarChart extends Generic_AbstractBarChart {
 
     public Generic_BarChart() {
     }
