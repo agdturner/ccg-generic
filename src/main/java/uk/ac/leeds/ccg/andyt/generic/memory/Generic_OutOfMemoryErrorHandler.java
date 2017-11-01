@@ -160,7 +160,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
  and returning this information.
      */
     protected void initMemoryReserve() {
-        Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(Default_Memory_Threshold);
+        initMemoryReserve(Default_Memory_Threshold);
     }
 
     /**
