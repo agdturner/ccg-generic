@@ -6567,13 +6567,7 @@ public class Generic_BigDecimal
      * Returns the square rootRoundIfNecessary of x as a BigDecimal rounded to
      * decimalPlaces decimal places.
      *
-     * @param a_RoundingMode
-     * @TODO If 0 < x < 1 this returns a double approximation which is a
-     * terrible hack this needs a better implementation...
-     *
-     *
-     *
-     *
+     * @param roundingMode
      *
      * @param x
      * @param decimalPlaces
@@ -6581,19 +6575,17 @@ public class Generic_BigDecimal
      */
     public static BigDecimal sqrt(
             BigDecimal x,
-            // Generic_BigDecimal a_Generic_BigDecimal,
             int decimalPlaces,
-            RoundingMode a_RoundingMode) {
+            RoundingMode roundingMode) {
+// @TODO This used to be a hack, check tests are working for the new implementation.
 //        if (x.compareTo(BigDecimal.ZERO) == 1 && x.compareTo(BigDecimal.ONE) == -1) {
-//            // This is a terrible hack
 //            return BigDecimal.valueOf(Math.sqrt(x.doubleValue()));
 //        }
         return power(
                 x,
                 new BigDecimal("0.5"),
-                //a_Generic_BigDecimal,
                 decimalPlaces,
-                a_RoundingMode);
+                roundingMode);
     }
 
     /**
