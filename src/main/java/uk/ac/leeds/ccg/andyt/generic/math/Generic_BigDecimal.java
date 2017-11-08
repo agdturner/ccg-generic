@@ -822,14 +822,14 @@ public class Generic_BigDecimal
      * @param x
      * @param y
      * @param decimalPlaces
-     * @param a_RoundingMode
+     * @param roundingMode
      * @return x/y then rounded;
      */
     public static BigDecimal divideRoundIfNecessary(
             BigDecimal x,
             BigInteger y,
             int decimalPlaces,
-            RoundingMode a_RoundingMode) {
+            RoundingMode roundingMode) {
         // Deal with special cases
         if (x.compareTo(BigDecimal.ZERO) == 0) {
             return BigDecimal.ZERO;
@@ -848,7 +848,7 @@ public class Generic_BigDecimal
                 x,
                 y_BigDecimal,
                 decimalPlaces,
-                a_RoundingMode);
+                roundingMode);
     }
 
     /**
