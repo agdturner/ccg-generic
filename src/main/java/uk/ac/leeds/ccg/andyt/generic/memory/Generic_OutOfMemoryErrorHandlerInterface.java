@@ -29,7 +29,7 @@ public interface Generic_OutOfMemoryErrorHandlerInterface {
      * memory to continue.
      * @return True if successful and false otherwise.
      */
-    boolean tryToEnsureThereIsEnoughMemoryToContinue(
+    boolean checkAndMaybeFreeMemory(
             boolean handleOutOfMemoryError);
 
     /**

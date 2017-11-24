@@ -100,7 +100,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
     protected final void initMemoryReserve(int size) {
         if (MemoryReserve == null) {
             MemoryReserve = new int[size];
-            Arrays.fill(MemoryReserve,Integer.MIN_VALUE);
+            Arrays.fill(MemoryReserve, Integer.MIN_VALUE);
         }
     }
 
@@ -134,7 +134,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             boolean handleOutOfMemoryError) {
         try {
             initMemoryReserve();
-            tryToEnsureThereIsEnoughMemoryToContinue();
+            checkAndMaybeFreeMemory();
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
@@ -153,11 +153,11 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * Initialises MemoryReserve as an int[] of size Default_Memory_Threshold.
      * MemoryReserve is for use when an OutOfMemoryError is handled. This
- involves clearMemoryReserve() which sets MemoryReserve to null providing
- memory for swapping operations that move data from one location
- (memory/RAM) to another location (disk). The swapping may involve
- accounting the amount and details of the data swapped and the locations
- and returning this information.
+     * involves clearMemoryReserve() which sets MemoryReserve to null providing
+     * memory for swapping operations that move data from one location
+     * (memory/RAM) to another location (disk). The swapping may involve
+     * accounting the amount and details of the data swapped and the locations
+     * and returning this information.
      */
     protected void initMemoryReserve() {
         initMemoryReserve(Default_Memory_Threshold);
@@ -184,7 +184,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      *
      * @return true if there is enough memory to continue and false otherwise.
      */
-    protected abstract boolean tryToEnsureThereIsEnoughMemoryToContinue();
+    protected abstract boolean checkAndMaybeFreeMemory();
 
     /**
      * For initialising and returning Generic_TestMemory.
@@ -205,13 +205,13 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @return true if ensured there is enough memory to continue
      */
     @Override
-    public abstract boolean tryToEnsureThereIsEnoughMemoryToContinue(
+    public abstract boolean checkAndMaybeFreeMemory(
             boolean handleOutOfMemoryError);
 
     /**
      * <code>
- return getGeneric_TestMemory().getTotalFreeMemory();
- </code>
+     * return getGeneric_TestMemory().getTotalFreeMemory();
+     * </code>
      *
      * @return
      */
@@ -231,7 +231,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             boolean handleOutOfMemoryError) {
         try {
             long result = getTotalFreeMemory();
-            tryToEnsureThereIsEnoughMemoryToContinue();
+            checkAndMaybeFreeMemory();
             return result;
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
@@ -264,7 +264,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             for (int i = 0; i < length; i++) {
                 result += "X";
             }
-            tryToEnsureThereIsEnoughMemoryToContinue();
+            checkAndMaybeFreeMemory();
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
@@ -296,7 +296,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             boolean handleOutOfMemoryError) {
         try {
             String result = a_String + b_String;
-            tryToEnsureThereIsEnoughMemoryToContinue();
+            checkAndMaybeFreeMemory();
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
@@ -333,7 +333,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             File result = new File(a_String);
             result.getParentFile().mkdirs();
             result.createNewFile();
-            tryToEnsureThereIsEnoughMemoryToContinue();
+            checkAndMaybeFreeMemory();
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
@@ -373,7 +373,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             File result = new File(a_File, a_String);
             a_File.mkdirs();
             result.createNewFile();
-            tryToEnsureThereIsEnoughMemoryToContinue();
+            checkAndMaybeFreeMemory();
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
@@ -397,21 +397,21 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * For initialising a File Directory from File _ParentFile and String
      * _String.
      *
-     * @param _ParentFile
-     * @param _String
+     * @param parentFile
+     * @param string
      * @param handleOutOfMemoryError
      * @return
      * @throws java.io.IOException
      */
     public File initFileDirectory(
-            File _ParentFile,
-            String _String,
+            File parentFile,
+            String string,
             boolean handleOutOfMemoryError)
             throws IOException {
         try {
-            File result = new File(_ParentFile, _String);
+            File result = new File(parentFile, string);
             result.mkdirs();
-            tryToEnsureThereIsEnoughMemoryToContinue();
+            checkAndMaybeFreeMemory();
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
@@ -423,8 +423,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
                     throw a_OutOfMemoryError;
                 }
                 return initFileDirectory(
-                        _ParentFile,
-                        _String,
+                        parentFile,
+                        string,
                         handleOutOfMemoryError);
             } else {
                 throw a_OutOfMemoryError;
