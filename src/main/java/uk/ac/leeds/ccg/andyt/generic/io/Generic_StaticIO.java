@@ -147,7 +147,7 @@ public class Generic_StaticIO {
     }
 
     /**
-     * <<<<<<< HEAD Read File into an ArrayList<String>. The ArrayList will have
+     * Read File into an ArrayList<String>. The ArrayList will have
      * a size equal to the number of lines in the file and each element will
      * have all the characters in a line represented as Strings.
      *
@@ -205,7 +205,7 @@ public class Generic_StaticIO {
                                 result.add(line);
                                 System.out.println(line);
                                 line = "";
-                                if (RecordID % n == 0) {
+                                if (RecordID % (n + 1) == 0) {
                                     System.out.println(line);
                                 }
                                 RecordID++;
@@ -1304,6 +1304,36 @@ public class Generic_StaticIO {
         //st.wordChars('', '');
     }
 
+    /**
+     * Sets the syntax of st as follows:
+     * @code {
+     * <ul>
+     * <li>st.resetSyntax();</li>
+     * <li>st.wordChars(',', ',' );</li>
+     * <li>st.wordChars( '"', '"' );</li>
+     * <li>setStreamTokenizerSyntaxNumbersAsWords1(st);</li>
+     * <li>st.wordChars( '.', '.' );</li>
+     * <li>st.wordChars( '-', '-' );</li>
+     * <li>st.wordChars( '+', '+' );</li>
+     * <li>st.wordChars( 'a', 'z' );</li>
+     * <li>st.wordChars( 'A', 'Z' );</li>
+     * <li>st.wordChars( '\t', '\t' );</li>
+     * <li>st.wordChars( ' ', ' ' );</li>
+     * <li>st.wordChars( ':', ':' );</li>
+     * <li>st.wordChars( '/', '/' );</li>
+     * <li>st.wordChars( '_', '_' );</li>
+     * </ul>
+     * }
+     *
+     * @param st <code>StreamTokenizer</code> thats syntax is set
+     */
+    public static void setStreamTokenizerSyntax7(
+            StreamTokenizer st) {
+        setStreamTokenizerSyntax6(st);
+        st.wordChars('<', '<');
+        st.wordChars('>', '>');
+    }
+    
     /**
      * @return File directory in which object with a_ID is (to be) stored within
      * directory0.
