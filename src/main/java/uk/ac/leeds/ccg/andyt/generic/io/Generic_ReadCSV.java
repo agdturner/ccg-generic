@@ -149,6 +149,7 @@ public class Generic_ReadCSV {
             File testDir,
             int syntax) {
         ArrayList<String> result = null;
+        testDir.mkdirs();
         File test;
         test = new File(testDir,
                 "test" + syntax + ".csv");
@@ -185,6 +186,9 @@ public class Generic_ReadCSV {
                         case 6:
                             Generic_StaticIO.setStreamTokenizerSyntax6(st);
                             break;
+                        case 7:
+                            Generic_StaticIO.setStreamTokenizerSyntax7(st);
+                            break;
                         default:
                             System.out.println("No Special StreamTokenizerSyntax");
 
@@ -196,7 +200,7 @@ public class Generic_ReadCSV {
                         switch (token) {
                             case StreamTokenizer.TT_EOL:
                                 result.add(line);
-                                //pw.println(line);
+                                pw.println(line);
                                 line = "";
 //                                if (RecordID % 100 == 0) {
 //                                    System.out.println(line);
