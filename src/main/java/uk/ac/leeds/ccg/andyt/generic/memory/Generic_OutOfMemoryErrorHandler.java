@@ -36,7 +36,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * For storing the default as to whether OutOfMemoryErrors are handled.
      */
-    public boolean HandleOutOfMemoryError;
+    public boolean HOOME;
 
     /**
      * A default controlling the amount of memory that is reserved and cleared
@@ -50,7 +50,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * allows for finding those parts of the code that are actually used in this
      * regard.
      */
-    public final boolean HandleOutOfMemoryErrorFalse = false;
+    public final boolean HOOMEF = false;
 
     /**
      * For use when OutOfMemory handling is definitely wanted. It is thought
@@ -58,7 +58,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * allows for finding those parts of the code that are actually used in this
      * regard.
      */
-    public final boolean HandleOutOfMemoryErrorTrue = true;
+    public final boolean HOOMET = true;
 
     /**
      * Reserve memory that can be set to null and garbage collected so as to
@@ -139,8 +139,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -240,7 +239,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
                 if (!swapSuccess) {
                     throw new OutOfMemoryError();
                 }
-                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HandleOutOfMemoryErrorFalse);
+                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 return getTotalFreeMemory(
                         handleOutOfMemoryError);
             } else {
@@ -270,8 +269,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -302,8 +300,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -339,8 +336,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -379,8 +375,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -417,8 +412,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -444,8 +438,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -468,8 +461,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -493,8 +485,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
-                            HandleOutOfMemoryErrorFalse);
+                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
