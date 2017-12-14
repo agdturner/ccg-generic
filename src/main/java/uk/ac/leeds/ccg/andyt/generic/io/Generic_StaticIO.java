@@ -897,6 +897,9 @@ public class Generic_StaticIO {
             String filename) {
         File file = new File(parentDirectory, filename);
         try {
+            if (!parentDirectory.exists()) {
+                parentDirectory.mkdirs();
+            }
             if (filename.length() > 4) {
                 if (filename.charAt(filename.length() - 4) != '.') {
                     file.mkdir();
