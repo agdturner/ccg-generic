@@ -135,16 +135,16 @@ public abstract class Generic_OutOfMemoryErrorHandler
         try {
             initMemoryReserve();
             checkAndMaybeFreeMemory();
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
+        } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
-                    throw a_OutOfMemoryError;
+                    throw e;
                 }
             } else {
-                throw a_OutOfMemoryError;
+                throw e;
             }
         }
     }
@@ -183,7 +183,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      *
      * @return true if there is enough memory to continue and false otherwise.
      */
-    protected abstract boolean checkAndMaybeFreeMemory();
+    public abstract boolean checkAndMaybeFreeMemory();
 
     /**
      * For initialising and returning Generic_TestMemory.
@@ -235,11 +235,11 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError _OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                boolean swapSuccess = Generic_OutOfMemoryErrorHandler.this.swapDataAny();
+                boolean swapSuccess = swapDataAny();
                 if (!swapSuccess) {
                     throw new OutOfMemoryError();
                 }
-                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                initMemoryReserve(HOOMEF);
                 return getTotalFreeMemory(
                         handleOutOfMemoryError);
             } else {
@@ -268,8 +268,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -299,8 +299,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -335,12 +335,12 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
-                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                initMemoryReserve(
                         handleOutOfMemoryError);
                 return initFile(
                         a_String,
@@ -374,8 +374,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -411,8 +411,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -437,8 +437,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
@@ -460,12 +460,12 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
-                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                initMemoryReserve(
                         handleOutOfMemoryError);
                 return sin(
                         value,
@@ -484,12 +484,12 @@ public abstract class Generic_OutOfMemoryErrorHandler
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                if (Generic_OutOfMemoryErrorHandler.this.swapDataAny()) {
-                    Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(HOOMEF);
+                if (swapDataAny()) {
+                    initMemoryReserve(HOOMEF);
                 } else {
                     throw a_OutOfMemoryError;
                 }
-                Generic_OutOfMemoryErrorHandler.this.initMemoryReserve(
+                initMemoryReserve(
                         handleOutOfMemoryError);
                 return toString(
                         a_double,
