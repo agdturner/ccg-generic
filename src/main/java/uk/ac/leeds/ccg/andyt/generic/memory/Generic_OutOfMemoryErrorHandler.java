@@ -172,7 +172,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
     public final void clearMemoryReserve() {
         //log(Runtime.getRuntime().freeMemory());
         this.MemoryReserve = null;
-        System.gc();
+        //System.gc();
     }
 
     /**
