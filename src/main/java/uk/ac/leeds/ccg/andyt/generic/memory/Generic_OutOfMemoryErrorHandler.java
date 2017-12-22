@@ -72,7 +72,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      *
      * @return an indication if some data was swapped.
      */
-    protected abstract boolean swapDataAny();
+    public abstract boolean swapDataAny();
 
     /**
      * A method which will try to swap any data.
@@ -97,7 +97,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      *
      * @param size Size that MemoryReserve is initialised to.
      */
-    protected final void initMemoryReserve(int size) {
+    public final void initMemoryReserve(int size) {
         if (MemoryReserve == null) {
             MemoryReserve = new int[size];
             Arrays.fill(MemoryReserve, Integer.MIN_VALUE);
@@ -114,39 +114,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * this.MemoryReserve = a_MemoryReserve;
      *
-     * @param a_MemoryReserve
+     * @param memoryReserve
      */
-    public void set_MemoryReserve(int[] a_MemoryReserve) {
-        this.MemoryReserve = a_MemoryReserve;
-    }
-
-    /**
-     * Initialises MemoryReserve.
-     *
-     * @param handleOutOfMemoryError If true then OutOfMemoryErrors are caught,
-     * swap operations are initiated, then the method is re-called. If false
-     * then OutOfMemoryErrors are caught and thrown.
-     */
-//    public abstract void initMemoryReserve(
-//            boolean handleOutOfMemoryError);
-    @Override
-    public void initMemoryReserve(
-            boolean handleOutOfMemoryError) {
-        try {
-            initMemoryReserve();
-            checkAndMaybeFreeMemory();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw e;
-                }
-            } else {
-                throw e;
-            }
-        }
+    public void setMemoryReserve(int[] memoryReserve) {
+        this.MemoryReserve = memoryReserve;
     }
 
     /**
@@ -158,7 +129,8 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * accounting the amount and details of the data swapped and the locations
      * and returning this information.
      */
-    protected void initMemoryReserve() {
+    @Override
+    public void initMemoryReserve() {
         initMemoryReserve(Default_Memory_Threshold);
     }
 
@@ -172,7 +144,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
     public final void clearMemoryReserve() {
         //log(Runtime.getRuntime().freeMemory());
         this.MemoryReserve = null;
-        System.gc();
+        //System.gc();
     }
 
     /**
@@ -183,6 +155,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      *
      * @return true if there is enough memory to continue and false otherwise.
      */
+    @Override
     public abstract boolean checkAndMaybeFreeMemory();
 
     /**
@@ -198,194 +171,47 @@ public abstract class Generic_OutOfMemoryErrorHandler
     }
 
     /**
-     * A method to ensure there is enough memory to continue.
-     *
-     * @param handleOutOfMemoryError
-     * @return true if ensured there is enough memory to continue
-     */
-    @Override
-    public abstract boolean checkAndMaybeFreeMemory(
-            boolean handleOutOfMemoryError);
-
-    /**
-     * <code>
      * return getGeneric_TestMemory().getTotalFreeMemory();
-     * </code>
      *
      * @return
      */
-    protected long getTotalFreeMemory() {
+    public long getTotalFreeMemory() {
         return getGeneric_TestMemory().getTotalFreeMemory();
-    }
-
-    /**
-     * For returning the total free memory available to the JVM. This method
-     * will try to swap data if handleOutOfMemory is true, but if it finds no
-     * data to swap will throw an OutOfMemoryError.
-     *
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public long getTotalFreeMemory(
-            boolean handleOutOfMemoryError) {
-        try {
-            long result = getTotalFreeMemory();
-            checkAndMaybeFreeMemory();
-            return result;
-        } catch (OutOfMemoryError _OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                boolean swapSuccess = swapDataAny();
-                if (!swapSuccess) {
-                    throw new OutOfMemoryError();
-                }
-                initMemoryReserve(HOOMEF);
-                return getTotalFreeMemory(
-                        handleOutOfMemoryError);
-            } else {
-                throw _OutOfMemoryError;
-            }
-        }
-    }
-
-    /**
-     * For initialising a String of length length.
-     *
-     * @param length
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public String initString(
-            int length,
-            boolean handleOutOfMemoryError) {
-        try {
-            String result = new String();
-            for (int i = 0; i < length; i++) {
-                result += "X";
-            }
-            checkAndMaybeFreeMemory();
-            return result;
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw a_OutOfMemoryError;
-                }
-                return initString(
-                        length,
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
-    }
-
-    /**
-     * @param a_String
-     * @param b_String
-     * @param handleOutOfMemoryError
-     * @return String which is a_String appended to the end of b_String
-     */
-    public String initString(
-            String a_String,
-            String b_String,
-            boolean handleOutOfMemoryError) {
-        try {
-            String result = a_String + b_String;
-            checkAndMaybeFreeMemory();
-            return result;
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw a_OutOfMemoryError;
-                }
-                return initString(
-                        a_String,
-                        b_String,
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
     }
 
     /**
      * For initialising a File from String _String.
      *
-     * @param a_String
-     * @param handleOutOfMemoryError
+     * @param file
      * @return
      * @throws java.io.IOException
      */
     public File initFile(
-            String a_String,
-            boolean handleOutOfMemoryError)
+            String file)
             throws IOException {
-        try {
-            File result = new File(a_String);
-            result.getParentFile().mkdirs();
-            result.createNewFile();
-            checkAndMaybeFreeMemory();
-            return result;
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw a_OutOfMemoryError;
-                }
-                initMemoryReserve(
-                        handleOutOfMemoryError);
-                return initFile(
-                        a_String,
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
+        File result = new File(file);
+        result.getParentFile().mkdirs();
+        result.createNewFile();
+        checkAndMaybeFreeMemory();
+        return result;
     }
 
     /**
      * For initialising a File from File _File and String _String.
      *
-     * @param a_File
-     * @param a_String
-     * @param handleOutOfMemoryError
+     * @param dir
+     * @param filename
      * @return
      * @throws java.io.IOException
      */
     public File initFile(
-            File a_File,
-            String a_String,
-            boolean handleOutOfMemoryError)
+            File dir,
+            String filename)
             throws IOException {
-        try {
-            File result = new File(a_File, a_String);
-            a_File.mkdirs();
-            result.createNewFile();
-            checkAndMaybeFreeMemory();
-            return result;
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw a_OutOfMemoryError;
-                }
-                return initFile(
-                        a_String,
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
+        File result = new File(dir, filename);
+        dir.mkdirs();
+        result.createNewFile();
+        return result;
     }
 
     /**
@@ -394,109 +220,15 @@ public abstract class Generic_OutOfMemoryErrorHandler
      *
      * @param parentFile
      * @param string
-     * @param handleOutOfMemoryError
      * @return
      * @throws java.io.IOException
      */
     public File initFileDirectory(
             File parentFile,
-            String string,
-            boolean handleOutOfMemoryError)
+            String string)
             throws IOException {
-        try {
-            File result = new File(parentFile, string);
-            result.mkdirs();
-            checkAndMaybeFreeMemory();
-            return result;
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw a_OutOfMemoryError;
-                }
-                return initFileDirectory(
-                        parentFile,
-                        string,
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
-    }
-
-    public String println(
-            String a_String,
-            String a_StringToDuplicateAndReturn,
-            boolean handleOutOfMemoryError) {
-        try {
-            System.out.println(a_String);
-            String result = a_StringToDuplicateAndReturn;
-            return result;
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw a_OutOfMemoryError;
-                }
-                return println(
-                        a_String,
-                        a_StringToDuplicateAndReturn,
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
-    }
-
-    public double sin(
-            double value,
-            boolean handleOutOfMemoryError) {
-        try {
-            return Math.sin(value);
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw a_OutOfMemoryError;
-                }
-                initMemoryReserve(
-                        handleOutOfMemoryError);
-                return sin(
-                        value,
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
-    }
-
-    public String toString(
-            double a_double,
-            boolean handleOutOfMemoryError) {
-        try {
-            return Double.toString(a_double);
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (swapDataAny()) {
-                    initMemoryReserve(HOOMEF);
-                } else {
-                    throw a_OutOfMemoryError;
-                }
-                initMemoryReserve(
-                        handleOutOfMemoryError);
-                return toString(
-                        a_double,
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
+        File result = new File(parentFile, string);
+        result.mkdirs();
+        return result;
     }
 }

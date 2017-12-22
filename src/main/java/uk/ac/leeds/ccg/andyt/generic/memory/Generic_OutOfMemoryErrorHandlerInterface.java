@@ -24,20 +24,12 @@ public interface Generic_OutOfMemoryErrorHandlerInterface {
     /**
      * For a method that will try to ensure there is enough memory to continue.
      *
-     * @param handleOutOfMemoryError If true then this method will try to handle
-     * any OutOfMemoryError encountered whilst trying to ensure there is enough
-     * memory to continue.
      * @return True if successful and false otherwise.
      */
-    boolean checkAndMaybeFreeMemory(
-            boolean handleOutOfMemoryError);
+    boolean checkAndMaybeFreeMemory();
 
     /**
      * For a method that will initialise the MemoryReserve.
-     *
-     * @param handleOutOfMemoryError If true then this method will try to handle
-     * any OutOfMemoryError encountered whilst trying to initialise the
-     * MemoryReserve.
      */
-    void initMemoryReserve(boolean handleOutOfMemoryError);
+    void initMemoryReserve();
 }
