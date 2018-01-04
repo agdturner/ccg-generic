@@ -20,19 +20,19 @@ package uk.ac.leeds.ccg.andyt.generic.math;
  *
  * @author geoagdt
  */
-public class Generic_Complex {
+public class Generic_Complex_double {
 
     private final double Real;
     private final double Imaginary;
 
-    public Generic_Complex(
+    public Generic_Complex_double(
             double real,
             double imaginary) {
         Real = real;
         Imaginary = imaginary;
     }
 
-    public Generic_Complex(
+    public Generic_Complex_double(
             double magnitude,
             double phase,
             boolean irrelevantFlag) {
@@ -57,13 +57,13 @@ public class Generic_Complex {
      * @param c
      * @return this + c.
      */
-    public Generic_Complex add(Generic_Complex c) {
-        Generic_Complex result;
+    public Generic_Complex_double add(Generic_Complex_double c) {
+        Generic_Complex_double result;
         double real;
         real = this.Real + c.Real;
         double imaginary;
         imaginary = this.Imaginary + c.Imaginary;
-        result = new Generic_Complex(real, imaginary);
+        result = new Generic_Complex_double(real, imaginary);
         return result;
     }
 
@@ -71,13 +71,13 @@ public class Generic_Complex {
      * @param c
      * @return this - c.
      */
-    public Generic_Complex subtract(Generic_Complex c) {
-        Generic_Complex result;
+    public Generic_Complex_double subtract(Generic_Complex_double c) {
+        Generic_Complex_double result;
         double real;
         real = this.Real - c.Real;
         double imaginary;
         imaginary = this.Imaginary - c.Imaginary;
-        result = new Generic_Complex(real, imaginary);
+        result = new Generic_Complex_double(real, imaginary);
         return result;
     }
 
@@ -85,13 +85,13 @@ public class Generic_Complex {
      * @param c
      * @return this / c.
      */
-    public Generic_Complex multiply(Generic_Complex c) {
-        Generic_Complex result;
+    public Generic_Complex_double multiply(Generic_Complex_double c) {
+        Generic_Complex_double result;
         double magnitude;
         magnitude = this.magnitude() * c.magnitude();
         double phase;
         phase = this.phase() + c.phase();
-        result = new Generic_Complex(magnitude, phase, true);
+        result = new Generic_Complex_double(magnitude, phase, true);
         return result;
     }
 
@@ -99,13 +99,13 @@ public class Generic_Complex {
      * @param c
      * @return this * c.
      */
-    public Generic_Complex multiply2(Generic_Complex c) {
-        Generic_Complex result;
+    public Generic_Complex_double multiply2(Generic_Complex_double c) {
+        Generic_Complex_double result;
         double real;
         real = (this.Real * c.Real) - (this.Imaginary * c.Imaginary);
         double imaginary;
         imaginary = (this.Real * c.Imaginary) + (this.Imaginary * c.Real);
-        result = new Generic_Complex(real, imaginary);
+        result = new Generic_Complex_double(real, imaginary);
         return result;
     }
     
@@ -127,21 +127,21 @@ public class Generic_Complex {
     /**
      * @return Conjugate (new GenericComplex(Real, -Imaginary)).
      */
-    public Generic_Complex conjugate() {
-        return new Generic_Complex(Real, -Imaginary);
+    public Generic_Complex_double conjugate() {
+        return new Generic_Complex_double(Real, -Imaginary);
     }
 
     /**
      * @return 1 / this.
      */
-    public Generic_Complex reciprocal() {
-        Generic_Complex result;
+    public Generic_Complex_double reciprocal() {
+        Generic_Complex_double result;
         double scale;
         scale = Real * Real + Imaginary * Imaginary;
         double real;
         real = Real / scale;
         double imaginary = - Imaginary / scale;
-        result = new Generic_Complex(real, imaginary);
+        result = new Generic_Complex_double(real, imaginary);
         return result;
     }
 
@@ -150,13 +150,13 @@ public class Generic_Complex {
      * @param c
      * @return this / c.
      */
-    public Generic_Complex divide(Generic_Complex c) {
-        Generic_Complex result;
+    public Generic_Complex_double divide(Generic_Complex_double c) {
+        Generic_Complex_double result;
         double magnitude;
         magnitude = this.magnitude() / c.magnitude();
         double phase;
         phase = this.phase() - c.phase();
-        result = new Generic_Complex(magnitude, phase, true);
+        result = new Generic_Complex_double(magnitude, phase, true);
         return result;
     }
     
@@ -164,62 +164,62 @@ public class Generic_Complex {
      * @param c
      * @return this / c.
      */
-    public Generic_Complex divide2(Generic_Complex c) {
-        Generic_Complex a = this;
+    public Generic_Complex_double divide2(Generic_Complex_double c) {
+        Generic_Complex_double a = this;
         return a.multiply(c.reciprocal());
     }
 
     /**
      *  @return exponent of this.
      */
-    public Generic_Complex exp() {
-        Generic_Complex result;
+    public Generic_Complex_double exp() {
+        Generic_Complex_double result;
         double real;
         real = Math.exp(Real) * Math.cos(Imaginary);
         double imaginary;
         imaginary = Math.exp(Real) * Math.sin(Imaginary);
-        result = new Generic_Complex(real, imaginary);
+        result = new Generic_Complex_double(real, imaginary);
         return result;
     }
 
     /**
      * @return The complex sine of this.
      */
-    public Generic_Complex sin() {
-        Generic_Complex result;
+    public Generic_Complex_double sin() {
+        Generic_Complex_double result;
         double real;
         real = Math.sin(Real) * Math.cosh(Imaginary);
         double imaginary;
         imaginary = Math.cos(Real) * Math.sinh(Imaginary);
-        result = new Generic_Complex(real, imaginary);
+        result = new Generic_Complex_double(real, imaginary);
         return result;
     }
 
     /**
      * @return The complex cosine of this.
      */
-    public Generic_Complex cos() {
-        Generic_Complex result;
+    public Generic_Complex_double cos() {
+        Generic_Complex_double result;
         double real;
         real = Math.cos(Real) * Math.cosh(Imaginary);
         double imaginary;
         imaginary = -Math.sin(Real) * Math.sinh(Imaginary);
-        result = new Generic_Complex(real, imaginary);
+        result = new Generic_Complex_double(real, imaginary);
         return result;
     }
 
     /**
      * @return The complex tangent of this.
      */
-    public Generic_Complex tan() {
+    public Generic_Complex_double tan() {
         return sin().divide(cos());
     }
 
     /**
      * @return The complex rescaling of this.
      */
-    public Generic_Complex rescale(double alpha) {
-        return new Generic_Complex(alpha * Real, alpha * Imaginary);
+    public Generic_Complex_double rescale(double alpha) {
+        return new Generic_Complex_double(alpha * Real, alpha * Imaginary);
     }
 
     @Override
@@ -230,7 +230,7 @@ public class Generic_Complex {
         if (this.getClass() != o.getClass()) {
             return false;
         }
-        Generic_Complex that = (Generic_Complex) o;
+        Generic_Complex_double that = (Generic_Complex_double) o;
         return (this.Real == that.Real) && (this.Imaginary == that.Imaginary);
     }
 
