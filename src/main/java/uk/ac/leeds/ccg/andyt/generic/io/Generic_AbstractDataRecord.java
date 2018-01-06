@@ -30,7 +30,7 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + (int) (this._RecordID ^ (this._RecordID >>> 32));
+        hash = 53 * hash + (int) (this.RecordID ^ (this.RecordID >>> 32));
         return hash;
     }
 
@@ -41,30 +41,30 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
         return 8L;
     }
     /**
-     * An individual sequencial identifier.
+     * An individual sequential identifier.
      */
-    protected long _RecordID;
+    protected long RecordID;
 
     /**
-     * @return A copy of <code>this._RecordID</code>
+     * @return A copy of <code>this.RecordID</code>
      */
-    public long get_RecordID() {
-        return this._RecordID;
+    public long getRecordID() {
+        return this.RecordID;
     }
 
     /**
-     * Initialise from aAbstractDataRecord.
-     * @param aAbstractDataRecord
+     * Initialise from rec.
+     * @param rec
      */
-    protected void _Init(Generic_AbstractDataRecord aAbstractDataRecord) {
-        this._RecordID = aAbstractDataRecord._RecordID;
+    protected void init(Generic_AbstractDataRecord rec) {
+        this.RecordID = rec.RecordID;
     }
 
     /**
      * Initialise.
      */
-    protected void _Init() {
-        this._RecordID = Long.MIN_VALUE;
+    protected void init() {
+        this.RecordID = Long.MIN_VALUE;
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
      */
     @Override
     public String toString() {
-        String result = "_RecordID " + this._RecordID;
+        String result = "_RecordID " + this.RecordID;
         return result;
     }
 
@@ -81,7 +81,7 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
      *         of the <code>Fields</code> of <code>this</code>.
      */
     public String toCSVString() {
-        String result = "" + this._RecordID;
+        String result = "" + this.RecordID;
         return result;
     }
 
@@ -101,7 +101,7 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
         // for ( int i0 = 1; i0 < tFields.length; i0 ++ ) {
         // result += "," + tFields[ i0 ];
         // }
-        String result = "_RecordID";
+        String result = "RecordID";
         return result;
     // String result = new String();
     // String[] toStringSplit = toString().split( "," );
@@ -120,23 +120,24 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
     /**
      * Writes out:
      * <ul>
-     * <li>this._RecordID as a <code>long</code></li>
+     * <li>this.RecordID as a <code>long</code></li>
      * <li>this.hashCode as a <code>int</code></li>
      * </ul>
      * to aRandomAccessFile.
      *
-     * @param aRandomAccessFile
+     * @param raf
      *            The <code>RandomAccessFile</code> written to.
      * @throws java.io.IOException
      */
     public void write(
-            RandomAccessFile aRandomAccessFile)
+            RandomAccessFile raf)
             throws IOException {
-        aRandomAccessFile.writeLong(this._RecordID);
+        raf.writeLong(this.RecordID);
     }
 
     /**
      * @param object
+     * @return 
      * @see java.lang.Object#equals(Object)
      */
     @Override
@@ -147,23 +148,23 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
         if ((object == null) || (object.getClass() != this.getClass())) {
             return false;
         }
-        Generic_AbstractDataRecord aAbstractDataRecord = (Generic_AbstractDataRecord) object;
-        return (this._RecordID == aAbstractDataRecord._RecordID);
+        Generic_AbstractDataRecord rec = (Generic_AbstractDataRecord) object;
+        return (this.RecordID == rec.RecordID);
     }
 
     /**
      * Method required by Comparable
-     * @param object
+     * @param obj
      * @see java.lang.Comparable#compareTo(Object)
      */
     @Override
-    public int compareTo(Object object) {
-        if (object instanceof Generic_AbstractDataRecord) {
-            Generic_AbstractDataRecord aDataRecord = (Generic_AbstractDataRecord) object;
-            if (aDataRecord._RecordID == this._RecordID) {
+    public int compareTo(Object obj) {
+        if (obj instanceof Generic_AbstractDataRecord) {
+            Generic_AbstractDataRecord rec = (Generic_AbstractDataRecord) obj;
+            if (rec.RecordID == this.RecordID) {
                 return 0;
             }
-            if (aDataRecord._RecordID > this._RecordID) {
+            if (rec.RecordID > this.RecordID) {
                 return 1;
             }
         }
