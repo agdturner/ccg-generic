@@ -124,8 +124,7 @@ public class Generic_StaticIO {
      * @param f
      * @return
      */
-    public static Object readObject(
-            File f) {
+    public static Object readObject(            File f) {
         Object result = null;
         if (f.length() != 0) {
             try {

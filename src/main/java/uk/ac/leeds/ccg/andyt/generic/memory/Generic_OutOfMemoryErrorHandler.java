@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A class to be extended for memory management involving the controlled
@@ -184,49 +186,50 @@ public abstract class Generic_OutOfMemoryErrorHandler
      *
      * @param file
      * @return
-     * @throws java.io.IOException
      */
     public File initFile(
-            String file)
-            throws IOException {
+            String file) {
         File result = new File(file);
         result.getParentFile().mkdirs();
-        result.createNewFile();
+        try {
+            result.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_OutOfMemoryErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
         checkAndMaybeFreeMemory();
         return result;
     }
 
     /**
-     * For initialising a File from File _File and String _String.
+     * For initialising a File.
      *
      * @param dir
      * @param filename
      * @return
-     * @throws java.io.IOException
      */
     public File initFile(
             File dir,
-            String filename)
-            throws IOException {
+            String filename) {
         File result = new File(dir, filename);
         dir.mkdirs();
-        result.createNewFile();
+        try {
+            result.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_OutOfMemoryErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return result;
     }
 
     /**
-     * For initialising a File Directory from File _ParentFile and String
-     * _String.
+     * For initialising a File Directory.
      *
      * @param parentFile
      * @param string
      * @return
-     * @throws java.io.IOException
      */
     public File initFileDirectory(
             File parentFile,
-            String string)
-            throws IOException {
+            String string) {
         File result = new File(parentFile, string);
         result.mkdirs();
         return result;
