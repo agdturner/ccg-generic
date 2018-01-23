@@ -24,39 +24,39 @@ package uk.ac.leeds.ccg.andyt.generic.core;
  */
 public class Generic_Strings {
 
-    String String_data;
-    String String_generated;
-    String String_input;
-    String String_output;
+    protected String S_data;
+    protected String S_generated;
+    protected String S_input;
+    protected String S_output;
 
     public Generic_Strings() {
     }
 
-    public String getString_data() {
-        if (String_data == null) {
-            String_data = "data";
+    public String getS_data() {
+        if (S_data == null) {
+            S_data = "data";
         }
-        return String_data;
+        return S_data;
     }
 
-    public String getString_generated() {
-        if (String_generated == null) {
-            String_generated = "generated";
+    public String getS_generated() {
+        if (S_generated == null) {
+            S_generated = "generated";
         }
-        return String_generated;
+        return S_generated;
     }
 
-    public String getString_input() {
-        if (String_input == null) {
-            String_input = "input";
+    public String getS_input() {
+        if (S_input == null) {
+            S_input = "input";
         }
-        return String_input;
+        return S_input;
     }
 
-    public String getString_output() {
-        if (String_output == null) {
-            String_output = "output";
+    public String getS_output() {
+        if (S_output == null) {
+            S_output = "output";
         }
-        return String_output;
+        return S_output;
     }
 }

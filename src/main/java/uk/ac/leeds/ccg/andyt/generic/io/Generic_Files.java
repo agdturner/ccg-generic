@@ -27,9 +27,6 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
  */
 public class Generic_Files {
 
-    // For convenience
-    public Generic_Strings Strings;
-
     protected File DataDir;
     protected File InputDataDir;
     protected File GeneratedDataDir;
@@ -39,12 +36,6 @@ public class Generic_Files {
     }
 
     public Generic_Files(String dataDirName) {
-        Strings = new Generic_Strings();
-        setDataDirectory(dataDirName);
-    }
-
-    public Generic_Files(Generic_Strings strings, String dataDirName) {
-        Strings = strings;
         setDataDirectory(dataDirName);
     }
 
@@ -65,33 +56,36 @@ public class Generic_Files {
         }
     }
 
+    /**
+     * Set DataDir to dataDir.
+     *
+     * @param dataDir
+     */
+    public final void setDataDirectory(File dataDir) {
+        DataDir = dataDir;
+    }
+
     public File getDataDir() {
         return DataDir;
     }
 
-    public File getInputDataDir() {
+    public File getInputDataDir(Generic_Strings strings) {
         if (InputDataDir == null) {
-            InputDataDir = new File(
-                    getDataDir(),
-                    Strings.getString_input());
+            InputDataDir = new File(getDataDir(), strings.getS_input());
         }
         return InputDataDir;
     }
-    
-    public File getGeneratedDataDir() {
+
+    public File getGeneratedDataDir(Generic_Strings strings) {
         if (GeneratedDataDir == null) {
-            GeneratedDataDir = new File(
-                    getDataDir(),
-                    Strings.getString_generated());
+            GeneratedDataDir = new File(getDataDir(), strings.getS_generated());
         }
         return GeneratedDataDir;
     }
 
-    public File getOutputDataDir() {
+    public File getOutputDataDir(Generic_Strings strings) {
         if (OutputDataDir == null) {
-            OutputDataDir = new File(
-                    getDataDir(),
-                    Strings.getString_output());
+            OutputDataDir = new File(getDataDir(), strings.getS_output());
         }
         return OutputDataDir;
     }
