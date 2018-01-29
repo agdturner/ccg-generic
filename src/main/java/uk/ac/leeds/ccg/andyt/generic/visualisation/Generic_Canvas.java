@@ -31,7 +31,7 @@ public class Generic_Canvas extends Canvas {
     public Generic_Canvas() {
     }
     
-    public Generic_AbstractPlot _Generic_Plot;
+    public Generic_AbstractPlot Plot;
     public Graphics2D _Graphics2D;
     public BufferedImage _BufferedImage;
     public Rectangle _Rectangle;
@@ -63,7 +63,7 @@ public class Generic_Canvas extends Canvas {
 //        _Graphics2D = (Graphics2D) g;
         
         // draw all components
-        Dimension d = _Generic_Plot.draw(_Graphics2D);
+        Dimension d = Plot.draw(_Graphics2D);
         setDimension(d);
         
 //        paintedCounter ++;
@@ -73,8 +73,8 @@ public class Generic_Canvas extends Canvas {
 //                    this,
 //                    _BufferedImage,
 //                    10000,
-//                    _Generic_Plot.getFormat(),
-//                    _Generic_Plot.getFile());
+//                    Plot.getFormat(),
+//                    Plot.getFile());
 //        }
         //_Generic_Plot.output();
     }
@@ -92,7 +92,7 @@ public class Generic_Canvas extends Canvas {
 //                BufferedImage.TYPE_INT_ARGB);
 //        _Graphics2D = (Graphics2D) _BufferedImage.getGraphics();
 //        // draw all components
-//        return _Generic_Plot.draw();
+//        return Plot.draw();
 //    }
     
 

@@ -30,8 +30,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
-import java.io.Writer;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -102,9 +100,7 @@ public class Generic_StaticIO {
      * @param object
      * @param f
      */
-    public static void writeObject(
-            Object object,
-            File f) {
+    public static void writeObject(Object object, File f) {
         try {
             ObjectOutputStream oos;
             oos = getObjectOutputStream(f);
@@ -124,7 +120,7 @@ public class Generic_StaticIO {
      * @param f
      * @return
      */
-    public static Object readObject(            File f) {
+    public static Object readObject(File f) {
         Object result = null;
         if (f.length() != 0) {
             try {
@@ -146,22 +142,19 @@ public class Generic_StaticIO {
     }
 
     /**
-     * Read File into an ArrayList<String>. The ArrayList will have
-     * a size equal to the number of lines in the file and each element will
-     * have all the characters in a line represented as Strings.
+     * Read File into an ArrayList. The ArrayList will have a size equal
+     * to the number of lines in the file and each element will have all the
+     * characters in a line represented as Strings.
      *
      * @param f The file to be returned as a String.
-     * @param n The number of lines after the first is printed to std_out using
-     * System.out.println(line).
      * @return
      */
-    public static ArrayList<String> readIntoArrayList_String(
-            File f) {
+    public static ArrayList<String> readIntoArrayList_String(File f) {
         return readIntoArrayList_String(f, 1);
     }
 
     /**
-     * Read File into an ArrayList<String>. The ArrayList will have a size equal
+     * Read File into an ArrayList. The ArrayList will have a size equal
      * to the number of lines in the file and each element will have all the
      * characters in a line represented as Strings.
      *
@@ -170,8 +163,7 @@ public class Generic_StaticIO {
      * System.out.println(line). (n should not be equal to 0)
      * @return
      */
-    public static ArrayList<String> readIntoArrayList_String(
-            File f, int n) {
+    public static ArrayList<String> readIntoArrayList_String(File f, int n) {
         ArrayList<String> result = null;
         if (f.exists()) {
             try {
@@ -255,7 +247,7 @@ public class Generic_StaticIO {
     }
 
     /**
-     * Read File into an ArrayList<String>. The ArrayList will have a size equal
+     * Read File into an ArrayList. The ArrayList will have a size equal
      * to the number of lines in the file and each element will have all the
      * characters in a line represented as Strings.
      *
@@ -266,8 +258,8 @@ public class Generic_StaticIO {
      * @param lastLine The last line (counting from 0) that is included.
      * @return
      */
-    public static ArrayList<String> readIntoArrayList_String(
-            File f, int n, int firstLine, int lastLine) {
+    public static ArrayList<String> readIntoArrayList_String(File f, int n,
+            int firstLine, int lastLine) {
         ArrayList<String> result = null;
         if (f.exists()) {
             try {
@@ -357,9 +349,8 @@ public class Generic_StaticIO {
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
      */
-    public static Object readObject(
-            File f,
-            boolean throwException) throws IOException, ClassNotFoundException {
+    public static Object readObject(File f, boolean throwException)
+            throws IOException, ClassNotFoundException {
         Object result = null;
         if (f.length() != 0) {
             ObjectInputStream ois;
@@ -371,75 +362,62 @@ public class Generic_StaticIO {
     }
 
     /**
-     * @param input_File A File which is not a Directory to be copied
-     * @param outputDirectory_File The Directory to copy to.
+     * @param f A File which is not a Directory to be copied
+     * @param outDir The Directory to copy to.
      */
-    private static void copyFile(
-            File input_File,
-            File outputDirectory_File) {
-        copyFile(
-                input_File,
-                outputDirectory_File,
-                input_File.getName());
+    private static void copyFile(File f, File outDir) {
+        copyFile(f, outDir, f.getName());
     }
 
     /**
-     * @param fileToCopy A File which is not a Directory to be copied
-     * @param directoryToCopyInto A File that is the Directory to copy to.
+     * @param f A File which is not a Directory to be copied
+     * @param outDir A File that is the Directory to copy to.
      * @param outputFileName The name for the file that will be created in the
      * outputDirectory_File
      */
-    public static void copyFile(
-            File fileToCopy,
-            File directoryToCopyInto,
-            String outputFileName) {
+    public static void copyFile(File f, File outDir, String outputFileName) {
         // String osName = System.getProperty( "os.name" );
         // if ( osName.equalsIgnoreCase( "UNIX" ) ) {
         // Runtime.getRuntime().exec( "cp " + _InputFile.toString() + " " +
         // _Output_File.toString() );
         // } else {
         // }
-        if (!fileToCopy.exists()) {
+        if (!f.exists()) {
             System.err.println(
                     "!input_File.exists() in "
                     + Generic_StaticIO.class.getCanonicalName()
-                    + ".copy(File(" + fileToCopy + "),File(" + directoryToCopyInto + "))");
+                    + ".copy(File(" + f + "),File(" + outDir + "))");
             System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
-        if (!directoryToCopyInto.exists()) {
-            directoryToCopyInto.mkdirs();
+        if (!outDir.exists()) {
+            outDir.mkdirs();
         }
-        File output_File = new File(
-                directoryToCopyInto, outputFileName);
+        File output_File = new File(outDir, outputFileName);
         if (output_File.exists()) {
-            System.out.println(
-                    "Overwriting File " + output_File + " in "
+            System.out.println("Overwriting File " + output_File + " in "
                     + Generic_StaticIO.class.getCanonicalName()
-                    + ".copy(File(" + fileToCopy + "),"
-                    + "File(" + directoryToCopyInto + "))");
+                    + ".copy(File(" + f + "),File(" + outDir + "))");
         } else {
             try {
                 output_File.createNewFile();
             } catch (IOException e) {
                 System.err.print(e.getMessage());
-                System.err.println(
-                        "Unable to createNewFile " + output_File + " in "
+                System.err.println("Unable to createNewFile " + output_File + " in "
                         + Generic_StaticIO.class.getCanonicalName()
-                        + ".copy(File(" + fileToCopy + "),"
-                        + "File(" + directoryToCopyInto + "))");
+                        + ".copy(File(" + f + "),File(" + outDir + "))");
                 e.printStackTrace(System.err);
                 System.exit(Generic_ErrorAndExceptionHandler.IOException);
             }
         }
         try {
             BufferedInputStream bis;
-            bis = getBufferedInputStream(fileToCopy);
+            bis = getBufferedInputStream(f);
             BufferedOutputStream bos;
             bos = getBufferedOutputStream(output_File);
             // bufferSize should be power of 2 (e.g. Math.pow(2, 12)), but nothing too big.
             int bufferSize = 2048;
-            long numberOfArrayReads = fileToCopy.length() / bufferSize;
-            long numberOfSingleReads = fileToCopy.length() - (numberOfArrayReads * bufferSize);
+            long numberOfArrayReads = f.length() / bufferSize;
+            long numberOfSingleReads = f.length() - (numberOfArrayReads * bufferSize);
             byte[] b = new byte[bufferSize];
             for (int i = 0; i < numberOfArrayReads; i++) {
                 bis.read(b);
@@ -463,7 +441,7 @@ public class Generic_StaticIO {
      * @return <code>new BufferedInputStream(new FileInputStream(f)))</code>
      */
     public static BufferedInputStream getBufferedInputStream(File f) {
-        BufferedInputStream result = null;
+        BufferedInputStream result;
         FileInputStream fis;
         fis = getFileInputStream(f);
         result = new BufferedInputStream(fis);
@@ -480,10 +458,12 @@ public class Generic_StaticIO {
             result = new FileInputStream(f);
         } catch (FileNotFoundException ex) {
             System.err.println("Trying to handle " + ex.getLocalizedMessage());
-            System.err.println("Wait for 2 seconds then trying again to getFileInputStream(File " + f.toString() + ").");
+            System.err.println("Wait for 2 seconds then trying again to "
+                    + "getFileInputStream(File " + f.toString() + ").");
             if (!f.exists()) {
                 //ex.printStackTrace(System.err);
-                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                        Level.SEVERE, null, ex);
                 // null will be returned...
             } else {
                 // This can happen because of too many open files.
@@ -494,7 +474,8 @@ public class Generic_StaticIO {
                         f.wait(wait);
                     }
                 } catch (InterruptedException ex2) {
-                    Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex2);
+                    Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                            Level.SEVERE, null, ex2);
                 }
                 return getFileInputStream(f, wait);
             }
@@ -509,7 +490,6 @@ public class Generic_StaticIO {
      * @param f
      * @param wait
      * @return
-     * <code>new BufferedReader(new InputStreamReader(new FileInputStream(file)))</code>
      */
     public static FileInputStream getFileInputStream(File f, long wait) {
         FileInputStream result = null;
@@ -518,10 +498,12 @@ public class Generic_StaticIO {
         } catch (FileNotFoundException ex) {
             System.err.println("Trying to handle " + ex.getLocalizedMessage());
             System.err.println("Wait for " + wait + " miliseconds then trying "
-                    + "again to getBufferedReader(File " + f.toString() + ", long).");
+                    + "again to getBufferedReader(File " + f.toString()
+                    + ", long).");
             if (!f.exists()) {
                 //ex.printStackTrace(System.err);
-                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                        Level.SEVERE, null, ex);
                 // null will be returned...
             } else {
                 // This can happen because of too many open files.
@@ -531,13 +513,15 @@ public class Generic_StaticIO {
                         f.wait(wait);
                     }
                 } catch (InterruptedException ex2) {
-                    Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex2);
+                    Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                            Level.SEVERE, null, ex2);
                 }
                 return getFileInputStream(f, wait * 2);
             }
 //        } catch (IOException e) {
 //            e.printStackTrace(System.err);
-//            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
+//            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, 
+//                null, e);
         }
         return result;
     }
@@ -551,7 +535,8 @@ public class Generic_StaticIO {
         try {
             result = new FileOutputStream(f);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
         return result;
     }
@@ -561,7 +546,7 @@ public class Generic_StaticIO {
      * @return <code>new BufferedInputStream(new FileInputStream(f)))</code>
      */
     public static BufferedOutputStream getBufferedOutputStream(File f) {
-        BufferedOutputStream result = null;
+        BufferedOutputStream result;
         FileOutputStream fos;
         fos = getFileOutputStream(f);
         result = new BufferedOutputStream(fos);
@@ -593,7 +578,8 @@ public class Generic_StaticIO {
         try {
             result = new ObjectInputStream(bis);
         } catch (IOException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
         return result;
     }
@@ -609,39 +595,36 @@ public class Generic_StaticIO {
         try {
             result = new ObjectOutputStream(bos);
         } catch (IOException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
         return result;
     }
 
     private static void copyDirectory(
-            File directoryToCopy,
-            File directoryToCopyInto) {
+            File dirToCopy,
+            File dirToCopyTo) {
         try {
-            if (!directoryToCopyInto.mkdir()) {
-                directoryToCopyInto.mkdirs();
+            if (!dirToCopyTo.mkdir()) {
+                dirToCopyTo.mkdirs();
             }
-            if (!directoryToCopy.isDirectory()) {
-                throw new IOException(
-                        "Expecting File " + directoryToCopy
+            if (!dirToCopy.isDirectory()) {
+                throw new IOException("Expecting File " + dirToCopy
                         + " To be a directory in "
                         + Generic_StaticIO.class.getName()
                         + ".copyDirectory(File,File)");
             }
-            if (!directoryToCopyInto.isDirectory()) {
-                throw new IOException(
-                        "Expecting File " + directoryToCopyInto
+            if (!dirToCopyTo.isDirectory()) {
+                throw new IOException("Expecting File " + dirToCopyTo
                         + " To be a directory in "
                         + Generic_StaticIO.class.getName()
                         + ".copy(File,File)");
             }
-            File copiedDirectory_File = new File(
-                    directoryToCopyInto,
-                    directoryToCopy.getName());
+            File copiedDirectory_File = new File(dirToCopyTo,
+                    dirToCopy.getName());
             copiedDirectory_File.mkdir();
-            File[] a_DirectoryToCopy_File_Files
-                    = directoryToCopy.listFiles();
-            for (File f : a_DirectoryToCopy_File_Files) {
+            File[] dirToCopyFiles = dirToCopy.listFiles();
+            for (File f : dirToCopyFiles) {
                 if (f.isFile()) {
                     copyFile(f, copiedDirectory_File);
                 } else {
@@ -656,74 +639,22 @@ public class Generic_StaticIO {
     }
 
     public static void copy(
-            File fileOrDirectoryToCopy,
-            File directoryToCopyInto) {
+            File fileOrDirToCopy,
+            File dirToCopyTo) {
         try {
-            if (!directoryToCopyInto.mkdir()) {
-                directoryToCopyInto.mkdirs();
+            if (!dirToCopyTo.mkdir()) {
+                dirToCopyTo.mkdirs();
             }
-            if (!directoryToCopyInto.isDirectory()) {
-                throw new IOException(
-                        "Expecting File " + directoryToCopyInto
+            if (!dirToCopyTo.isDirectory()) {
+                throw new IOException("Expecting File " + dirToCopyTo
                         + "To be a directory in "
-                        + Generic_StaticIO.class.getName() + ".copy(File,File)");
+                        + Generic_StaticIO.class.getName()
+                        + ".copy(File,File)");
             }
-            if (fileOrDirectoryToCopy.isFile()) {
-//                File outputFile = new File(
-//                        a_DirectoryToCopyInto_File,
-//                        a_FileOrDirectoryToCopy_File.getName());
-//                copyFile(
-//                        a_FileOrDirectoryToCopy_File,
-//                        outputFile);
-                copyFile(
-                        fileOrDirectoryToCopy,
-                        directoryToCopyInto);
+            if (fileOrDirToCopy.isFile()) {
+                copyFile(fileOrDirToCopy, dirToCopyTo);
             } else {
-                copyDirectory(
-                        fileOrDirectoryToCopy,
-                        directoryToCopyInto);
-//)
-//                File[] a_DirectoryToCopy_File_Files =
-//                        a_FileOrDirectoryToCopy_File.listFiles();
-//                File a_DirectoryToCopyInto_1_File = new File(
-//                        a_DirectoryToCopyInto_File,
-//                        a_FileOrDirectoryToCopy_File.getName());
-//                for (int i = 0; i < a_DirectoryToCopy_File_Files.length; i++) {
-////                    copy(
-////                        a_DirectoryToCopy_File_Files[i],
-////                        a_DirectoryToCopyInto_1_File);
-////                    }
-//////                    File a_DirectoryToCopyInto_2_File = new File(
-//////                            a_DirectoryToCopyInto_1_File,
-//////                            a_DirectoryToCopy_File_Files[i].getName());
-//////                    if (a_DirectoryToCopy_File_Files[i].isFile()) {
-//////                        copyFile(
-//////                                a_DirectoryToCopy_File_Files[i],
-//////                                a_DirectoryToCopyInto_2_File);
-//////                    } else {
-//////                        if (!a_DirectoryToCopyInto_2_File.mkdir()) {
-//////                            a_DirectoryToCopyInto_2_File.mkdirs();
-//////                        }
-//////                        copy(
-//////                                a_DirectoryToCopy_File_Files[i],
-//////                                a_DirectoryToCopyInto_2_File);
-//////                    }
-////                    File a_DirectoryToCopyInto_2_File = new File(
-////                            a_DirectoryToCopyInto_1_File,
-////                            a_DirectoryToCopy_File_Files[i].getName());
-//                    if (a_DirectoryToCopy_File_Files[i].isFile()) {
-//                        copyFile(
-//                                a_DirectoryToCopy_File_Files[i],
-//                                a_DirectoryToCopyInto_1_File);
-//                    } else {
-//                        if (!a_DirectoryToCopyInto_1_File.mkdir()) {
-//                            a_DirectoryToCopyInto_1_File.mkdirs();
-//                        }
-//                        copy(
-//                                a_DirectoryToCopy_File_Files[i],
-//                                a_DirectoryToCopyInto_1_File);
-//                    }
-//                }
+                copyDirectory(fileOrDirToCopy, dirToCopyTo);
             }
         } catch (IOException e) {
             System.err.print(e.getMessage());
@@ -777,152 +708,12 @@ public class Generic_StaticIO {
     }
 
     /**
-     * @return createTempFile(new File(System.getProperty("user.dir")));
-     */
-    public static File createTempFile() {
-        return createTempFile(new File(System.getProperty("user.dir")));
-    }
-
-    /**
-     * @param dir Directory in which temporary file is created.
-     * @return Temporary file created in dir.
-     */
-    public static File createTempFile(File dir) {
-        return createTempFile(dir, "", "");
-    }
-
-    /**
-     * Returns a newly created temporary _InputFile.
-     *
-     * @param parentDirectory .
-     * @param prefix If not 3 characters long, this will be padded with "x"
-     * characters.
-     * @param suffix If null the _InputFile is appended with ".tmp". Default
-     * extension to nothing.
-     * @return
-     */
-    public static File createTempFile(
-            File parentDirectory,
-            String prefix,
-            String suffix) {
-        File file = null;
-        while (prefix.length() < 3) {
-            prefix = prefix + "x";
-        }
-        boolean abstractFileCreated = false;
-        do {
-            try {
-                file = File.createTempFile(
-                        prefix + Long.toString(System.currentTimeMillis()),
-                        suffix,
-                        parentDirectory);
-                abstractFileCreated = true;
-            } catch (IOException e) {
-                System.err.print(e.getMessage());
-                e.printStackTrace(System.err);
-                System.exit(Generic_ErrorAndExceptionHandler.IOException);
-            }
-        } while (!abstractFileCreated);
-        file.deleteOnExit();
-        return createNewFile(parentDirectory, file.getName());
-    }
-
-    /**
-     * @return createNewFile(new File(System.getProperty("user.dir")));
-     */
-    public static File createNewFile() {
-        // return createNewFile(
-        // new File( System.getProperty( "java.io.tmpdir" ) ) );
-        // return createNewFile(
-        // new File( System.getProperty( "user.home" ) ) );
-        return createNewFile(
-                new File(System.getProperty("user.dir")));
-    }
-
-    /**
-     * @return a File created by:      <code>
-     * return createNewFile(
-     *         parentDirectory,
-     *         new String(""),
-     *         new String(""));
-     * </code>
-     * @param parentDirectory Default extension prefix and suffix nothing.
-     */
-    public static File createNewFile(File parentDirectory) {
-        return createNewFile(
-                parentDirectory, "", "");
-    }
-
-    /**
-     * @return a File.
-     * @param parentDirectory
-     * @param prefix
-     * @param suffix
-     */
-    public static File createNewFile(
-            File parentDirectory,
-            String prefix,
-            String suffix) {
-        File file;
-        do {
-            file = new File(
-                    parentDirectory,
-                    prefix + Long.toString(System.currentTimeMillis()) + suffix);
-        } while (file.exists());
-        try {
-            if ((prefix + suffix).equalsIgnoreCase("")) {
-                file.mkdir();
-            } else {
-                file.createNewFile();
-            }
-        } catch (IOException e) {
-            System.err.print(e.getMessage());
-            e.printStackTrace(System.err);
-            System.exit(Generic_ErrorAndExceptionHandler.IOException);
-        }
-        return file;
-    }
-
-    /**
-     * Returns a newly created File which is a _InputFile if the filename. or a
-     * directory.
-     *
-     * @param parentDirectory
-     * @param filename
-     * @return
-     */
-    public static File createNewFile(
-            File parentDirectory,
-            String filename) {
-        File file = new File(parentDirectory, filename);
-        try {
-            if (!parentDirectory.exists()) {
-                parentDirectory.mkdirs();
-            }
-            if (filename.length() > 4) {
-                if (filename.charAt(filename.length() - 4) != '.') {
-                    file.mkdir();
-                } else {
-                    file.createNewFile();
-                }
-            } else {
-                file.mkdir();
-            }
-        } catch (IOException e) {
-            System.err.print(e.getMessage());
-            e.printStackTrace(System.err);
-            System.exit(Generic_ErrorAndExceptionHandler.IOException);
-        }
-        return file;
-    }
-
-    /**
      * @param file
      * @return
      * <code>new BufferedReader(new InputStreamReader(new FileInputStream(file)))</code>
      */
     public static BufferedReader getBufferedReader(File file) {
-        BufferedReader result = null;
+        BufferedReader result;
         result = new BufferedReader(
                 new InputStreamReader(getFileInputStream(file)));
         return result;
@@ -1332,7 +1123,7 @@ public class Generic_StaticIO {
         st.wordChars('<', '<');
         st.wordChars('>', '>');
     }
-    
+
     /**
      * @return File directory in which object with a_ID is (to be) stored within
      * directory0.
@@ -1591,6 +1382,7 @@ public class Generic_StaticIO {
      * }
      * return result;
      * }
+     * @return 
      * @
      * return result;
      */
@@ -2379,16 +2171,16 @@ public class Generic_StaticIO {
         int count = 0;
         String filename;
         String[] split;
-        for (int i = 0; i < list.length; i++) {
-            filename = list[i];
+        for (String list1 : list) {
+            filename = list1;
             if (filename.contains(underscore)) {
                 split = filename.split("_");
                 if (split.length <= 2) {
                     long start;
                     try {
-                        start = new Long(split[0]).longValue();
+                        start = Long.parseLong(split[0]);
                         if (split.length == 2) {
-                            new Long(split[1]).longValue();
+                            Long.parseLong(split[1]);
                         }
                         count++;
                         result.put(
@@ -2446,6 +2238,7 @@ public class Generic_StaticIO {
      * Windows 7 machine.
      *
      * @param f
+     * @param dir
      * @return
      */
     public static int getFilePathLength(File f, File dir) {

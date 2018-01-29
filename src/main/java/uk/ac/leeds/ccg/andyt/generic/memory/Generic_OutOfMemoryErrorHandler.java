@@ -187,8 +187,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @param file
      * @return
      */
-    public File initFile(
-            String file) {
+    public File initFile(            String file) {
         File result = new File(file);
         result.getParentFile().mkdirs();
         try {
@@ -207,9 +206,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @param filename
      * @return
      */
-    public File initFile(
-            File dir,
-            String filename) {
+    public File initFile(            File dir,            String filename) {
         File result = new File(dir, filename);
         dir.mkdirs();
         try {
@@ -227,9 +224,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @param string
      * @return
      */
-    public File initFileDirectory(
-            File parentFile,
-            String string) {
+    public File initFileDirectory(            File parentFile,            String string) {
         File result = new File(parentFile, string);
         result.mkdirs();
         return result;
