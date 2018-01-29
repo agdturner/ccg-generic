@@ -180,4 +180,53 @@ public abstract class Generic_OutOfMemoryErrorHandler
     public long getTotalFreeMemory() {
         return getGeneric_TestMemory().getTotalFreeMemory();
     }
+
+    /**
+     * For initialising a File from String _String.
+     *
+     * @param file
+     * @return
+     */
+    public File initFile(            String file) {
+        File result = new File(file);
+        result.getParentFile().mkdirs();
+        try {
+            result.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_OutOfMemoryErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        checkAndMaybeFreeMemory();
+        return result;
+    }
+
+    /**
+     * For initialising a File.
+     *
+     * @param dir
+     * @param filename
+     * @return
+     */
+    public File initFile(            File dir,            String filename) {
+        File result = new File(dir, filename);
+        dir.mkdirs();
+        try {
+            result.createNewFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_OutOfMemoryErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    /**
+     * For initialising a File Directory.
+     *
+     * @param parentFile
+     * @param string
+     * @return
+     */
+    public File initFileDirectory(            File parentFile,            String string) {
+        File result = new File(parentFile, string);
+        result.mkdirs();
+        return result;
+    }
 }
