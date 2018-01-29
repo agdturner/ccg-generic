@@ -2,19 +2,19 @@
  * A component of a library for
  * <a href="http://www.geog.leeds.ac.uk/people/a.turner/projects/MoSeS">MoSeS</a>.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
  */
 package uk.ac.leeds.ccg.andyt.generic.io;
 
@@ -54,6 +54,7 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
 
     /**
      * Initialise from rec.
+     *
      * @param rec
      */
     protected void init(Generic_AbstractDataRecord rec) {
@@ -72,13 +73,13 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
      */
     @Override
     public String toString() {
-        String result = "_RecordID " + this.RecordID;
+        String result = "RecordID " + this.RecordID;
         return result;
     }
 
     /**
      * @return A Comma Separated Version (CSV) <code>String</code> of the values
-     *         of the <code>Fields</code> of <code>this</code>.
+     * of the <code>Fields</code> of <code>this</code>.
      */
     public String toCSVString() {
         String result = "" + this.RecordID;
@@ -87,7 +88,7 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
 
     /**
      * @return A Comma Separated Version (CSV) <code>String</code> of the names
-     *         of the Variables as returned in <code>toString()</code>.
+     * of the Variables as returned in <code>toString()</code>.
      */
     public String toCSVStringFields() {
         // // Becasue this.getClass().getFields() is not guaranteed to return an
@@ -103,18 +104,18 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
         // }
         String result = "RecordID";
         return result;
-    // String result = new String();
-    // String[] toStringSplit = toString().split( "," );
-    // String[] stringVariableNameAndValue;
-    // stringVariableNameAndValue = toStringSplit[ 0 ].split( " " );
-    // result += stringVariableNameAndValue[ 0 ];
-    // for ( int i = 1; i < toStringSplit.length; i ++ ) {
-    // stringVariableNameAndValue = toStringSplit[ i ].split( " " );
-    // if ( stringVariableNameAndValue.length != 0 ) {
-    // result += "," + stringVariableNameAndValue[ 0 ];
-    // }
-    // }
-    // return result;
+        // String result = new String();
+        // String[] toStringSplit = toString().split( "," );
+        // String[] stringVariableNameAndValue;
+        // stringVariableNameAndValue = toStringSplit[ 0 ].split( " " );
+        // result += stringVariableNameAndValue[ 0 ];
+        // for ( int i = 1; i < toStringSplit.length; i ++ ) {
+        // stringVariableNameAndValue = toStringSplit[ i ].split( " " );
+        // if ( stringVariableNameAndValue.length != 0 ) {
+        // result += "," + stringVariableNameAndValue[ 0 ];
+        // }
+        // }
+        // return result;
     }
 
     /**
@@ -125,19 +126,16 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
      * </ul>
      * to aRandomAccessFile.
      *
-     * @param raf
-     *            The <code>RandomAccessFile</code> written to.
+     * @param raf The <code>RandomAccessFile</code> written to.
      * @throws java.io.IOException
      */
-    public void write(
-            RandomAccessFile raf)
-            throws IOException {
+    public void write(RandomAccessFile raf) throws IOException {
         raf.writeLong(this.RecordID);
     }
 
     /**
      * @param object
-     * @return 
+     * @return
      * @see java.lang.Object#equals(Object)
      */
     @Override
@@ -154,6 +152,7 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
 
     /**
      * Method required by Comparable
+     *
      * @param obj
      * @see java.lang.Comparable#compareTo(Object)
      */
@@ -173,7 +172,7 @@ public abstract class Generic_AbstractDataRecord implements Serializable, Compar
 
     /**
      * @return The size (in <code>bytes</code>) of this as a <code>long</code>.
-
+     *
      */
     public long getSizeInBytes() {
         return ((long) Long.SIZE) / getNumberOfBitsInByte();
