@@ -102,6 +102,7 @@ public class Generic_StaticIO {
      */
     public static void writeObject(Object object, File f) {
         try {
+            f.getParentFile().mkdirs();
             ObjectOutputStream oos;
             oos = getObjectOutputStream(f);
             oos.writeObject(object);

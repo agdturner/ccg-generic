@@ -25,31 +25,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * For reading ASCII text files (such as CSV format files) into a collection of
+ * Strings (one for each line in the file).
  *
  * @author geoagdt
  */
 public class Generic_ReadCSV {
 
-    public static boolean testRead(
-            File f,
-            File testDir,
-            int syntax) {
-
-        ArrayList<String> result = null;
-
+    public static boolean testRead(File f, File testDir, int syntax) {
+        ArrayList<String> result;
         File test;
-        test = new File(testDir,
-                "test" + syntax + ".csv");
+        test = new File(testDir, "test" + syntax + ".csv");
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(test);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_ReadCSV.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_ReadCSV.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
         if (f.exists()) {
             try {
@@ -79,7 +75,7 @@ public class Generic_ReadCSV {
                             Generic_StaticIO.setStreamTokenizerSyntax6(st);
                             break;
                         default:
-                            System.out.println("No Special StreamTokenizerSyntax");
+                            System.out.println("No Special Syntax!");
 
                     }
                     int token = st.nextToken();
@@ -113,7 +109,9 @@ public class Generic_ReadCSV {
                                     //line += (char) token;
                                 }
                                 System.out.println("line so far " + line);
-                                System.out.println("Odd token " + token +  " \"" + (char) token + "\" encountered.");
+                                System.out.println("Odd token " + token
+                                        + " \"" + (char) token
+                                        + "\" encountered.");
                         }
                         token = st.nextToken();
                     }
@@ -126,15 +124,12 @@ public class Generic_ReadCSV {
         } else {
             System.out.println("File " + f + " does not exist!");
         }
-
         long length0;
         length0 = test.length();
         System.out.println("length of test file = " + length0);
-
         long length1;
         length1 = f.length();
         System.out.println("length of original file = " + length1);
-
         if (length0 == length1) {
             System.out.println("length0 == length1");
             return true;
@@ -143,22 +138,34 @@ public class Generic_ReadCSV {
         }
         //return result;
     }
-    
-    public static ArrayList<String> read(
-            File f,
-            File testDir,
-            int syntax) {
+
+    /**
+     *
+     * @param f The file to be read in and returned as an ArrayList with each
+     * element being a line.
+     * @param testDir If this is null then a test file is not written out.
+     * Otherwise a test file is written out in testDir
+     * @param syntax @see for example,
+     * Generic_StaticIO.setStreamTokenizerSyntax1(st);
+     * @return
+     */
+    public static ArrayList<String> read(File f, File testDir, int syntax) {
         ArrayList<String> result = null;
-        testDir.mkdirs();
-        File test;
-        test = new File(testDir,
-                "test" + syntax + ".csv");
         PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(test);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_ReadCSV.class.getName()).log(Level.SEVERE, null, ex);
+        // Initialise pw
+        if (testDir != null) {
+            testDir.mkdirs();
+            File test = null;
+            test = new File(testDir, "test" + syntax + ".csv");
+            try {
+                pw = new PrintWriter(test);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(
+                        Generic_ReadCSV.class.getName()).log(Level.SEVERE,
+                                null, ex);
+            }
         }
+
         if (f.exists()) {
             try {
                 BufferedReader br;
@@ -190,7 +197,7 @@ public class Generic_ReadCSV {
                             Generic_StaticIO.setStreamTokenizerSyntax7(st);
                             break;
                         default:
-                            System.out.println("No Special StreamTokenizerSyntax");
+                            System.out.println("No Special Syntax!");
 
                     }
                     int token = st.nextToken();
@@ -200,7 +207,9 @@ public class Generic_ReadCSV {
                         switch (token) {
                             case StreamTokenizer.TT_EOL:
                                 result.add(line);
-                                pw.println(line);
+                                if (pw != null) {
+                                    pw.println(line);
+                                }
                                 line = "";
 //                                if (RecordID % 100 == 0) {
 //                                    System.out.println(line);
@@ -223,14 +232,18 @@ public class Generic_ReadCSV {
                                     // These are returns or tabs or something...
                                     //line += (char) token;
                                 }
-                                //System.out.println("line so far " + line);
-                                //System.out.println("Odd token " + token +  " \"" + (char) token + "\" encountered.");
+//                                System.out.println("line so far " + line);
+//                                System.out.println("Odd token " + token 
+//                                        +  " \"" + (char) token 
+//                                        + "\" encountered.");
                         }
                         token = st.nextToken();
                     }
                     br.close();
                 }
-                pw.close();
+                if (pw != null) {
+                    pw.close();
+                }
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }

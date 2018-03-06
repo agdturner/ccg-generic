@@ -276,35 +276,12 @@ public class Generic_Collections {
      * Adds value to the value at a_IntegerLong_TreeMap.get(key) if it exists or
      * puts the key, value into a_IntegerLong_TreeMap
      *
-     * @param a_IntegerLong_TreeMap
-     * @param key
-     * @param value
-     */
-    public static void addToTreeMapIntegerLong(
-            TreeMap<Integer, Long> a_IntegerLong_TreeMap,
-            Integer key,
-            Long value) {
-        Long currentValue = a_IntegerLong_TreeMap.get(key);
-        if (currentValue != null) {
-            Long newValue = currentValue + value;
-            a_IntegerLong_TreeMap.put(key, newValue);
-        } else {
-            a_IntegerLong_TreeMap.put(key, value);
-        }
-    }
-
-    /**
-     * Adds value to the value at map.get(key) if it exists or puts the key,
-     * value into map.
-     *
      * @param map
      * @param key
      * @param value
      */
-    public static void addToTreeMapStringLong(
-            TreeMap<String, Long> map,
-            String key,
-            Long value) {
+    public static void addToTreeMapIntegerLong(TreeMap<Integer, Long> map,
+            Integer key, Long value) {
         Long currentValue = map.get(key);
         if (currentValue != null) {
             Long newValue = currentValue + value;
@@ -321,12 +298,29 @@ public class Generic_Collections {
      * @param map
      * @param key
      * @param value
-     * @return 
      */
-    public static int addToTreeMapStringInteger(
-            TreeMap<String, Integer> map,
-            String key,
-            Integer value) { 
+    public static void addToTreeMapStringLong(TreeMap<String, Long> map,
+            String key, Long value) {
+        Long currentValue = map.get(key);
+        if (currentValue != null) {
+            Long newValue = currentValue + value;
+            map.put(key, newValue);
+        } else {
+            map.put(key, value);
+        }
+    }
+
+    /**
+     * Adds value to the value at map.get(key) if it exists or puts the key,
+     * value into map.
+     *
+     * @param map
+     * @param key
+     * @param value
+     * @return
+     */
+    public static int addToTreeMapStringInteger(TreeMap<String, Integer> map,
+            String key, Integer value) {
         int result;
 //        // DEBUG
 //        if (map == null) {
@@ -354,8 +348,7 @@ public class Generic_Collections {
      * @return
      */
     public static TreeMap<String, Integer> addToTreeMapStringInteger(
-            TreeMap<String, Integer> map0,
-            TreeMap<String, Integer> map1) {
+            TreeMap<String, Integer> map0, TreeMap<String, Integer> map1) {
         TreeMap<String, Integer> result;
         result = deepCopyTreeMapStringInteger(map0);
         Iterator<String> ite;
@@ -376,9 +369,7 @@ public class Generic_Collections {
      * @param value
      */
     public static void setMaxValueTreeMapStringInteger(
-            TreeMap<String, Integer> map,
-            String key,
-            Integer value) {
+            TreeMap<String, Integer> map, String key, Integer value) {
         Integer currentValue = map.get(key);
         if (currentValue != null) {
             Integer newValue = Math.max(currentValue, value);
@@ -398,9 +389,7 @@ public class Generic_Collections {
      * @param value
      */
     public static void setMinValueTreeMapStringInteger(
-            TreeMap<String, Integer> map,
-            String key,
-            Integer value) {
+            TreeMap<String, Integer> map, String key, Integer value) {
         Integer currentValue = map.get(key);
         if (currentValue != null) {
             Integer newValue = Math.min(currentValue, value);
@@ -416,20 +405,18 @@ public class Generic_Collections {
      * Adds value to the value at a_IntegerBigInteger_TreeMap.get(key) if it
      * exists or puts the key, value into a_IntegerBigInteger_TreeMap
      *
-     * @param a_IntegerBigInteger_TreeMap
+     * @param map
      * @param key
      * @param value
      */
     public static void addToTreeMapIntegerBigInteger(
-            TreeMap<Integer, BigInteger> a_IntegerBigInteger_TreeMap,
-            Integer key,
-            BigInteger value) {
-        BigInteger currentValue = a_IntegerBigInteger_TreeMap.get(key);
+            TreeMap<Integer, BigInteger> map, Integer key, BigInteger value) {
+        BigInteger currentValue = map.get(key);
         if (currentValue != null) {
             BigInteger newValue = currentValue.add(value);
-            a_IntegerBigInteger_TreeMap.put(key, newValue);
+            map.put(key, newValue);
         } else {
-            a_IntegerBigInteger_TreeMap.put(key, value);
+            map.put(key, value);
         }
     }
 
@@ -437,20 +424,18 @@ public class Generic_Collections {
      * Adds value to the value at a_IntegerBigDecimal_TreeMap.get(key) if it
      * exists or puts the key, value into a_IntegerBigDecimal_TreeMap
      *
-     * @param a_IntegerBigDecimal_TreeMap
+     * @param map
      * @param key
      * @param value
      */
     public static void addToTreeMapIntegerBigDecimal(
-            TreeMap<Integer, BigDecimal> a_IntegerBigDecimal_TreeMap,
-            Integer key,
-            BigDecimal value) {
-        BigDecimal currentValue = a_IntegerBigDecimal_TreeMap.get(key);
+            TreeMap<Integer, BigDecimal> map, Integer key, BigDecimal value) {
+        BigDecimal currentValue = map.get(key);
         if (currentValue != null) {
             BigDecimal newValue = currentValue.add(value);
-            a_IntegerBigDecimal_TreeMap.put(key, newValue);
+            map.put(key, newValue);
         } else {
-            a_IntegerBigDecimal_TreeMap.put(key, value);
+            map.put(key, value);
         }
     }
 
@@ -467,9 +452,7 @@ public class Generic_Collections {
      * result[2] = Count of how many values are in set 0, but not in set 1;
      * }
      */
-    public static long[] getCounts(
-            HashSet set0,
-            HashSet set1) {
+    public static long[] getCounts(HashSet set0, HashSet set1) {
         long[] result;
         result = new long[3];
         result[0] = 0;
@@ -510,9 +493,7 @@ public class Generic_Collections {
      * counts[2] = Count of how many values are in set 0, but not in set 1;
      * }
      */
-    public static Object[] getUnionAndCounts(
-            HashSet set0,
-            HashSet set1) {
+    public static Object[] getUnionAndCounts(HashSet set0, HashSet set1) {
         Object[] result;
         result = new Object[2];
         HashSet union;
@@ -546,9 +527,7 @@ public class Generic_Collections {
      * counts[2] = Count of how many values are in set 0, but not in set 1;
      * }
      */
-    public static Object[] getUnionAndUniques(
-            HashSet set0,
-            HashSet set1) {
+    public static Object[] getUnionAndUniques(HashSet set0, HashSet set1) {
         Object[] result;
         result = new Object[3];
         HashSet union;
@@ -570,17 +549,17 @@ public class Generic_Collections {
     }
 
     public static TreeMap<Integer, BigInteger> deepCopy_Integer_BigInteger(
-            TreeMap<Integer, BigInteger> a_TreeMap) {
+            TreeMap<Integer, BigInteger> map) {
         TreeMap<Integer, BigInteger> result = new TreeMap<Integer, BigInteger>();
-        Iterator<Integer> ite = a_TreeMap.keySet().iterator();
+        Iterator<Integer> ite = map.keySet().iterator();
         Integer keyToCopy;
         Integer keyCopy;
         BigInteger valueToCopy;
         BigInteger valueCopy;
         while (ite.hasNext()) {
             keyToCopy = ite.next();
-            keyCopy = new Integer(keyToCopy);
-            valueToCopy = a_TreeMap.get(keyToCopy);
+            keyCopy = keyToCopy;
+            valueToCopy = map.get(keyToCopy);
             valueCopy = new BigInteger(valueToCopy.toString());
             result.put(keyCopy, valueCopy);
         }
@@ -588,9 +567,9 @@ public class Generic_Collections {
     }
 
     public static HashMap<Long, String> deepCopy_Long_String(
-            HashMap<Long, String> aHashMap) {
+            HashMap<Long, String> map) {
         HashMap<Long, String> result = new HashMap<Long, String>();
-        Iterator<Long> ite = aHashMap.keySet().iterator();
+        Iterator<Long> ite = map.keySet().iterator();
         Long keyToCopy;
         Long keyCopy;
         String valueToCopy;
@@ -598,7 +577,7 @@ public class Generic_Collections {
         while (ite.hasNext()) {
             keyToCopy = ite.next();
             keyCopy = new Long(keyToCopy);
-            valueToCopy = aHashMap.get(keyToCopy);
+            valueToCopy = map.get(keyToCopy);
             valueCopy = valueToCopy;
             result.put(keyCopy, valueCopy);
         }
@@ -606,9 +585,9 @@ public class Generic_Collections {
     }
 
     public static HashMap<String, String> deepCopyHashMapStringString(
-            HashMap<String, String> aHashMap) {
+            HashMap<String, String> map) {
         HashMap<String, String> result = new HashMap<String, String>();
-        Iterator<String> ite = aHashMap.keySet().iterator();
+        Iterator<String> ite = map.keySet().iterator();
         String keyToCopy;
         String keyCopy;
         String valueToCopy;
@@ -616,7 +595,7 @@ public class Generic_Collections {
         while (ite.hasNext()) {
             keyToCopy = ite.next();
             keyCopy = keyToCopy;
-            valueToCopy = aHashMap.get(keyToCopy);
+            valueToCopy = map.get(keyToCopy);
             valueCopy = valueToCopy;
             result.put(keyCopy, valueCopy);
         }
@@ -624,9 +603,9 @@ public class Generic_Collections {
     }
 
     public static HashMap<String, Integer> deepCopyHashMapStringInteger(
-            HashMap<String, Integer> aHashMap) {
+            HashMap<String, Integer> map) {
         HashMap<String, Integer> result = new HashMap<String, Integer>();
-        Iterator<String> ite = aHashMap.keySet().iterator();
+        Iterator<String> ite = map.keySet().iterator();
         String keyToCopy;
         String keyCopy;
         Integer valueToCopy;
@@ -634,7 +613,7 @@ public class Generic_Collections {
         while (ite.hasNext()) {
             keyToCopy = ite.next();
             keyCopy = keyToCopy;
-            valueToCopy = aHashMap.get(keyToCopy);
+            valueToCopy = map.get(keyToCopy);
             valueCopy = valueToCopy;
             result.put(keyCopy, valueCopy);
         }
@@ -661,17 +640,17 @@ public class Generic_Collections {
     }
 
     public static TreeMap<Integer, BigDecimal> deepCopy_Integer_BigDecimal(
-            TreeMap<Integer, BigDecimal> a_TreeMap) {
+            TreeMap<Integer, BigDecimal> map) {
         TreeMap<Integer, BigDecimal> result = new TreeMap<Integer, BigDecimal>();
-        Iterator<Integer> ite = a_TreeMap.keySet().iterator();
+        Iterator<Integer> ite = map.keySet().iterator();
         Integer keyToCopy;
         Integer keyCopy;
         BigDecimal valueToCopy;
         BigDecimal valueCopy;
         while (ite.hasNext()) {
             keyToCopy = ite.next();
-            keyCopy = new Integer(keyToCopy);
-            valueToCopy = a_TreeMap.get(keyToCopy);
+            keyCopy = keyToCopy;
+            valueToCopy = map.get(keyToCopy);
             valueCopy = new BigDecimal(valueToCopy.toString());
             result.put(keyCopy, valueCopy);
         }
@@ -679,76 +658,76 @@ public class Generic_Collections {
     }
 
     public static TreeMap<Integer, Long> deepCopy_Integer_Long(
-            TreeMap<Integer, Long> a_TreeMap) {
+            TreeMap<Integer, Long> map) {
         TreeMap<Integer, Long> result = new TreeMap<Integer, Long>();
-        Iterator<Integer> ite = a_TreeMap.keySet().iterator();
+        Iterator<Integer> ite = map.keySet().iterator();
         Integer keyToCopy;
         Integer keyCopy;
         Long valueToCopy;
         Long valueCopy;
         while (ite.hasNext()) {
             keyToCopy = ite.next();
-            keyCopy = new Integer(keyToCopy);
-            valueToCopy = a_TreeMap.get(keyToCopy);
-            valueCopy = new Long(valueToCopy);
+            keyCopy = keyToCopy;
+            valueToCopy = map.get(keyToCopy);
+            valueCopy = valueToCopy;
             result.put(keyCopy, valueCopy);
         }
         return result;
     }
 
     public static void addToTreeMapIntegerLong(
-            TreeMap<Integer, Long> a_TreeMapToAddTo,
-            TreeMap<Integer, Long> a_TreeMapToAdd) {
-        Iterator<Integer> ite = a_TreeMapToAdd.keySet().iterator();
+            TreeMap<Integer, Long> mapToAddTo,
+            TreeMap<Integer, Long> mapToAdd) {
+        Iterator<Integer> ite = mapToAdd.keySet().iterator();
         Integer key_Integer;
         Long value_Long;
         Long valueToAddTo_Long;
         while (ite.hasNext()) {
             key_Integer = ite.next();
-            value_Long = a_TreeMapToAdd.get(key_Integer);
-            if (a_TreeMapToAddTo.containsKey(key_Integer)) {
-                valueToAddTo_Long = a_TreeMapToAddTo.get(key_Integer);
-                a_TreeMapToAddTo.put(key_Integer, value_Long + valueToAddTo_Long);
+            value_Long = mapToAdd.get(key_Integer);
+            if (mapToAddTo.containsKey(key_Integer)) {
+                valueToAddTo_Long = mapToAddTo.get(key_Integer);
+                mapToAddTo.put(key_Integer, value_Long + valueToAddTo_Long);
             } else {
-                a_TreeMapToAddTo.put(key_Integer, value_Long);
+                mapToAddTo.put(key_Integer, value_Long);
             }
         }
     }
 
     public static void addToTreeMapIntegerBigDecimal(
-            TreeMap<Integer, BigDecimal> a_TreeMapToAddTo,
-            TreeMap<Integer, BigDecimal> a_TreeMapToAdd) {
-        Iterator<Integer> ite = a_TreeMapToAdd.keySet().iterator();
+            TreeMap<Integer, BigDecimal> mapToAddTo,
+            TreeMap<Integer, BigDecimal> mapToAdd) {
+        Iterator<Integer> ite = mapToAdd.keySet().iterator();
         Integer key_Integer;
-        BigDecimal value_BigDecimal;
-        BigDecimal valueToAddTo_BigDecimal;
+        BigDecimal value;
+        BigDecimal valueToAddTo;
         while (ite.hasNext()) {
             key_Integer = ite.next();
-            value_BigDecimal = a_TreeMapToAdd.get(key_Integer);
-            if (a_TreeMapToAddTo.containsKey(key_Integer)) {
-                valueToAddTo_BigDecimal = a_TreeMapToAddTo.get(key_Integer);
-                a_TreeMapToAddTo.put(key_Integer, value_BigDecimal.add(valueToAddTo_BigDecimal));
+            value = mapToAdd.get(key_Integer);
+            if (mapToAddTo.containsKey(key_Integer)) {
+                valueToAddTo = mapToAddTo.get(key_Integer);
+                mapToAddTo.put(key_Integer, value.add(valueToAddTo));
             } else {
-                a_TreeMapToAddTo.put(key_Integer, value_BigDecimal);
+                mapToAddTo.put(key_Integer, value);
             }
         }
     }
 
     public static void addToTreeMapIntegerBigInteger(
-            TreeMap<Integer, BigInteger> a_TreeMapToAddTo,
-            TreeMap<Integer, BigInteger> a_TreeMapToAdd) {
-        Iterator<Integer> ite = a_TreeMapToAdd.keySet().iterator();
+            TreeMap<Integer, BigInteger> mapToAddTo,
+            TreeMap<Integer, BigInteger> mapToAdd) {
+        Iterator<Integer> ite = mapToAdd.keySet().iterator();
         Integer key_Integer;
-        BigInteger value_BigInteger;
-        BigInteger valueToAddTo_BigInteger;
+        BigInteger value;
+        BigInteger valueToAddTo;
         while (ite.hasNext()) {
             key_Integer = ite.next();
-            value_BigInteger = a_TreeMapToAdd.get(key_Integer);
-            if (a_TreeMapToAddTo.containsKey(key_Integer)) {
-                valueToAddTo_BigInteger = a_TreeMapToAddTo.get(key_Integer);
-                a_TreeMapToAddTo.put(key_Integer, value_BigInteger.add(valueToAddTo_BigInteger));
+            value = mapToAdd.get(key_Integer);
+            if (mapToAddTo.containsKey(key_Integer)) {
+                valueToAddTo = mapToAddTo.get(key_Integer);
+                mapToAddTo.put(key_Integer, value.add(valueToAddTo));
             } else {
-                a_TreeMapToAddTo.put(key_Integer, value_BigInteger);
+                mapToAddTo.put(key_Integer, value);
             }
         }
     }
