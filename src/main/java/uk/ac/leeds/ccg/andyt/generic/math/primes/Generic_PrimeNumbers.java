@@ -114,8 +114,8 @@ public class Generic_PrimeNumbers {
         String name;
 
         if (!fBitSet.exists()) {
-            PrimeList = new ArrayList<Integer>();
-            PrimeIndexMap = new HashMap<Integer, Integer>();
+            PrimeList = new ArrayList<>();
+            PrimeIndexMap = new HashMap<>();
 
             int maxNumber;
             int maxSearch;

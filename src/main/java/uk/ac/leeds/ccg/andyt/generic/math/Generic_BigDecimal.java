@@ -804,7 +804,7 @@ public class Generic_BigDecimal
             BigDecimal divisor,
             int decimalPlaces,
             RoundingMode roundingMode) {
-        ArrayList<BigDecimal> result = new ArrayList<BigDecimal>();
+        ArrayList<BigDecimal> result = new ArrayList<>();
         Iterator<BigDecimal> ite = list.iterator();
         while (ite.hasNext()) {
             BigDecimal value = ite.next();

@@ -53,7 +53,7 @@ public class Generic_ReadCSV {
                 StreamTokenizer st;
                 br = Generic_StaticIO.getBufferedReader(f);
                 if (br != null) {
-                    result = new ArrayList<String>();
+                    result = new ArrayList<>();
                     st = new StreamTokenizer(br);
                     switch (syntax) {
                         case 1:
@@ -172,7 +172,7 @@ public class Generic_ReadCSV {
                 StreamTokenizer st;
                 br = Generic_StaticIO.getBufferedReader(f);
                 if (br != null) {
-                    result = new ArrayList<String>();
+                    result = new ArrayList<>();
                     st = new StreamTokenizer(br);
                     switch (syntax) {
                         case 1:

@@ -330,7 +330,7 @@ public class Generic_BarChart extends Generic_AbstractBarChart {
         BigDecimal intervalWidth;
         intervalWidth = new BigDecimal(getxIncrement());
         TreeMap<String, BigDecimal> map;
-        map = new TreeMap<String, BigDecimal>();
+        map = new TreeMap<>();
         map.put("A", new BigDecimal(0.0d));
         map.put("B", new BigDecimal(1.0d));
         map.put("C", new BigDecimal(2.0d));

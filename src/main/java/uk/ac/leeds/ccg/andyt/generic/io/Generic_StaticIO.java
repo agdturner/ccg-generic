@@ -61,7 +61,7 @@ public class Generic_StaticIO {
     }
 
     public static TreeSet<String> recursiveFileList(File file) {
-        TreeSet<String> result = new TreeSet<String>();
+        TreeSet<String> result = new TreeSet<>();
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (File file1 : files) {
@@ -76,7 +76,7 @@ public class Generic_StaticIO {
     }
 
     public static TreeSet<String> recursiveFileList(File file, int depth) {
-        TreeSet<String> result = new TreeSet<String>();
+        TreeSet<String> result = new TreeSet<>();
         if (depth != 0) {
             if (file.isDirectory()) {
                 File[] files = file.listFiles();
@@ -172,7 +172,7 @@ public class Generic_StaticIO {
                 StreamTokenizer st;
                 br = Generic_StaticIO.getBufferedReader(f);
                 if (br != null) {
-                    result = new ArrayList<String>();
+                    result = new ArrayList<>();
                     st = new StreamTokenizer(br);
                     int token = st.nextToken();
                     st.eolIsSignificant(true);
@@ -268,7 +268,7 @@ public class Generic_StaticIO {
                 StreamTokenizer st;
                 br = Generic_StaticIO.getBufferedReader(f);
                 if (br != null) {
-                    result = new ArrayList<String>();
+                    result = new ArrayList<>();
                     st = new StreamTokenizer(br);
                     int token = st.nextToken();
                     st.eolIsSignificant(true);
@@ -1265,7 +1265,7 @@ public class Generic_StaticIO {
             long range,
             long maxID)
             throws IOException {
-        TreeMap<Long, File> result = new TreeMap<Long, File>();
+        TreeMap<Long, File> result = new TreeMap<>();
         initialiseArchive(
                 directory,
                 range,
@@ -1343,7 +1343,7 @@ public class Generic_StaticIO {
     public static HashSet<File> getArchiveLeafFiles(
             File directory,
             String underscore) {
-        HashSet<File> result = new HashSet<File>();
+        HashSet<File> result = new HashSet<>();
         File[] topLevelArchiveFiles = directory.listFiles();
         for (File topLevelArchiveFile : topLevelArchiveFiles) {
             HashSet<File> subresult = getArchiveLeafFiles0(topLevelArchiveFile, underscore);
@@ -1355,7 +1355,7 @@ public class Generic_StaticIO {
     private static HashSet<File> getArchiveLeafFiles0(
             File file,
             String underscore) {
-        HashSet<File> result = new HashSet<File>();
+        HashSet<File> result = new HashSet<>();
         if (file.getName().contains(underscore)) {
             File[] files = file.listFiles();
             for (File file1 : files) {
@@ -1406,7 +1406,7 @@ public class Generic_StaticIO {
     public static TreeMap<Long, File> getArchiveLeafFiles_TreeMap(
             File directory,
             String underscore) {
-        TreeMap<Long, File> result = new TreeMap<Long, File>();
+        TreeMap<Long, File> result = new TreeMap<>();
         File[] topLevelArchiveFiles = directory.listFiles();
         for (File f : topLevelArchiveFiles) {
             TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
@@ -1420,7 +1420,7 @@ public class Generic_StaticIO {
     private static TreeMap<Long, File> getArchiveLeafFiles_TreeMap0(
             File file,
             String underscore) {
-        TreeMap<Long, File> result = new TreeMap<Long, File>();
+        TreeMap<Long, File> result = new TreeMap<>();
         if (file.getName().contains(underscore)) {
             File[] files = file.listFiles();
             for (File f : files) {
@@ -1440,7 +1440,7 @@ public class Generic_StaticIO {
             String underscore,
             long minID,
             long maxID) {
-        TreeMap<Long, File> result = new TreeMap<Long, File>();
+        TreeMap<Long, File> result = new TreeMap<>();
         File[] topLevelArchiveFiles = directory.listFiles();
         for (File f : topLevelArchiveFiles) {
             TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
@@ -1458,7 +1458,7 @@ public class Generic_StaticIO {
             String underscore,
             long minID,
             long maxID) {
-        TreeMap<Long, File> result = new TreeMap<Long, File>();
+        TreeMap<Long, File> result = new TreeMap<>();
         if (file.getName().contains(underscore)) {
             File[] files = file.listFiles();
             for (File f : files) {
@@ -2113,7 +2113,7 @@ public class Generic_StaticIO {
      */
     public static TreeMap<Long, File> getNumericalOrderFilesWithNumericalFilenames_TreeMap(
             File[] files) {
-        TreeMap<Long, File> result = new TreeMap<Long, File>();
+        TreeMap<Long, File> result = new TreeMap<>();
         for (File file : files) {
             result.put(new Long(file.getName()), file);
         }
@@ -2131,7 +2131,7 @@ public class Generic_StaticIO {
     public static TreeMap<Long, File> getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
             File[] files,
             String underscore) {
-        TreeMap<Long, File> result = new TreeMap<Long, File>();
+        TreeMap<Long, File> result = new TreeMap<>();
         String filename;
         String[] split;
         for (File file : files) {
@@ -2166,7 +2166,7 @@ public class Generic_StaticIO {
     public static HashMap<Integer, String> getNumericalAndNumericalUnderscoreFilenames_HashMap(
             File directory,
             String underscore) {
-        HashMap<Integer, String> result = new HashMap<Integer, String>();
+        HashMap<Integer, String> result = new HashMap<>();
         int index = 0;
         String[] list = directory.list();
         int count = 0;

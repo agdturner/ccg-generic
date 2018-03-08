@@ -14,7 +14,7 @@ import java.util.TreeSet;
 public class Generic_StaticString {
     
     public static HashSet<String> getNumeralsHashSet() {
-        HashSet<String> numerals_HashSet = new HashSet<String>();
+        HashSet<String> numerals_HashSet = new HashSet<>();
         numerals_HashSet.add("0");
         numerals_HashSet.add("1");
         numerals_HashSet.add("2");
@@ -29,7 +29,7 @@ public class Generic_StaticString {
     }
     
     public static TreeSet<String> getNumeralsTreeSet() {
-        TreeSet<String> numerals_HashSet = new TreeSet<String>();
+        TreeSet<String> numerals_HashSet = new TreeSet<>();
         numerals_HashSet.add("0");
         numerals_HashSet.add("1");
         numerals_HashSet.add("2");
@@ -44,7 +44,7 @@ public class Generic_StaticString {
     }
     
     public static TreeSet<String> getUpperCaseStringAlphabet_TreeSet() {
-        TreeSet<String> result = new TreeSet<String>();
+        TreeSet<String> result = new TreeSet<>();
         result.add("A");
         result.add("B");
         result.add("C");
@@ -75,7 +75,7 @@ public class Generic_StaticString {
     }
     
     public static TreeSet<String> getLowerCaseStringAlphabet_TreeSet() {
-        TreeSet<String> result = new TreeSet<String>();
+        TreeSet<String> result = new TreeSet<>();
         result.add("a");
         result.add("b");
         result.add("c");

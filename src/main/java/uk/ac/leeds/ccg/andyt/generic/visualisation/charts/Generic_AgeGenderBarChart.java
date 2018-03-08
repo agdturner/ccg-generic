@@ -285,8 +285,8 @@ public class Generic_AgeGenderBarChart extends Generic_AbstractAgeGenderPlot {
             int startAgeOfEndYearInterval) {
         Object[] result = new Object[3];
         Object[] data = getDefaultData(femalePopAge0, malePopAge0);
-        TreeMap<Long, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<Long, BigDecimal>();
-        TreeMap<Long, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<Long, BigDecimal>();
+        TreeMap<Long, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<>();
+        TreeMap<Long, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<>();
         TreeMap<Long, BigDecimal> singleYearFemaleAgeInYearsPopulationCount_TreeMap = (TreeMap<Long, BigDecimal>) data[0];
         TreeMap<Long, BigDecimal> singleYearMaleAgeInYearsPopulationCount_TreeMap = (TreeMap<Long, BigDecimal>) data[1];
         Iterator<Long> ite;
@@ -366,8 +366,8 @@ public class Generic_AgeGenderBarChart extends Generic_AbstractAgeGenderPlot {
             int femalePopAge0,
             int malePopAge0) {
         Object[] result = new Object[2];
-        TreeMap<Long, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<Long, BigDecimal>();
-        TreeMap<Long, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<Long, BigDecimal>();
+        TreeMap<Long, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<>();
+        TreeMap<Long, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<>();
         BigDecimal population_BigDecimal;
         BigDecimal change_BigDecimal;
         long age;

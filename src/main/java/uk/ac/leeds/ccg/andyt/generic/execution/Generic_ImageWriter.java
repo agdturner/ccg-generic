@@ -21,7 +21,7 @@ public class Generic_ImageWriter extends Generic_Executor {
     private Set<Generic_EventListener> listeners;
 
     public Generic_ImageWriter() {
-        listeners = new HashSet<Generic_EventListener>();
+        listeners = new HashSet<>();
     }
     
     public static void main(String[] args) {

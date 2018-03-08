@@ -18,9 +18,13 @@ package uk.ac.leeds.ccg.andyt.generic.utilities;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -62,11 +66,11 @@ public class Generic_Collections {
         Object[] result;
         result = new Object[3];
         TreeMap<Integer, Integer> counts;
-        counts = new TreeMap<Integer, Integer>();
+        counts = new TreeMap<>();
         TreeMap<Integer, String> labels;
-        labels = new TreeMap<Integer, String>();
+        labels = new TreeMap<>();
         TreeMap<Integer, BigDecimal> mins;
-        mins = new TreeMap<Integer, BigDecimal>();
+        mins = new TreeMap<>();
         Iterator<BigDecimal> ite;
         ite = map.values().iterator();
         while (ite.hasNext()) {
@@ -181,27 +185,27 @@ public class Generic_Collections {
     }
 
     public static HashSet getRandomIndexes_HashSet(
-            Vector aVector,
+            Vector v,
             int aNumberOfIndexes,
             Random aRandom) {
         HashSet tIndexesToSwap_HashSet = new HashSet();
         int aIndex;
         int count = 0;
-        if (aNumberOfIndexes > aVector.size() / 2) {
-            for (aIndex = 0; aIndex < aVector.size(); aIndex++) {
+        if (aNumberOfIndexes > v.size() / 2) {
+            for (aIndex = 0; aIndex < v.size(); aIndex++) {
                 tIndexesToSwap_HashSet.add(aIndex);
                 count++;
             }
             while (count != aNumberOfIndexes) {
                 do {
-                    aIndex = aRandom.nextInt(aVector.size());
+                    aIndex = aRandom.nextInt(v.size());
                 } while (!tIndexesToSwap_HashSet.remove(aIndex));
                 count--;
             }
         } else {
             while (count < aNumberOfIndexes) {
                 do {
-                    aIndex = aRandom.nextInt(aVector.size());
+                    aIndex = aRandom.nextInt(v.size());
                 } while (!tIndexesToSwap_HashSet.add(aIndex));
                 count++;
             }
@@ -218,7 +222,7 @@ public class Generic_Collections {
     public static HashSet<Integer> getCompleteKeySet_HashSet(
             Set<Integer> keys0,
             Set<Integer> keys1) {
-        HashSet<Integer> result = new HashSet<Integer>();
+        HashSet<Integer> result = new HashSet<>();
         result.addAll(keys0);
         result.addAll(keys1);
         return result;
@@ -322,18 +326,11 @@ public class Generic_Collections {
     public static int addToTreeMapStringInteger(TreeMap<String, Integer> map,
             String key, Integer value) {
         int result;
-//        // DEBUG
-//        if (map == null) {
-//            int debug = 1;
-//        }
-//        if (key == null) {
-//            int debug = 1;
-//        }
         Integer currentValue = map.get(key);
         if (currentValue != null) {
             result = currentValue + value;
         } else {
-            result = 0;
+            result = 1;
         }
         map.put(key, result);
         return result;
@@ -550,7 +547,7 @@ public class Generic_Collections {
 
     public static TreeMap<Integer, BigInteger> deepCopy_Integer_BigInteger(
             TreeMap<Integer, BigInteger> map) {
-        TreeMap<Integer, BigInteger> result = new TreeMap<Integer, BigInteger>();
+        TreeMap<Integer, BigInteger> result = new TreeMap<>();
         Iterator<Integer> ite = map.keySet().iterator();
         Integer keyToCopy;
         Integer keyCopy;
@@ -568,7 +565,7 @@ public class Generic_Collections {
 
     public static HashMap<Long, String> deepCopy_Long_String(
             HashMap<Long, String> map) {
-        HashMap<Long, String> result = new HashMap<Long, String>();
+        HashMap<Long, String> result = new HashMap<>();
         Iterator<Long> ite = map.keySet().iterator();
         Long keyToCopy;
         Long keyCopy;
@@ -576,7 +573,7 @@ public class Generic_Collections {
         String valueCopy;
         while (ite.hasNext()) {
             keyToCopy = ite.next();
-            keyCopy = new Long(keyToCopy);
+            keyCopy = keyToCopy;
             valueToCopy = map.get(keyToCopy);
             valueCopy = valueToCopy;
             result.put(keyCopy, valueCopy);
@@ -586,7 +583,7 @@ public class Generic_Collections {
 
     public static HashMap<String, String> deepCopyHashMapStringString(
             HashMap<String, String> map) {
-        HashMap<String, String> result = new HashMap<String, String>();
+        HashMap<String, String> result = new HashMap<>();
         Iterator<String> ite = map.keySet().iterator();
         String keyToCopy;
         String keyCopy;
@@ -604,7 +601,7 @@ public class Generic_Collections {
 
     public static HashMap<String, Integer> deepCopyHashMapStringInteger(
             HashMap<String, Integer> map) {
-        HashMap<String, Integer> result = new HashMap<String, Integer>();
+        HashMap<String, Integer> result = new HashMap<>();
         Iterator<String> ite = map.keySet().iterator();
         String keyToCopy;
         String keyCopy;
@@ -623,7 +620,7 @@ public class Generic_Collections {
     public static TreeMap<String, Integer> deepCopyTreeMapStringInteger(
             TreeMap<String, Integer> map) {
         TreeMap<String, Integer> result;
-        result = new TreeMap<String, Integer>();
+        result = new TreeMap<>();
         Iterator<String> ite = map.keySet().iterator();
         String keyToCopy;
         String keyCopy;
@@ -641,7 +638,7 @@ public class Generic_Collections {
 
     public static TreeMap<Integer, BigDecimal> deepCopy_Integer_BigDecimal(
             TreeMap<Integer, BigDecimal> map) {
-        TreeMap<Integer, BigDecimal> result = new TreeMap<Integer, BigDecimal>();
+        TreeMap<Integer, BigDecimal> result = new TreeMap<>();
         Iterator<Integer> ite = map.keySet().iterator();
         Integer keyToCopy;
         Integer keyCopy;
@@ -659,7 +656,7 @@ public class Generic_Collections {
 
     public static TreeMap<Integer, Long> deepCopy_Integer_Long(
             TreeMap<Integer, Long> map) {
-        TreeMap<Integer, Long> result = new TreeMap<Integer, Long>();
+        TreeMap<Integer, Long> result = new TreeMap<>();
         Iterator<Integer> ite = map.keySet().iterator();
         Integer keyToCopy;
         Integer keyCopy;
@@ -734,44 +731,33 @@ public class Generic_Collections {
 
     /**
      * Class<?> Means this can be any type
-     * http://stackoverflow.com/questions/2208317/generic-map-of-generic-key-values-with-related-types
-     * <V extends Object> is equivalent to V which is less verbose
-     * Class<? extends Object> is equivalent to Class<?> which is less verbose
      *
-     * @param a_TreeMap
-     * @param default_Integer
+     * @param m
+     * @param i
      * @return
      */
-    public static Integer getMaxKey_Integer(
-            //TreeMap<Integer,Class<?>> a_TreeMap,
-            //TreeMap<Integer,Class<? extends Object>> a_TreeMap,
-            TreeMap<Integer, ?> a_TreeMap,
-            Integer default_Integer) {
-        if (a_TreeMap.isEmpty()) {
-            return default_Integer;
+    public static Integer getMaxKey_Integer(            TreeMap<Integer, ?> m,
+            Integer i) {
+        if (m.isEmpty()) {
+            return i;
         } else {
-            return a_TreeMap.lastKey();
+            return m.lastKey();
         }
     }
 
     /**
      * Class<?> Means this can be any type
-     * http://stackoverflow.com/questions/2208317/generic-map-of-generic-key-values-with-related-types
-     * <V extends Object> is equivalent to V which is less verbose
-     * Class<? extends Object> is equivalent to Class<?> which is less verbose
      *
-     * @param a_TreeMap
-     * @param default_Integer
+     * @param m
+     * @param i
      * @return
      */
-    public static Integer getMinKey_Integer(
-            //TreeMap<Integer, Class<? extends Object>> a_TreeMap,
-            TreeMap<Integer, ?> a_TreeMap,
-            Integer default_Integer) {
-        if (a_TreeMap.isEmpty()) {
-            return default_Integer;
+    public static Integer getMinKey_Integer(            TreeMap<Integer, ?> m,
+            Integer i) {
+        if (m.isEmpty()) {
+            return i;
         } else {
-            return a_TreeMap.lastKey();
+            return m.lastKey();
         }
     }
 
@@ -832,6 +818,27 @@ public class Generic_Collections {
                     result,
                     value);
         }
+        return result;
+    }
+
+    /**
+     * Returns a LinkedHashMap which is ordered in terms of the values in the
+     * map m.
+     *
+     * @param <K>
+     * @param <V>
+     * @param m The map that is to be ordered by it's values.
+     * @return
+     */
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> m) {
+        Map<K, V> result;
+        List<Map.Entry<K, V>> list;
+        list = new LinkedList<>(m.entrySet());
+        Collections.sort(list, (Map.Entry<K, V> o1, Map.Entry<K, V> o2) -> (o1.getValue()).compareTo(o2.getValue()));
+        result = new LinkedHashMap<>();
+        list.forEach((entry) -> {
+            result.put(entry.getKey(), entry.getValue());
+        });
         return result;
     }
 }

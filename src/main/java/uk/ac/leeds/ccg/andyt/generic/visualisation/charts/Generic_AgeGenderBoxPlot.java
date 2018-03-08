@@ -343,8 +343,8 @@ public class Generic_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlot {
             int femalePopAge0,
             int malePopAge0) {
         Object[] result = new Object[2];
-        TreeMap<Integer, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<Integer, BigDecimal>();
-        TreeMap<Integer, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<Integer, BigDecimal>();
+        TreeMap<Integer, BigDecimal> femaleAgeInYearsPopulationCount_TreeMap = new TreeMap<>();
+        TreeMap<Integer, BigDecimal> maleAgeInYearsPopulationCount_TreeMap = new TreeMap<>();
         BigDecimal population_BigDecimal;
         BigDecimal change_BigDecimal;
         int age;
@@ -458,8 +458,8 @@ public class Generic_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlot {
             RoundingMode roundingMode) {
         //int startAgeOfEndYearInterval = getStartAgeOfEndYearInterval();
         Object[] result = new Object[5];
-        TreeMap<Integer, BigDecimal[]> femaleBoxPlotStatistics = new TreeMap<Integer, BigDecimal[]>();
-        TreeMap<Integer, BigDecimal[]> maleBoxPlotStatistics = new TreeMap<Integer, BigDecimal[]>();
+        TreeMap<Integer, BigDecimal[]> femaleBoxPlotStatistics = new TreeMap<>();
+        TreeMap<Integer, BigDecimal[]> maleBoxPlotStatistics = new TreeMap<>();
         Object[] data10000 = getPopulationData(10000, 10000);
         TreeMap<Integer, BigDecimal> female10000 = (TreeMap<Integer, BigDecimal>) data10000[0];
         TreeMap<Integer, BigDecimal> male10000 = (TreeMap<Integer, BigDecimal>) data10000[1];
@@ -509,7 +509,7 @@ public class Generic_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlot {
                 }
             }
             if (age < startAgeOfEndYearInterval) {
-                values = new ArrayList<BigDecimal>();
+                values = new ArrayList<>();
             }
             maxValue = Generic_BigDecimal.max(maxValue, pop10000);
             maxValue = Generic_BigDecimal.max(maxValue, pop9000);
@@ -561,7 +561,7 @@ public class Generic_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlot {
                 }
             }
             if (age < startAgeOfEndYearInterval) {
-                values = new ArrayList<BigDecimal>();
+                values = new ArrayList<>();
             }
             maxValue = Generic_BigDecimal.max(maxValue, pop10000);
             maxValue = Generic_BigDecimal.max(maxValue, pop9000);
@@ -604,8 +604,8 @@ public class Generic_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlot {
             RoundingMode roundingMode,
             int decimalPlacePrecisionForCalculations) {
         Object[] result = new Object[2];
-        TreeMap<Integer, BigDecimal[]> femaleBoxPlotStatistics = new TreeMap<Integer, BigDecimal[]>();
-        TreeMap<Integer, BigDecimal[]> maleBoxPlotStatistics = new TreeMap<Integer, BigDecimal[]>();
+        TreeMap<Integer, BigDecimal[]> femaleBoxPlotStatistics = new TreeMap<>();
+        TreeMap<Integer, BigDecimal[]> maleBoxPlotStatistics = new TreeMap<>();
         Object[] data10000 = getPopulationData(10000, 10000);
         TreeMap<Integer, BigDecimal> female10000 = (TreeMap<Integer, BigDecimal>) data10000[0];
         TreeMap<Integer, BigDecimal> male10000 = (TreeMap<Integer, BigDecimal>) data10000[1];
@@ -630,7 +630,7 @@ public class Generic_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlot {
         while (iterator.hasNext()) {
             age = iterator.next();
             pop = female10000.get(age);
-            ArrayList<BigDecimal> values = new ArrayList<BigDecimal>();
+            ArrayList<BigDecimal> values = new ArrayList<>();
             maxValue = Generic_BigDecimal.max(maxValue, pop);
             values.add(pop);
             pop = female9000.get(age);
@@ -656,7 +656,7 @@ public class Generic_AgeGenderBoxPlot extends Generic_AbstractAgeGenderPlot {
         while (iterator.hasNext()) {
             age = iterator.next();
             pop = male10000.get(age);
-            ArrayList<BigDecimal> values = new ArrayList<BigDecimal>();
+            ArrayList<BigDecimal> values = new ArrayList<>();
             maxValue = Generic_BigDecimal.max(maxValue, pop);
             values.add(pop);
             pop = male9000.get(age);

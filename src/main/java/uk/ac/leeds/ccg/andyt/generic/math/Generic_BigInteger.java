@@ -94,7 +94,7 @@ public class Generic_BigInteger
      * Initialises _Factorial_TreeMap
      */
     protected void init_Factorial_TreeMap() {
-        _Factorial_TreeMap = new TreeMap<Integer, BigInteger>();
+        _Factorial_TreeMap = new TreeMap<>();
         _Factorial_TreeMap.put(0, BigInteger.ONE);
         _Factorial_TreeMap.put(1, BigInteger.ONE);
     }
@@ -103,7 +103,7 @@ public class Generic_BigInteger
      * Initialises _Factorial_TreeMap
      */
     protected void init_PowersOfTwo_TreeMap() {
-        _PowersOfTwo_TreeMap = new TreeMap<Integer, BigInteger>();
+        _PowersOfTwo_TreeMap = new TreeMap<>();
         _PowersOfTwo_TreeMap.put(0, BigInteger.ONE);
         _PowersOfTwo_TreeMap.put(1, Two);
         _PowersOfTwo_TreeMap.put(2, Two.multiply(Two));
@@ -269,7 +269,7 @@ public class Generic_BigInteger
         while (get_PowersOfTwo_TreeMap().lastEntry().getValue().compareTo(x) != 1) {
             addPowerOfTwo();
         }
-        TreeMap<Integer, BigInteger> result = new TreeMap<Integer, BigInteger>();
+        TreeMap<Integer, BigInteger> result = new TreeMap<>();
         for (Entry<Integer, BigInteger> entry : _PowersOfTwo_TreeMap.entrySet()) {
             Integer value = entry.getKey();
             BigInteger powerOfTwo = entry.getValue();
@@ -291,7 +291,7 @@ public class Generic_BigInteger
         if (x.compareTo(BigInteger.ZERO) == 0) {
             return null;
         }
-        TreeMap<Integer, Integer> result = new TreeMap<Integer, Integer>();
+        TreeMap<Integer, Integer> result = new TreeMap<>();
         if (x.compareTo(BigInteger.ONE) == 0) {
             result.put(0, 1);
             return result;

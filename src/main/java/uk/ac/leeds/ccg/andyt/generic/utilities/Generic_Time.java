@@ -116,7 +116,7 @@ public class Generic_Time {
      */
     public static ArrayList<String> getMonths3Letters() {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         result.add("Jan");
         result.add("Feb");
         result.add("Mar");

@@ -277,7 +277,7 @@ public class Generic_Statistics {
              * result[10] = numberOfSameValuesInAnyPartOfMode;
              */
         }
-        ArrayList<BigDecimal> sortedData = new ArrayList<BigDecimal>(data);
+        ArrayList<BigDecimal> sortedData = new ArrayList<>(data);
         Collections.sort(sortedData);
         if (n == 3) {
             // q1 defined as the average of data.get(0) and data.get(1)
@@ -343,11 +343,11 @@ public class Generic_Statistics {
              * result[10] = numberOfSameValuesInAnyPartOfMode;
              */
         }
-        TreeMap<BigDecimal, Integer> populationAge_TreeMap = new TreeMap<BigDecimal, Integer>();
+        TreeMap<BigDecimal, Integer> populationAge_TreeMap = new TreeMap<>();
         result[0] = BigDecimal.ZERO;
         Iterator<BigDecimal> ite = sortedData.iterator();
         int maxCount = 1;
-        HashSet<BigDecimal> maxCountValues = new HashSet<BigDecimal>();
+        HashSet<BigDecimal> maxCountValues = new HashSet<>();
         while (ite.hasNext()) {
             value = ite.next();
             if (populationAge_TreeMap.containsKey(value)) {
@@ -357,7 +357,7 @@ public class Generic_Statistics {
                     maxCountValues.add(value);
                 } else {
                     if (count > maxCount) {
-                        maxCountValues = new HashSet<BigDecimal>();
+                        maxCountValues = new HashSet<>();
                         maxCountValues.add(value);
                         maxCount = count;
                     }

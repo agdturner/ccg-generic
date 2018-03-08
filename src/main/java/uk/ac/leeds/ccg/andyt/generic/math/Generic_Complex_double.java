@@ -18,6 +18,11 @@ package uk.ac.leeds.ccg.andyt.generic.math;
 /**
  * https://en.wikipedia.org/wiki/Complex_number
  *
+ * It is almost certainly better to use org.apache.commons.math.complex.Complex
+ * instead of this. This however is perhaps worthwhile background if using
+ * BigDecimal instead of double to represent Real and Imaginary parts of a
+ * complex number.
+ *
  * @author geoagdt
  */
 public class Generic_Complex_double {
@@ -108,8 +113,10 @@ public class Generic_Complex_double {
         result = new Generic_Complex_double(real, imaginary);
         return result;
     }
-    
+
     /**
+     * N.B. This is called abs() in Apache Commons Math
+     *
      * @return The magnitude of this.
      */
     public double magnitude() {
@@ -140,12 +147,11 @@ public class Generic_Complex_double {
         scale = Real * Real + Imaginary * Imaginary;
         double real;
         real = Real / scale;
-        double imaginary = - Imaginary / scale;
+        double imaginary = -Imaginary / scale;
         result = new Generic_Complex_double(real, imaginary);
         return result;
     }
 
-    
     /**
      * @param c
      * @return this / c.
@@ -159,7 +165,7 @@ public class Generic_Complex_double {
         result = new Generic_Complex_double(magnitude, phase, true);
         return result;
     }
-    
+
     /**
      * @param c
      * @return this / c.
@@ -170,7 +176,7 @@ public class Generic_Complex_double {
     }
 
     /**
-     *  @return exponent of this.
+     * @return exponent of this.
      */
     public Generic_Complex_double exp() {
         Generic_Complex_double result;

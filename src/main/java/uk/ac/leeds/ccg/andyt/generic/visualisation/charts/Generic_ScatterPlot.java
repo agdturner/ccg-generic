@@ -690,7 +690,7 @@ public class Generic_ScatterPlot extends Generic_Plot {
         BigDecimal minx = BigDecimal.valueOf(Double.MAX_VALUE);
         BigDecimal maxy = BigDecimal.valueOf(Double.MIN_VALUE);
         BigDecimal miny = BigDecimal.valueOf(Double.MAX_VALUE);
-        ArrayList<Generic_XYNumericalData> theGeneric_XYNumericalData = new ArrayList<Generic_XYNumericalData>();
+        ArrayList<Generic_XYNumericalData> theGeneric_XYNumericalData = new ArrayList<>();
 //        for (int i = -100; i < 328; i++) {         
 //            for (int j = -100; j < 0; j++) {
 //        for (int i = -100; i < 100; i++) {

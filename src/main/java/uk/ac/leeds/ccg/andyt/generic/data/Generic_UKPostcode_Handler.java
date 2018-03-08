@@ -224,7 +224,7 @@ public class Generic_UKPostcode_Handler {
 
     public HashSet<String> getFirstPartPostcodeTypes() {
         if (firstPartPostcodeTypes == null) {
-            firstPartPostcodeTypes = new HashSet<String>();
+            firstPartPostcodeTypes = new HashSet<>();
             firstPartPostcodeTypes.add(sAN);
             firstPartPostcodeTypes.add(sANN);
             firstPartPostcodeTypes.add(sAAN);
@@ -316,7 +316,7 @@ public class Generic_UKPostcode_Handler {
 
     public static TreeSet<String> get_NAA() {
         if (_NAA == null) {
-            _NAA = new TreeSet<String>();
+            _NAA = new TreeSet<>();
             _AtoZ_not_CIKMOV = get_AtoZ_not_CIKMOV();
             Iterator ite1 = _AtoZ_not_CIKMOV.iterator();
             String a0;
@@ -358,7 +358,7 @@ public class Generic_UKPostcode_Handler {
 
     public static TreeSet<String> get_ABCDEFGHJKSTUW() {
         if (_ABCDEFGHJKSTUW == null) {
-            _ABCDEFGHJKSTUW = new TreeSet<String>();
+            _ABCDEFGHJKSTUW = new TreeSet<>();
             _ABCDEFGHJKSTUW.add("A");
             _ABCDEFGHJKSTUW.add("B");
             _ABCDEFGHJKSTUW.add("C");
@@ -379,7 +379,7 @@ public class Generic_UKPostcode_Handler {
 
     public static TreeSet<String> get_ABEHMNPRVWXY() {
         if (_ABEHMNPRVWXY == null) {
-            _ABEHMNPRVWXY = new TreeSet<String>();
+            _ABEHMNPRVWXY = new TreeSet<>();
             _ABEHMNPRVWXY.add("A");
             _ABEHMNPRVWXY.add("B");
             _ABEHMNPRVWXY.add("E");
@@ -411,7 +411,7 @@ public class Generic_UKPostcode_Handler {
 
     public static TreeSet<String> get_0to9() {
         if (_0to9 == null) {
-            _0to9 = new TreeSet<String>();
+            _0to9 = new TreeSet<>();
             _0to9.add("0");
             _0to9.add("1");
             _0to9.add("2");

@@ -357,9 +357,9 @@ public class Generic_LineGraph extends Generic_AbstractLineGraph {
         Object[] result;
         result = new Object[7];
         TreeMap<String, TreeMap<BigDecimal, BigDecimal>> maps;
-        maps = new TreeMap<String, TreeMap<BigDecimal, BigDecimal>>();
+        maps = new TreeMap<>();
         TreeMap<BigDecimal, BigDecimal> map;
-        map = new TreeMap<BigDecimal, BigDecimal>();
+        map = new TreeMap<>();
         map.put(new BigDecimal(0.0d), new BigDecimal(10.0d));
         map.put(new BigDecimal(6.0d), new BigDecimal(11.0d));
         map.put(new BigDecimal(12.0d), new BigDecimal(12.0d));
@@ -381,7 +381,7 @@ public class Generic_LineGraph extends Generic_AbstractLineGraph {
         map.put(new BigDecimal(54.0d), new BigDecimal(37.0d));
         maps.put("map1", map);
         TreeMap<BigDecimal, BigDecimal> map2;
-        map2 = new TreeMap<BigDecimal, BigDecimal>();
+        map2 = new TreeMap<>();
         map2.put(new BigDecimal(0.0d), new BigDecimal(9.0d));
         map2.put(new BigDecimal(6.0d), new BigDecimal(10.0d));
         map2.put(new BigDecimal(12.0d), new BigDecimal(12.0d));
@@ -427,13 +427,13 @@ public class Generic_LineGraph extends Generic_AbstractLineGraph {
         result[3] = minX;
         result[4] = maxX;
         ArrayList<String> labels;
-        labels = new ArrayList<String>();
+        labels = new ArrayList<>();
         labels.addAll(maps.keySet());
         result[5] = labels;
 
         // Comment out the following section to have a normal axis instead of labels.
         TreeMap<BigDecimal, String> xAxisLabels;
-        xAxisLabels = new TreeMap<BigDecimal, String>();
+        xAxisLabels = new TreeMap<>();
         xAxisLabels.put(new BigDecimal(0.0d), "2008 April");
         xAxisLabels.put(new BigDecimal(6.0d), "2008 October");
         xAxisLabels.put(new BigDecimal(12.0d), "2009 April");
