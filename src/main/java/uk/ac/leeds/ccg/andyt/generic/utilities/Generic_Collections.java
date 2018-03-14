@@ -228,6 +228,24 @@ public class Generic_Collections {
         return result;
     }
 
+        /**
+     * Returns a LinkedHashMap which is ordered in terms of the values in the
+     * map m.
+     *
+     * @param m The map that is to be added to.
+     * @param k
+     * @param i The amount to be added to the map.
+     */
+    public static <K> void addToMap(Map<K, Integer> m, K k, 
+            Integer i) {
+        Integer v = m.get(k);
+        if (v != null) {
+            m.put(k, (v + i));
+        } else {
+            m.put(k, i);
+        }
+    }
+    
     /**
      * Adds value to the value at a_TreeMapIntegerIntegerCounter.get(key) if it
      * exists or puts the key, value into a_TreeMapIntegerIntegerCounter
