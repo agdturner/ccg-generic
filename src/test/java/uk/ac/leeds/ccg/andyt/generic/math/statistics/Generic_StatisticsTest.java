@@ -58,7 +58,7 @@ public class Generic_StatisticsTest {
     @Test
     public void testGetSum() {
         System.out.println("getSum");
-        List<BigDecimal> data = new ArrayList<BigDecimal>();
+        List<BigDecimal> data = new ArrayList<>();
         data.add(BigDecimal.ONE);
         data.add(BigDecimal.ONE);
         data.add(BigDecimal.ONE);
@@ -77,7 +77,7 @@ public class Generic_StatisticsTest {
     @Test
     public void testGetBoxPlotStatistics() {
         System.out.println("getBoxPlotStatistics");
-        ArrayList<BigDecimal> data = new ArrayList<BigDecimal>();
+        ArrayList<BigDecimal> data = new ArrayList<>();
         data.add(BigDecimal.ZERO);
         data.add(BigDecimal.ONE);
         data.add(BigDecimal.valueOf(2));
