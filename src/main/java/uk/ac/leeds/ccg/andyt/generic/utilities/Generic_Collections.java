@@ -228,16 +228,14 @@ public class Generic_Collections {
         return result;
     }
 
-        /**
-     * Returns a LinkedHashMap which is ordered in terms of the values in the
-     * map m.
+    /**
+     * Adds to a integer counting map.
      *
      * @param m The map that is to be added to.
-     * @param k
+     * @param k The key which value is added to or initialised.
      * @param i The amount to be added to the map.
      */
-    public static <K> void addToMap(Map<K, Integer> m, K k, 
-            Integer i) {
+    public static <K> void addToMap(Map<K, Integer> m, K k, Integer i) {
         Integer v = m.get(k);
         if (v != null) {
             m.put(k, (v + i));
@@ -245,7 +243,7 @@ public class Generic_Collections {
             m.put(k, i);
         }
     }
-    
+
     /**
      * Adds value to the value at a_TreeMapIntegerIntegerCounter.get(key) if it
      * exists or puts the key, value into a_TreeMapIntegerIntegerCounter
@@ -754,7 +752,7 @@ public class Generic_Collections {
      * @param i
      * @return
      */
-    public static Integer getMaxKey_Integer(            TreeMap<Integer, ?> m,
+    public static Integer getMaxKey_Integer(TreeMap<Integer, ?> m,
             Integer i) {
         if (m.isEmpty()) {
             return i;
@@ -770,7 +768,7 @@ public class Generic_Collections {
      * @param i
      * @return
      */
-    public static Integer getMinKey_Integer(            TreeMap<Integer, ?> m,
+    public static Integer getMinKey_Integer(TreeMap<Integer, ?> m,
             Integer i) {
         if (m.isEmpty()) {
             return i;
