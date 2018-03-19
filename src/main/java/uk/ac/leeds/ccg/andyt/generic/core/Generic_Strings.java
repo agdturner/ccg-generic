@@ -28,6 +28,30 @@ public class Generic_Strings {
     protected String S_generated;
     protected String S_input;
     protected String S_output;
+    // Symbols
+    public final String symbol_0 = "0";
+    public final String symbol_1 = "1";
+    public final String symbol_2 = "2";
+    public final String symbol_3 = "3";
+    public final String symbol_4 = "4";
+    public final String symbol_5 = "5";
+    public final String symbol_6 = "6";
+    public final String symbol_7 = "7";
+    public final String symbol_8 = "8";
+    public final String symbol_9 = "9";
+    public final String symbol_ampersand = "&";
+    public final String symbol_backslash = "/";
+    public final String symbol_colon = ":";
+    public final String symbol_dot = ".";
+    public final String symbol_equals = "=";
+    public final String symbol_minus = "-";
+    public final String symbol_questionmark = "?";
+    public final String symbol_underscore = "_";
+    // Empty String
+    public final String emptyString = "";
+    // For alphabet upper and lower case
+    public final String s_T = "T";
+    public final String s_Z = "Z";
 
     public Generic_Strings() {
     }

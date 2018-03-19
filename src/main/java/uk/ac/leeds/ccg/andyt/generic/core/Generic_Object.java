@@ -18,37 +18,23 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.core;
 
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
+import java.io.Serializable;
 
 /**
  *
  * @author geoagdt
  */
-public class Generic_Environment {
 
-    protected Generic_Files Files;
-    protected Generic_Strings Strings;
+public abstract class Generic_Object implements Serializable {
 
-    protected Generic_Environment() {
+    public transient Generic_Environment e;
+
+    /**
+     * Default constructor.
+     */
+    protected Generic_Object(){}
+    
+    public Generic_Object(Generic_Environment e) {
+        this.e = e;
     }
-
-    public Generic_Environment(Generic_Files f, Generic_Strings s) {
-        Files = f;
-        Strings = s;
-    }
-
-    public Generic_Files getFiles() {
-        if (Files == null) {
-//            Files = new Generic_Files();
-        }
-        return Files;
-    }
-
-    public Generic_Strings getStrings() {
-        if (Strings == null) {
-            Strings = new Generic_Strings();
-        }
-        return Strings;
-    }
-
 }

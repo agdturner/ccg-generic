@@ -8,9 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 //
+
 /**
- *
- * @author geoagdt
+ * Not to be confused with uk.ac.leeds.ccg.andyt.generic.utilities.time.Generic_Time
+ * @author Andy Turner
  */
 public class Generic_Time {
 
@@ -27,42 +28,36 @@ public class Generic_Time {
     public Generic_Time() {
     }
 
-    public Generic_Time(
-            int day,
-            int month,
-            int year) {
+    public Generic_Time(int day, int month, int year) {
         this.day = day;
         this.month = month;
         this.year = year;
     }
-    
-    public static int getAgeInYears(
-            Generic_Time timeNow,
-            Generic_Time timeCreated) {
-        if (timeNow.month > timeCreated.month) {
-            return timeNow.year - timeCreated.year;
+
+    public static int getAgeInYears(Generic_Time t1, Generic_Time t0) {
+        if (t1.month > t0.month) {
+            return t1.year - t0.year;
         } else {
-            if (timeNow.month == timeCreated.month) {
-                if (timeNow.day >= timeCreated.day) {
-                    return timeNow.year - timeCreated.year;
+            if (t1.month == t0.month) {
+                if (t1.day >= t0.day) {
+                    return t1.year - t0.year;
                 } else {
-                    return timeNow.year - timeCreated.year - 1;
+                    return t1.year - t0.year - 1;
                 }
             } else {
-                return timeNow.year - timeCreated.year - 1;
+                return t1.year - t0.year - 1;
             }
         }
     }
-    
 
     public static void printTime(long millis) {
         String time;
         time = getTime(millis);
         System.out.println(time);
     }
-    
+
     public static String getTime(long millis) {
-        
+
         int MilliSecondsInDay = 24 * MilliSecondsInHour;
         int MilliSecondsInMinute = 60000;
         long millis2 = millis;
@@ -96,8 +91,8 @@ public class Generic_Time {
     }
 
     /**
-     * @return      * {@code
-    ArrayList<String> result;
+     * @return * {@code
+     * ArrayList<String> result;
      * result = new ArrayList<String>();
      * result.add("Jan");
      * result.add("Feb");
@@ -178,7 +173,7 @@ public class Generic_Time {
         }
         return null;
     }
-    
+
     public static String getMonth3Letters(
             int monthNumber) {
         if (monthNumber == 1) {
@@ -299,7 +294,7 @@ public class Generic_Time {
         }
         return -1;
     }
-    
+
     public static int getMonthDiff(
             int year0,
             int year1,
@@ -321,7 +316,7 @@ public class Generic_Time {
         String formatted = format1.format(cal.getTime());
         return formatted;
     }
-    
+
     /**
      * @return Current clock date as yyyy-MM-dd HH:mm:ss format
      */
@@ -367,6 +362,5 @@ public class Generic_Time {
     public void setYear(int year) {
         this.year = year;
     }
-    
-    
+
 }
