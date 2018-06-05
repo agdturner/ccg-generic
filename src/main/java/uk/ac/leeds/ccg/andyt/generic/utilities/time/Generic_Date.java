@@ -79,7 +79,52 @@ public class Generic_Date
     public void addDays(int days) {
         LD = LD.plusDays(days);
     }
+    
+    /**
+     * Assume the year has 4 digits.
+     *
+     * @return
+     */
+    @Override
+    public String getYYYY() {
+        return Integer.toString(LD.getYear());
+    }
 
+    /**
+     * The month always has 2 characters. 01 is January 02 is February ... 12 is
+     * December
+     *
+     * @return
+     */
+    @Override
+    public String getMM() {
+        String result = "";
+        int month = LD.getMonthValue();
+        if (month < 10) {
+            result = Strings.symbol_0;
+        }
+        result += Integer.toString(month);
+        return result;
+    }
+
+    /**
+     *
+     * @return String representing year and month in YYYY-MM format
+     */
+    @Override
+    public String getYYYYMM() {
+        return getYYYY() + "-" + getMM();
+    }
+
+    @Override
+    public String getYYYYMM(String delimeter) {
+        String result;
+        result = getYYYY();
+        result += delimeter;
+        result += getMM();
+        return result;
+    }
+    
     /**
      * Returns true iff t is the same day as this.
      *
