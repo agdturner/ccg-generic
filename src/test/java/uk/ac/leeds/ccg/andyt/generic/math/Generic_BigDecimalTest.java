@@ -48,7 +48,7 @@ public class Generic_BigDecimalTest {
     public void tearDown() {
     }
 
-    @Test
+    //@Test // Uncomment to run tests
     public void testAll() {
         testRoundToAndSetDecimalPlaces_3args(); // Test passes
         testMultiply(); // Test passes

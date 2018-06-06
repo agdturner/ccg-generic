@@ -52,21 +52,24 @@ public class Generic_BigIntegerTest {
     public void tearDown() {
     }
 
-//    /**
-//     * Test of init_Factorial_TreeMap method, of class Generic_BigInteger.
-//     */
-//    @Test
-//    public void testInit_Factorial_TreeMap() {
-//        System.out.println("init_Factorial_TreeMap");
-//        Generic_BigInteger instance = new Generic_BigInteger();
-//        instance.init_Factorial_TreeMap();
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+//    @Test // Uncomment to run tests
+    public void testAll() {
+        testCeiling();
+        testFloor();
+        testMin();
+        testMax();
+        testFactorial();
+        testPower_4args_1();
+        testPower_4args_2();
+        testReciprocal();
+        testGetRandom();
+        test_getPowersOfTwoDecomposition_1args();
+        test_getPowersOfTwoDecomposition_1args_test2();
+    }
+
     /**
      * Test of ceiling method, of class Generic_BigInteger.
      */
-    @Test
     public void testCeiling() {
         System.out.println("ceiling");
         System.out.println("ceiling(x)");
@@ -90,21 +93,8 @@ public class Generic_BigIntegerTest {
     }
 
     /**
-     * For printing out individual tests of testCeiling()
-     * @param x
-     * @param result
-     */
-    private void printTestCeiling(
-            BigDecimal x,
-            BigInteger result) {
-        System.out.println("x " + x);
-        System.out.println("result " + result);
-    }
-
-    /**
      * Test of floor method, of class Generic_BigInteger.
      */
-    @Test
     public void testFloor() {
         System.out.println("floor");
         System.out.println("floor(x)");
@@ -143,6 +133,7 @@ public class Generic_BigIntegerTest {
 
     /**
      * For printing out individual tests of testFloor()
+     *
      * @param x
      * @param result
      */
@@ -156,7 +147,6 @@ public class Generic_BigIntegerTest {
     /**
      * Test of max method, of class Generic_BigInteger.
      */
-    @Test
     public void testMax() {
         System.out.println("max");
         BigInteger x = null;
@@ -185,6 +175,7 @@ public class Generic_BigIntegerTest {
 
     /**
      * For printing out individual tests of testGetMax()
+     *
      * @param x
      * @param y
      * @param result
@@ -201,7 +192,6 @@ public class Generic_BigIntegerTest {
     /**
      * Test of min method, of class Generic_BigInteger.
      */
-    @Test
     public void testMin() {
         System.out.println("min");
         BigInteger x = null;
@@ -230,6 +220,7 @@ public class Generic_BigIntegerTest {
 
     /**
      * For printing out individual tests of testGetMin()
+     *
      * @param x
      * @param y
      * @param result
@@ -246,7 +237,6 @@ public class Generic_BigIntegerTest {
     /**
      * Test of factorial method, of class Generic_BigInteger.
      */
-    @Test
     public void testFactorial() {
         System.out.println("factorial");
         System.out.println("factorial(x)");
@@ -269,6 +259,7 @@ public class Generic_BigIntegerTest {
 
     /**
      * For printing out individual tests of testFactorial()
+     *
      * @param x
      * @param result
      */
@@ -282,7 +273,6 @@ public class Generic_BigIntegerTest {
     /**
      * Test of power method, of class Generic_BigInteger.
      */
-    @Test
     public void testPower_4args_1() {
         System.out.println("power");
         System.out.println("power(x,y,decimalPlaces,a_RoundingMode)");
@@ -320,6 +310,7 @@ public class Generic_BigIntegerTest {
 
     /**
      * For printing out individual tests of testPower_4args_1()
+     *
      * @param x
      * @param y
      * @param decimalPlaces
@@ -340,12 +331,9 @@ public class Generic_BigIntegerTest {
     }
 
     /**
-     * Test of power method, of class Generic_BigInteger.
-     * Currently this is testing powers of 2:
-     * 2^4096
-     * 2^65536
+     * Test of power method, of class Generic_BigInteger. Currently this is
+     * testing powers of 2: 2^4096 2^65536
      */
-    @Test
     public void testPower_4args_2() {
         System.out.println("power");
         System.out.println("power(x,y,decimalPlaces,a_RoundingMode)");
@@ -785,6 +773,7 @@ public class Generic_BigIntegerTest {
 
     /**
      * For printing out individual tests of testPower_4args_2()
+     *
      * @param x
      * @param y
      * @param decimalPlaces
@@ -807,7 +796,6 @@ public class Generic_BigIntegerTest {
     /**
      * Test of reciprocal method, of class Generic_BigInteger.
      */
-    @Test
     public void testReciprocal() {
         System.out.println("reciprocal");
         System.out.println("reciprocal(x,decimalPlaces,a_RoundingMode)");
@@ -824,14 +812,15 @@ public class Generic_BigIntegerTest {
         expResult = new BigDecimal(
                 "8.100000067149000556665214614754629156315875705858609601567873"
                 + "59699767211911070186742771848E-11");
-        result =
-                Generic_BigInteger.reciprocal(x, decimalPlaces, a_RoundingMode);
+        result
+                = Generic_BigInteger.reciprocal(x, decimalPlaces, a_RoundingMode);
         printTestReciprocal(x, decimalPlaces, a_RoundingMode, result);
         assertEquals(expResult, result);
     }
 
     /**
      * For printing out individual tests of testReciprocal()
+     *
      * @param x
      * @param y
      * @param decimalPlaces
@@ -852,7 +841,6 @@ public class Generic_BigIntegerTest {
     /**
      * Test of getRandom method, of class Generic_BigInteger.
      */
-    @Test
     public void testGetRandom() {
         System.out.println("getRandom");
         System.out.println("getRandom(a_Generic_BigInteger,upperLimit)");
@@ -914,6 +902,7 @@ public class Generic_BigIntegerTest {
 
     /**
      * For printing out individual tests of testGetRandom()
+     *
      * @param a_Generic_BigInteger
      * @param upperLimit
      * @param result
@@ -928,9 +917,8 @@ public class Generic_BigIntegerTest {
     }
 
     /**
-     * 
+     *
      */
-    @Test
     public void test_getPowersOfTwoDecomposition_1args() {
         System.out.println("test_getPowersOfTwoDecomposition_1args");
         test_getPowersOfTwoDecomposition_1args_test1();
@@ -958,7 +946,6 @@ public class Generic_BigIntegerTest {
         assertEquals(x, x_Recomposed);
     }
 
-    @Test
     public void test_getPowersOfTwoDecomposition_1args_test2() {
         Generic_BigInteger a_Generic_BigInteger = new Generic_BigInteger();
         BigInteger x;
