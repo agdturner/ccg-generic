@@ -31,7 +31,7 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
  */
 public class Generic_YearMonth
         extends Generic_Object
-        implements Serializable, Comparable<Generic_YearMonth> {
+        implements Serializable, Comparable {
 
     // For convenience
     protected transient Generic_Strings Strings;
@@ -157,6 +157,13 @@ public class Generic_YearMonth
     }
 
     @Override
+    public int compareTo(Object o) {
+        if (o instanceof Generic_YearMonth) {
+            return compareTo((Generic_YearMonth) o);
+        }
+        return -1;
+    }
+    
     public int compareTo(Generic_YearMonth t) {
         int Year = YM.getYear();
         int tYear = t.YM.getYear();

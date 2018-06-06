@@ -31,7 +31,7 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
  */
 public class Generic_Date
         extends Generic_YearMonth
-        implements Serializable {
+        implements Serializable, Comparable {
 
     public LocalDate LD;
 
@@ -194,8 +194,14 @@ public class Generic_Date
     }
 
     @Override
-    public int compareTo(Generic_YearMonth t) {
-        Generic_Date d = (Generic_Date) t;
+    public int compareTo(Object o) {
+        if (o instanceof Generic_Date) {
+            return compareTo((Generic_Date) o);
+        }
+        return super.compareTo(o);
+    }
+    
+    public int compareTo(Generic_Date d) {
         if (LD.isAfter(d.LD)) {
             return 1;
         } else {

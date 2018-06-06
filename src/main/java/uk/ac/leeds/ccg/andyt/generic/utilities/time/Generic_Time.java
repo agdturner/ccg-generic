@@ -22,10 +22,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 
-public class Generic_Time extends Generic_Date implements Serializable {
+public class Generic_Time extends Generic_Date implements Serializable, Comparable {
 
     public LocalDateTime LDT;
 
@@ -296,16 +297,46 @@ public class Generic_Time extends Generic_Date implements Serializable {
     }
 
     @Override
-    public int compareTo(Generic_YearMonth t) {
-        Generic_Time d = (Generic_Time) t;
-        if (LDT.isAfter(d.LDT)) {
+    public int compareTo(Object o) {
+        if (o instanceof Generic_Time) {
+            return compareTo((Generic_Time) o);
+        }
+        return super.compareTo(o);
+    }
+
+    public int compareTo(Generic_Time t) {
+        if (LDT.isAfter(t.LDT)) {
             return 1;
         } else {
-            if (LDT.isBefore(d.LDT)) {
+            if (LDT.isBefore(t.LDT)) {
                 return -1;
             } else {
                 return 0;
             }
         }
+    }
+    
+    /**
+     * Returns a new time difference between this and t in minutes. If t is 
+     * after this, then the answer is negative. 
+     * @param t
+     * @return 
+     */
+    public long differenceInMinutes(Generic_Time t) {
+        long result;
+        result = ChronoUnit.MINUTES.between(LDT, t.LDT);
+        return result;
+    }
+    
+    /**
+     * Returns a new time difference between this and t in minutes. If t is 
+     * after this, then the answer is negative. 
+     * @param t
+     * @return 
+     */
+    public long differenceInHours(Generic_Time t) {
+        long result;
+        result = ChronoUnit.HOURS.between(LDT, t.LDT);
+        return result;
     }
 }
