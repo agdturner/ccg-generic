@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Andy Turner, The University of Leeds, UK
+ * Copyright (C) 2010 Andy Turner, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -36,7 +36,7 @@ import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigInteger;
 
 /**
  *
- * @author geoagdt
+ * @author Andy Turner
  */
 public class Generic_Collections {
 
@@ -58,10 +58,8 @@ public class Generic_Collections {
         return null;
     }
 
-    public static Object[] getIntervalCountsLabelsMins(
-            BigDecimal min,
-            BigDecimal intervalWidth,
-            TreeMap<?, BigDecimal> map,
+    public static Object[] getIntervalCountsLabelsMins(BigDecimal min,
+            BigDecimal intervalWidth, TreeMap<?, BigDecimal> map,
             MathContext mc) {
         Object[] result;
         result = new Object[3];
@@ -84,19 +82,11 @@ public class Generic_Collections {
             addToTreeMapIntegerInteger(counts, interval, 1);
             if (!labels.containsKey(interval)) {
                 BigDecimal intervalMin;
-                intervalMin = getIntervalMin(
-                        min,
-                        intervalWidth,
-                        interval);
+                intervalMin = getIntervalMin(min, intervalWidth, interval);
                 BigDecimal intervalMax;
-                intervalMax = getIntervalMax(
-                        intervalMin,
-                        intervalWidth);
-                labels.put(interval,
-                        "" + intervalMin + " - " + intervalMax);
-                mins.put(
-                        interval,
-                        intervalMin);
+                intervalMax = getIntervalMax(intervalMin, intervalWidth);
+                labels.put(interval, "" + intervalMin + " - " + intervalMax);
+                mins.put(interval, intervalMin);
             }
         }
         result[0] = counts;
@@ -105,28 +95,22 @@ public class Generic_Collections {
         return result;
     }
 
-    public static BigDecimal getIntervalMin(
-            BigDecimal min,
-            BigDecimal intervalWidth,
-            int interval) {
+    public static BigDecimal getIntervalMin(BigDecimal min,
+            BigDecimal intervalWidth, int interval) {
         BigDecimal result;
         result = min.add(new BigDecimal(interval).multiply(intervalWidth));
         return result;
     }
 
-    public static BigDecimal getIntervalMax(
-            BigDecimal intervalMin,
+    public static BigDecimal getIntervalMax(BigDecimal intervalMin,
             BigDecimal intervalWidth) {
         BigDecimal result;
         result = intervalMin.add(intervalWidth);
         return result;
     }
 
-    public static int getInterval(
-            BigDecimal min,
-            BigDecimal intervalWidth,
-            BigDecimal value,
-            MathContext mc) {
+    public static int getInterval(BigDecimal min,
+            BigDecimal intervalWidth, BigDecimal value, MathContext mc) {
         int result;
         result = (value.subtract(min)).divide(intervalWidth, mc).intValue();
         return result;
@@ -184,33 +168,31 @@ public class Generic_Collections {
         return result;
     }
 
-    public static HashSet getRandomIndexes_HashSet(
-            Vector v,
-            int aNumberOfIndexes,
-            Random aRandom) {
-        HashSet tIndexesToSwap_HashSet = new HashSet();
+    public static HashSet getRandomIndexes_HashSet(Vector v,
+            int aNumberOfIndexes, Random r) {
+        HashSet toSwap = new HashSet();
         int aIndex;
         int count = 0;
         if (aNumberOfIndexes > v.size() / 2) {
             for (aIndex = 0; aIndex < v.size(); aIndex++) {
-                tIndexesToSwap_HashSet.add(aIndex);
+                toSwap.add(aIndex);
                 count++;
             }
             while (count != aNumberOfIndexes) {
                 do {
-                    aIndex = aRandom.nextInt(v.size());
-                } while (!tIndexesToSwap_HashSet.remove(aIndex));
+                    aIndex = r.nextInt(v.size());
+                } while (!toSwap.remove(aIndex));
                 count--;
             }
         } else {
             while (count < aNumberOfIndexes) {
                 do {
-                    aIndex = aRandom.nextInt(v.size());
-                } while (!tIndexesToSwap_HashSet.add(aIndex));
+                    aIndex = r.nextInt(v.size());
+                } while (!toSwap.add(aIndex));
                 count++;
             }
         }
-        return tIndexesToSwap_HashSet;
+        return toSwap;
     }
 
     /**
@@ -220,8 +202,7 @@ public class Generic_Collections {
      * keys1
      */
     public static HashSet<Integer> getCompleteKeySet_HashSet(
-            Set<Integer> keys0,
-            Set<Integer> keys1) {
+            Set<Integer> keys0, Set<Integer> keys1) {
         HashSet<Integer> result = new HashSet<>();
         result.addAll(keys0);
         result.addAll(keys1);
@@ -248,20 +229,20 @@ public class Generic_Collections {
      * Adds value to the value at a_TreeMapIntegerIntegerCounter.get(key) if it
      * exists or puts the key, value into a_TreeMapIntegerIntegerCounter
      *
-     * @param a_TreeMapIntegerIntegerCounter
+     * @param aIntegerIntegerCounter
      * @param key
      * @param value
      */
     public static void addToTreeMapIntegerInteger(
-            TreeMap<Integer, Integer> a_TreeMapIntegerIntegerCounter,
+            TreeMap<Integer, Integer> aIntegerIntegerCounter,
             Integer key,
             Integer value) {
-        Integer currentValue = a_TreeMapIntegerIntegerCounter.get(key);
+        Integer currentValue = aIntegerIntegerCounter.get(key);
         if (currentValue != null) {
             Integer newValue = currentValue + value;
-            a_TreeMapIntegerIntegerCounter.put(key, newValue);
+            aIntegerIntegerCounter.put(key, newValue);
         } else {
-            a_TreeMapIntegerIntegerCounter.put(key, value);
+            aIntegerIntegerCounter.put(key, value);
         }
     }
 
@@ -269,24 +250,24 @@ public class Generic_Collections {
      * Adds value to the value at a_TreeMapIntegerIntegerCounter.get(key) if it
      * exists or puts the key, value into a_TreeMapIntegerIntegerCounter
      *
-     * @param update_TreeMapIntegerIntegerCounter
-     * @param updateFrom_TreeMapIntegerIntegerCounter
+     * @param updateIntegerIntegerCounter
+     * @param updateFromIntegerIntegerCounter
      */
     public static void addToTreeMapIntegerInteger(
-            TreeMap<Integer, Integer> update_TreeMapIntegerIntegerCounter,
-            TreeMap<Integer, Integer> updateFrom_TreeMapIntegerIntegerCounter) {
-        if (updateFrom_TreeMapIntegerIntegerCounter != null) {
+            TreeMap<Integer, Integer> updateIntegerIntegerCounter,
+            TreeMap<Integer, Integer> updateFromIntegerIntegerCounter) {
+        if (updateFromIntegerIntegerCounter != null) {
             Integer key;
             Integer value;
-            for (Entry<Integer, Integer> entry : updateFrom_TreeMapIntegerIntegerCounter.entrySet()) {
+            for (Entry<Integer, Integer> entry : updateFromIntegerIntegerCounter.entrySet()) {
                 key = entry.getKey();
                 value = entry.getValue();
-                Integer currentValue = update_TreeMapIntegerIntegerCounter.get(key);
+                Integer currentValue = updateIntegerIntegerCounter.get(key);
                 if (currentValue != null) {
                     Integer newValue = currentValue + value;
-                    update_TreeMapIntegerIntegerCounter.put(key, newValue);
+                    updateIntegerIntegerCounter.put(key, newValue);
                 } else {
-                    update_TreeMapIntegerIntegerCounter.put(key, value);
+                    updateIntegerIntegerCounter.put(key, value);
                 }
             }
         }

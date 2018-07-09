@@ -337,6 +337,11 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
     public long differenceInHours(Generic_Time t) {
         long result;
         result = ChronoUnit.HOURS.between(LDT, t.LDT);
+        
+        if (result < 0) {
+            int debug = 1;
+        }
+        
         return result;
     }
 }

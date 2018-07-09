@@ -1,6 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2010 Andy Turner, University of Leeds.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package uk.ac.leeds.ccg.andyt.generic.utilities;
 
@@ -20,23 +31,17 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 public class Generic_Execution {
 
     /**
-     * Uses default delays 
+     * Uses default delays
+     *
      * @param executorService
      * @param futures
-     * @param obj 
+     * @param obj
      */
-    public static void shutdownExecutorService(
-            ExecutorService executorService,
-            HashSet<Future> futures,
-            Object obj) {
+    public static void shutdownExecutorService(ExecutorService executorService,
+            HashSet<Future> futures, Object obj) {
         long delay = 1000;
         long maxWait = 10;
-        shutdownExecutorService(
-                executorService,
-                futures,
-                obj,
-                delay,
-                maxWait);
+        shutdownExecutorService(executorService, futures, obj, delay, maxWait);
     }
 
     /**
@@ -45,18 +50,16 @@ public class Generic_Execution {
      * @param obj
      * @param delay Number of milliseconds for loop to wait before testing if a
      * Future is returned.
-     * @param maxWait Number of minutes to block shutdown after all futures 
-     * returned 
+     * @param maxWait Number of minutes to block shutdown after all futures
+     * returned
      */
-    public static void shutdownExecutorService(
-            ExecutorService executorService,
-            HashSet<Future> futures,
-            Object obj,
-            long delay,
-            long maxWait) {
-        //What is still left to do from futures?
+    public static void shutdownExecutorService(ExecutorService executorService,
+            HashSet<Future> futures, Object obj, long delay, long maxWait) {
+        // What is still left to do from futures?
         Iterator<Future> ite = futures.iterator();
-        System.out.println("There are " + futures.size() + " jobs to check.");
+        String m;
+        m = "There are " + futures.size() + " jobs to check.";
+        System.out.println(m);
         int doneJobsCounter = 0;
         int notDoneJobsCounter = 0;
         while (ite.hasNext()) {
@@ -67,14 +70,18 @@ public class Generic_Execution {
                 notDoneJobsCounter++;
             }
         }
-        System.out.println("There are " + doneJobsCounter + " jobs done.");
-        System.out.println("There are " + notDoneJobsCounter + " jobs not done.");
+        m = "There are " + doneJobsCounter + " jobs done.";
+        System.out.println(m);
+        m = "There are " + notDoneJobsCounter + " jobs not done.";
+        System.out.println(m);
         ite = futures.iterator();
         while (ite.hasNext()) {
             Future future = ite.next();
             long counter = 0;
             while (!future.isDone()) {
-                System.out.println("Job not done waiting " + delay + " milliseconds having already waited " + counter + " milliseconds");
+                m = "Job not done waiting " + delay + " milliseconds having "
+                        + "already waited " + counter + " milliseconds";
+                System.out.println(m);
                 counter += delay;
                 //try {
                 Generic_Execution.waitSychronized(obj, delay);
@@ -83,53 +90,49 @@ public class Generic_Execution {
                 //}
             }
         }
-        System.out.println("Jobs done.");
+        m = "Jobs done.";
+        System.out.println(m);
         executorService.shutdown();
-
         try {
-            boolean allterminated = executorService.awaitTermination(maxWait, TimeUnit.MINUTES);
-            System.out.println("All output terminated " + allterminated);
+            boolean t;
+            t = executorService.awaitTermination(maxWait, TimeUnit.MINUTES);
+            m = "All output terminated " + t;
+            System.out.println(m);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Generic_Execution.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_Execution.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
-
         List<Runnable> unfinishedJobs = executorService.shutdownNow();
         if (unfinishedJobs.size() > 0) {
-            System.out.println("There are " + unfinishedJobs.size() + " unfinshed jobs");
+            m = "There are " + unfinishedJobs.size() + " unfinshed jobs";
+            System.out.println(m);
         } else {
-            System.out.println("All jobs finished");
+            m = "All jobs finished";
+            System.out.println(m);
         }
     }
 
     /**
-     * 
+     *
      * @param executorService
      * @param future
-     * @param obj 
+     * @param obj
      */
-    public static void shutdownExecutorService(
-            ExecutorService executorService,
-            Future future,
-            Object obj) {
+    public static void shutdownExecutorService(ExecutorService executorService,
+            Future future, Object obj) {
         long delay = 1000;
         long maxWait = 10;
-        shutdownExecutorService(
-                executorService,
-                future,
-                obj,
-                delay,
-                maxWait);
+        shutdownExecutorService(executorService, future, obj, delay, maxWait);
     }
 
-    public static void shutdownExecutorService(
-            ExecutorService executorService,
-            Future future,
-            Object obj,
-            long delay,
-            long maxWait) {
+    public static void shutdownExecutorService(ExecutorService executorService,
+            Future future, Object obj, long delay, long maxWait) {
         long counter = 0;
+        String m;
         while (!future.isDone()) {
-            System.out.println("Job not done waiting " + delay + " milliseconds having already waited " + counter + " milliseconds");
+            m = "Job not done waiting " + delay + " milliseconds having already"
+                    + " waited " + counter + " milliseconds";
+            System.out.println(m);
             counter += delay;
             //try {
             Generic_Execution.waitSychronized(obj, delay);
@@ -137,19 +140,25 @@ public class Generic_Execution {
             //    e.printStackTrace();
             //}
         }
-        System.out.println("Job done.");
+        m = "Job done.";
+        System.out.println(m);
         executorService.shutdown();
         try {
-            boolean allterminated = executorService.awaitTermination(maxWait, TimeUnit.MINUTES);
-            System.out.println("All output terminated " + allterminated);
+            boolean t;
+            t = executorService.awaitTermination(maxWait, TimeUnit.MINUTES);
+            m = "All output terminated " + t;
+            System.out.println(m);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Generic_Execution.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_Execution.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
         List<Runnable> unfinishedJobs = executorService.shutdownNow();
         if (unfinishedJobs.size() > 0) {
-            System.err.println("There were " + unfinishedJobs.size() + " unfinshed jobs");
+            m = "There were " + unfinishedJobs.size() + " unfinshed jobs";
+            System.out.println(m);
         } else {
-            System.out.println("All jobs finished");
+            m = "All jobs finished";
+            System.out.println(m);
         }
     }
 
@@ -159,7 +168,8 @@ public class Generic_Execution {
                 obj.wait(timeInMilliseconds);
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(Generic_Visualisation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_Visualisation.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
     }
 }

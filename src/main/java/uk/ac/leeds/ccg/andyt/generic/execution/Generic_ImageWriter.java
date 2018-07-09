@@ -1,24 +1,33 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2018 geoagdt.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301  USA
  */
 package uk.ac.leeds.ccg.andyt.generic.execution;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author geoagdt
+ * @author Andy Turner
  */
 public class Generic_ImageWriter extends Generic_Executor {
 
-    private Set<Generic_EventListener> listeners;
+    private final Set<Generic_EventListener> listeners;
 
     public Generic_ImageWriter() {
         listeners = new HashSet<>();
@@ -51,8 +60,11 @@ public class Generic_ImageWriter extends Generic_Executor {
     }
 
     private void notifyListenersOfRenderingComplete() {
-        for (Generic_EventListener e : listeners) {
+//        for (Generic_EventListener e : listeners) {
+//            e.renderingComplete(new Generic_RenderingCompleteEvent(this));
+//        }
+        listeners.forEach((e) -> {
             e.renderingComplete(new Generic_RenderingCompleteEvent(this));
-        }
+        });
     }
 }

@@ -1,6 +1,5 @@
 /**
- * A component of a library for
- * <a href="http://www.geog.leeds.ac.uk/people/a.turner/projects/MoSeS">MoSeS</a>.
+ * Copyright (C) 2010 Andy Turner, University of Leeds.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,47 +22,47 @@ package uk.ac.leeds.ccg.andyt.generic.utilities;
  */
 public class Generic_TestMemory {
 
-	protected transient Runtime _Runtime;
+    protected transient Runtime r;
 
-	/** Creates a new instance of TestMemory */
-	public Generic_TestMemory() {
-		init_Runtime();
-	}
+    /**
+     * Creates a new instance of TestMemory
+     */
+    public Generic_TestMemory() {
+        init();
+    }
 
-	/**
-	 * Initialises _Runtime
-	 */
-	protected final void init_Runtime() {
-		this._Runtime = Runtime.getRuntime();
-	}
+    /**
+     * Initialises r
+     */
+    protected final void init() {
+        this.r = Runtime.getRuntime();
+    }
 
-	/**
-	 * For returning the total free memory
-	 * <ul>
-	 * <li>( _Runtime.freeMemory() + ( _Runtime.maxMemory() -
-	 * _Runtime.totalMemory() ) )</li>
-	 * </ul>
-	 * Even if this is zero then the JVM may be able to allocate memory in
-	 * reserves?
-	 * 
-	 * @return The TotalFreeMemory available as calculated from _Runtime. If the
-	 *         returned value is lower than a minimum required to call a method
-	 *         then probably best to swap some data.
-	 */
-	public long getTotalFreeMemory() {
-		long result;
-		try {
-			long maxMemory = _Runtime.maxMemory();
-			long allocatedMemory = _Runtime.totalMemory();
-			long freeMemory = _Runtime.freeMemory();
-			result = freeMemory + (maxMemory - allocatedMemory);
-			return result;
-		} catch (NullPointerException _NullPointerException) {
-			if (_Runtime == null) {
-				init_Runtime();
-			}
-			return getTotalFreeMemory();
-		}
-	}
-
+    /**
+     * For returning the total free memory
+     * <ul>
+     * <li>( r.freeMemory() + ( r.maxMemory() - r.totalMemory() ) )</li>
+     * </ul>
+     * Even if this is zero then the JVM may be able to allocate memory in
+     * reserves?
+     *
+     * @return The TotalFreeMemory available as calculated from r. If the
+     * returned value is lower than a minimum required to call a method then
+     * probably best to swap some data.
+     */
+    public long getTotalFreeMemory() {
+        long result;
+        try {
+            long maxMemory = r.maxMemory();
+            long allocatedMemory = r.totalMemory();
+            long freeMemory = r.freeMemory();
+            result = freeMemory + (maxMemory - allocatedMemory);
+            return result;
+        } catch (NullPointerException e) {
+            if (r == null) {
+                init();
+            }
+            return getTotalFreeMemory();
+        }
+    }
 }

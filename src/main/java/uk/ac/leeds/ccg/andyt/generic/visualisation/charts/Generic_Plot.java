@@ -43,7 +43,10 @@ public class Generic_Plot extends Generic_AbstractPlot {
     public Generic_Canvas Canvas;
     public Future future;
 
-    public Generic_Plot() {
+    public Generic_Plot(){}
+    
+    public Generic_Plot(int ID) {
+        super(ID);
     }
 
     /**

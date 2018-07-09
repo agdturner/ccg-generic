@@ -1,6 +1,20 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+  * Copyright (C) 2010 Andy Turner, University of Leeds.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301  USA
  */
 package uk.ac.leeds.ccg.andyt.generic.utilities;
 
@@ -10,7 +24,9 @@ import java.util.Calendar;
 //
 
 /**
- * Not to be confused with uk.ac.leeds.ccg.andyt.generic.utilities.time.Generic_Time
+ * Not to be confused with
+ * uk.ac.leeds.ccg.andyt.generic.utilities.time.Generic_Time
+ *
  * @author Andy Turner
  */
 public class Generic_Time {
@@ -62,30 +78,28 @@ public class Generic_Time {
         int MilliSecondsInMinute = 60000;
         long millis2 = millis;
         int days = 0;
-        while (millis2 > MilliSecondsInDay) {
+        while (millis2 >= MilliSecondsInDay) {
             days++;
             millis2 -= MilliSecondsInDay;
         }
         int hours = 0;
-        while (millis2 > MilliSecondsInHour) {
+        while (millis2 >= MilliSecondsInHour) {
             hours++;
             millis2 -= MilliSecondsInHour;
         }
         int minutes = 0;
-        while (millis2 > MilliSecondsInMinute) {
+        while (millis2 >= MilliSecondsInMinute) {
             minutes++;
             millis2 -= MilliSecondsInMinute;
         }
         int seconds = 0;
-        while (millis2 > 1000) {
+        while (millis2 >= 1000) {
             seconds++;
             millis2 -= MilliSecondsInSecond;
         }
         String result;
-        result = "" + days + " day(s) "
-                + hours + " hour(s) "
-                + minutes + " minute(s) "
-                + seconds + " second(s) "
+        result = "" + days + " day(s) " + hours + " hour(s) "
+                + minutes + " minute(s) " + seconds + " second(s) "
                 + millis2 + " millisecond(s)";
         return result;
     }
@@ -295,11 +309,7 @@ public class Generic_Time {
         return -1;
     }
 
-    public static int getMonthDiff(
-            int year0,
-            int year1,
-            int month0,
-            int month1) {
+    public static int getMonthDiff(int year0, int year1, int month0, int month1) {
         int result;
         result = (year1 - year0) * 12;
         result += month1 - month0;

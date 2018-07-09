@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 geoagdt.
+  * Copyright (C) 2010 Andy Turner, University of Leeds.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,12 @@ import java.time.LocalDate;
 
 /**
  *
- * @author geoagdt
+ * @author Andy Turner
  */
 public class LocalDateRange {
 
-    private LocalDate start;
-    private LocalDate end;
+    private final LocalDate start;
+    private final LocalDate end;
 
     public LocalDateRange(LocalDate start, LocalDate end) {
         this.start = start;
