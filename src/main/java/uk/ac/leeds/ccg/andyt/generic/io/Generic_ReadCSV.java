@@ -162,7 +162,7 @@ public class Generic_ReadCSV {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(
                         Generic_ReadCSV.class.getName()).log(Level.SEVERE,
-                                null, ex);
+                        null, ex);
             }
         }
 
@@ -253,4 +253,50 @@ public class Generic_ReadCSV {
         return result;
     }
 
+    /**
+     * 
+     * @param st The StreamTokenizer for parsing the stream.
+     * @param pw If this is not null then the line returned is printed to it.
+     * @return The next line or null.
+     */
+    public static String readLine(StreamTokenizer st, PrintWriter pw) {
+        try {
+            int token = st.nextToken();
+//                    long RecordID = 0;
+            String line = "";
+            while (!(token == StreamTokenizer.TT_EOF)) {
+                switch (token) {
+                    case StreamTokenizer.TT_EOL:
+                        if (pw != null) {
+                            pw.println(line);
+                        }
+                        return line;
+                    case StreamTokenizer.TT_WORD:
+                        line += st.sval;
+                        break;
+                    case StreamTokenizer.TT_NUMBER:
+                        break;
+                    default:
+                        if (token == 26 || token == 160) {
+                            // A type of space " ". It is unusual as st
+                            // probably already set to parse space as
+                            // words.
+                            line += (char) token;
+                        }
+                        if (token == 13) {
+                            // These are returns or tabs or something...
+                            //line += (char) token;
+                        }
+//                                System.out.println("line so far " + line);
+//                                System.out.println("Odd token " + token
+//                                        +  " \"" + (char) token 
+//                                        + "\" encountered.");
+                }
+                token = st.nextToken();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_ReadCSV.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }
