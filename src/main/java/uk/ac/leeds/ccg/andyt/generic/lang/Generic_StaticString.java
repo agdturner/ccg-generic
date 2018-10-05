@@ -12,7 +12,7 @@ import java.util.TreeSet;
  * @author geoagdt
  */
 public class Generic_StaticString {
-    
+
     public static HashSet<String> getNumeralsHashSet() {
         HashSet<String> numerals_HashSet = new HashSet<>();
         numerals_HashSet.add("0");
@@ -27,7 +27,7 @@ public class Generic_StaticString {
         numerals_HashSet.add("9");
         return numerals_HashSet;
     }
-    
+
     public static TreeSet<String> getNumeralsTreeSet() {
         TreeSet<String> numerals_HashSet = new TreeSet<>();
         numerals_HashSet.add("0");
@@ -42,7 +42,7 @@ public class Generic_StaticString {
         numerals_HashSet.add("9");
         return numerals_HashSet;
     }
-    
+
     public static TreeSet<String> getUpperCaseStringAlphabet_TreeSet() {
         TreeSet<String> result = new TreeSet<>();
         result.add("A");
@@ -73,7 +73,7 @@ public class Generic_StaticString {
         result.add("Z");
         return result;
     }
-    
+
     public static TreeSet<String> getLowerCaseStringAlphabet_TreeSet() {
         TreeSet<String> result = new TreeSet<>();
         result.add("a");
@@ -105,7 +105,7 @@ public class Generic_StaticString {
         result.add("z");
         return result;
     }
-    
+
     public static String getLowerCase(String s) {
         String result = s;
         result = result.replace('A', 'a');
@@ -136,7 +136,7 @@ public class Generic_StaticString {
         result = result.replace('Z', 'z');
         return result;
     }
-    
+
     public static String getUpperCase(String s) {
         String result = s;
         result = result.replace('a', 'A');
@@ -167,9 +167,9 @@ public class Generic_StaticString {
         result = result.replace('z', 'Z');
         return result;
     }
-    
+
     /**
-     * 
+     *
      * @param s The String that's first letter is to be capitalised.
      * @return s but with the first letter capitalised.
      */
@@ -185,6 +185,25 @@ public class Generic_StaticString {
             return firstletterCapital;
         }
         String remainder = s.substring(1, s.length());
-        return firstletterCapital + remainder;        
+        return firstletterCapital + remainder;
+    }
+
+    /**
+     *
+     * Returns a count of the number of times s0 appears in s. If s is
+     * "sss" and s0 is "ss" then count is 1. If s is "ssss" and sp is "ss" then
+     * count is 2.
+     * @param s The string for which instances of s0 are counted. 
+     * @param s0 The string for which the number of occurrences in s is returned.
+     * @return int
+     */
+    public static int getCount(String s, String s0) {
+        if (s.contains(s0)) {
+            if (s.contentEquals(s0))  {
+                return 1;
+            }
+            return s.length() - s.replace(s0, "").length();
+        }
+        return 0;
     }
 }

@@ -217,12 +217,17 @@ public class Generic_Collections {
      * @param i The amount to be added to the map.
      */
     public static <K> void addToMap(Map<K, Integer> m, K k, Integer i) {
-        Integer v = m.get(k);
-        if (v != null) {
-            m.put(k, (v + i));
+        if (!m.containsKey(k)) {
+            m.put(k, 1);
         } else {
-            m.put(k, i);
+            m.put(k, m.get(k) + 1);
         }
+//        Integer v = m.get(k);
+//        if (v != null) {
+//            m.put(k, (v + i));
+//        } else {
+//            m.put(k, i);
+//        }
     }
 
     /**

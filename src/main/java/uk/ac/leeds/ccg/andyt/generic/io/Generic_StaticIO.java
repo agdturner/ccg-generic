@@ -97,15 +97,15 @@ public class Generic_StaticIO {
     /**
      * Write object to file
      *
-     * @param object
+     * @param o
      * @param f
      */
-    public static void writeObject(Object object, File f) {
+    public static void writeObject(Object o, File f) {
         try {
             f.getParentFile().mkdirs();
             ObjectOutputStream oos;
             oos = getObjectOutputStream(f);
-            oos.writeObject(object);
+            oos.writeObject(o);
             oos.flush();
             oos.close();
         } catch (IOException e) {
@@ -113,6 +113,19 @@ public class Generic_StaticIO {
             e.printStackTrace(System.err);
             System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
+    }
+
+    /**
+     * Write object to file and report the name of the Object written and the
+     * file to stdout.
+     *
+     * @param o
+     * @param f
+     * @param name
+     */
+    public static void writeObject(Object o, File f, String name) {
+        writeObject(o, f);
+        System.out.println("Written out " + name + " to " + f);
     }
 
     /**
@@ -143,9 +156,9 @@ public class Generic_StaticIO {
     }
 
     /**
-     * Read File into an ArrayList. The ArrayList will have a size equal
-     * to the number of lines in the file and each element will have all the
-     * characters in a line represented as Strings.
+     * Read File into an ArrayList. The ArrayList will have a size equal to the
+     * number of lines in the file and each element will have all the characters
+     * in a line represented as Strings.
      *
      * @param f The file to be returned as a String.
      * @return
@@ -155,9 +168,9 @@ public class Generic_StaticIO {
     }
 
     /**
-     * Read File into an ArrayList. The ArrayList will have a size equal
-     * to the number of lines in the file and each element will have all the
-     * characters in a line represented as Strings.
+     * Read File into an ArrayList. The ArrayList will have a size equal to the
+     * number of lines in the file and each element will have all the characters
+     * in a line represented as Strings.
      *
      * @param f The file to be returned as a String.
      * @param n The number of lines after the first is printed to std_out using
@@ -248,9 +261,9 @@ public class Generic_StaticIO {
     }
 
     /**
-     * Read File into an ArrayList. The ArrayList will have a size equal
-     * to the number of lines in the file and each element will have all the
-     * characters in a line represented as Strings.
+     * Read File into an ArrayList. The ArrayList will have a size equal to the
+     * number of lines in the file and each element will have all the characters
+     * in a line represented as Strings.
      *
      * @param f The file to be returned as a String.
      * @param n The number of lines after the first is printed to std_out using
@@ -1383,7 +1396,7 @@ public class Generic_StaticIO {
      * }
      * return result;
      * }
-     * @return 
+     * @return
      * @
      * return result;
      */
