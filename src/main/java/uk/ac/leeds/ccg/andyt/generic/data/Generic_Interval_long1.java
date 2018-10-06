@@ -22,19 +22,19 @@ package uk.ac.leeds.ccg.andyt.generic.data;
  *
  * @author geoagdt
  */
-public class Generic_Interval_long1 {
-    
+public class Generic_Interval_long1 implements Comparable {
+
     /**
      * Stores the lower bound.
      */
     private final long L;
-    
+
     /**
      * Stores the upper bound.
      */
     private final long U;
-    
-    public Generic_Interval_long1 (long l, long u) {
+
+    public Generic_Interval_long1(long l, long u) {
         L = l;
         U = u;
     }
@@ -43,16 +43,17 @@ public class Generic_Interval_long1 {
     public String toString() {
         return "[" + L + ", " + U + ")";
     }
-    
+
     /**
      * l is in the interval if it is greater than or equal to L and less than U.
+     *
      * @param l
-     * @return 
+     * @return
      */
     public boolean isInInterval(long l) {
         return l >= L && l < U;
     }
-    
+
     /**
      * @return the L
      */
@@ -66,6 +67,31 @@ public class Generic_Interval_long1 {
     public long getU() {
         return U;
     }
-    
-    
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof Generic_Interval_long1) {
+            Generic_Interval_long1 obj;
+            obj = (Generic_Interval_long1) o;
+            if (this.L < obj.L) {
+                return -1;
+            } else {
+                if (this.L > obj.L) {
+                    return 1;
+                }
+                if (this.U < obj.U) {
+                    return -1;
+                } else {
+                    if (this.U > obj.U) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+        } else {
+            return -1;
+        }
+    }
+
 }
