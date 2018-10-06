@@ -18,11 +18,13 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.data;
 
+import java.io.Serializable;
+
 /**
  *
  * @author geoagdt
  */
-public class Generic_Interval_long1 implements Comparable {
+public class Generic_Interval_long1 implements Serializable, Comparable {
 
     /**
      * Stores the lower bound.
