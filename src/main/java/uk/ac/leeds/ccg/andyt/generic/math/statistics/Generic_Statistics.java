@@ -152,7 +152,7 @@ public class Generic_Statistics {
     }
 
     /**
-     * There is no universal agreement on calculating quartiles
+     * There is no universal agreement on calculating quartiles:
      * http://en.wikipedia.org/wiki/Quartile
      * @param data
      * @param decimalPlaces

@@ -18,6 +18,7 @@ package uk.ac.leeds.ccg.andyt.generic.utilities;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -212,6 +213,7 @@ public class Generic_Collections {
     /**
      * Adds to a integer counting map.
      *
+     * @param <K>
      * @param m The map that is to be added to.
      * @param k The key which value is added to or initialised.
      * @param i The amount to be added to the map.
@@ -228,6 +230,35 @@ public class Generic_Collections {
 //        } else {
 //            m.put(k, i);
 //        }
+    }
+
+    /**
+     * Adds v to the ArrayList in m indexed by k. If such a list does not yet
+     * exist it is created.
+     *
+     * @param <K>
+     * @param m The map that is to be added to.
+     * @param k The key which value is added to or initialised.
+     * @param v The value to add to the list in map.
+     */
+    public static <K, V> void addToLisIfDifferentFromLast(
+            Map<K, ArrayList<V>> m, K k, V v) {
+        ArrayList<V> l;
+        if (m.containsKey(k)) {
+            l = m.get(k);
+            if (l.size() > 1) {
+                V v0 = l.get(l.size() - 1);
+                if (!v.equals(v0)) {
+                    l.add(v);
+                }
+            } else {
+                l.add(v);
+            }
+        } else {
+            l = new ArrayList();
+            l.add(v);
+            m.put(k, l);
+        }
     }
 
     /**
