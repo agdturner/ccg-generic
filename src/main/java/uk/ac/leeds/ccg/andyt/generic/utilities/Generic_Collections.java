@@ -211,6 +211,28 @@ public class Generic_Collections {
     }
 
     /**
+     * If m contain the key k, then v is added to the HashSet. Otherwise a new
+     * HashSet is created and added to m using the key k and v is added to the
+     * HashSet.
+     *
+     * @param <K>
+     * @param <V>
+     * @param m
+     * @param k
+     * @param v
+     */
+    public static <K, V> void addToMap(HashMap<K, HashSet<V>> m, K k, V v) {
+        HashSet<V> s;
+        if (m.containsKey(k)) {
+            s = m.get(k);
+        } else {
+            s = new HashSet<>();
+            m.put(k, s);
+        }
+        s.add(v);
+    }
+    
+    /**
      * Adds to a integer counting map.
      *
      * @param <K>

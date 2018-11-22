@@ -14,33 +14,33 @@ import java.util.TreeSet;
 public class Generic_StaticString {
 
     public static HashSet<String> getNumeralsHashSet() {
-        HashSet<String> numerals_HashSet = new HashSet<>();
-        numerals_HashSet.add("0");
-        numerals_HashSet.add("1");
-        numerals_HashSet.add("2");
-        numerals_HashSet.add("3");
-        numerals_HashSet.add("4");
-        numerals_HashSet.add("5");
-        numerals_HashSet.add("6");
-        numerals_HashSet.add("7");
-        numerals_HashSet.add("8");
-        numerals_HashSet.add("9");
-        return numerals_HashSet;
+        HashSet<String> s = new HashSet<>();
+        s.add("0");
+        s.add("1");
+        s.add("2");
+        s.add("3");
+        s.add("4");
+        s.add("5");
+        s.add("6");
+        s.add("7");
+        s.add("8");
+        s.add("9");
+        return s;
     }
 
     public static TreeSet<String> getNumeralsTreeSet() {
-        TreeSet<String> numerals_HashSet = new TreeSet<>();
-        numerals_HashSet.add("0");
-        numerals_HashSet.add("1");
-        numerals_HashSet.add("2");
-        numerals_HashSet.add("3");
-        numerals_HashSet.add("4");
-        numerals_HashSet.add("5");
-        numerals_HashSet.add("6");
-        numerals_HashSet.add("7");
-        numerals_HashSet.add("8");
-        numerals_HashSet.add("9");
-        return numerals_HashSet;
+        TreeSet<String> s = new TreeSet<>();
+        s.add("0");
+        s.add("1");
+        s.add("2");
+        s.add("3");
+        s.add("4");
+        s.add("5");
+        s.add("6");
+        s.add("7");
+        s.add("8");
+        s.add("9");
+        return s;
     }
 
     public static TreeSet<String> getUpperCaseStringAlphabet_TreeSet() {
@@ -106,6 +106,12 @@ public class Generic_StaticString {
         return result;
     }
 
+    /**
+     * Use String.toLowerCase() instead
+     * @param s
+     * @return 
+     */
+     @Deprecated
     public static String getLowerCase(String s) {
         String result = s;
         result = result.replace('A', 'a');
@@ -137,7 +143,13 @@ public class Generic_StaticString {
         return result;
     }
 
-    public static String getUpperCase(String s) {
+    /**
+     * Use String.toUpperCase() instead
+     * @param s
+     * @return 
+     */
+     @Deprecated
+     public static String getUpperCase(String s) {
         String result = s;
         result = result.replace('a', 'A');
         result = result.replace('b', 'B');
