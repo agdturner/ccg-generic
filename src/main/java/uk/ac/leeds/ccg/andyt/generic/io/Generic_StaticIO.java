@@ -108,7 +108,6 @@ public class Generic_StaticIO {
             oos.writeObject(o);
             oos.flush();
             oos.close();
-            oos.reset();
         } catch (IOException e) {
             System.err.print(e.getMessage());
             e.printStackTrace(System.err);
@@ -141,9 +140,9 @@ public class Generic_StaticIO {
             try {
                 ObjectInputStream ois;
                 ois = getObjectInputStream(f);
-                result = ois.readObject();
+                //result = ois.readObject();
+                result = ois.readUnshared();
                 ois.close();
-                ois.reset();
             } catch (IOException e) {
                 System.err.print(e.getMessage());
                 e.printStackTrace(System.err);
@@ -373,7 +372,6 @@ public class Generic_StaticIO {
             ois = getObjectInputStream(f);
             result = ois.readObject();
             ois.close();
-            ois.reset();
         }
         return result;
     }
@@ -548,14 +546,14 @@ public class Generic_StaticIO {
      * @return <code>new FileOutputStream(f)</code>
      */
     public static FileOutputStream getFileOutputStream(File f) {
-        FileOutputStream result = null;
+        FileOutputStream r = null;
         try {
-            result = new FileOutputStream(f);
+            r = new FileOutputStream(f);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Generic_StaticIO.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
-        return result;
+        return r;
     }
 
     /**
@@ -563,11 +561,11 @@ public class Generic_StaticIO {
      * @return <code>new BufferedInputStream(new FileInputStream(f)))</code>
      */
     public static BufferedOutputStream getBufferedOutputStream(File f) {
-        BufferedOutputStream result;
+        BufferedOutputStream r;
         FileOutputStream fos;
         fos = getFileOutputStream(f);
-        result = new BufferedOutputStream(fos);
-        return result;
+        r = new BufferedOutputStream(fos);
+        return r;
     }
 
     /**
