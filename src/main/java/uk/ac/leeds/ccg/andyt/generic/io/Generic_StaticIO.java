@@ -108,6 +108,7 @@ public class Generic_StaticIO {
             oos.writeObject(o);
             oos.flush();
             oos.close();
+            oos.reset();
         } catch (IOException e) {
             System.err.print(e.getMessage());
             e.printStackTrace(System.err);
@@ -142,6 +143,7 @@ public class Generic_StaticIO {
                 ois = getObjectInputStream(f);
                 result = ois.readObject();
                 ois.close();
+                ois.reset();
             } catch (IOException e) {
                 System.err.print(e.getMessage());
                 e.printStackTrace(System.err);
@@ -371,6 +373,7 @@ public class Generic_StaticIO {
             ois = getObjectInputStream(f);
             result = ois.readObject();
             ois.close();
+            ois.reset();
         }
         return result;
     }
