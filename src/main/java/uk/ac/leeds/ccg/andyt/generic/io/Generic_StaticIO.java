@@ -104,15 +104,47 @@ public class Generic_StaticIO {
         try {
             f.getParentFile().mkdirs();
             ObjectOutputStream oos;
-            oos = getObjectOutputStream(f);
-            oos.writeObject(o);
+            oos = new ObjectOutputStream(
+                    new BufferedOutputStream(
+                            new FileOutputStream(f)));
+            oos.writeUnshared(o);
             oos.flush();
+            oos.reset();
             oos.close();
         } catch (IOException e) {
             System.err.print(e.getMessage());
             e.printStackTrace(System.err);
             System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
+    }
+
+    /**
+     * Read Object from File
+     *
+     * @param f
+     * @return
+     */
+    public static Object readObject(File f) {
+        Object r = null;
+        if (f.length() != 0) {
+            try {
+                ObjectInputStream ois;
+                ois = new ObjectInputStream(
+                        new BufferedInputStream(
+                                new FileInputStream(f)));
+                r = ois.readUnshared();
+                ois.close();
+            } catch (IOException e) {
+                System.err.print(e.getMessage());
+                e.printStackTrace(System.err);
+                System.exit(Generic_ErrorAndExceptionHandler.IOException);
+            } catch (ClassNotFoundException e) {
+                System.err.print(e.getMessage());
+                e.printStackTrace(System.err);
+                System.exit(Generic_ErrorAndExceptionHandler.ClassNotFoundException);
+            }
+        }
+        return r;
     }
 
     /**
@@ -126,34 +158,6 @@ public class Generic_StaticIO {
     public static void writeObject(Object o, File f, String name) {
         writeObject(o, f);
         System.out.println("Written out " + name + " to " + f);
-    }
-
-    /**
-     * Read Object from File
-     *
-     * @param f
-     * @return
-     */
-    public static Object readObject(File f) {
-        Object result = null;
-        if (f.length() != 0) {
-            try {
-                ObjectInputStream ois;
-                ois = getObjectInputStream(f);
-                //result = ois.readObject();
-                result = ois.readUnshared();
-                ois.close();
-            } catch (IOException e) {
-                System.err.print(e.getMessage());
-                e.printStackTrace(System.err);
-                System.exit(Generic_ErrorAndExceptionHandler.IOException);
-            } catch (ClassNotFoundException e) {
-                System.err.print(e.getMessage());
-                e.printStackTrace(System.err);
-                System.exit(Generic_ErrorAndExceptionHandler.ClassNotFoundException);
-            }
-        }
-        return result;
     }
 
     /**
