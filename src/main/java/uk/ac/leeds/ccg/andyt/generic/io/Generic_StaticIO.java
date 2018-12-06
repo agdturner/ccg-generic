@@ -738,6 +738,16 @@ public class Generic_StaticIO {
         return result;
     }
 
+    // Close br
+    public static void closeBufferedReader(BufferedReader br) {
+        try {
+            br.close();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * @param file The file to write to.
      * @param append If true an existing file will be appended otherwise it will

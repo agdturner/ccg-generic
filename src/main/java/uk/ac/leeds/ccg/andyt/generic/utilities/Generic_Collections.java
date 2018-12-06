@@ -232,6 +232,28 @@ public class Generic_Collections {
         s.add(v);
     }
     
+    public static <K, V> void addToMap(TreeMap<K, HashSet<V>> m, K k, V v) {
+        HashSet<V> s;
+        if (m.containsKey(k)) {
+            s = m.get(k);
+        } else {
+            s = new HashSet<>();
+            m.put(k, s);
+        }
+        s.add(v);
+    }
+    
+//    public static <K, V> void addToMap(Map<K, Set<V>> m, K k, V v) {
+//        Set<V> s;
+//        if (m.containsKey(k)) {
+//            s = m.get(k);
+//        } else {
+//            s = new HashSet<>();
+//            m.put(k, s);
+//        }
+//        s.add(v);
+//    }
+    
     /**
      * Adds to a integer counting map.
      *
