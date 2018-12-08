@@ -1,6 +1,6 @@
 # generic
 ## Description
-A generic Java library that has no third party library dependencies.
+A generic Java library that has no dependencies.
   - It is generally for things that are commonly used in other Java libraries that the developer has developed.
   - The highlights are:
     - io
