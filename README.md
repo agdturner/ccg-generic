@@ -42,6 +42,7 @@ The Roadmap for the development of Version 1.0.0 of the library is as follows an
     - Standardise variable and method names
     - Utilise features in Java 8 especially those that utilise functional programming with lambda expressions and Streams.
     - Improve documentation
+      - The LICENSE has been changed to Apache 2.0, so all source files need updating to this license.
 ### Proposed Package Contents
 Currently, the library contains 10 main packages which are described in the Package Details section below:
 1. core
