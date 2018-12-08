@@ -1,10 +1,9 @@
 # generic
-
-A generic Java library that has no other dependencies.
-
-It is generally for things that are commonly used in other Java libraries that the developer has developed.
-
-The library contains 10 main packages which are described below in turn:
+## Description
+A generic Java library that has no third party library dependencies.
+  - It is generally for things that are commonly used in other Java libraries that the developer has developed.
+## Package Contents
+The library contains 10 main packages which are described in the Package Details section below:
 1. core
 2. data
 3. execution
@@ -19,8 +18,22 @@ The library contains 10 main packages which are described below in turn:
   - time
 10. visualisation
   - charts
-
-1. core
+## Current Version
+Deprecated and unsupported!
+  - This is essentially research software, but attempts are being made to standardise the software development and evolve it following the principles of software carpentry advocated by the Software Sustainability Institute (https://www.software.ac.uk/programmes-events/carpentries/software-carpentry).
+Currently the library is in Version 1.x and the latest is known as Version 1.0-Snapshot.
+The library should run on Java 8.
+## Development Roadmap
+The Roadmap for the development of the library is as follows:
+- For 2.x the library will make better use of Java 8
+  - The code base will be rationalised by moving the math, visualisation and data packages to other libraries.
+  - Each class will be refactored to:
+    - Better use generics to further rationalise the code base
+    - Standardise variable and method names
+    - Utilise features in Java 8 especially those that utilise functional programming with lambda expressions and Streams.
+    - Improve documentation
+## Package Details 
+### 1. core
 The core package contains classes that are core in that they are generally used.
 Contents
   - Generic_Environment
@@ -34,8 +47,7 @@ Contents
     - By extending this class any object holds a reference to Env. It is concieved that Env is shared by all objects in order to share things in common for convenience and brevity an so that memory handling can be organised. 
   - Generic_Strings
     - A class that holds commonly used Strings.
-    
-2. data
+### 2. data
 The data package contains classes to handle things to do with data.
 Contents
   - Generic_Interval_long1
@@ -47,7 +59,7 @@ Contents
     - This currently holds two values as BigDecimal values and is used by classes in the visualisation package.
     - The intention is to refactor this class and to move it to a different library with a sole purpose of visualisation.
     and x and y
-3. execution
+### 3. execution
 The execution package contains classes to handle things to do with execution.
 Contents
   - Generic_AgeConverter
@@ -56,8 +68,7 @@ Contents
   - Generic_EventListener
     - A Functional EventListener class with a single abstract method:
       - renderingComplete(Generic_RenderingCompleteEvent)
-...
-4. io
+### 4. io
 The io package contains classes to handle things to do with input and output.
 Contents
   - Generic_Files
@@ -71,17 +82,20 @@ Contents
     - This class currenlty does a couple of different things:
       - It helps set up and get Files withing archives.
         - An archive is a form of data base where each element is given a unique long numerical index to be effectively stored in a File at a location given by the index known as a LeafFile. The 1st element in the data base is indexed by 0L, the 2nd element in the data base is indexed by 1L etc. An archive is comprised of a based File directory (BaseDir) in which there is one or more File directory - collectively known as subdirectories. Each subdirectory may contain a further layer of subdirectories and so on. There depth of each subdirectory is given by how many subdirectories it is in from the BaseDir. Subdirectories are given standardised names such that it is easy to find and infer the location of any LeafFile. The number of subdirectories in BaseDir, the number of subdirectories in any subdirectory, and the number of LeafFiles in any directory is controled by a parameter (NumberOfFilesPerDirectory).
-          - For example, if NumberOfFilesPerDirectory was set to 10, there would be at most 10 subdirectories in BaseDir and at most 10 LeafFiles in any subdirectory.
-        - Archives can dynamically grow to store more elements. As they grow more LeafFile This limits the total number of Filein each directory type directories
+          - For example, if NumberOfFilesPerDirectory was set to 10, there would be at most 10 subdirectories in BaseDir and any subdirectories, and at most 10 LeafFiles in any subdirectory.
+        - Archives can dynamically grow to store more elements. As needed further depth is added to the directory structure as and when this is required.
+        - There are two main utility of archives:
+          1. As a cache for data used in a program. Data can easily be serialized and swapped out to a LeafFiles (cached) and then loaded back in as necessary. The reason for caching data is to free up fast access memory for a program when the available memory runs low.
+          2. For storing log files where after each run of a program a new log file can be added to the archive.
   - Generic_ReadCSV
-
-5. lang
-6. logging
-7. math
+    - A generic 
+### 5. lang
+### 6. logging
+### 7. math
   - stats
   - primes
-8. memory
-9. utilities
+### 8. memory
+### 9. utilities
   - time
-10. visualisation
+### 10. visualisation
   - charts
