@@ -1,6 +1,6 @@
 # generic
 
-A generic Java library. This has no other dependencies.
+A generic Java library that has no other dependencies.
 
 It is generally for things that are commonly used in other Java libraries that the developer has developed.
 
@@ -21,22 +21,60 @@ The library contains 10 main packages which are described below in turn:
   - charts
 
 1. core
+The core package contains classes that are core in that they are generally used.
 Contents
   - Generic_Environment
-    - This holds:
+    - This holds
       - A Generic_Strings instance for sharing commonly used Strings.
       - A Generic_Files instance for getting commonly used Files.
   - Generic_ErrorAndExceptionHandler
     - A set of int codes for representing different types of Errors and Exceptions. 
   - Generic_Object
-    - A serializable class that holds a reference to a Generic_Environment instance *env*.
-    - By extending this class any object holds a reference to *env* which is usually expected to be shared by all objects to share things and for memory handling reasons 
+    - A serializable class that holds a transient reference to a Generic_Environment instance (Env).
+    - By extending this class any object holds a reference to Env. It is concieved that Env is shared by all objects in order to share things in common for convenience and brevity an so that memory handling can be organised. 
   - Generic_Strings
     - A class that holds commonly used Strings.
     
-2. Data
+2. data
+The data package contains classes to handle things to do with data.
+Contents
+  - Generic_Interval_long1
+    - A Serializable, Comparable closed interval with upper and lower bounds stored as longs.
+  - Generic_UKPostcode_Handler
+    - A class for handling UK Postcodes.
+    - The intention is to refactor this class and to move it to a different library with a sole purpose of handling postcode data.
+  - Generic_XYNumericalData
+    - This currently holds two values as BigDecimal values and is used by classes in the visualisation package.
+    - The intention is to refactor this class and to move it to a different library with a sole purpose of visualisation.
+    and x and y
 3. execution
+The execution package contains classes to handle things to do with execution.
+Contents
+  - Generic_AgeConverter
+    - A class for converting and classifying age groups.
+    - The intention is to refactor this class and to move it to a different library.
+  - Generic_EventListener
+    - A Functional EventListener class with a single abstract method:
+      - renderingComplete(Generic_RenderingCompleteEvent)
+...
 4. io
+The io package contains classes to handle things to do with input and output.
+Contents
+  - Generic_Files
+    - A class for helping to organise data Files.
+      - It is usual that for data processing tasks there is a data directory (DataDir).
+      - Input data can be stored within DataDir in an input data directory (InputDataDir).
+      - Generated data can be stored within DataDir in a generated data directory (GeneratedDataDir).
+      - Output data can be stored within DataDir in an output data directory (OutputDataDir).
+    - This class helps standardise the names for InputDataDir, GeneratedDataDir and OutputDataDir and provides methods to get Files within these.
+  - Generic_IO
+    - This class currenlty does a couple of different things:
+      - It helps set up and get Files withing archives.
+        - An archive is a form of data base where each element is given a unique long numerical index to be effectively stored in a File at a location given by the index known as a LeafFile. The 1st element in the data base is indexed by 0L, the 2nd element in the data base is indexed by 1L etc. An archive is comprised of a based File directory (BaseDir) in which there is one or more File directory - collectively known as subdirectories. Each subdirectory may contain a further layer of subdirectories and so on. There depth of each subdirectory is given by how many subdirectories it is in from the BaseDir. Subdirectories are given standardised names such that it is easy to find and infer the location of any LeafFile. The number of subdirectories in BaseDir, the number of subdirectories in any subdirectory, and the number of LeafFiles in any directory is controled by a parameter (NumberOfFilesPerDirectory).
+          - For example, if NumberOfFilesPerDirectory was set to 10, there would be at most 10 subdirectories in BaseDir and at most 10 LeafFiles in any subdirectory.
+        - Archives can dynamically grow to store more elements. As they grow more LeafFile This limits the total number of Filein each directory type directories
+  - Generic_ReadCSV
+
 5. lang
 6. logging
 7. math
