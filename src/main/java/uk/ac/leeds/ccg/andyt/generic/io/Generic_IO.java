@@ -1,17 +1,17 @@
 /**
- * Copyright 2010 Andy Turner, The University of Leeds, UK
+ * Copyright 2010 Centre for Computational Geography, University of Leeds.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package uk.ac.leeds.ccg.andyt.generic.io;
 
@@ -50,14 +50,14 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
  * Class of static methods for helping with reading and writing (primarily)
  * to/from file.
  */
-public class Generic_StaticIO {
+public class Generic_IO {
 
     public static final String CLASSNAME = "Generic_StaticIO";
 
     /**
      * Creates a new instance of ObjectIO
      */
-    public Generic_StaticIO() {
+    public Generic_IO() {
     }
 
     public static TreeSet<String> recursiveFileList(File file) {
@@ -188,7 +188,7 @@ public class Generic_StaticIO {
             try {
                 BufferedReader br;
                 StreamTokenizer st;
-                br = Generic_StaticIO.getBufferedReader(f);
+                br = Generic_IO.getBufferedReader(f);
                 if (br != null) {
                     result = new ArrayList<>();
                     st = new StreamTokenizer(br);
@@ -284,7 +284,7 @@ public class Generic_StaticIO {
             try {
                 BufferedReader br;
                 StreamTokenizer st;
-                br = Generic_StaticIO.getBufferedReader(f);
+                br = Generic_IO.getBufferedReader(f);
                 if (br != null) {
                     result = new ArrayList<>();
                     st = new StreamTokenizer(br);
@@ -402,9 +402,8 @@ public class Generic_StaticIO {
         // } else {
         // }
         if (!f.exists()) {
-            System.err.println(
-                    "!input_File.exists() in "
-                    + Generic_StaticIO.class.getCanonicalName()
+            System.err.println("!input_File.exists() in "
+                    + Generic_IO.class.getCanonicalName()
                     + ".copy(File(" + f + "),File(" + outDir + "))");
             System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
@@ -414,7 +413,7 @@ public class Generic_StaticIO {
         File output_File = new File(outDir, outputFileName);
         if (output_File.exists()) {
             System.out.println("Overwriting File " + output_File + " in "
-                    + Generic_StaticIO.class.getCanonicalName()
+                    + Generic_IO.class.getCanonicalName()
                     + ".copy(File(" + f + "),File(" + outDir + "))");
         } else {
             try {
@@ -422,7 +421,7 @@ public class Generic_StaticIO {
             } catch (IOException e) {
                 System.err.print(e.getMessage());
                 System.err.println("Unable to createNewFile " + output_File + " in "
-                        + Generic_StaticIO.class.getCanonicalName()
+                        + Generic_IO.class.getCanonicalName()
                         + ".copy(File(" + f + "),File(" + outDir + "))");
                 e.printStackTrace(System.err);
                 System.exit(Generic_ErrorAndExceptionHandler.IOException);
@@ -481,7 +480,7 @@ public class Generic_StaticIO {
                     + "getFileInputStream(File " + f.toString() + ").");
             if (!f.exists()) {
                 //ex.printStackTrace(System.err);
-                Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                Logger.getLogger(Generic_IO.class.getName()).log(
                         Level.SEVERE, null, ex);
                 // null will be returned...
             } else {
@@ -493,14 +492,14 @@ public class Generic_StaticIO {
                         f.wait(wait);
                     }
                 } catch (InterruptedException ex2) {
-                    Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                    Logger.getLogger(Generic_IO.class.getName()).log(
                             Level.SEVERE, null, ex2);
                 }
                 return getFileInputStream(f, wait);
             }
 //        } catch (IOException e) {
 //            e.printStackTrace(System.err);
-//            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, e);
+//            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
         }
         return result;
     }
@@ -521,7 +520,7 @@ public class Generic_StaticIO {
                     + ", long).");
             if (!f.exists()) {
                 //ex.printStackTrace(System.err);
-                Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                Logger.getLogger(Generic_IO.class.getName()).log(
                         Level.SEVERE, null, ex);
                 // null will be returned...
             } else {
@@ -532,7 +531,7 @@ public class Generic_StaticIO {
                         f.wait(wait);
                     }
                 } catch (InterruptedException ex2) {
-                    Logger.getLogger(Generic_StaticIO.class.getName()).log(
+                    Logger.getLogger(Generic_IO.class.getName()).log(
                             Level.SEVERE, null, ex2);
                 }
                 return getFileInputStream(f, wait * 2);
@@ -554,7 +553,7 @@ public class Generic_StaticIO {
         try {
             r = new FileOutputStream(f);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(
+            Logger.getLogger(Generic_IO.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
         return r;
@@ -597,7 +596,7 @@ public class Generic_StaticIO {
         try {
             result = new ObjectInputStream(bis);
         } catch (IOException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(
+            Logger.getLogger(Generic_IO.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
         return result;
@@ -614,7 +613,7 @@ public class Generic_StaticIO {
         try {
             result = new ObjectOutputStream(bos);
         } catch (IOException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(
+            Logger.getLogger(Generic_IO.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
         return result;
@@ -630,13 +629,13 @@ public class Generic_StaticIO {
             if (!dirToCopy.isDirectory()) {
                 throw new IOException("Expecting File " + dirToCopy
                         + " To be a directory in "
-                        + Generic_StaticIO.class.getName()
+                        + Generic_IO.class.getName()
                         + ".copyDirectory(File,File)");
             }
             if (!dirToCopyTo.isDirectory()) {
                 throw new IOException("Expecting File " + dirToCopyTo
                         + " To be a directory in "
-                        + Generic_StaticIO.class.getName()
+                        + Generic_IO.class.getName()
                         + ".copy(File,File)");
             }
             File copiedDirectory_File = new File(dirToCopyTo,
@@ -667,7 +666,7 @@ public class Generic_StaticIO {
             if (!dirToCopyTo.isDirectory()) {
                 throw new IOException("Expecting File " + dirToCopyTo
                         + "To be a directory in "
-                        + Generic_StaticIO.class.getName()
+                        + Generic_IO.class.getName()
                         + ".copy(File,File)");
             }
             if (fileOrDirToCopy.isFile()) {
@@ -744,7 +743,7 @@ public class Generic_StaticIO {
             br.close();
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -766,7 +765,7 @@ public class Generic_StaticIO {
                     + "Generic_StaticIO.getPrintWriter(File, boolean).");
             if (!file.exists()) {
                 e.printStackTrace(System.err);
-                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
                 // null will be returned...
             } else {
                 // This can happen because of too many open files.
@@ -776,13 +775,13 @@ public class Generic_StaticIO {
                         file.wait(2000L);
                     }
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 return getPrintWriter(file, append);
             }
         } catch (IOException e) {
             e.printStackTrace(System.err);
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
         }
         return result;
     }
@@ -838,7 +837,7 @@ public class Generic_StaticIO {
                 tokenType = streamTokenizer.nextToken();
             }
         } catch (IOException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(
+            Logger.getLogger(Generic_IO.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
     }
@@ -1626,7 +1625,7 @@ public class Generic_StaticIO {
             try {
                 Files.delete(origin.toPath());
             } catch (IOException ex) {
-                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             try {
@@ -1635,7 +1634,7 @@ public class Generic_StaticIO {
                         Paths.get(destination.getPath()),
                         StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException ex) {
-                Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -2079,7 +2078,7 @@ public class Generic_StaticIO {
         if (!directory.exists()) {
             throw new FileNotFoundException(
                     "File " + directory + " does not exist in "
-                    + Generic_StaticIO.class.getName() + "." + method + ".");
+                    + Generic_IO.class.getName() + "." + method + ".");
         }
         File result = null;
         if (filename != null) {
@@ -2087,7 +2086,7 @@ public class Generic_StaticIO {
             if (!result.exists()) {
                 throw new FileNotFoundException(
                         result + " does not exist in "
-                        + Generic_StaticIO.class.getName() + "." + method + ".");
+                        + Generic_IO.class.getName() + "." + method + ".");
             }
         }
         return result;
@@ -2251,7 +2250,7 @@ public class Generic_StaticIO {
         try {
             s = f.getCanonicalPath();
         } catch (IOException ex) {
-            Logger.getLogger(Generic_StaticIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Returning absolute path as getCanonicalPath() resulted in IOException.");
             s = f.getAbsolutePath();
         }

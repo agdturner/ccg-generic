@@ -1,20 +1,17 @@
 /*
- * Copyright (C) 2017 geoagdt.
+ * Copyright (C) 2017 Centre for Computational Geography, University of Leeds.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package uk.ac.leeds.ccg.andyt.generic.io;
 
@@ -32,7 +29,12 @@ public class Generic_Files {
     protected File GeneratedDataDir;
     protected File OutputDataDir;
 
-    protected Generic_Files() {
+    /**
+     * Defaults DataDir to "data" in the users current working directory.
+     */
+    public Generic_Files() {
+        this(System.getProperty("user.dir")
+                + System.getProperty("file.separator") + "data");
     }
 
     public Generic_Files(String dataDirName) {
@@ -50,8 +52,9 @@ public class Generic_Files {
             boolean successfulCreation;
             successfulCreation = DataDir.mkdirs();
             if (!successfulCreation) {
-                throw new Error("The data directory was not created in "
-                        + this.getClass().getName() + ".setDataDirectory(String)");
+                throw new Error("The data directory " + DataDir + " was not "
+                        + "created in " + this.getClass().getName() 
+                        + ".setDataDirectory(String)");
             }
         }
     }
@@ -71,21 +74,21 @@ public class Generic_Files {
 
     public File getInputDataDir(Generic_Strings strings) {
         if (InputDataDir == null) {
-            InputDataDir = new File(getDataDir(), strings.getS_input());
+            InputDataDir = new File(getDataDir(), strings.s_input);
         }
         return InputDataDir;
     }
 
     public File getGeneratedDataDir(Generic_Strings strings) {
         if (GeneratedDataDir == null) {
-            GeneratedDataDir = new File(getDataDir(), strings.getS_generated());
+            GeneratedDataDir = new File(getDataDir(), strings.s_generated);
         }
         return GeneratedDataDir;
     }
 
     public File getOutputDataDir(Generic_Strings strings) {
         if (OutputDataDir == null) {
-            OutputDataDir = new File(getDataDir(), strings.getS_output());
+            OutputDataDir = new File(getDataDir(), strings.s_output);
         }
         return OutputDataDir;
     }

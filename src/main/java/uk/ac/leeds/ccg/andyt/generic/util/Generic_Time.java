@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.generic.utilities;
+package uk.ac.leeds.ccg.andyt.generic.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.Calendar;
 
 /**
  * Not to be confused with
- * uk.ac.leeds.ccg.andyt.generic.utilities.time.Generic_Time
+ * uk.ac.leeds.ccg.andyt.generic.time.Generic_Time
  *
  * @author Andy Turner
  */

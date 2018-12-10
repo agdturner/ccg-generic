@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Centre for Computational Geography, University of Leeds.
+  * Copyright (C) 2010 Centre for Computational Geography, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.generic.memory;
+package uk.ac.leeds.ccg.andyt.generic.util;
 
-public interface Generic_OutOfMemoryErrorHandlerInterface {
+import java.time.LocalDate;
 
-    //static final long serialVersionUID = 1L;
+/**
+ *
+ * @author Andy Turner
+ */
+public class Generic_LocalDateRange {
+
+    private final LocalDate start;
+    private final LocalDate end;
+
+    public Generic_LocalDateRange(LocalDate start, LocalDate end) {
+        this.start = start;
+        this.end = end;
+    }
+
     /**
-     * For a method that will try to ensure there is enough memory to continue.
-     *
-     * @return True if successful and false otherwise.
+     * @return the start
      */
-    boolean checkAndMaybeFreeMemory();
+    public LocalDate getStart() {
+        return start;
+    }
 
     /**
-     * For a method that will initialise the MemoryReserve.
+     * @return the end
      */
-    void initMemoryReserve();
+    public LocalDate getEnd() {
+        return end;
+    }
+
 }

@@ -1,19 +1,19 @@
 /**
- * Copyright (C) 2010 Andy Turner, University of Leeds.
+ * Copyright (C) Centre for Computational Geography, University of Leeds.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.generic.utilities;
+package uk.ac.leeds.ccg.andyt.generic.util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -28,12 +28,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Vector;
-import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigInteger;
 
 /**
  *
@@ -136,8 +132,8 @@ public class Generic_Collections {
                 result[1] = value;
                 firstValue = false;
             } else {
-                result[0] = Generic_BigDecimal.min(result[0], value);
-                result[1] = Generic_BigDecimal.max(result[1], value);
+                result[0] = result[0].min(value);
+                result[1] = result[1].max(value);
             }
         }
         return result;
@@ -169,32 +165,32 @@ public class Generic_Collections {
         return result;
     }
 
-    public static HashSet getRandomIndexes_HashSet(Vector v,
-            int aNumberOfIndexes, Random r) {
-        HashSet toSwap = new HashSet();
-        int aIndex;
-        int count = 0;
-        if (aNumberOfIndexes > v.size() / 2) {
-            for (aIndex = 0; aIndex < v.size(); aIndex++) {
-                toSwap.add(aIndex);
-                count++;
-            }
-            while (count != aNumberOfIndexes) {
-                do {
-                    aIndex = r.nextInt(v.size());
-                } while (!toSwap.remove(aIndex));
-                count--;
-            }
-        } else {
-            while (count < aNumberOfIndexes) {
-                do {
-                    aIndex = r.nextInt(v.size());
-                } while (!toSwap.add(aIndex));
-                count++;
-            }
-        }
-        return toSwap;
-    }
+//    public static HashSet getRandomIndexes_HashSet(Vector v,
+//            int aNumberOfIndexes, Random r) {
+//        HashSet toSwap = new HashSet();
+//        int aIndex;
+//        int count = 0;
+//        if (aNumberOfIndexes > v.size() / 2) {
+//            for (aIndex = 0; aIndex < v.size(); aIndex++) {
+//                toSwap.add(aIndex);
+//                count++;
+//            }
+//            while (count != aNumberOfIndexes) {
+//                do {
+//                    aIndex = r.nextInt(v.size());
+//                } while (!toSwap.remove(aIndex));
+//                count--;
+//            }
+//        } else {
+//            while (count < aNumberOfIndexes) {
+//                do {
+//                    aIndex = r.nextInt(v.size());
+//                } while (!toSwap.add(aIndex));
+//                count++;
+//            }
+//        }
+//        return toSwap;
+//    }
 
     /**
      * @param keys0
@@ -231,7 +227,7 @@ public class Generic_Collections {
         }
         s.add(v);
     }
-    
+
     public static <K, V> void addToMap(TreeMap<K, HashSet<V>> m, K k, V v) {
         HashSet<V> s;
         if (m.containsKey(k)) {
@@ -242,7 +238,7 @@ public class Generic_Collections {
         }
         s.add(v);
     }
-    
+
 //    public static <K, V> void addToMap(Map<K, Set<V>> m, K k, V v) {
 //        Set<V> s;
 //        if (m.containsKey(k)) {
@@ -253,7 +249,6 @@ public class Generic_Collections {
 //        }
 //        s.add(v);
 //    }
-    
     /**
      * Adds to a integer counting map.
      *
@@ -277,10 +272,11 @@ public class Generic_Collections {
     }
 
     /**
-     * Adds v to the ArrayList in m indexed by k. If such a list does not yet
+     * Adds v to the ArrayList in m indexed by k.If such a list does not yet
      * exist it is created.
      *
      * @param <K>
+     * @param <V>
      * @param m The map that is to be added to.
      * @param k The key which value is added to or initialised.
      * @param v The value to add to the list in map.
@@ -299,7 +295,7 @@ public class Generic_Collections {
                 l.add(v);
             }
         } else {
-            l = new ArrayList();
+            l = new ArrayList<>();
             l.add(v);
             m.put(k, l);
         }
@@ -554,9 +550,10 @@ public class Generic_Collections {
 
     /**
      * For all values in set1 we count how many values are in set0, and deduce
-     * how many are not. Also we check how many values that are in set0 that are
-     * not in set1.
+     * how many are not.Also we check how many values that are in set0 that are
+ not in set1.
      *
+     * @param <K>
      * @param set0
      * @param set1
      * @return Object[2] result {@code
@@ -567,11 +564,11 @@ public class Generic_Collections {
      * counts[2] = Count of how many values are in set 0, but not in set 1;
      * }
      */
-    public static Object[] getUnionAndCounts(HashSet set0, HashSet set1) {
+    public static <K> Object[] getUnionAndCounts(HashSet<K> set0, HashSet<K> set1) {
         Object[] result;
         result = new Object[2];
-        HashSet union;
-        union = new HashSet();
+        HashSet<K> union;
+        union = new HashSet<>();
         union.addAll(set1);
         union.retainAll(set0);
         long[] counts;
@@ -601,19 +598,19 @@ public class Generic_Collections {
      * counts[2] = Count of how many values are in set 0, but not in set 1;
      * }
      */
-    public static Object[] getUnionAndUniques(HashSet set0, HashSet set1) {
+    public static <K> Object[] getUnionAndUniques(HashSet<K> set0, HashSet<K> set1) {
         Object[] result;
         result = new Object[3];
-        HashSet union;
-        union = new HashSet();
+        HashSet<K> union;
+        union = new HashSet<>();
         union.addAll(set1);
         union.retainAll(set0);
-        HashSet set1unique;
-        set1unique = new HashSet();
+        HashSet<K> set1unique;
+        set1unique = new HashSet<>();
         set1unique.addAll(set1);
         set1unique.removeAll(set0);
-        HashSet set0unique;
-        set0unique = new HashSet();
+        HashSet<K> set0unique;
+        set0unique = new HashSet<>();
         set0unique.addAll(set0);
         set0unique.removeAll(set1);
         result[0] = union;
@@ -839,63 +836,55 @@ public class Generic_Collections {
     }
 
     public static BigDecimal getMaxValue_BigDecimal(
-            TreeMap<?, BigDecimal> a_TreeMap,
+            TreeMap<?, BigDecimal> m,
             BigDecimal initialMax_BigDecimal) {
-        BigDecimal result = new BigDecimal(initialMax_BigDecimal.toString());
-        Iterator<BigDecimal> iterator = a_TreeMap.values().iterator();
-        BigDecimal value;
+        BigDecimal r = new BigDecimal(initialMax_BigDecimal.toString());
+        Iterator<BigDecimal> iterator = m.values().iterator();
+        BigDecimal v;
         while (iterator.hasNext()) {
-            value = iterator.next();
-            result = Generic_BigDecimal.max(
-                    result,
-                    value);
+            v = iterator.next();
+            r = r.max(v);
         }
-        return result;
+        return r;
     }
 
     public static BigDecimal getMinValue_BigDecimal(
-            TreeMap<?, BigDecimal> a_TreeMap,
-            BigDecimal initialMin_BigDecimal) {
-        BigDecimal result = new BigDecimal(initialMin_BigDecimal.toString());
-        Iterator<BigDecimal> iterator = a_TreeMap.values().iterator();
-        BigDecimal value;
-        while (iterator.hasNext()) {
-            value = iterator.next();
-            result = Generic_BigDecimal.min(
-                    result,
-                    value);
+            TreeMap<?, BigDecimal> m,
+            BigDecimal initialMin) {
+        BigDecimal result = new BigDecimal(initialMin.toString());
+        Iterator<BigDecimal> ite = m.values().iterator();
+        BigDecimal v;
+        while (ite.hasNext()) {
+            v = ite.next();
+            result = result.min(v);
         }
         return result;
     }
 
     public static BigInteger getMaxValue_BigInteger(
-            TreeMap<?, BigInteger> a_TreeMap,
-            BigInteger initialMax_BigInteger) {
-        BigInteger result = new BigInteger(initialMax_BigInteger.toString());
-        Iterator<BigInteger> iterator = a_TreeMap.values().iterator();
+            TreeMap<?, BigInteger> m,
+            BigInteger initialMax) {
+        BigInteger r = new BigInteger(initialMax.toString());
+        Iterator<BigInteger> ite = m.values().iterator();
         BigInteger value;
-        while (iterator.hasNext()) {
-            value = iterator.next();
-            result = Generic_BigInteger.max(
-                    result,
-                    value);
+        while (ite.hasNext()) {
+            value = ite.next();
+            r = r.max(value);
         }
-        return result;
+        return r;
     }
 
     public static BigInteger getMinValue_BigInteger(
-            TreeMap<?, BigInteger> a_TreeMap,
-            BigInteger initialMin_BigInteger) {
-        BigInteger result = new BigInteger(initialMin_BigInteger.toString());
-        Iterator<BigInteger> iterator = a_TreeMap.values().iterator();
+            TreeMap<?, BigInteger> m,
+            BigInteger initialMin) {
+        BigInteger r = new BigInteger(initialMin.toString());
+        Iterator<BigInteger> ite = m.values().iterator();
         BigInteger value;
-        while (iterator.hasNext()) {
-            value = iterator.next();
-            result = Generic_BigInteger.min(
-                    result,
-                    value);
+        while (ite.hasNext()) {
+            value = ite.next();
+            r = r.max(value);
         }
-        return result;
+        return r;
     }
 
     /**
