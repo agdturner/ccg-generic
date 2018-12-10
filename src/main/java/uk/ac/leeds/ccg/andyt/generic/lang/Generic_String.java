@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 /**
- *
+ * Some useful methods for transforming Strings. 
  * @author geoagdt
  */
 public class Generic_String {
