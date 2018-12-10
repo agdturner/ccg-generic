@@ -1,64 +1,41 @@
 # generic
 ## Description
 A generic Java library that has no dependencies.
-  - It is generally for things that are commonly used in other Java libraries that the developer has developed.
+  - It contains classes and methods that are commonly used in other Java libraries that the developer has developed.
   - The highlights are:
     - io
-      - a package that has some useful way of storing data in archives
+      - A package that provides a useful way of storing data in archives
         - data directories on a file system in an auto expanding subdirectory structure (for details see below). 
-    - math
-      - a package that has some useful BigDecimal arithmetic.
     - memory
       - a package that helps avoid and deal with OutOfMemoryErrors.
 ## Current Package Contents
-Currently, the library contains 10 main packages which are described in the Package Details section below:
+Currently, the library contains 9 packages which are detailed in the Package Details section below:
 1. core
-2. data
-3. execution
-4. io
-5. lang
-6. logging
-7. math
-  - stats
-  - primes
-8. memory
-9. utilities
-  - time
-10. visualisation
-  - charts
+2. execution
+3. io
+4. lang
+5. logging
+6. memory
+7. time
+8. util
+9. visualisation
 ## Current Version
-Deprecated and unsupported!
-  - This is essentially research software, but an attempt is being made to standardise the software development and evolve it following the principles of software carpentry advocated by the Software Sustainability Institute (https://www.software.ac.uk/programmes-events/carpentries/software-carpentry).
-Currently the version of the library is known as Version 1.0-Snapshot. This is essentially still working towards a version 1.0.0 release.
+1.0-Snapshot.
 The library should run on Java 8 or higher.
 ## Development Roadmap
-The Roadmap for the development of Version 1.0.0 of the library is as follows and it is planed that this release will be available in 2018:
-- For 1.0.0
-  - The code base will be rationalised by:
-    - Moving the data, math and visualisation packages to other libraries.
-    - Deprectaing and removing the lang package.
+- For 2.0
   - Each class will be refactored to:
     - Better use generics to further rationalise the code base
     - Standardise variable and method names
     - Utilise features in Java 8 especially those that utilise functional programming with lambda expressions and Streams.
     - Improve documentation
-      - The LICENSE has been changed to Apache 2.0, so all source files need updating to this license.
-### Proposed Package Contents
-Currently, the library contains 10 main packages which are described in the Package Details section below:
-1. core
-2. execution
-3. io
-4. logging
-5. memory
-6. util
-  - time
     
 ## Package Details 
 ### 1. core
 Classes that are generally used.
 Contents
   - Generic_Environment
-    - This holds
+    - This holds:
       - A Generic_Strings instance for sharing commonly used Strings.
       - A Generic_Files instance for getting commonly used Files.
   - Generic_ErrorAndExceptionHandler
@@ -68,31 +45,22 @@ Contents
     - By extending this class any object holds a reference to Env. It is concieved that Env is shared by all objects in order to share things in common for convenience and brevity an so that memory handling can be organised. 
   - Generic_Strings
     - A class that holds commonly used Strings.
-### 2. data
-Classes that are to do with data.
-  - The intention is to move this package to a different library with a sole purpose of handling data.
+### 2. execution
+Classes to do with scheduling and executing processes/threads. This package is poorly documented
 Contents
-  - Generic_Interval_long1
-    - A Serializable, Comparable closed interval with upper and lower bounds stored as longs.
-      - This is utilised mostly by classes in the visualisation package.
-  - Generic_UKPostcode_Handler
-    - A class for handling UK Postcodes.
-    - The intention is to refactor this class and to move it to a different library with a sole purpose of handling postcode data.
-  - Generic_XYNumericalData
-    - This currently holds two values as BigDecimal values and is used by classes in the visualisation package.
-    - The intention is to refactor this class and to move it to a different library with a sole purpose of visualisation.
-    and x and y
-### 3. execution
-Classes to do with execution:
-  - scheduling and executing Threads.
-Contents
-  - Generic_AgeConverter
-    - A class for converting and classifying age groups.
-    - The intention is to refactor this class and to move it to a different library.
   - Generic_EventListener
     - A Functional EventListener class with a single abstract method:
       - renderingComplete(Generic_RenderingCompleteEvent)
-  - ...
+  - Generic_EventListenerImpl
+  - Generic_Execution
+  - Generic_Executor
+  - Generic_ImageWriter
+  - Generic_PropertyChangedListener
+  - Generic_PropertyChangedListenerImpl
+  - Generic_RenderingCompleteEvent
+  - Generic_Runnable
+  - Generic_ScheduledExecutor
+  
 ### 4. io
 The io package contains classes to handle things to do with input and output.
 Contents
