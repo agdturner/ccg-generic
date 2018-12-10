@@ -32,6 +32,9 @@ import java.util.logging.SimpleFormatter;
 import java.util.logging.XMLFormatter;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
 
+/**
+ * A general abstract logging class.
+ */
 public abstract class Generic_Log implements LoggingMXBean {
 
     private static final String CLASS = Generic_Log.class.getName();

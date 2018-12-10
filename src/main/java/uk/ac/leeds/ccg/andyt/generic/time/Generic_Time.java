@@ -24,7 +24,8 @@ import java.util.Objects;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 
 /**
- * Not to be confused with
+ * Holds a reference to a LocalDateTime and provides methods to compare and
+ * process times. Not to be confused with:
  * uk.ac.leeds.ccg.andyt.generic.util.Generic_Time
  *
  * @author Andy Turner
@@ -318,33 +319,35 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
             }
         }
     }
-    
+
     /**
-     * Returns a new time difference between this and t in minutes. If t is 
-     * after this, then the answer is negative. 
+     * Returns a new time difference between this and t in minutes. If t is
+     * after this, then the answer is negative.
+     *
      * @param t
-     * @return 
+     * @return
      */
     public long differenceInMinutes(Generic_Time t) {
         long result;
         result = ChronoUnit.MINUTES.between(LDT, t.LDT);
         return result;
     }
-    
+
     /**
-     * Returns a new time difference between this and t in minutes. If t is 
-     * after this, then the answer is negative. 
+     * Returns a new time difference between this and t in minutes. If t is
+     * after this, then the answer is negative.
+     *
      * @param t
-     * @return 
+     * @return
      */
     public long differenceInHours(Generic_Time t) {
         long result;
         result = ChronoUnit.HOURS.between(LDT, t.LDT);
-        
+
         if (result < 0) {
             int debug = 1;
         }
-        
+
         return result;
     }
 }

@@ -23,8 +23,8 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
- *
- * @author geoagdt
+ * Holds a reference to a YearMonth and provides methods to compare and process
+ * year-months.
  */
 public class Generic_YearMonth
         extends Generic_Object
@@ -160,7 +160,7 @@ public class Generic_YearMonth
         }
         return -1;
     }
-    
+
     public int compareTo(Generic_YearMonth t) {
         int Year = YM.getYear();
         int tYear = t.YM.getYear();

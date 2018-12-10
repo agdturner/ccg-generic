@@ -32,8 +32,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 /**
- *
- * @author Andy Turner
+ * For processing and manipulating collections including Lists, Arrays, Sets
+ * and Maps.
  */
 public class Generic_Collections {
 
@@ -191,7 +191,6 @@ public class Generic_Collections {
 //        }
 //        return toSwap;
 //    }
-
     /**
      * @param keys0
      * @param keys1
@@ -551,7 +550,7 @@ public class Generic_Collections {
     /**
      * For all values in set1 we count how many values are in set0, and deduce
      * how many are not.Also we check how many values that are in set0 that are
- not in set1.
+     * not in set1.
      *
      * @param <K>
      * @param set0

@@ -24,10 +24,11 @@ import java.util.Calendar;
 //
 
 /**
- * Not to be confused with
+ * This predates java.time but was used in programs that ticked through time
+ * acting effectively like a clock. ~It also holds methods to help process dates
+ * and aggregate results to hours and months etc. Not to be confused with
  * uk.ac.leeds.ccg.andyt.generic.time.Generic_Time
  *
- * @author Andy Turner
  */
 public class Generic_Time {
 

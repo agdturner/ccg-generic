@@ -15,6 +15,9 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.memory;
 
+/**
+ * An interface for handling OutOfMemoryErrors.
+ */
 public interface Generic_OutOfMemoryErrorHandlerInterface {
 
     //static final long serialVersionUID = 1L;

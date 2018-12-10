@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 /**
  * A class to be extended for memory management involving the controlled
- * swapping of parts of data from the fast access memory to the filespace and
+ * swapping of parts of data from the fast access memory to files and
  * the handling of OutOfMemoryErrors should they be encountered.
  */
 public abstract class Generic_OutOfMemoryErrorHandler

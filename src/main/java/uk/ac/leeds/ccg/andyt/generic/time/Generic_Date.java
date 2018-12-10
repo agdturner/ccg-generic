@@ -17,14 +17,14 @@ package uk.ac.leeds.ccg.andyt.generic.time;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Month;
+//import java.time.Month;
 import java.time.YearMonth;
 import java.util.Objects;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 
 /**
- *
- * @author geoagdt
+ * Holds a reference to a LocalDate and provides methods to compare and process
+ * dates.
  */
 public class Generic_Date
         extends Generic_YearMonth
@@ -76,7 +76,7 @@ public class Generic_Date
     public void addDays(int days) {
         LD = LD.plusDays(days);
     }
-    
+
     /**
      * Assume the year has 4 digits.
      *
@@ -121,7 +121,7 @@ public class Generic_Date
         result += getMM();
         return result;
     }
-    
+
     /**
      * Returns true iff t is the same day as this.
      *
@@ -197,7 +197,7 @@ public class Generic_Date
         }
         return super.compareTo(o);
     }
-    
+
     public int compareTo(Generic_Date d) {
         if (LD.isAfter(d.LD)) {
             return 1;
