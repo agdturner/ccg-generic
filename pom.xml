@@ -24,7 +24,7 @@
         </license>
     </licenses>
     <organization>
-        <name>Centre for Computational Geography</name>
+        <name>Centre for Computational Geography, University of Leeds</name>
         <url>http://www.ccg.leeds.ac.uk/</url>
     </organization>
     <developers>
@@ -32,8 +32,8 @@
             <id>agdturner</id>
             <name>Andy Turner</name>
             <email>a.g.d.turner@leeds.ac.uk</email>
-            <organization>University of Leeds</organization>
-            <organizationUrl>http://www.leeds.ac.uk</organizationUrl>
+            <organization>University of Leeds, University of Leeds</organization>
+            <organizationUrl>http://www.ccg.leeds.ac.uk</organizationUrl>
             <roles>
                 <role>developer</role>
             </roles>
@@ -51,67 +51,9 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <!--<version>3.8.1</version>-->
+            <version>4.12</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math</artifactId>
-            <version>2.2</version>
         </dependency>
     </dependencies>
     
-    <repositories>
-        <repository>
-            <id>math</id>
-            <name>Apache Commons Math</name>
-            <url>http://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
-    
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>          
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>onejar-maven-plugin.googlecode.com</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-        </pluginRepository>
-    </pluginRepositories>
-    <!--
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>Local</id>
-            <name>Local Maven2 Repository</name>
-            <url>file:///scratch01/.m2/repository</url>
-            <layout>default</layout>
-        </repository>
-    </distributionManagement>
-    -->
 </project>
