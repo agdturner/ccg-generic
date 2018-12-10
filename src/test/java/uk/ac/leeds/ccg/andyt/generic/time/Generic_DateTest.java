@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.generic.utilities.time;
+package uk.ac.leeds.ccg.andyt.generic.time;
 
 import java.io.File;
 import org.junit.After;
