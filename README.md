@@ -1,7 +1,7 @@
 # generic
 ## Description
-A generic Java library that has no dependencies.
-  - It contains classes and methods that are commonly used in other Java libraries that the developer has developed.
+A generic Java library that has no other dependencies.
+  - It contains generally useful classes and methods.
   - The highlights are:
     - io
       - A package that provides a useful way of storing data in archives
@@ -29,10 +29,10 @@ The library should run on Java 8 or higher.
     - Standardise variable and method names
     - Utilise features in Java 8 especially those that utilise functional programming with lambda expressions and Streams.
     - Improve documentation
+    - Include any other generally useful code that best fits here rather than in any other library.
     
 ## Package Details 
 ### 1. core
-Classes that are generally used.
 Contents
   - Generic_Environment
     - This holds:
@@ -46,23 +46,11 @@ Contents
   - Generic_Strings
     - A class that holds commonly used Strings.
 ### 2. execution
-Classes to do with scheduling and executing processes/threads. This package is poorly documented
 Contents
-  - Generic_EventListener
-    - A Functional EventListener class with a single abstract method:
-      - renderingComplete(Generic_RenderingCompleteEvent)
-  - Generic_EventListenerImpl
   - Generic_Execution
-  - Generic_Executor
-  - Generic_ImageWriter
-  - Generic_PropertyChangedListener
-  - Generic_PropertyChangedListenerImpl
-  - Generic_RenderingCompleteEvent
-  - Generic_Runnable
-  - Generic_ScheduledExecutor
-  
-### 4. io
-The io package contains classes to handle things to do with input and output.
+    - Generic utility class for execution handling.
+### 3. io
+Classes to handle things to do with input and output.
 Contents
   - Generic_Files
     - A class for helping to organise data Files.
@@ -80,25 +68,41 @@ Contents
         - There are two main utility of archives:
           1. As a cache for data used in a program. Data can easily be serialized and swapped out to a LeafFiles (cached) and then loaded back in as necessary. The reason for caching data is to free up fast access memory for a program when the available memory runs low.
           2. For storing log files where after each run of a program a new log file can be added to the archive.
-  - Generic_ReadCSV
-    - A utility class for reading CSV format files.
-    - The intension is to move this to a subpackage in the data package before moving it to another library. 
-  - Generic_XMLDOMReader
-    - A utility class for reading XML format files.
-    - The intention is to move this to a subpackage in the data package before moving it to another library. 
-### 5. lang
-- The intention is to deprecate and remove the need for this package.
-  - Current thinking is that everything it does can be done better using regular expressions and that it might be better to call approriate methods from Java directly rather than have and use the classes and methods in this package.
-### 6. logging
-Classes that are to do with logging.
-- The utility and use of the classes in this package needs to be reviewed.
-### 7. math
-- The intention is to move this to another library. 
-### 8. memory
-A package of classes for testing fast access memory utilisation.
-  - This is used to prevent and deal with OutOfMemory errors in running programs.
-### 9. utilities
-  - time
-### 10. visualisation
-- The intention is to move this to another library.
-  - charts
+### 4. lang
+Contents
+  - Generic_String
+    - Some useful methods for transforming Strings.
+    - Much of this can be improved using regular expressions.
+### 5. logging
+Contents
+  - Generic_Log
+    - A general abstract logging class.
+### 6. memory
+Contents
+  - Generic_OutOfMemoryErrorHandler
+    - A class to be extended for memory management involving the controlled swapping of parts of data from the fast access memory to files and the handling of OutOfMemoryErrors should they be encountered.
+  - Generic_OutOfMemoryErrorHandlerInterface
+    - An interface for handling OutOfMemoryErrors.
+  - Generic_TestMemory
+    - A class with methods that help in testing computer memory.
+### 7. time
+Contents
+  - Generic_Date
+    - Holds a reference to a LocalDate and provides methods to compare and process dates.
+  - Generic_LocalDateRange
+    - Simply holds a LocalDate start and a LocalDate end.
+  - Generic_Time
+    - Holds a reference to a LocalDateTime and provides methods to compare and process times.
+    - Not to be confused with: util.Generic_Time
+  - Generic_YearMonth
+    - Holds a reference to a YearMonth and provides methods to compare and process year-months.
+### 8. util
+Contents
+  - Generic_Collections
+    - For processing and manipulating collections including Lists, Arrays, Sets and Maps.
+  - Generic_Time
+    - This predates java.time but was used in programs that ticked through time acting effectively like a clock. ~It also holds methods to help process dates and aggregate results to hours and months etc. Not to be confused with time.Generic_Time
+### 9. visualisation
+Contents
+- Generic_Visualisation
+  - A class for holding generic visualisation methods.
