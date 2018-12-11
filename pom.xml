@@ -8,18 +8,18 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>generic</name>
-    <url>https://github.com/agdturner/generic</url>
+    <name>agdt-generic</name>
+    <url>https://github.com/agdturner/agdt-generic</url>
     <description>A Java Library with generally used classes.</description>
     <scm>
-        <url>git@github.com:agdturner/generic.git</url>
-        <connection>scm:git:git@github.com:agdturner/generic.git</connection>
-        <developerConnection>scm:git:git@github.com:agdturner/generic</developerConnection>
+        <url>git@github.com:agdturner/agdt-generic.git</url>
+        <connection>scm:git:git@github.com:agdturner/agdt-generic.git</connection>
+        <developerConnection>scm:git:git@github.com:agdturner/agdt-generic</developerConnection>
     </scm>
     <licenses>
         <license>
             <name>Apache License 2.0</name>
-            <url>https://github.com/agdturner/generic/LICENSE.txt</url>
+            <url>https://github.com/agdturner/agdt-generic/LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
