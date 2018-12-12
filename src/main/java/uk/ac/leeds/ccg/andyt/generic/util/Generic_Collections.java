@@ -165,32 +165,6 @@ public class Generic_Collections {
         return result;
     }
 
-//    public static HashSet getRandomIndexes_HashSet(Vector v,
-//            int aNumberOfIndexes, Random r) {
-//        HashSet toSwap = new HashSet();
-//        int aIndex;
-//        int count = 0;
-//        if (aNumberOfIndexes > v.size() / 2) {
-//            for (aIndex = 0; aIndex < v.size(); aIndex++) {
-//                toSwap.add(aIndex);
-//                count++;
-//            }
-//            while (count != aNumberOfIndexes) {
-//                do {
-//                    aIndex = r.nextInt(v.size());
-//                } while (!toSwap.remove(aIndex));
-//                count--;
-//            }
-//        } else {
-//            while (count < aNumberOfIndexes) {
-//                do {
-//                    aIndex = r.nextInt(v.size());
-//                } while (!toSwap.add(aIndex));
-//                count++;
-//            }
-//        }
-//        return toSwap;
-//    }
     /**
      * @param keys0
      * @param keys1
