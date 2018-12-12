@@ -1,4 +1,4 @@
-# generic
+# agdt-generic
 ## Description
 A generic Java library that has no other dependencies.
   - It contains generally useful classes and methods.
