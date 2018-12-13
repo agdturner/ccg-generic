@@ -44,7 +44,7 @@ public class Generic_Files {
     /**
      * Initialises a data directory with a name given by name.
      *
-     * @param dataDirName
+     * @param dataDirName The name to set DataDir to.
      */
     public final void setDataDirectory(String dataDirName) {
         DataDir = new File(dataDirName);
@@ -62,7 +62,7 @@ public class Generic_Files {
     /**
      * Set DataDir to dataDir.
      *
-     * @param dataDir
+     * @param dataDir The directory to set DataDir to.
      */
     public final void setDataDirectory(File dataDir) {
         DataDir = dataDir;

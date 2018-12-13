@@ -119,8 +119,8 @@ public class Generic_String {
 
     /**
      * Use String.toLowerCase() instead
-     * @param s
-     * @return 
+     * @param s String
+     * @return String
      */
      @Deprecated
     public static String getLowerCase(String s) {
@@ -156,8 +156,8 @@ public class Generic_String {
 
     /**
      * Use String.toUpperCase() instead
-     * @param s
-     * @return 
+     * @param s String
+     * @return String
      */
      @Deprecated
      public static String getUpperCase(String s) {

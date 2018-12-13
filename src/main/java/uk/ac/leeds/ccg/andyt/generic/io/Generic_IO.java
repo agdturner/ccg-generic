@@ -42,8 +42,10 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
-//import java.nio.file.S
+import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
+//import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
+//import java.nio.file.S
 //TODO http://java.sun.com/docs/books/tutorial/essential/io/legacy.html#mapping
 // http://java.sun.com/docs/books/tutorial/essential/io/fileio.html
 /**
@@ -60,53 +62,66 @@ public class Generic_IO {
     public Generic_IO() {
     }
 
+    /**
+     * Recursively traverses a directory creating a set of File paths of files
+     * (i.e. not directories).
+     *
+     * @param file File.
+     * @return TreeSet.
+     */
     public static TreeSet<String> recursiveFileList(File file) {
-        TreeSet<String> result = new TreeSet<>();
+        TreeSet<String> r = new TreeSet<>();
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (File file1 : files) {
                 TreeSet<String> subresult = recursiveFileList(file1);
-                result.addAll(subresult);
+                r.addAll(subresult);
             }
-            return result;
+            return r;
         } else {
-            result.add(file.toString());
-            return result;
+            r.add(file.toString());
+            return r;
         }
     }
 
+    /**
+     * Recursively traverses a directory creating a set of File paths of files
+     * (i.e. not directories) up to the specified depth.
+     *
+     * @param file File
+     * @param depth The depth beyond which directories are not traversed.
+     * @return TreeSet
+     */
     public static TreeSet<String> recursiveFileList(File file, int depth) {
-        TreeSet<String> result = new TreeSet<>();
+        TreeSet<String> r = new TreeSet<>();
         if (depth != 0) {
             if (file.isDirectory()) {
                 File[] files = file.listFiles();
                 for (File f : files) {
                     TreeSet<String> subresult = recursiveFileList(f, depth - 1);
-                    result.addAll(subresult);
+                    r.addAll(subresult);
                 }
-                return result;
+                return r;
             } else {
-                result.add(file.toString());
-                return result;
+                r.add(file.toString());
+                return r;
             }
         }
-        result.add(file.toString());
-        return result;
+        r.add(file.toString());
+        return r;
     }
 
     /**
-     * Write object to file
+     * Writes Object o to File f.
      *
-     * @param o
-     * @param f
+     * @param o Object to be written.
+     * @param f File to write to.
      */
     public static void writeObject(Object o, File f) {
         try {
             f.getParentFile().mkdirs();
             ObjectOutputStream oos;
-            oos = new ObjectOutputStream(
-                    new BufferedOutputStream(
-                            new FileOutputStream(f)));
+            oos = getObjectOutputStream(f);
             oos.writeUnshared(o);
             oos.flush();
             oos.reset();
@@ -119,19 +134,17 @@ public class Generic_IO {
     }
 
     /**
-     * Read Object from File
+     * Read Object from File f.
      *
-     * @param f
-     * @return
+     * @param f File to be read from.
+     * @return Object read from f.
      */
     public static Object readObject(File f) {
         Object r = null;
         if (f.length() != 0) {
             try {
                 ObjectInputStream ois;
-                ois = new ObjectInputStream(
-                        new BufferedInputStream(
-                                new FileInputStream(f)));
+                ois = getObjectInputStream(f);
                 r = ois.readUnshared();
                 ois.close();
             } catch (IOException e) {
@@ -148,12 +161,12 @@ public class Generic_IO {
     }
 
     /**
-     * Write object to file and report the name of the Object written and the
-     * file to stdout.
+     * Writes Object o to File f and reports the name of the Object written and
+     * the file to stdout.
      *
-     * @param o
-     * @param f
-     * @param name
+     * @param o Object to be written.
+     * @param f File to write to.
+     * @param name String for reporting.
      */
     public static void writeObject(Object o, File f, String name) {
         writeObject(o, f);
@@ -166,8 +179,9 @@ public class Generic_IO {
      * in a line represented as Strings.
      *
      * @param f The file to be returned as a String.
-     * @return
+     * @return ArrayList
      */
+    @Deprecated
     public static ArrayList<String> readIntoArrayList_String(File f) {
         return readIntoArrayList_String(f, 1);
     }
@@ -180,31 +194,21 @@ public class Generic_IO {
      * @param f The file to be returned as a String.
      * @param n The number of lines after the first is printed to std_out using
      * System.out.println(line). (n should not be equal to 0)
-     * @return
+     * @return ArrayList
      */
+    @Deprecated
     public static ArrayList<String> readIntoArrayList_String(File f, int n) {
         ArrayList<String> result = null;
         if (f.exists()) {
             try {
                 BufferedReader br;
                 StreamTokenizer st;
-                br = Generic_IO.getBufferedReader(f);
+                br = getBufferedReader(f);
                 if (br != null) {
                     result = new ArrayList<>();
                     st = new StreamTokenizer(br);
                     int token = st.nextToken();
                     st.eolIsSignificant(true);
-//                    st.wordChars('0', '0');
-//                    st.wordChars('1', '1');
-//                    st.wordChars('2', '2');
-//                    st.wordChars('3', '3');
-//                    st.wordChars('4', '4');
-//                    st.wordChars('5', '5');
-//                    st.wordChars('6', '6');
-//                    st.wordChars('7', '7');
-//                    st.wordChars('8', '8');
-//                    st.wordChars('9', '9');
-//                    st.wordChars('-', '-');
                     String line = "";
                     int RecordID;
                     RecordID = 0;
@@ -275,8 +279,9 @@ public class Generic_IO {
      * System.out.println(line).
      * @param firstLine The first line (counting from 0) that is included.
      * @param lastLine The last line (counting from 0) that is included.
-     * @return
+     * @return ArrayList
      */
+    @Deprecated
     public static ArrayList<String> readIntoArrayList_String(File f, int n,
             int firstLine, int lastLine) {
         ArrayList<String> result = null;
@@ -284,7 +289,7 @@ public class Generic_IO {
             try {
                 BufferedReader br;
                 StreamTokenizer st;
-                br = Generic_IO.getBufferedReader(f);
+                br = getBufferedReader(f);
                 if (br != null) {
                     result = new ArrayList<>();
                     st = new StreamTokenizer(br);
@@ -360,47 +365,20 @@ public class Generic_IO {
     }
 
     /**
-     * Read Object from File
-     *
-     * @param f
-     * @param throwException
-     * @return
-     * @throws java.io.IOException
-     * @throws java.lang.ClassNotFoundException
-     */
-    public static Object readObject(File f, boolean throwException)
-            throws IOException, ClassNotFoundException {
-        Object result = null;
-        if (f.length() != 0) {
-            ObjectInputStream ois;
-            ois = getObjectInputStream(f);
-            result = ois.readObject();
-            ois.close();
-        }
-        return result;
-    }
-
-    /**
-     * @param f A File which is not a Directory to be copied
-     * @param outDir The Directory to copy to.
+     * @param f A File which is not a directory to be copied.
+     * @param outDir The File directory to copy to.
      */
     private static void copyFile(File f, File outDir) {
         copyFile(f, outDir, f.getName());
     }
 
     /**
-     * @param f A File which is not a Directory to be copied
-     * @param outDir A File that is the Directory to copy to.
+     * @param f A File which is not a directory to be copied.
+     * @param outDir A File that is the directory to copy to.
      * @param outputFileName The name for the file that will be created in the
-     * outputDirectory_File
+     * outDir.
      */
     public static void copyFile(File f, File outDir, String outputFileName) {
-        // String osName = System.getProperty( "os.name" );
-        // if ( osName.equalsIgnoreCase( "UNIX" ) ) {
-        // Runtime.getRuntime().exec( "cp " + _InputFile.toString() + " " +
-        // _Output_File.toString() );
-        // } else {
-        // }
         if (!f.exists()) {
             System.err.println("!input_File.exists() in "
                     + Generic_IO.class.getCanonicalName()
@@ -410,17 +388,17 @@ public class Generic_IO {
         if (!outDir.exists()) {
             outDir.mkdirs();
         }
-        File output_File = new File(outDir, outputFileName);
-        if (output_File.exists()) {
-            System.out.println("Overwriting File " + output_File + " in "
+        File outf = new File(outDir, outputFileName);
+        if (outf.exists()) {
+            System.out.println("Overwriting File " + outf + " in "
                     + Generic_IO.class.getCanonicalName()
                     + ".copy(File(" + f + "),File(" + outDir + "))");
         } else {
             try {
-                output_File.createNewFile();
+                outf.createNewFile();
             } catch (IOException e) {
                 System.err.print(e.getMessage());
-                System.err.println("Unable to createNewFile " + output_File + " in "
+                System.err.println("Unable to createNewFile " + outf + " in "
                         + Generic_IO.class.getCanonicalName()
                         + ".copy(File(" + f + "),File(" + outDir + "))");
                 e.printStackTrace(System.err);
@@ -431,7 +409,7 @@ public class Generic_IO {
             BufferedInputStream bis;
             bis = getBufferedInputStream(f);
             BufferedOutputStream bos;
-            bos = getBufferedOutputStream(output_File);
+            bos = getBufferedOutputStream(outf);
             // bufferSize should be power of 2 (e.g. Math.pow(2, 12)), but nothing too big.
             int bufferSize = 2048;
             long numberOfArrayReads = f.length() / bufferSize;
@@ -455,8 +433,8 @@ public class Generic_IO {
     }
 
     /**
-     * @param f
-     * @return <code>new BufferedInputStream(new FileInputStream(f)))</code>
+     * @param f File.
+     * @return BufferedInputStream
      */
     public static BufferedInputStream getBufferedInputStream(File f) {
         BufferedInputStream result;
@@ -467,8 +445,8 @@ public class Generic_IO {
     }
 
     /**
-     * @param f
-     * @return <code>new FileInputStream(f)</code>
+     * @param f File.
+     * @return FileInputStream
      */
     public static FileInputStream getFileInputStream(File f) {
         FileInputStream result = null;
@@ -505,9 +483,11 @@ public class Generic_IO {
     }
 
     /**
-     * @param f
-     * @param wait
-     * @return
+     * @param f File.
+     * @param wait Time in milliseconds to wait before trying to open the
+     * FileInputStream again if it failed the first time (this may happen if
+     * waiting for a file to be written).
+     * @return FileInputStream
      */
     public static FileInputStream getFileInputStream(File f, long wait) {
         FileInputStream result = null;
@@ -526,14 +506,7 @@ public class Generic_IO {
             } else {
                 // This can happen because of too many open files.
                 // Try waiting for 2 seconds and then repeating...
-                try {
-                    synchronized (f) {
-                        f.wait(wait);
-                    }
-                } catch (InterruptedException ex2) {
-                    Logger.getLogger(Generic_IO.class.getName()).log(
-                            Level.SEVERE, null, ex2);
-                }
+                Generic_Execution.waitSychronized(f, wait);
                 return getFileInputStream(f, wait * 2);
             }
 //        } catch (IOException e) {
@@ -545,8 +518,8 @@ public class Generic_IO {
     }
 
     /**
-     * @param f
-     * @return <code>new FileOutputStream(f)</code>
+     * @param f File.
+     * @return FileOutputStream
      */
     public static FileOutputStream getFileOutputStream(File f) {
         FileOutputStream r = null;
@@ -560,8 +533,8 @@ public class Generic_IO {
     }
 
     /**
-     * @param f
-     * @return <code>new BufferedInputStream(new FileInputStream(f)))</code>
+     * @param f File.
+     * @return BufferedOutputStream
      */
     public static BufferedOutputStream getBufferedOutputStream(File f) {
         BufferedOutputStream r;
@@ -572,12 +545,12 @@ public class Generic_IO {
     }
 
     /**
-     * The Writer used here is a PrintWriter.
+     * Returns a Buffered PrintWriter.
      *
-     * @param f
+     * @param f File.
      * @param append if true then file is to be appended to otherwise file is to
      * be overwritten.
-     * @return <code>new BufferedWriter(new FileInputStream(f)))</code>
+     * @return BufferedWriter
      */
     public static BufferedWriter getBufferedWriter(File f, boolean append) {
         PrintWriter pw;
@@ -586,8 +559,8 @@ public class Generic_IO {
     }
 
     /**
-     * @param f
-     * @return <code>new ObjectInputStream(getBufferedInputStream(f)</code>
+     * @param f File.
+     * @return ObjectInputStream
      */
     public static ObjectInputStream getObjectInputStream(File f) {
         ObjectInputStream result = null;
@@ -603,8 +576,8 @@ public class Generic_IO {
     }
 
     /**
-     * @param f
-     * @return <code>new ObjectOutputStream(getBufferedOutputStream(f)</code>
+     * @param f File.
+     * @return ObjectOutputStream
      */
     public static ObjectOutputStream getObjectOutputStream(File f) {
         ObjectOutputStream result = null;
@@ -619,9 +592,7 @@ public class Generic_IO {
         return result;
     }
 
-    private static void copyDirectory(
-            File dirToCopy,
-            File dirToCopyTo) {
+    private static void copyDirectory(File dirToCopy, File dirToCopyTo) {
         try {
             if (!dirToCopyTo.mkdir()) {
                 dirToCopyTo.mkdirs();
@@ -656,9 +627,11 @@ public class Generic_IO {
         }
     }
 
-    public static void copy(
-            File fileOrDirToCopy,
-            File dirToCopyTo) {
+    /**
+     * @param fileOrDirToCopy File.
+     * @param dirToCopyTo Directory.
+     */
+    public static void copy(File fileOrDirToCopy, File dirToCopyTo) {
         try {
             if (!dirToCopyTo.mkdir()) {
                 dirToCopyTo.mkdirs();
@@ -683,7 +656,7 @@ public class Generic_IO {
 
     /**
      * @return true iff file exists and can be read
-     * @param file
+     * @param file File.
      */
     public static boolean fileExistsAndCanBeRead(File file) {
         if (file.exists()) {
@@ -699,7 +672,7 @@ public class Generic_IO {
      * reads or writes to the files system while it is executing and it will
      * only succeed in deleting empty directories.
      *
-     * @param file
+     * @param file File.
      * @return long[] result where: result[0] is the number of directories
      * deleted; result[1] is the number of files deleted.
      */
@@ -726,9 +699,8 @@ public class Generic_IO {
     }
 
     /**
-     * @param file
-     * @return
-     * <code>new BufferedReader(new InputStreamReader(new FileInputStream(file)))</code>
+     * @param file File.
+     * @return BufferedReader
      */
     public static BufferedReader getBufferedReader(File file) {
         BufferedReader result;
@@ -751,7 +723,7 @@ public class Generic_IO {
      * @param file The file to write to.
      * @param append If true an existing file will be appended otherwise it will
      * be overwritten.
-     * @return
+     * @return PrintWriter
      */
     public static PrintWriter getPrintWriter(File file, boolean append) {
         PrintWriter result = null;
@@ -786,10 +758,20 @@ public class Generic_IO {
         return result;
     }
 
+    /**
+     *
+     * @param f File.
+     * @return int
+     */
     public static int getFileDepth(File f) {
         return getFileDepth(f.getAbsolutePath());
     }
 
+    /**
+     *
+     * @param absoluteFilePath path
+     * @return absoluteFilePath.split("/").length
+     */
     public static int getFileDepth(String absoluteFilePath) {
         int result;
         String[] s = absoluteFilePath.split("/");
@@ -797,44 +779,59 @@ public class Generic_IO {
         return result;
     }
 
+    /**
+     * <pre>{@code
+     * String r = "";
+     * for (int i = 0; i < depth; i++) {
+     * r += "../";
+     * }
+     * return r;
+     * }</pre>
+     *
+     * @param depth int
+     * @return String
+     */
     public static String getRelativeFilePath(int depth) {
-        String result = "";
+        String r = "";
         for (int i = 0; i < depth; i++) {
-            result += "../";
+            r += "../";
         }
-        return result;
-    }
-
-    public static String getRelativeFilePath(
-            int depth,
-            File f) {
-        return getRelativeFilePath(
-                depth,
-                f.getPath());
-    }
-
-    public static String getRelativeFilePath(
-            int depth,
-            String path) {
-        String result = path;
-        for (int i = 0; i < depth; i++) {
-            result += "../";
-        }
-        return result;
+        return r;
     }
 
     /**
-     * Skips to the next token of StreamTokenizer.TT_EOL type in
-     * streamTokenizer.nextToken().
-     *
-     * @param streamTokenizer
+     * @param depth int.
+     * @param f File.
+     * @return f.getPath() appended with depth number of "../"
      */
-    public static void skipline(StreamTokenizer streamTokenizer) {
+    public static String getRelativeFilePath(int depth, File f) {
+        return getRelativeFilePath(depth, f.getPath());
+    }
+
+    /**
+     * @param depth int.
+     * @param path String.
+     * @return path appended with depth number of "../"
+     */
+    public static String getRelativeFilePath(int depth, String path) {
+        String r = path;
+        for (int i = 0; i < depth; i++) {
+            r += "../";
+        }
+        return r;
+    }
+
+    /**
+     * Skips to the next token of StreamTokenizer.TT_EOL type in st.nextToken().
+     *
+     * @param st StreamTokenizer
+     */
+    public static void skipline(StreamTokenizer st) {
         int tokenType;
         try {
-            tokenType = streamTokenizer.nextToken();
+            tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOL) {
-                tokenType = streamTokenizer.nextToken();
+                tokenType = st.nextToken();
             }
         } catch (IOException ex) {
             Logger.getLogger(Generic_IO.class.getName()).log(
@@ -844,7 +841,7 @@ public class Generic_IO {
 
     /**
      * Sets the syntax of st as follows:
-     * @code {
+     * <pre>{@code
      * <ul>
      * <li>st.wordChars( '0', '0' );</li>
      * <li>st.wordChars( '1', '1' );</li>
@@ -857,9 +854,9 @@ public class Generic_IO {
      * <li>st.wordChars( '8', '8' );</li>
      * <li>st.wordChars( '9', '9' );</li>
      * </ul>
-     * }
+     * }</pre>
      *
-     * @param st <code>StreamTokenizer</code> thats syntax is set.
+     * @param st <code>StreamTokenizer</code> that has syntax set.
      */
     public static void setStreamTokenizerSyntaxNumbersAsWords1(
             StreamTokenizer st) {
@@ -878,7 +875,7 @@ public class Generic_IO {
 
     /**
      * Sets the syntax of st as follows:
-     * @code {
+     * <pre>{@code
      * <ul>
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars( ',', ',' );</li>
@@ -893,7 +890,7 @@ public class Generic_IO {
      * <li>st.wordChars( ' ', ' ' );</li>
      * <li>st.eolIsSignificant( true );</li>
      * </ul>
-     * }
+     * }</pre>
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set.
      */
@@ -921,7 +918,7 @@ public class Generic_IO {
 
     /**
      * Sets the syntax of st as follows:
-     * @code {
+     * <pre>{@code
      * <ul>
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars( '"', '"' );</li>
@@ -935,7 +932,7 @@ public class Generic_IO {
      * <li>st.wordChars( ' ', ' ' );</li>
      * <li>st.eolIsSignificant( true );</li>
      * </ul>
-     * }
+     * }</pre>
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
@@ -956,7 +953,7 @@ public class Generic_IO {
 
     /**
      * Sets the syntax of st as follows:
-     * @code {
+     * <pre>{@code
      * <ul>
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars( ',', ',' );</li>
@@ -972,7 +969,7 @@ public class Generic_IO {
      * <li>st.wordChars( '_', '_' );</li>
      * <li>st.eolIsSignificant( true );</li>
      * </ul>
-     * }
+     * }</pre>
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
@@ -1000,7 +997,7 @@ public class Generic_IO {
 
     /**
      * Sets the syntax of st as follows:
-     * @code {
+     * <pre>{@code
      * <ul>
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars( ',', ',' );</li>
@@ -1012,7 +1009,7 @@ public class Generic_IO {
      * <li>st.wordChars( 'a', 'z' );</li>
      * <li>st.wordChars( 'A', 'Z' );</li>
      * <li>st.eolIsSignificant( true );</li> </ul>
-     * }
+     * }</pre>
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
@@ -1032,7 +1029,7 @@ public class Generic_IO {
 
     /**
      * Sets the syntax of st as follows:
-     * @code {
+     * <pre>{@code
      * <ul>
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars(',', ',' );</li>
@@ -1049,7 +1046,7 @@ public class Generic_IO {
      * <li>st.wordChars( '/', '/' );</li>
      * <li>st.wordChars( '_', '_' );</li>
      * </ul>
-     * }
+     * }</pre>
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
@@ -1080,7 +1077,7 @@ public class Generic_IO {
 
     /**
      * Sets the syntax of st as follows:
-     * @code {
+     * <pre>{@code
      * <ul>
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars(',', ',' );</li>
@@ -1097,7 +1094,7 @@ public class Generic_IO {
      * <li>st.wordChars( '/', '/' );</li>
      * <li>st.wordChars( '_', '_' );</li>
      * </ul>
-     * }
+     * }</pre>
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
@@ -1124,7 +1121,7 @@ public class Generic_IO {
 
     /**
      * Sets the syntax of st as follows:
-     * @code {
+     * <pre>{@code
      * <ul>
      * <li>st.resetSyntax();</li>
      * <li>st.wordChars(',', ',' );</li>
@@ -1141,7 +1138,7 @@ public class Generic_IO {
      * <li>st.wordChars( '/', '/' );</li>
      * <li>st.wordChars( '_', '_' );</li>
      * </ul>
-     * }
+     * }</pre>
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
@@ -1154,92 +1151,71 @@ public class Generic_IO {
 
     /**
      * @return File directory in which object with a_ID is (to be) stored within
-     * directory0.
-     * @param directory
-     * @param a_ID The ID of the object to be stored
-     * @param max_ID The maximum number of objects to be stored
-     * @param range The number of objects stored per directory
+     * dir.
+     * @param dir File directory.
+     * @param aID The ID of the Object to be stored.
+     * @param maxID The maximum number of objects to be stored.
+     * @param range The number of objects stored per directory.
      */
-    public static File getObjectDirectory(
-            File directory,
-            long a_ID,
-            long max_ID,
+    public static File getObjectDir(File dir, long aID, long maxID,
             long range) {
         long diff = range;
-        while (max_ID / (double) diff > 1) {
+        while (maxID / (double) diff > 1) {
             //while (max_ID / diff > 1) {
             diff *= range;
         }
         long min = 0;
-        Object[] min_directory = getObjectDirectory(
-                a_ID,
-                min,
-                diff,
-                directory);
+        Object[] minDir = getObjectDir(aID, min, diff, dir);
         diff /= range;
         while (diff > 1L) {
-            min_directory = getObjectDirectory(
-                    a_ID,
-                    (Long) min_directory[1],
-                    diff,
-                    (File) min_directory[0]);
+            minDir = getObjectDir(aID, (Long) minDir[1], diff, (File) minDir[0]);
             diff /= range;
         }
-        return (File) min_directory[0];
+        return (File) minDir[0];
     }
 
-    private static Object[] getObjectDirectory(
-            long a_ID,
-            long min,
-            long diff,
-            File parent_File) {
-        Object[] result = new Object[2];
+    /**
+     * @param aID The ID of the Object to be stored.
+     * @param min long
+     * @param diff long
+     * @param parent Parent File.
+     * @return Object[]
+     */
+    private static Object[] getObjectDir(long aID, long min, long diff,
+            File parent) {
+        Object[] r = new Object[2];
         long mint = min;
         long maxt = min + diff - 1;
-        String directory_String;
-        File directory = null;
+        String dirname;
+        File dir = null;
         boolean found = false;
         while (!found) {
-            if (a_ID >= mint && a_ID <= maxt) {
+            if (aID >= mint && aID <= maxt) {
                 found = true;
-                directory_String = "" + mint + "_" + maxt;
-                directory = new File(
-                        parent_File,
-                        directory_String);
+                dirname = "" + mint + "_" + maxt;
+                dir = new File(parent, dirname);
             } else {
                 mint += diff;
                 maxt += diff;
             }
         }
-        result[0] = directory;
-        result[1] = mint;
-        return result;
+        r[0] = dir;
+        r[1] = mint;
+        return r;
     }
 
     /**
-     * Initialises a directory in directory and returns result.      <code>
-     * File result;
-     * long start = 0;
-     * long end = range - 1;
-     * result = new File(
-     * directory,
-     * "" + start + "_" + end + "/" + start);
-     * result.mkdirs();
-     * return result;</code>
+     * Initialises a directory in directory and returns result.
      *
-     * @param directory
-     * @param range
-     * @return
+     * @param dir File directory.
+     * @param range long
+     * @return File
      */
-    public static File initialiseArchive(
-            File directory,
-            long range) {
+    public static File initialiseArchive(File dir, long range) {
         File result;
         long start = 0;
         long end = range - 1;
-        result = new File(
-                directory,
-                "" + start + "_" + end + "/" + start);
+        result = new File(dir, "" + start + "_" + end + "/" + start);
         result.mkdirs();
         return result;
     }
@@ -1248,31 +1224,26 @@ public class Generic_IO {
      * Initialises an Archive directory structure. The structure of the archive
      * is given by the range.
      *
-     * @param directory
-     * @param range
-     * @param maxID
-     * @throws IOException
+     * @param dir File directory.
+     * @param range long
+     * @param maxID long
+     * @throws IOException If attempting to initialise the archive in a
+     * non-empty directory.
      */
-    public static void initialiseArchive(
-            File directory,
-            long range,
-            long maxID)
+    public static void initialiseArchive(File dir, long range, long maxID)
             throws IOException {
-        if (directory.exists()) {
-            String[] list = directory.list();
+        if (dir.exists()) {
+            String[] list = dir.list();
             if (list != null) {
                 if (list.length > 0) {
-                    throw new IOException("Attempting to initialise Archive in non-empty directory");
+                    throw new IOException("Attempting to initialise Archive in "
+                            + "non-empty directory");
                 }
             }
         }
-        initialiseArchive(
-                directory,
-                range);
+        initialiseArchive(dir, range);
         for (long l = 0L; l < maxID; l++) {
-            addToArchive(
-                    directory,
-                    range);
+            addToArchive(dir, range);
         }
     }
 
@@ -1281,72 +1252,57 @@ public class Generic_IO {
      * Files in the Archive with numerical keys from 0 to maxID. The structure
      * of the archive is given by the range.
      *
-     * @param directory
-     * @param range
-     * @param maxID
-     * @return
-     * @throws IOException
+     * @param dir File directory.
+     * @param range long
+     * @param maxID long
+     * @return TreeMap
+     * @throws IOException If attempting to initialise the archive in a
+     * non-empty directory.
      */
-    public static TreeMap<Long, File> initialiseArchiveReturnTreeMapLongFile(
-            File directory,
-            long range,
-            long maxID)
-            throws IOException {
-        TreeMap<Long, File> result = new TreeMap<>();
-        initialiseArchive(
-                directory,
-                range,
-                maxID);
-        return getArchiveLeafFiles_TreeMap(
-                directory,
-                "_",
-                0L,
-                maxID);
-//        for (long l = 0L; l <= maxID; l++) {
-//            File file = new File(
-//                    getObjectDirectory(directory, l, maxID, range),
-//                    "" + l);
-//            result.put(l, file);
-//        }
-//        return result;
+    public static TreeMap<Long, File> initialiseArchiveAndReturnFileMap(
+            File dir, long range, long maxID) throws IOException {
+        initialiseArchive(dir, range, maxID);
+        return getArchiveLeafFilesMap(dir, "_", 0L, maxID);
     }
 
-    public static Long getArchiveHighestLeaf(
-            File directory,
-            String underscore) {
-        Long result;
-        File[] archiveFiles = directory.listFiles();
+    /**
+     *
+     * @param dir File directory.
+     * @param underscore Expects "_".
+     * @return long
+     */
+    public static long getArchiveHighestLeaf(File dir, String underscore) {
+        long r;
+        File[] archiveFiles = dir.listFiles();
         if (archiveFiles == null) {
             return -1L;
         }
         if (archiveFiles.length == 0) {
             return -1L;
         } else {
-            TreeMap<Long, File> numericalOrderFiles_TreeMap
-                    = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-                            archiveFiles,
-                            underscore);
-            File last_File = numericalOrderFiles_TreeMap.lastEntry().getValue();
+            TreeMap<Long, File> files;
+            files = Generic_IO.getNumericallyOrderedFiles(archiveFiles, underscore);
+            File last_File = files.lastEntry().getValue();
             if (last_File.getName().contains(underscore)) {
-                return getArchiveHighestLeaf(
-                        last_File,
-                        underscore);
+                return getArchiveHighestLeaf(last_File, underscore);
             } else {
-                result = new Long(last_File.getName());
+                r = Long.valueOf(last_File.getName());
             }
         }
-        return result;
+        return r;
     }
 
-    public static long getArchiveRange(
-            File directory,
-            String underscore) {
-        File highestLeaf_File = getArchiveHighestLeafFile(
-                directory,
-                underscore);
+    /**
+     *
+     * @param dir File
+     * @param underscore Expects "_".
+     * @return long
+     */
+    public static long getArchiveRange(File dir, String underscore) {
+        File highestLeaf_File = getArchiveHighestLeafFile(dir, underscore);
         String[] split = highestLeaf_File.getParentFile().getName().split(underscore);
-        long min = new Long(split[0]);
-        long max = new Long(split[1]);
+        long min = Long.valueOf(split[0]);
+        long max = Long.valueOf(split[1]);
         return max - min + 1;
     }
 
@@ -1359,101 +1315,81 @@ public class Generic_IO {
      * the tree branches that contain directories that do not have an underscore
      * in the filename
      *
-     * @param directory
-     * @param underscore
+     * @param dir File directory.
+     * @param underscore Expects "_".
      * @return a HashSet&lt;File&gt; containing all files in the directory. The
      * directory is regarded as a directory that possibly contains other
      * directories in a branching tree with paths that are expected to end
      * eventually in one or more files. All such files are returned in the
      * result. The result is null if the directory is empty.
      */
-    public static HashSet<File> getArchiveLeafFiles(
-            File directory,
+    public static HashSet<File> getArchiveLeafFilesSet(File dir,
             String underscore) {
-        HashSet<File> result = new HashSet<>();
-        File[] topLevelArchiveFiles = directory.listFiles();
+        HashSet<File> r = new HashSet<>();
+        File[] topLevelArchiveFiles = dir.listFiles();
         for (File topLevelArchiveFile : topLevelArchiveFiles) {
-            HashSet<File> subresult = getArchiveLeafFiles0(topLevelArchiveFile, underscore);
-            result.addAll(subresult);
+            HashSet<File> s;
+            s = getArchiveLeafFilesSet0(topLevelArchiveFile, underscore);
+            r.addAll(s);
         }
-        return result;
+        return r;
     }
 
-    private static HashSet<File> getArchiveLeafFiles0(
-            File file,
+    /**
+     *
+     * @param f File.
+     * @param underscore Expects "_".
+     * @return HashSet
+     */
+    private static HashSet<File> getArchiveLeafFilesSet0(File f,
             String underscore) {
-        HashSet<File> result = new HashSet<>();
-        if (file.getName().contains(underscore)) {
-            File[] files = file.listFiles();
-            for (File file1 : files) {
-                HashSet<File> subresult = getArchiveLeafFiles0(file1, underscore);
-                result.addAll(subresult);
+        HashSet<File> r = new HashSet<>();
+        if (f.getName().contains(underscore)) {
+            File[] files = f.listFiles();
+            for (File file : files) {
+                HashSet<File> s;
+                s = getArchiveLeafFilesSet0(file, underscore);
+                r.addAll(s);
             }
         } else {
-            result.add(file);
+            r.add(f);
         }
-        return result;
+        return r;
     }
 
     /**
      * Potentially slow and could be speeded up by going through the file tree
      * branch by branch.
      *
-     * @param directory dir.
-     * @param underscore "_". {@code TreeMap<Long, File> result = new TreeMap<Long, File>();
-     * File[] topLevelArchiveFiles = directory.listFiles();
-     * for (File f : topLevelArchiveFiles) {
-     * TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
-     * f,
-     * underscore);
-     * result.putAll(subresult);
-     * }
-     * return result;
-     * }
-     * @return
-     * @
-     * return result;
+     * @param dir File.
+     * @param underscore Expects "_".
+     * @return TreeMap
      */
-//    public static TreeMap<Long,File> getArchiveLeafFiles_TreeMap(
-//            File directory,
-//            String underscore) {
-//        TreeMap<Long,File> result = new TreeMap<Long,File>();
-//        Long highestLeaf = getArchiveHighestLeaf(directory, underscore);
-//        Long range = getArchiveRange(directory, underscore);
-//        for (Long l = highestLeaf; l > -1; l--) {
-//                File leaf = getObjectDirectory(
-//                        directory,
-//                        l,
-//                        highestLeaf,
-//                        range);
-//                result.put(l,leaf);
-//        }
-//        return result;
-//    }
-    public static TreeMap<Long, File> getArchiveLeafFiles_TreeMap(
-            File directory,
+    public static TreeMap<Long, File> getArchiveLeafFilesMap(File dir,
             String underscore) {
-        TreeMap<Long, File> result = new TreeMap<>();
-        File[] topLevelArchiveFiles = directory.listFiles();
+        TreeMap<Long, File> r = new TreeMap<>();
+        File[] topLevelArchiveFiles = dir.listFiles();
         for (File f : topLevelArchiveFiles) {
-            TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
-                    f,
-                    underscore);
-            result.putAll(subresult);
+            TreeMap<Long, File> m = getArchiveLeafFilesMap0(f, underscore);
+            r.putAll(m);
         }
-        return result;
+        return r;
     }
 
-    private static TreeMap<Long, File> getArchiveLeafFiles_TreeMap0(
-            File file,
+    /**
+     *
+     * @param file File
+     * @param underscore Expects "_".
+     * @return TreeMap
+     */
+    private static TreeMap<Long, File> getArchiveLeafFilesMap0(File file,
             String underscore) {
         TreeMap<Long, File> result = new TreeMap<>();
         if (file.getName().contains(underscore)) {
             File[] files = file.listFiles();
             for (File f : files) {
-                TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
-                        f,
-                        underscore);
+                TreeMap<Long, File> subresult = getArchiveLeafFilesMap0(
+                        f, underscore);
                 result.putAll(subresult);
             }
         } else {
@@ -1462,7 +1398,15 @@ public class Generic_IO {
         return result;
     }
 
-    public static TreeMap<Long, File> getArchiveLeafFiles_TreeMap(
+    /**
+     *
+     * @param directory File.
+     * @param underscore Expects "_".
+     * @param minID long
+     * @param maxID long
+     * @return TreeMap
+     */
+    public static TreeMap<Long, File> getArchiveLeafFilesMap(
             File directory,
             String underscore,
             long minID,
@@ -1470,30 +1414,29 @@ public class Generic_IO {
         TreeMap<Long, File> result = new TreeMap<>();
         File[] topLevelArchiveFiles = directory.listFiles();
         for (File f : topLevelArchiveFiles) {
-            TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
-                    f,
-                    underscore,
-                    minID,
-                    maxID);
+            TreeMap<Long, File> subresult = getArchiveLeafFilesMap0(
+                    f, underscore, minID, maxID);
             result.putAll(subresult);
         }
         return result;
     }
 
-    private static TreeMap<Long, File> getArchiveLeafFiles_TreeMap0(
-            File file,
-            String underscore,
-            long minID,
-            long maxID) {
+    /**
+     *
+     * @param file
+     * @param underscore Expects "_".
+     * @param minID
+     * @param maxID
+     * @return TreeMap
+     */
+    private static TreeMap<Long, File> getArchiveLeafFilesMap0(
+            File file, String underscore, long minID, long maxID) {
         TreeMap<Long, File> result = new TreeMap<>();
         if (file.getName().contains(underscore)) {
             File[] files = file.listFiles();
             for (File f : files) {
-                TreeMap<Long, File> subresult = getArchiveLeafFiles_TreeMap0(
-                        f,
-                        underscore,
-                        minID,
-                        maxID);
+                TreeMap<Long, File> subresult = getArchiveLeafFilesMap0(
+                        f, underscore, minID, maxID);
                 result.putAll(subresult);
             }
         } else {
@@ -1507,30 +1450,24 @@ public class Generic_IO {
 
     /**
      *
-     * @param directory
-     * @param underscore
+     * @param dir File.
+     * @param underscore Expects "_".
      * @return The highest numbered File
      */
-    public static File getArchiveHighestLeafFile(
-            File directory,
-            String underscore) {
+    public static File getArchiveHighestLeafFile(File dir, String underscore) {
         File result;
-        File[] archiveFiles = directory.listFiles();
+        File[] archiveFiles = dir.listFiles();
         if (archiveFiles == null) {
             return null;
         }
         if (archiveFiles.length == 0) {
             return null;
         } else {
-            TreeMap<Long, File> numericalOrderFiles_TreeMap
-                    = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-                            archiveFiles,
-                            underscore);
-            File last_File = numericalOrderFiles_TreeMap.lastEntry().getValue();
+            TreeMap<Long, File> files;
+            files = Generic_IO.getNumericallyOrderedFiles(archiveFiles, underscore);
+            File last_File = files.lastEntry().getValue();
             if (last_File.getName().contains(underscore)) {
-                return getArchiveHighestLeafFile(
-                        last_File,
-                        underscore);
+                return getArchiveHighestLeafFile(last_File, underscore);
             } else {
                 result = last_File;
             }
@@ -1538,89 +1475,78 @@ public class Generic_IO {
         return result;
     }
 
-    public static File growArchiveBase(
-            File directory,
-            long range) {
+    /**
+     *
+     * @param dir File
+     * @param range long
+     * @return File
+     */
+    public static File growArchiveBase(File dir, long range) {
         String underscore = "_";
-        File[] archiveFiles = directory.listFiles();
-        TreeMap<Long, File> numericalOrderFiles_TreeMap = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-                archiveFiles,
-                underscore);
-        File first_File = numericalOrderFiles_TreeMap.firstEntry().getValue();
-        String directoryName0 = getFilename(
-                directory,
-                first_File);
+        File[] archiveFiles = dir.listFiles();
+        TreeMap<Long, File> files;
+        files = Generic_IO.getNumericallyOrderedFiles(archiveFiles, underscore);
+        File first_File = files.firstEntry().getValue();
+        String directoryName0 = getFilename(dir, first_File);
         String[] split0 = directoryName0.split(underscore);
         //long start0 = new Long(split0[0]).longValue();
-        long end0 = new Long(split0[1]);
+        long end0 = Long.valueOf(split0[1]);
         long newRange = range * (end0 + 1L);
         // Create new top directory and move in existing files
-        File newTopOfArchive0 = new File(
-                directory,
-                "" + 0 + "_" + (newRange - 1L));
-        File newTopOfArchive = new File(newTopOfArchive0.getPath());
-        newTopOfArchive0.mkdir();
+        File newTop0 = new File(dir, "" + 0 + "_" + (newRange - 1L));
+        File newTop = new File(newTop0.getPath());
+        newTop0.mkdir();
         for (File archiveFile : archiveFiles) {
-            File newPath = new File(newTopOfArchive, archiveFile.getName());
+            File newPath = new File(newTop, archiveFile.getName());
             //archiveFile.renameTo(newPath);
             move(archiveFile, newPath);
         }
         // Create new lower directories for next ID;
-        Long next_ID = getArchiveHighestLeaf(
-                directory,
-                underscore);
+        Long next_ID = getArchiveHighestLeaf(dir, underscore);
         next_ID++;
-        File newHighestLeaf_Directory = new File(
-                getObjectDirectory(
-                        newTopOfArchive, next_ID, next_ID, range),
-                "" + next_ID);
-        newHighestLeaf_Directory.mkdirs();
-        return newTopOfArchive0;
+        File newHighestLeafDir = new File(
+                getObjectDir(newTop, next_ID, next_ID, range), "" + next_ID);
+        newHighestLeafDir.mkdirs();
+        return newTop0;
     }
 
-    public static File growArchiveBase(
-            File directory,
-            long range,
-            long next_ID) {
+    public static File growArchiveBase(File dir, long range, long next_ID) {
         String underscore = "_";
-        File[] archiveFiles = directory.listFiles();
-        TreeMap<Long, File> numericalOrderFiles_TreeMap = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-                archiveFiles,
-                underscore);
-        File first_File = numericalOrderFiles_TreeMap.firstEntry().getValue();
-        String directoryName0 = getFilename(
-                directory,
-                first_File);
-        String[] split0 = directoryName0.split(underscore);
+        File[] archiveFiles = dir.listFiles();
+        TreeMap<Long, File> files;
+        files = Generic_IO.getNumericallyOrderedFiles(archiveFiles, underscore);
+        File file0 = files.firstEntry().getValue();
+        String dirName0 = getFilename(dir, file0);
+        String[] split0 = dirName0.split(underscore);
         //long start0 = new Long(split0[0]).longValue();
-        long end0 = new Long(split0[1]);
+        long end0 = Long.valueOf(split0[1]);
         long newRange = range * (end0 + 1L);
         // Create new top directory and move in existing files
-        File newTopOfArchive0 = new File(
-                directory,
-                "" + 0 + "_" + (newRange - 1L));
-        File newTopOfArchive = new File(newTopOfArchive0.getPath());
-        newTopOfArchive0.mkdir();
+        File newTop0 = new File(dir, "" + 0 + "_" + (newRange - 1L));
+        File newTop = new File(newTop0.getPath());
+        newTop0.mkdir();
         for (File archiveFile : archiveFiles) {
-            File newPath = new File(newTopOfArchive, archiveFile.getName());
+            File newPath = new File(newTop, archiveFile.getName());
             //archiveFile.renameTo(newPath);
             move(archiveFile, newPath);
         }
         File newHighestLeaf_Directory = new File(
-                getObjectDirectory(
-                        newTopOfArchive, next_ID, next_ID, range),
+                getObjectDir(newTop, next_ID, next_ID, range),
                 "" + next_ID);
         newHighestLeaf_Directory.mkdirs();
-        return newTopOfArchive0;
+        return newTop0;
     }
 
+    /**
+     *
+     * @param origin File
+     * @param destination File
+     */
     public static void move(File origin, File destination) {
         if (origin.isDirectory()) {
             destination.mkdir();
             for (File file : origin.listFiles()) {
-                move(
-                        file,
-                        new File(destination, file.getName()));
+                move(file, new File(destination, file.getName()));
             }
             try {
                 Files.delete(origin.toPath());
@@ -1639,470 +1565,114 @@ public class Generic_IO {
         }
     }
 
-    public static File addToArchive(
-            File directory0,
-            long range) {
+    /**
+     *
+     * @param dir File
+     * @param range long
+     * @return File
+     */
+    public static File addToArchive(File dir, long range) {
         String underscore = "_";
-        Long next_ID = getArchiveHighestLeaf(
-                directory0,
-                underscore);
+        Long next_ID = getArchiveHighestLeaf(dir, underscore);
         next_ID++;
         File newHighestLeaf_Directory = new File(
-                getObjectDirectory(
-                        directory0,
-                        next_ID,
-                        //next_ID + range - 2,
-                        next_ID + 1,
-                        range),
+                getObjectDir(dir, next_ID, next_ID + 1, range),
                 "" + next_ID);
-        String filename = getFilename(
-                directory0,
-                newHighestLeaf_Directory);
-        File potentialNewTopDirectory = new File(
-                directory0,
-                filename);
+        String filename = getFilename(dir, newHighestLeaf_Directory);
         // Test range
         String[] splitnew = filename.split(underscore);
-        long startnew = new Long(splitnew[0]);
-        long endnew = new Long(splitnew[1]);
+        long startnew = Long.valueOf(splitnew[0]);
+        long endnew = Long.valueOf(splitnew[1]);
         long rangenew = endnew - startnew;
-        HashMap<Integer, String> numericalAndNumericalUnderscoreFilenames_HashMap;
-        numericalAndNumericalUnderscoreFilenames_HashMap = getNumericalAndNumericalUnderscoreFilenames_HashMap(
-                directory0,
-                underscore);
-        Iterator<Integer> a_iterator = numericalAndNumericalUnderscoreFilenames_HashMap.keySet().iterator();
+        HashMap<Integer, String> filenames;
+        filenames = getNumericallyOrderedFiles(dir, underscore);
+        Iterator<Integer> ite = filenames.keySet().iterator();
         int index;
         String filename0 = "";
-        while (a_iterator.hasNext()) {
-            index = a_iterator.next();
-            filename0 = numericalAndNumericalUnderscoreFilenames_HashMap.get(index);
-            //if (filename0 != null) {
+        while (ite.hasNext()) {
+            index = ite.next();
+            filename0 = filenames.get(index);
             if (filename0.contains(underscore)) {
                 break;
             }
-            //}
         }
-//        if (filename0 == null){
-//            filename0 = filename;
-//        }
         String[] splitold = filename0.split(underscore);
         long startold = Long.parseLong(splitold[0]);
         long endold = Long.parseLong(splitold[1]);
         long rangeold = endold - startold;
         if (rangenew > rangeold) {
-            growArchiveBase(directory0, range);
+            growArchiveBase(dir, range);
         }
         newHighestLeaf_Directory.mkdirs();
         return newHighestLeaf_Directory;
     }
 
-    public static File addToArchive(
-            File directory0,
-            long range,
-            long next_ID) {
+    /**
+     *
+     * @param dir File.
+     * @param range long
+     * @param next_ID long
+     * @return File
+     */
+    public static File addToArchive(File dir, long range, long next_ID) {
         String underscore = "_";
         File newHighestLeaf_Directory = new File(
-                getObjectDirectory(
-                        directory0,
-                        next_ID,
-                        //next_ID + range - 2,
-                        next_ID + 1,
-                        range),
+                getObjectDir(dir, next_ID, next_ID + 1, range),
                 "" + next_ID);
-        String filename = getFilename(
-                directory0,
-                newHighestLeaf_Directory);
-        File potentialNewTopDirectory = new File(
-                directory0,
-                filename);
+        String filename = getFilename(dir, newHighestLeaf_Directory);
         // Test range
         String[] splitnew = filename.split(underscore);
-        long startnew = new Long(splitnew[0]);
-        long endnew = new Long(splitnew[1]);
+        long startnew = Long.valueOf(splitnew[0]);
+        long endnew = Long.valueOf(splitnew[1]);
         long rangenew = endnew - startnew;
-        String[] archiveFiles = directory0.list();
+        String[] archiveFiles = dir.list();
         String[] splitold = archiveFiles[0].split(underscore);
-        long startold = new Long(splitold[0]);
-        long endold = new Long(splitold[1]);
+        long startold = Long.valueOf(splitold[0]);
+        long endold = Long.valueOf(splitold[1]);
         long rangeold = endold - startold;
         if (rangenew > rangeold) {
-            growArchiveBase(directory0, range, next_ID);
+            growArchiveBase(dir, range, next_ID);
         }
         newHighestLeaf_Directory.mkdirs();
         return newHighestLeaf_Directory;
     }
-//
-//        String[] directory0list = directory0.list();
-//        boolean topDirectoryExists;
-//        for (int i = 0; i < directory0list.length; i ++){
-//            if (directory0list.equals(filename)){
-//
-//            }
-//        TreeMap<Long, File> numericalOrderFiles_TreeMap = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-//                archiveFiles,
-//                underscore);
-//
-//
-//
-//
-//        newHighestLeaf_Directory.mkdirs();
-//
-//
-//
-//        File last_File = numericalOrderFiles_TreeMap.lastEntry().getValue();
-//
-//        String filename2
-//
-//
-//
-//        boolean result = false;
-//        String underscore = new String("_");
-//        File[] list = directory.listFiles();
-//        if (list != null) {
-//            if (list.length > 0) {
-//                if (list.length == range) {
-//                    if (directory0 == directory) {
-//                        growArchive(
-//                                directory0,
-//                                directory,
-//                                range);
-//                        return true;
-//                    }
-//                    boolean attemptResult = addToArchive(
-//                            directory0,
-//                            directory.getParentFile(),
-//                            range);
-////                    if (attemptResult) {
-////                        return true;
-////                    }
-//                    return attemptResult;
-//                }
-//                TreeMap<Long, File> numericalOrderFiles_TreeMap = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-//                        list,
-//                        underscore);
-//                File lastFile = numericalOrderFiles_TreeMap.lastEntry().getValue();
-//                String filename = getFilename(
-//                        directory,
-//                        lastFile);
-//                if (filename.contains(underscore)) {
-//                    boolean attemptResult = addToArchive(
-//                            directory0,
-//                            //lastFile,
-//                            lastFile.getParentFile(),
-//                            range);
-//                    if (attemptResult) {
-//                        return true;
-//                    }
-//                    if (directory0 == directory) {
-//                        growArchive(
-//                                directory0,
-//                                directory,
-//                                range);
-//                        return true;
-//                    }
-//                    File[] listParentFiles = lastFile.getParentFile().listFiles();
-//                    TreeMap<Long, File> numericalOrderParentFiles_TreeMap = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-//                            listParentFiles,
-//                            underscore);
-//                    Entry<Long, File> lastParentFile_Entry = numericalOrderParentFiles_TreeMap.lastEntry();
-//                    Entry<Long, File> penultimateParentFile_Entry = numericalOrderParentFiles_TreeMap.higherEntry(lastParentFile_Entry.getKey());
-//                    File penultimateFile = penultimateParentFile_Entry.getValue();
-//                    String penultimateFilename = penultimateFile.getName();
-//                    String[] split = penultimateFilename.split(underscore);
-//                    long start0 = new Long(split[0]).longValue();
-//                    long end0 = new Long(split[1]).longValue();
-//                    long currentRange = end0 - start0 + 1;
-//                    File newTopDirectory = new File(
-//                            directory,
-//                            "" + (start0 + currentRange) + "_"
-//                            + (end0 + currentRange));
-//                    newTopDirectory.mkdir();
-//                    File lastParentFile = lastParentFile_Entry.getValue();
-//                    File newPath = new File(
-//                            newTopDirectory,
-//                            lastParentFile.getName());
-//                    lastParentFile.renameTo(newPath);
-//                    //}
-////                    while (currentRange > range) {
-////                        currentRange /= range;
-////                        newTopDirectory = new File(
-////                                newTopDirectory,
-////                                "" + start0 + "_" + (start0 + currentRange));
-////                    }
-////                    newTopDirectory = new File(
-////                            newTopDirectory,
-////                            "" + (start0 + currentRange));
-////                    newTopDirectory.mkdirs();
-//                    return true;
-//                } else {
-//                    if (list.length < range) {
-//                        long fileID = new Long(filename);
-//                        fileID++;
-//                        File newTopDirectory = new File(
-//                                directory,
-//                                "" + fileID);
-//                        newTopDirectory.mkdirs();
-//                        return true;
-//                    } else {
-//                        growArchive(
-//                                directory0,
-//                                directory0,
-//                                range);
-////                    return addToArchive(
-////                            directory.getParentFile(),
-////                            range);
-//                    }
-//                }
-//            } else {
-//                if (directory == directory0) {
-//                    int a = 0;
-//                    a++;
-//                }
-//                String filename = getFilename(
-//                        directory.getParentFile(),
-//                        directory);
-//                if (filename.contains(underscore)) {
-//                    boolean attemptResult = addToArchive(
-//                            directory0,
-//                            directory.getParentFile(),
-//                            range);
-//                    if (attemptResult) {
-//                        return result;
-//                    }
-//                    String[] split = filename.split(underscore);
-//                    long start0 = new Long(split[0]).longValue();
-//                    long end0 = new Long(split[1]).longValue();
-//                    long currentRange = end0 - start0 + 1;
-//                    File newTopDirectory = new File(
-//                            directory,
-//                            "" + (start0 + currentRange) + "_"
-//                            + (end0 + currentRange));
-//                    while (currentRange > range) {
-//                        currentRange /= range;
-//                        newTopDirectory = new File(
-//                                newTopDirectory,
-//                                "" + start0 + "_" + (start0 + currentRange));
-//                    }
-//                    newTopDirectory = new File(
-//                            newTopDirectory,
-//                            "" + (start0 + currentRange));
-//                    newTopDirectory.mkdirs();
-//                    return true;
-//                }
-//            }
-//        }
-//        return result;
-//    }
 
-//    public static File growArchive(
-//            File directory0,
-//            File directory,
-//            long range) {
-//        String underscore = new String("_");
-//        File[] archiveFiles = directory.listFiles();
-//        TreeMap<Long, File> numericalOrderFiles_TreeMap = getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-//                archiveFiles,
-//                underscore);
-//        File first_File = numericalOrderFiles_TreeMap.firstEntry().getValue();
-//        String directoryName0 = getFilename(
-//                directory,
-//                first_File);
-//        String[] split0 = directoryName0.split(underscore);
-//        long start0 = new Long(split0[0]).longValue();
-//        long end0 = new Long(split0[1]).longValue();
-//        //if (archiveFiles.length > 1) {
-//        if (archiveFiles.length == range) {
-//            if (directory != directory0) {
-//                return growArchive(
-//                        directory0,
-//                        directory.getParentFile(),
-//                        range);
-//            } else {
-//                File newTopOfArchive = new File(
-//                        directory,
-//                        "" + start0 + "_" + ((range + 1) * end0));
-//                newTopOfArchive.mkdir();
-//                for (int i = 0; i < archiveFiles.length; i++) {
-//                    File newPath = new File(
-//                            newTopOfArchive,
-//                            archiveFiles[i].getName());
-//                    archiveFiles[i].renameTo(newPath);
-//                }
-//                long newRange0 = ((range + 1) * end0) - start0;
-//                start0 += newRange0;
-//                end0 += newRange0;
-//                newTopOfArchive = new File(
-//                        directory,
-//                        "" + start0 + "_" + end0);
-//                newTopOfArchive.mkdir();
-//                long newRange = newRange0;
-//                while (newRange < range) {
-//                    newRange /= range;
-//                    newTopOfArchive = new File(
-//                            newTopOfArchive,
-//                            "" + start0 + "_" + (start0 + newRange));
-//                }
-//                newTopOfArchive = new File(
-//                        newTopOfArchive,
-//                        "" + start0);
-//                newTopOfArchive.mkdir();
-//            }
-//        } else {
-//            File last_File = numericalOrderFiles_TreeMap.lastEntry().getValue();
-//            String directoryNameNMinusOne = getFilename(
-//                    directory,
-//                    last_File);
-//            String[] splitNMinusOne = directoryNameNMinusOne.split(underscore);
-//            long startNMinusOne = new Long(splitNMinusOne[0]).longValue();
-//            long endNMinusOne = new Long(splitNMinusOne[1]).longValue();
-//            long newRangeNMinusOne = endNMinusOne - startNMinusOne + 1;
-//            long startN = startNMinusOne + newRangeNMinusOne;
-//            long endN = endNMinusOne + newRangeNMinusOne;
-//            File newTopOfArchive = new File(
-//                    directory,
-//                    "" + startN + "_" + endN);
-//            long newRange = newRangeNMinusOne;
-//            while (newRange < range) {
-//                newRange /= range;
-//                newTopOfArchive = new File(
-//                        newTopOfArchive,
-//                        "" + startN + "_" + (startN + newRange));
-//            }
-//            newTopOfArchive = new File(
-//                    newTopOfArchive,
-//                    "" + startN);
-//            newTopOfArchive.mkdirs();
-//            return newTopOfArchive;
-//        }
-//        //}
-//        return null;
-//    }
-//    public static File createArchive(
-//            File directory,
-//            long range) {
-//        File[] archives = directory.listFiles();
-//        File newTopOfArchiveDirectory;
-//        if (archives != null) {
-//            if (archives.length == range) {
-//                String filename = getFilename(
-//                        directory,
-//                        archives[archives.length - 1]);
-//                String[] split = filename.split("_");
-//                long max_ID;
-//                if (split.length == 1) {
-//                    max_ID = new Long(split[0]);
-//                } else {
-//                    max_ID = new Long(filename.split("_")[1]);
-//                }
-//                max_ID += range;
-//                long next_ID = max_ID - archives.length + 1;
-//                if (directory.getParentFile().list().length < range - 1) {
-//                    System.out.println("directory.getParentFile().list().length < range -1");
-//                } else {
-//                    System.out.println("directory.getParentFile().list().length !< range -1");
-//                }
-//                growArchive(directory, max_ID, range);
-//                File objectParentDirectory = getObjectDirectory(
-//                        directory.getParentFile(), next_ID, max_ID, range);
-//                newTopOfArchiveDirectory = new File(
-//                        objectParentDirectory,
-//                        "" + next_ID);
-//                //objectDirectory.mkdirs();
-//                //newTopOfArchiveDirectory = new File(directory,
-//                //        getFilename(directory, objectDirectory));
-//                //directory = growArchive(directory.getParentFile(), max_ID, range);
-//                //newTopOfArchiveDirectory = createArchive(directory, range);
-//                // Where is new top of archive?
-//                //newTopOfArchiveDirectory = getObjectDirectory(
-//                //        directory, max_ID, max_ID, range);
-//            } else {
-//                if (archives.length == 0) {
-////                    String filename = getFilename(
-////                            directory,
-////                            archives[archives.length - 1]);
-////                    String[] split = filename.split("_");
-////                    long a_ID;
-////                    if (split.length == 1) {
-////                        a_ID = new Long(split[0]);
-////                    } else {
-////                        a_ID = new Long(filename.split("_")[1]);
-////                    }
-//
-//
-//
-//                    long start = archives.length * range;
-//                    long end = start + range - 1;
-//                    newTopOfArchiveDirectory = new File(
-//                            directory, "" + start + "_" + end + "/" + start);
-//                } else {
-//                    String filename = getFilename(
-//                            directory,
-//                            archives[archives.length - 1]);
-//                    String[] split = filename.split("_");
-//                    long a_ID;
-//                    if (split.length == 1) {
-//                        a_ID = new Long(split[0]);
-//                    } else {
-//                        a_ID = new Long(filename.split("_")[1]);
-//                    }
-//                    a_ID += 1;
-//                    newTopOfArchiveDirectory = new File(
-//                            directory, "" + a_ID);
-//                }
-//            }
-//        } else {
-//            newTopOfArchiveDirectory = new File(directory.toString() + "/0_" + (range - 1) + "/0");
-//        }
-//        newTopOfArchiveDirectory.mkdirs();
-//        // Attempt to slow things down as for some reason file system is getting
-//        // messy...
-//        System.out.println(
-//                "new directory " + newTopOfArchiveDirectory
-//                + " exists == " + newTopOfArchiveDirectory.exists());
-////        for(int i = 0; i < 10000; i ++){
-////            System.out.print(".");
-////        }
-//        return newTopOfArchiveDirectory;
-//    }
     /**
-     * @param directory
-     * @param filename
+     * @param dir File.
+     * @param filename String.
      * @return The File with filename in directory or throws
      * FileNotFoundException if directory or the result does not exist.
-     * @throws java.io.FileNotFoundException
+     * @throws java.io.FileNotFoundException If dir does not exist or file with
+     * filename in dir does not exist.
      */
-    public static File getFileThatExists(
-            File directory,
-            String filename) throws FileNotFoundException {
+    public static File getFileThatExists(File dir, String filename)
+            throws FileNotFoundException {
         String method = "getFile(File,String)";
-        if (!directory.exists()) {
+        if (!dir.exists()) {
             throw new FileNotFoundException(
-                    "File " + directory + " does not exist in "
+                    "File " + dir + " does not exist in "
                     + Generic_IO.class.getName() + "." + method + ".");
         }
-        File result = null;
+        File r = null;
         if (filename != null) {
-            result = new File(directory, filename);
-            if (!result.exists()) {
+            r = new File(dir, filename);
+            if (!r.exists()) {
                 throw new FileNotFoundException(
-                        result + " does not exist in "
+                        r + " does not exist in "
                         + Generic_IO.class.getName() + "." + method + ".");
             }
         }
-        return result;
+        return r;
     }
 
     /**
-     * @param directory
-     * @param a_File
-     * @return The name of the file or directory in directory in the path of
-     * a_File.
+     * @param dir File.
+     * @param f File.
+     * @return The name of the file or directory in dir in the path of f.
      */
-    public static String getFilename(
-            File directory,
-            File a_File) {
+    public static String getFilename(File dir, File f) {
         String result;
-        int beginIndex = directory.getAbsolutePath().length() + 1;
+        int beginIndex = dir.getAbsolutePath().length() + 1;
         String fileSeparator = System.getProperty("file.separator");
         /*
          * A feature in Java means splitting strings with "\" does not work as
@@ -2117,48 +1687,35 @@ public class Generic_IO {
         //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getAbsolutePath().substring(beginIndex)).split(System.getProperty("file.separator"))[0];
         //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("\\")[0];
         //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("/")[0];
-        result = (a_File.getPath().substring(beginIndex)).split(fileSeparator)[0];
+        result = (f.getPath().substring(beginIndex)).split(fileSeparator)[0];
         //System.out.println("result " + result);
         return result;
     }
 
     /**
-     * {@code getNumericalOrderFilesWithNumericalFilenames_TreeMap(
-     *       File[] files) {
-     *   TreeMap<Long, File> result = new TreeMap<Long, File>();
-     *   for (int i = 0; i < files.length; i++) {
-     *       result.put(
-     *               new Long(files[i].getName()),
-     *               files[i]);
-     *   }
-     *   return result;
-     * }
-     * }
-     *
-     * @param files
-     * @return TreeMap<Long, File>
+     * @param files File[]
+     * @return TreeMap
      */
-    public static TreeMap<Long, File> getNumericalOrderFilesWithNumericalFilenames_TreeMap(
+    public static TreeMap<Long, File> getNumericallyOrderedFiles(
             File[] files) {
-        TreeMap<Long, File> result = new TreeMap<>();
+        TreeMap<Long, File> r = new TreeMap<>();
         for (File file : files) {
-            result.put(new Long(file.getName()), file);
+            r.put(Long.valueOf(file.getName()), file);
         }
-        return result;
+        return r;
     }
 
     /**
      * If needed to order also by a number after the underscore then a new
      * method is needed.
      *
-     * @param files
-     * @param underscore = "_"
-     * @return TreeMap<Long, File>
+     * @param files File[]
+     * @param underscore Expects "_".
+     * @return TreeMap
      */
-    public static TreeMap<Long, File> getNumericalOrderFilesWithNumericalUnderscoreFilenames_TreeMap(
-            File[] files,
-            String underscore) {
-        TreeMap<Long, File> result = new TreeMap<>();
+    public static TreeMap<Long, File> getNumericallyOrderedFiles(
+            File[] files, String underscore) {
+        TreeMap<Long, File> r = new TreeMap<>();
         String filename;
         String[] split;
         for (File file : files) {
@@ -2172,31 +1729,33 @@ public class Generic_IO {
                         if (split.length == 2) {
                             Long.parseLong(split[1]);
                         }
-                        result.put(start, file);
-                    } catch (NumberFormatException a_NumberFormatException) {
+                        r.put(start, file);
+                    } catch (NumberFormatException e) {
                         // Ignore
                     }
                 }
             } else {
                 try {
-                    long name = new Long(filename);
-                    result.put(name, file);
-                } catch (NumberFormatException a_NumberFormatException) {
+                    long name = Long.valueOf(filename);
+                    r.put(name, file);
+                } catch (NumberFormatException e) {
                     // Ignore
                 }
             }
         }
-        return result;
+        return r;
     }
 
-    //
-    public static HashMap<Integer, String> getNumericalAndNumericalUnderscoreFilenames_HashMap(
-            File directory,
-            String underscore) {
-        HashMap<Integer, String> result = new HashMap<>();
+    /**
+     * @param dir File.
+     * @param underscore "_"
+     * @return HashMap
+     */
+    public static HashMap<Integer, String> getNumericallyOrderedFiles(
+            File dir, String underscore) {
+        HashMap<Integer, String> r = new HashMap<>();
         int index = 0;
-        String[] list = directory.list();
-        int count = 0;
+        String[] list = dir.list();
         String filename;
         String[] split;
         for (String list1 : list) {
@@ -2204,34 +1763,27 @@ public class Generic_IO {
             if (filename.contains(underscore)) {
                 split = filename.split("_");
                 if (split.length <= 2) {
-                    long start;
                     try {
-                        start = Long.parseLong(split[0]);
                         if (split.length == 2) {
                             Long.parseLong(split[1]);
                         }
-                        count++;
-                        result.put(
-                                index,
-                                filename);
+                        r.put(index, filename);
                         index++;
-                    } catch (NumberFormatException a_NumberFormatException) {
+                    } catch (NumberFormatException e) {
                         // Ignore
                     }
                 }
             } else {
                 try {
-                    long name = new Long(filename);
-                    result.put(
-                            index,
-                            filename);
+                    long name = Long.valueOf(filename);
+                    r.put(index, filename);
                     index++;
-                } catch (NumberFormatException a_NumberFormatException) {
+                } catch (NumberFormatException e) {
                     // Ignore
                 }
             }
         }
-        return result;
+        return r;
     }
 
     /**
@@ -2241,8 +1793,8 @@ public class Generic_IO {
      * especially if results are going to be zipped up and transferred to a
      * Windows 7 machine.
      *
-     * @param f
-     * @return
+     * @param f File.
+     * @return int
      */
     public static int getFilePathLength(File f) {
         int result;
@@ -2265,9 +1817,9 @@ public class Generic_IO {
      * especially if results are going to be zipped up and transferred to a
      * Windows 7 machine.
      *
-     * @param f
-     * @param dir
-     * @return
+     * @param f File.
+     * @param dir File.
+     * @return int
      */
     public static int getFilePathLength(File f, File dir) {
         int fileFilePathLength;

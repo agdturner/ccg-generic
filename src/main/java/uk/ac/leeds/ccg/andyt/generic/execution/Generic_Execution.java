@@ -33,9 +33,9 @@ public class Generic_Execution {
     /**
      * Default delay 1000 and maxWait 10.
      *
-     * @param es
-     * @param futures
-     * @param o
+     * @param es ExecutorService
+     * @param futures Set of Futures
+     * @param o Object
      */
     public static void shutdownExecutorService(ExecutorService es,
             HashSet<Future> futures, Object o) {
@@ -45,9 +45,9 @@ public class Generic_Execution {
     }
 
     /**
-     * @param es
-     * @param futures
-     * @param o
+     * @param es ExecutorService
+     * @param futures Set of Futures
+     * @param o Object
      * @param delay Number of milliseconds for loop to wait before testing if a
      * Future is returned.
      * @param maxWait Number of minutes to block shutdown after all futures
@@ -115,9 +115,9 @@ public class Generic_Execution {
     /**
      * Default delay 1000 and maxWait 10.
      * 
-     * @param es
-     * @param future
-     * @param o
+     * @param es ExecutorService
+     * @param future Future
+     * @param o Object
      */
     public static void shutdownExecutorService(ExecutorService es,
             Future future, Object o) {
@@ -128,11 +128,12 @@ public class Generic_Execution {
 
     /**
      *
-     * @param es
-     * @param future
-     * @param o
-     * @param delay
-     * @param maxWait
+     * @param es ExecutorService
+     * @param future Future
+     * @param o Object
+     * @param delay Number of milliseconds for loop to wait before testing if a
+     * Future is returned.
+     * @param maxWait Maximum time to wait before shutting down.
      */
     public static void shutdownExecutorService(ExecutorService es,
             Future future, Object o, long delay, long maxWait) {
@@ -174,13 +175,14 @@ public class Generic_Execution {
     /**
      * For pausing a program for the given number of milliseconds.
      * 
-     * @param o
-     * @param timeInMilliseconds 
+     * @param o Object
+     * @param delay  Number of milliseconds for loop to wait before testing if a
+     * Future is returned.
      */
-    public static void waitSychronized(Object o, long timeInMilliseconds) {
+    public static void waitSychronized(Object o, long delay) {
         try {
             synchronized (o) {
-                o.wait(timeInMilliseconds);
+                o.wait(delay);
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(Generic_Visualisation.class.getName()).log(

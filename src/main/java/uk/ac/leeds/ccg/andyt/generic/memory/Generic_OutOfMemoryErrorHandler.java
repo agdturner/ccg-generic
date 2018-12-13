@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 
 /**
  * A class to be extended for memory management involving the controlled
- * swapping of parts of data from the fast access memory to files and
- * the handling of OutOfMemoryErrors should they be encountered.
+ * swapping of parts of data from the fast access memory to files and the
+ * handling of OutOfMemoryErrors should they be encountered.
  */
 public abstract class Generic_OutOfMemoryErrorHandler
         implements Generic_OutOfMemoryErrorHandlerInterface, Serializable {
@@ -114,12 +114,12 @@ public abstract class Generic_OutOfMemoryErrorHandler
     }
 
     /**
-     * this.MemoryReserve = a_MemoryReserve;
+     * this.MemoryReserve = r;
      *
-     * @param memoryReserve
+     * @param r int[]
      */
-    public void setMemoryReserve(int[] memoryReserve) {
-        this.MemoryReserve = memoryReserve;
+    public void setMemoryReserve(int[] r) {
+        this.MemoryReserve = r;
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * return getGeneric_TestMemory().getTotalFreeMemory();
      *
-     * @return
+     * @return long
      */
     public long getTotalFreeMemory() {
         return getGeneric_TestMemory().getTotalFreeMemory();
@@ -184,10 +184,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * For initialising a File from String _String.
      *
-     * @param file
-     * @return
+     * @param file String
+     * @return File
      */
-    public File initFile(            String file) {
+    public File initFile(String file) {
         File result = new File(file);
         result.getParentFile().mkdirs();
         try {
@@ -202,11 +202,11 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * For initialising a File.
      *
-     * @param dir
-     * @param filename
-     * @return
+     * @param dir File
+     * @param filename String
+     * @return File
      */
-    public File initFile(            File dir,            String filename) {
+    public File initFile(File dir, String filename) {
         File result = new File(dir, filename);
         dir.mkdirs();
         try {
@@ -220,12 +220,12 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * For initialising a File Directory.
      *
-     * @param parentFile
-     * @param string
-     * @return
+     * @param parentFile File
+     * @param s String name of directory.
+     * @return File
      */
-    public File initFileDirectory(            File parentFile,            String string) {
-        File result = new File(parentFile, string);
+    public File initFileDirectory(File parentFile, String s) {
+        File result = new File(parentFile, s);
         result.mkdirs();
         return result;
     }

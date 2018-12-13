@@ -54,8 +54,8 @@ public class Generic_YearMonth
     /**
      * Expects s to be of the form "YYYY-MM"
      *
-     * @param e
-     * @param s
+     * @param e Generic_Environment
+     * @param s String
      */
     public Generic_YearMonth(Generic_Environment e, String s) {
         super(e);
@@ -75,8 +75,8 @@ public class Generic_YearMonth
     /**
      * Returns true iff t is the same day as this.
      *
-     * @param t
-     * @return
+     * @param t Generic_YearMonth
+     * @return boolean
      */
     public boolean isSameDay(Generic_YearMonth t) {
         if (YM.getMonthValue() == t.YM.getMonthValue()) {
@@ -88,9 +88,9 @@ public class Generic_YearMonth
     }
 
     /**
-     * Assume the year has 4 digits.
+     * Assumes the year has 4 digits!
      *
-     * @return
+     * @return String
      */
     public String getYYYY() {
         return Integer.toString(YM.getYear());
@@ -100,7 +100,7 @@ public class Generic_YearMonth
      * The month always has 2 characters. 01 is January 02 is February ... 12 is
      * December
      *
-     * @return
+     * @return String
      */
     public String getMM() {
         String result = "";

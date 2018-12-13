@@ -55,10 +55,8 @@ public class Generic_Date
     }
 
     /**
-     * Expects s to be of the form "YYYY-MM-DD"
-     *
-     * @param e
-     * @param s
+     * @param e Generic_Environment
+     * @param s String expected in the form "YYYY-MM-DD"
      */
     public Generic_Date(Generic_Environment e, String s) {
         super(e, s);
@@ -70,7 +68,7 @@ public class Generic_Date
         if (s2.startsWith("0")) {
             s2 = s2.substring(1);
         }
-        LD = LocalDate.of(YM.getYear(), YM.getMonth(), new Integer(s2));
+        LD = LocalDate.of(YM.getYear(), YM.getMonth(), Integer.valueOf(s2));
     }
 
     public void addDays(int days) {
@@ -80,7 +78,7 @@ public class Generic_Date
     /**
      * Assume the year has 4 digits.
      *
-     * @return
+     * @return String
      */
     @Override
     public String getYYYY() {
@@ -91,17 +89,17 @@ public class Generic_Date
      * The month always has 2 characters. 01 is January 02 is February ... 12 is
      * December
      *
-     * @return
+     * @return String MM.
      */
     @Override
     public String getMM() {
-        String result = "";
+        String r = "";
         int month = LD.getMonthValue();
         if (month < 10) {
-            result = Strings.symbol_0;
+            r = Strings.symbol_0;
         }
-        result += Integer.toString(month);
-        return result;
+        r += Integer.toString(month);
+        return r;
     }
 
     /**
@@ -125,8 +123,8 @@ public class Generic_Date
     /**
      * Returns true iff t is the same day as this.
      *
-     * @param t
-     * @return
+     * @param t Generic_Date
+     * @return LD.isEqual(t.LD)
      */
     public boolean isSameDay(Generic_Date t) {
         return LD.isEqual(t.LD);

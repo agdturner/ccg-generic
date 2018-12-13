@@ -40,8 +40,8 @@ public class Generic_Visualisation {
     /**
      * For loading a BufferedImage from a File.
      *
-     * @param f
-     * @return
+     * @param f File
+     * @return BufferedImage
      */
     public static BufferedImage loadImage(File f) {
         BufferedImage bi = null;
@@ -76,9 +76,9 @@ public class Generic_Visualisation {
     /**
      * For saving a BufferedImage to a File.
      *
-     * @param bi
-     * @param format
-     * @param f
+     * @param bi BufferedImage
+     * @param format String
+     * @param f File
      */
     public static void saveImage(BufferedImage bi, String format, File f) {
         String m;
@@ -139,13 +139,13 @@ public class Generic_Visualisation {
      * Saves image bi to File f in format after a timeInMilliseconds delay which
      * is hopefully long enough for all the graphics to be drawn.
      *
-     * @param es
-     * @param o
-     * @param timeInMilliseconds
-     * @param format
-     * @param bi
-     * @param f
-     * @return
+     * @param es ExecutorService
+     * @param o Object 
+     * @param timeInMilliseconds long
+     * @param format String
+     * @param bi BufferedImage
+     * @param f File
+     * @return Future
      */
     public static Future saveImage(ExecutorService es, Object o,
             BufferedImage bi, long timeInMilliseconds, String format, File f) {
@@ -206,7 +206,7 @@ public class Generic_Visualisation {
     /**
      * Reports to std.out if ge is headless or not.
      * 
-     * @param ge
+     * @param ge GraphicsEnvironment
      */
     public static void print_headless_check(GraphicsEnvironment ge) {
         boolean headless_check = ge.isHeadlessInstance();

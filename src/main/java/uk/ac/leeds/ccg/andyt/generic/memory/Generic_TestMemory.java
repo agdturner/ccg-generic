@@ -44,7 +44,7 @@ public class Generic_TestMemory {
     /**
      * Creates a new instance of Generic_TestMemory using runtime.
      *
-     * @param runtime
+     * @param runtime Runtime
      */
     public Generic_TestMemory(Runtime runtime) {
         Runtime = runtime;

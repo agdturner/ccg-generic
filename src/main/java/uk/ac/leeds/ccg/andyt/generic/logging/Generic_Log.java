@@ -109,7 +109,7 @@ public abstract class Generic_Log implements LoggingMXBean {
      * System.getProperty("java.util.logging.config.file"))
      * </code>
      *
-     * @param loggingPropertiesFile
+     * @param loggingPropertiesFile File.
      * @param directory The file directory base containing the
      * logging.properties file (possibly at great depth!)
      * @param logDirectory The directory into which and LoggingFiles will be

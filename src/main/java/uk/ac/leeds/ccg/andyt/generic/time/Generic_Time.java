@@ -64,8 +64,8 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
     /**
      * Expects s to be of the form "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM:SSZ"
      *
-     * @param e
-     * @param s
+     * @param e Generic_Environment
+     * @param s String
      */
     public Generic_Time(Generic_Environment e, String s) {
         this(e, s, e.getStrings().symbol_minus, e.getStrings().s_T,
@@ -75,11 +75,11 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
     /**
      * Expects s to be of the form "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM:SSZ"
      *
-     * @param e
-     * @param s
-     * @param dateDelimeter
-     * @param timedateSeparator
-     * @param timeDelimeter
+     * @param e Generic_Environment
+     * @param s String expected in the form "YYYY-MM-DD"
+     * @param dateDelimeter String
+     * @param timedateSeparator String
+     * @param timeDelimeter String
      */
     public Generic_Time(Generic_Environment e, String s, String dateDelimeter,
             String timedateSeparator, String timeDelimeter) {
@@ -211,7 +211,7 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
      * So as not to confuse with Generic_YearMonth.getMM() this is called
      * getMins() instead of getMM();
      *
-     * @return
+     * @return String
      */
     public String getMins() {
         String result = "";
@@ -270,8 +270,8 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
     /**
      * Returns true iff t is the same day as this.
      *
-     * @param t
-     * @return
+     * @param t Generic_Date
+     * @return boolean
      */
     @Override
     public boolean isSameDay(Generic_Date t) {
@@ -324,8 +324,8 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
      * Returns a new time difference between this and t in minutes. If t is
      * after this, then the answer is negative.
      *
-     * @param t
-     * @return
+     * @param t Generic_Time
+     * @return long
      */
     public long differenceInMinutes(Generic_Time t) {
         long result;
@@ -337,17 +337,12 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
      * Returns a new time difference between this and t in minutes. If t is
      * after this, then the answer is negative.
      *
-     * @param t
-     * @return
+     * @param t Generic_Time
+     * @return long
      */
     public long differenceInHours(Generic_Time t) {
         long result;
         result = ChronoUnit.HOURS.between(LDT, t.LDT);
-
-        if (result < 0) {
-            int debug = 1;
-        }
-
         return result;
     }
 }
