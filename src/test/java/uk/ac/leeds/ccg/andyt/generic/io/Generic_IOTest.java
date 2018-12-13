@@ -73,7 +73,8 @@ public class Generic_IOTest {
                 File newnewfile = new File(newfile, "file" + j);
                 try {
                     newnewfile.createNewFile();
-                } catch (IOException e){}
+                } catch (IOException e) {
+                }
             }
         }
         TreeSet expResult = null;
@@ -103,41 +104,38 @@ public class Generic_IOTest {
 //            }
 //        }
         TreeSet expResult = null;
-        TreeSet result = Generic_IO.recursiveFileList(file,1);
+        TreeSet result = Generic_IO.recursiveFileList(file, 1);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
-    
     /**
      * Test of writeObject method, of class Generic_IO.
      */
     public void testGetArchiveLeafFiles() {
         String tmpdir = System.getProperty("java.io.tmpdir");
         File dir = new File(tmpdir);
-        File f = new File(dir,"tmpArchive");
+        File f = new File(dir, "tmpArchive");
         System.out.println(f);
         f.mkdirs();
         long range = 100;
         long sizeOfArchive = 1001; //1000;
         Generic_IO.initialiseArchive(f, range);
-        for (long id = 0; id < sizeOfArchive; id ++) {
+        for (long id = 0; id < sizeOfArchive; id++) {
             Generic_IO.addToArchive(f, range, id);
         }
         System.out.println(
                 "initialised archive with " + sizeOfArchive + " files");
         String underscore = "_";
-        HashSet<File> leaves = Generic_IO.getArchiveLeafFiles(
-                f, 
-                underscore);
+        HashSet<File> leaves = Generic_IO.getArchiveLeafFilesSet(f, underscore);
         System.out.println(leaves.size());
         long[] deletedCounts = Generic_IO.delete(f);
         System.out.println(
-                "deleted archive which contained " + deletedCounts[0] + 
-                " files and " + deletedCounts[1] + " directories");
+                "deleted archive which contained " + deletedCounts[0]
+                + " files and " + deletedCounts[1] + " directories");
     }
- 
+
 //    /**
 //     * Test of writeObject method, of class Generic_IO.
 //     */
