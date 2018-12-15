@@ -27,15 +27,22 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 
 /**
  * Generic utility class for execution handling.
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Execution {
 
     /**
-     * Default delay 1000 and maxWait 10.
+     * Default
+     * {@link #shutdownExecutorService(java.util.concurrent.ExecutorService, java.util.concurrent.Future, java.lang.Object, long, long)}
+     * 1000 and maxWait 10.
      *
      * @param es ExecutorService
      * @param futures Set of Futures
      * @param o Object
+     *
+     * @see
      */
     public static void shutdownExecutorService(ExecutorService es,
             HashSet<Future> futures, Object o) {
@@ -114,7 +121,7 @@ public class Generic_Execution {
 
     /**
      * Default delay 1000 and maxWait 10.
-     * 
+     *
      * @param es ExecutorService
      * @param future Future
      * @param o Object
@@ -173,11 +180,11 @@ public class Generic_Execution {
     }
 
     /**
-     * For pausing a program for the given number of milliseconds.
-     * 
-     * @param o Object
-     * @param delay  Number of milliseconds for loop to wait before testing if a
-     * Future is returned.
+     * For delaying further execution of a program for <code>delay</code> number
+     * of milliseconds.
+     *
+     * @param o The Object used to synchronize the delay.
+     * @param delay Number of milliseconds to wait.
      */
     public static void waitSychronized(Object o, long delay) {
         try {

@@ -16,7 +16,10 @@
 package uk.ac.leeds.ccg.andyt.generic.core;
 
 /**
- * A set of int codes for representing different types of Errors and Exceptions.
+ * A set of codes for representing different types of Errors and Exceptions.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public abstract class Generic_ErrorAndExceptionHandler {
 

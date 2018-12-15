@@ -18,23 +18,51 @@ package uk.ac.leeds.ccg.andyt.generic.core;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 
 /**
- * The class holds a reference to: 1) A Generic_Strings instance for sharing
- * commonly used Strings. 2) A Generic_Files instance for getting commonly used
- * Files.
+ * A class for constructing a generic environment object. Normally there is only
+ * one such object in a running program. It is used to provide access to data
+ * generically useful objects that are commonly wanted and used. The idea is
+ * that there can be one main copy of such objects and all other things that
+ * need them can simply hold a reference rather than another instance saving
+ * memory.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Environment {
 
+    /**
+     * A sharable instance for convenience.
+     */
     protected Generic_Files Files;
+
+    /**
+     * A sharable instance for convenience.
+     */
     protected Generic_Strings Strings;
 
+    /**
+     * Creates a new instance.
+     */
     protected Generic_Environment() {
     }
 
+    /**
+     * Creates a new instance.
+     *
+     * @param f What {@link #Files} is set to.
+     * @param s What {@link #Strings} to set to.
+     */
     public Generic_Environment(Generic_Files f, Generic_Strings s) {
         Files = f;
         Strings = s;
     }
 
+    /**
+     * If {@link #Files} is <tt>null</tt> then it is initialised via the
+     * {@link Generic_Files#Generic_Files()}.
+     *
+     * @return {@link #Files}
+     */
     public Generic_Files getFiles() {
         if (Files == null) {
             Files = new Generic_Files();
@@ -42,6 +70,12 @@ public class Generic_Environment {
         return Files;
     }
 
+    /**
+     * If {@link #Strings} is <tt>null</tt> then it is initialised using
+     * {@link Generic_Strings#Generic_Strings()}.
+     *
+     * @return {@link #Strings}
+     */
     public Generic_Strings getStrings() {
         if (Strings == null) {
             Strings = new Generic_Strings();

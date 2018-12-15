@@ -18,19 +18,27 @@ package uk.ac.leeds.ccg.andyt.generic.core;
 import java.io.Serializable;
 
 /**
- * A serializable class that holds a transient reference to a
- * Generic_Environment instance.
+ * An abstract serializable class. Instances hold a transient reference to a
+ * {@link Generic_Environment} instance.
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public abstract class Generic_Object implements Serializable {
 
     public transient Generic_Environment e;
 
     /**
-     * Default constructor.
+     * Creates a new instance.
      */
     protected Generic_Object() {
     }
 
+    /**
+     * Creates a new instance.
+     *
+     * @param e The {@link Generic_Environment} that {@link e} is set to.
+     */
     public Generic_Object(Generic_Environment e) {
         this.e = e;
     }

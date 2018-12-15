@@ -17,13 +17,20 @@ package uk.ac.leeds.ccg.andyt.generic.core;
 
 /**
  * A class that holds commonly used Strings.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Strings {
 
+    // Empty String
+    public final String emptyString = "";
     public final String s_data = "data";
     public final String s_generated = "generated";
     public final String s_input = "input";
     public final String s_output = "output";
+    public final String s_T = "T";
+    public final String s_Z = "Z";
     // Symbols
     public final String symbol_0 = "0";
     public final String symbol_1 = "1";
@@ -43,12 +50,7 @@ public class Generic_Strings {
     public final String symbol_minus = "-";
     public final String symbol_questionmark = "?";
     public final String symbol_underscore = "_";
-    // Empty String
-    public final String emptyString = "";
-    // For alphabet upper and lower case
-    public final String s_T = "T";
-    public final String s_Z = "Z";
-
+    
     public Generic_Strings() {
     }
 }
