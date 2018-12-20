@@ -1,4 +1,4 @@
-# agdt-generic
+# agdt-java-generic
 ## Description
 A Java library that has no other dependencies than Java (although for running unit tests there is a dependency on JUnit). It is generally for things that are commonly used in other Java developed by the developer and contains generally useful classes and methods.
 The highlights are:
