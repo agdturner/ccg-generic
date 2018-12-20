@@ -709,7 +709,11 @@ public class Generic_IO {
         return result;
     }
 
-    // Close br
+    /**
+     * Closes BufferedReader br.
+     *
+     * @param br BufferedReader
+     */
     public static void closeBufferedReader(BufferedReader br) {
         try {
             br.close();
@@ -717,6 +721,19 @@ public class Generic_IO {
             ex.printStackTrace(System.err);
             Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Closes BufferedReader br and returns a new BufferedReader to read f.
+     * 
+     * @param br BufferedReader
+     * @param f File
+     * @return new BufferedReader to read f.
+     */
+    public static BufferedReader closeAndGetBufferedReader(BufferedReader br, File f) {
+        Generic_IO.closeBufferedReader(br);
+        br = getBufferedReader(f);
+        return br;
     }
 
     /**

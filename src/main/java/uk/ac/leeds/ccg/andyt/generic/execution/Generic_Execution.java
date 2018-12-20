@@ -34,15 +34,16 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 public class Generic_Execution {
 
     /**
-     * Default
-     * {@link #shutdownExecutorService(java.util.concurrent.ExecutorService, java.util.concurrent.Future, java.lang.Object, long, long)}
-     * 1000 and maxWait 10.
+     * Default {@link #shutdownExecutorService(java.util.concurrent.ExecutorService,
+     * java.util.concurrent.Future, java.lang.Object, long, long)} 1000 and
+     * maxWait 10.
      *
      * @param es ExecutorService
      * @param futures Set of Futures
      * @param o Object
      *
-     * @see
+     * @see #shutdownExecutorService(java.util.concurrent.ExecutorService,
+     * java.util.concurrent.Future, java.lang.Object, long, long)
      */
     public static void shutdownExecutorService(ExecutorService es,
             HashSet<Future> futures, Object o) {

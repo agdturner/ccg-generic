@@ -58,7 +58,7 @@ public class Generic_Environment {
     }
 
     /**
-     * If {@link #Files} is <tt>null</tt> then it is initialised via the
+     * If {@link #Files} is <code>null</code> then it is initialised via the
      * {@link Generic_Files#Generic_Files()}.
      *
      * @return {@link #Files}
@@ -71,7 +71,7 @@ public class Generic_Environment {
     }
 
     /**
-     * If {@link #Strings} is <tt>null</tt> then it is initialised using
+     * If {@link #Strings} is <code>null</code> then it is initialised using
      * {@link Generic_Strings#Generic_Strings()}.
      *
      * @return {@link #Strings}

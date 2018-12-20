@@ -200,6 +200,43 @@ public class Generic_Collections {
         s.add(v);
     }
 
+    /**
+     * If m contains the key k, then the key value pair (k2, v) are put in to
+     * the value against k in m. If m does not contain the key k a new mapping
+     * is put in m against k and the key value pair (k2, v) are put in the new
+     * map.
+     *
+     * @param <K> Key
+     * @param <K2> Key2
+     * @param <V> Value
+     * @param m Map
+     * @param k key
+     * @param k2 key2
+     * @param v value
+     */
+    public static <K, K2, V> void addToMap(HashMap<K, HashMap<K2, V>> m, K k,
+            K2 k2, V v) {
+        HashMap<K2, V> m2;
+        if (m.containsKey(k)) {
+            m2 = m.get(k);
+        } else {
+            m2 = new HashMap<>();
+            m.put(k, m2);
+        }
+        m2.put(k2, v);
+    }
+
+    /**
+     * If m contain the key k, then v is added to the HashSet. Otherwise a new
+     * HashSet is created and added to m using the key k and v is added to the
+     * HashSet.
+     *
+     * @param <K> Key
+     * @param <V> Value
+     * @param m Map
+     * @param k key
+     * @param v value
+     */
     public static <K, V> void addToMap(TreeMap<K, HashSet<V>> m, K k, V v) {
         HashSet<V> s;
         if (m.containsKey(k)) {
