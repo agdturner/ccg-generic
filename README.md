@@ -1,15 +1,14 @@
-# agdt-generic
+# agdt-java-generic
 ## Description
-A generic Java library that has no other dependencies.
-  - It contains generally useful classes and methods.
-  - The highlights are:
-    - io
-      - A package that provides a useful way of storing data in archives
-        - data directories on a file system in an auto expanding subdirectory structure (for details see below). 
-    - memory
-      - a package that helps avoid and deal with OutOfMemoryErrors.
-## Current Package Contents
-Currently, the library contains 9 packages which are detailed in the Package Details section below:
+A Java library that has no other dependencies than Java (although for running unit tests there is a dependency on JUnit). It is generally for things that are commonly used in other Java developed by the developer and contains generally useful classes and methods.
+The highlights are:
+- io
+  - A package that provides a useful way of storing data in archives
+    - data directories on a file system in an auto expanding subdirectory structure (for details see below). 
+- memory
+  - a package that helps avoid and deal with OutOfMemoryErrors.
+## Package Contents
+The library contains 9 packages which are detailed in the Package Details section below:
 1. core
 2. execution
 3. io
@@ -19,17 +18,18 @@ Currently, the library contains 9 packages which are detailed in the Package Det
 7. time
 8. util
 9. visualisation
-## Current Version
-1.0-Snapshot.
+## Current Version and platform requirements
 The library should run on Java 8 or higher.
+Version 1.0.0 is available.
+The current development version is 1.0-Snapshot.
 ## Development Roadmap
-- For 2.0
+- Future releases on the 1.x versions will focus on improving documentation.
+- For 2.x version
   - Each class will be refactored to:
     - Better use generics to further rationalise the code base
     - Standardise variable and method names
     - Utilise features in Java 8 especially those that utilise functional programming with lambda expressions and Streams.
-    - Improve documentation
-    - Include any other generally useful code that best fits here rather than in any other library.
+    - Include any other generally useful code that best fits here rather than in any other library developed by the developer.
     
 ## Package Details 
 ### 1. core
