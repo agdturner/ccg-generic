@@ -4,23 +4,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.ac.leeds.ccg.andyt</groupId>
-    <artifactId>agdt-generic</artifactId>
+    <artifactId>agdt-java-generic</artifactId>
     <!--<version>1.1-SNAPSHOT</version>-->
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>agdt-generic</name>
-    <url>https://github.com/agdturner/agdt-generic</url>
+    <name>agdt-java-generic</name>
+    <url>https://github.com/agdturner/agdt-java-generic</url>
     <description>A Java Library with generally used classes.</description>
     <scm>
-        <url>git@github.com:agdturner/agdt-generic.git</url>
-        <connection>scm:git:git@github.com:agdturner/agdt-generic.git</connection>
-        <developerConnection>scm:git:git@github.com:agdturner/agdt-generic</developerConnection>
+        <url>git@github.com:agdturner/agdt-java-generic.git</url>
+        <connection>scm:git:git@github.com:agdturner/agdt-java-generic.git</connection>
+        <developerConnection>scm:git:git@github.com:agdturner/agdt-java-generic</developerConnection>
     </scm>
     <licenses>
         <license>
             <name>Apache License 2.0</name>
-            <url>https://github.com/agdturner/agdt-generic/LICENSE.txt</url>
+            <url>https://github.com/agdturner/agdt-java-generic/LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -43,7 +43,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <agdt-generic.version>1.0-SNAPSHOT</agdt-generic.version>
+        <agdt-java-generic.version>1.0-SNAPSHOT</agdt-java-generic.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
