@@ -89,6 +89,7 @@ public class Generic_Files {
     public File getOutputDataDir(Generic_Strings strings) {
         if (OutputDataDir == null) {
             OutputDataDir = new File(getDataDir(), strings.s_output);
+            OutputDataDir.mkdirs();
         }
         return OutputDataDir;
     }
