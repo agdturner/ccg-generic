@@ -75,6 +75,7 @@ public class Generic_Files {
     public File getInputDataDir(Generic_Strings strings) {
         if (InputDataDir == null) {
             InputDataDir = new File(getDataDir(), strings.s_input);
+            InputDataDir.mkdirs();
         }
         return InputDataDir;
     }
@@ -82,6 +83,7 @@ public class Generic_Files {
     public File getGeneratedDataDir(Generic_Strings strings) {
         if (GeneratedDataDir == null) {
             GeneratedDataDir = new File(getDataDir(), strings.s_generated);
+            GeneratedDataDir.mkdirs();
         }
         return GeneratedDataDir;
     }
@@ -89,6 +91,7 @@ public class Generic_Files {
     public File getOutputDataDir(Generic_Strings strings) {
         if (OutputDataDir == null) {
             OutputDataDir = new File(getDataDir(), strings.s_output);
+            OutputDataDir.mkdirs();
         }
         return OutputDataDir;
     }
