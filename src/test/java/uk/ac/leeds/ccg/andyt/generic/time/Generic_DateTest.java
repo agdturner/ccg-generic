@@ -64,7 +64,7 @@ public class Generic_DateTest extends Generic_Object {
         Generic_Strings s;
         s = new Generic_Strings();
         Generic_Files f;
-        f = new Generic_Files(testDir.getPath());
+        f = new Generic_Files(new Generic_Strings(), testDir);
         //e = new Generic_Environment(testDir.getPath());
         e = new Generic_Environment(f, s);
     }
