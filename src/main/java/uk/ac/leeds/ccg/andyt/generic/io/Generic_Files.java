@@ -54,7 +54,7 @@ public class Generic_Files {
      * DataDir to a directory {@link Generic_Strings#s_data} in the users
      * current working directory.
      */
-    protected Generic_Files() {
+    public Generic_Files() {
         this(new Generic_Strings());
     }
 
