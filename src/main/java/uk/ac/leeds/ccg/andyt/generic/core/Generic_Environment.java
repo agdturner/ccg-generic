@@ -19,24 +19,22 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 
 /**
  * A class for constructing a generic environment object. Normally there is only
- * one such object in a running program. It is used to provide access to data
- * generically useful objects that are commonly wanted and used. The idea is
- * that there can be one main copy of such objects and all other things that
- * need them can simply hold a reference rather than another instance saving
- * memory.
- * 
+ * one such object in a running program. It is used to provide access to objects
+ * that are commonly wanted and used. The idea is that there can be one main
+ * copy of such objects that are shared saving memory.
+ *
  * @author Andy Turner
  * @version 1.0.0
  */
 public class Generic_Environment {
 
     /**
-     * A sharable instance for convenience.
+     * A sharable instance of {@link Generic_Files}.
      */
     protected Generic_Files Files;
 
     /**
-     * A sharable instance for convenience.
+     * A sharable instance of {@link Generic_Strings}.
      */
     protected Generic_Strings Strings;
 
@@ -65,7 +63,7 @@ public class Generic_Environment {
      */
     public Generic_Files getFiles() {
         if (Files == null) {
-            Files = new Generic_Files();
+            Files = new Generic_Files(getStrings());
         }
         return Files;
     }

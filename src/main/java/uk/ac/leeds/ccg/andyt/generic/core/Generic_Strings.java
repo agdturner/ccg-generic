@@ -23,27 +23,20 @@ package uk.ac.leeds.ccg.andyt.generic.core;
  */
 public class Generic_Strings {
 
-    /**
-     * Strings starting with a capital letter
-     */
+    // Strings starting with a capital letter
     public final String s_BigDecimal = "BigDecimal";
     public final String s_BigDouble = "BigDouble";
-    public final String s_ = "";
     public final String s_Double = "Double";
     public final String s_HashMap = "HashMap";
     public final String s_HashSet = "HashSet";
     public final String s_String = "String";
     
-    /**
-     * Strings starting with a lower case letter
-     */
+    // Strings starting with a lower case letter
     public final String s_data = "data";
     public final String s_generated = "generated";
     public final String s_input = "input";
     public final String s_output = "output";
-    /**
-     * Alphabets
-     */
+    // Alphabets
     public final String s_A = "A";
     public final String s_B = "B";
     public final String s_C = "C";
@@ -96,9 +89,7 @@ public class Generic_Strings {
     public final String s_x = "x";
     public final String s_y = "y";
     public final String s_z = "z";
-    /**
-     * Symbols
-     */
+    // Symbols
     public final String symbol_0 = "0";
     public final String symbol_1 = "1";
     public final String symbol_2 = "2";
@@ -120,9 +111,7 @@ public class Generic_Strings {
     public final String symbol_questionmark = "?";
     public final String symbol_space = " ";
     public final String symbol_underscore = "_";
-    /**
-     * Specials
-     */
+    // Specials
     public final String special_emptyString = "";
     public final String special_newLine = "\n";
     public final String special_commaSpace = ", ";
