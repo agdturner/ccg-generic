@@ -54,8 +54,6 @@ import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
  */
 public class Generic_IO {
 
-    public static final String CLASSNAME = "Generic_StaticIO";
-
     /**
      * Creates a new instance of ObjectIO
      */

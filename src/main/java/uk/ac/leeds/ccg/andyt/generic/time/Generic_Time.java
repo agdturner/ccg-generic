@@ -174,10 +174,10 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
 
     public String toFormattedString2() {
         return getYYYYMMDDHHMMSS(
-                Strings.emptyString,
-                Strings.emptyString,
-                Strings.emptyString,
-                Strings.emptyString);
+                Strings.special_emptyString,
+                Strings.special_emptyString,
+                Strings.special_emptyString,
+                Strings.special_emptyString);
     }
 
     public String getYYYYMMDDHHMM() {

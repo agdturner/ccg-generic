@@ -187,7 +187,7 @@ public class Generic_Visualisation {
 
     /**
      * Sets a system property (System.setProperty("java.awt.headless", "true");)
-     * and return a headless graphics environment and Toolkitof the system.
+     * and return a headless graphics environment and Toolkit of the system.
      *
      * @return Object[] r of size 2 where: r[0] = Toolkit.getDefaultToolkit();
      * r[1] = GraphicsEnvironment.getLocalGraphicsEnvironment().
