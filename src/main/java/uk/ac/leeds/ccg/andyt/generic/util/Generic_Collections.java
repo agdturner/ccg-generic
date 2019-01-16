@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -864,6 +866,38 @@ public class Generic_Collections {
         list.forEach((entry) -> {
             r.put(entry.getKey(), entry.getValue());
         });
+        return r;
+    }
+    
+    /**
+     * For getting the maximum value in a collection of BigDecimal. 
+     * @param c
+     * @return the maximum value in {@code c} 
+     */
+    public static BigDecimal getMax(Collection<BigDecimal> c) {
+        Optional<BigDecimal> o;
+        o = c.stream().parallel().max(BigDecimal::compareTo);
+        return o.get();
+    }
+    
+    /**
+     * For getting the maximum value in a collection of BigDecimal. 
+     * @param c
+     * @return the maximum value in {@code c} 
+     */
+    public static BigDecimal getMin(Collection<BigDecimal> c) {
+        Optional<BigDecimal> o;
+        o = c.stream().parallel().min(BigDecimal::compareTo);
+        return o.get();
+    }
+    
+    /**
+     * @param c
+     * @return True iff b is in c.
+     */
+    public static boolean containsValue(Collection<BigDecimal> c, BigDecimal b) {
+        boolean r;
+        r = c.stream().parallel().anyMatch(v -> v.equals(b));
         return r;
     }
 }
