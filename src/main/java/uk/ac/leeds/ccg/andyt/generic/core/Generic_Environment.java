@@ -15,6 +15,11 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.core;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 
 /**
@@ -39,6 +44,23 @@ public class Generic_Environment {
     protected Generic_Strings Strings;
 
     /**
+     * Logging levels.
+     */
+    public static final int DEBUG_Level_FINEST = 0;
+    public static final int DEBUG_Level_FINE = 1;
+    public static final int DEBUG_Level_NORMAL = 2;
+    
+    /**
+     * For writing output messages to.
+     */
+    private PrintWriter PrintWriterOut;
+
+    /**
+     * For writing error messages to.
+     */
+    private PrintWriter PrintWriterErr;
+    
+    /**
      * Creates a new instance.
      */
     protected Generic_Environment() {
@@ -47,12 +69,41 @@ public class Generic_Environment {
     /**
      * Creates a new instance.
      *
-     * @param f What {@link #Files} is set to.
+     * @param dataDir 
+     */
+    public Generic_Environment(File dataDir) {
+        Strings = new Generic_Strings();
+        Files = new Generic_Files(Strings, dataDir);
+        init();
+    }
+
+    protected final void init(){
+        File outDir = Files.getOutputDataDir();
+        File f;
+        f = new File(outDir, "Out.txt");
+        try {
+            PrintWriterOut = new PrintWriter(f);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Generic_Environment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        f = new File(outDir, "Err.txt");
+        try {
+            PrintWriterErr = new PrintWriter(f);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Generic_Environment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @param files What {@link #Files} is set to.
      * @param s What {@link #Strings} to set to.
      */
-    public Generic_Environment(Generic_Files f, Generic_Strings s) {
-        Files = f;
+    public Generic_Environment(Generic_Files files, Generic_Strings s) {
         Strings = s;
+        Files = files;
+        init();
     }
 
     /**
@@ -81,4 +132,69 @@ public class Generic_Environment {
         return Strings;
     }
 
+    /**
+     * Writes s to a new line of the output log and also prints it to std.out.
+     *
+     * @param s
+     * @param println
+     */
+    public void logO(String s, boolean println) {
+        if (PrintWriterOut != null) {
+            PrintWriterOut.println(s);
+        }
+        if (println) {
+            System.out.println(s);
+        }
+    }
+
+    /**
+     * Writes s to a new line of the error log and also prints it to std.err.
+     *
+     * @param s
+     */
+    public void logE(String s) {
+        if (PrintWriterErr != null) {
+            PrintWriterErr.println(s);
+        }
+        System.err.println(s);
+    }
+    
+    /**
+     * Writes s to a new line of the output log and error log and also prints it
+     * to std.out.
+     *
+     * @param s
+     */
+    public void logEO(String s) {
+        logO(s, false);
+        logE(s);
+    }
+
+    /**
+     * Writes {@code e.getStackTrace()} to the error log and also prints it to
+     * std.err.
+     *
+     * @param e
+     */
+    public void logE(Exception e) {
+        StackTraceElement[] st;
+        st = e.getStackTrace();
+        for (StackTraceElement st1 : st) {
+            logE(st1.toString());
+        }
+    }
+
+    /**
+     * Writes e StackTrace to the error log and also prints it to std.err.
+     *
+     * @param e
+     */
+    public void logE(Error e) {
+        StackTraceElement[] st;
+        st = e.getStackTrace();
+        for (StackTraceElement st1 : st) {
+            logE(st1.toString());
+        }
+    }
+    
 }

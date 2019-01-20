@@ -26,6 +26,7 @@ public class Generic_Strings {
     // Strings starting with a capital letter
     public final String s_BigDecimal = "BigDecimal";
     public final String s_BigDouble = "BigDouble";
+    public final String s_Data = "Data";
     public final String s_Double = "Double";
     public final String s_HashMap = "HashMap";
     public final String s_HashSet = "HashSet";
