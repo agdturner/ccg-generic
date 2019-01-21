@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.generic.time;
 
 import java.io.File;
+import java.util.logging.Level;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -61,12 +62,10 @@ public class Generic_DateTest extends Generic_Object {
         if (!testDir.exists()) {
             testDir.mkdirs();
         }
-        Generic_Strings s;
-        s = new Generic_Strings();
         Generic_Files f;
         f = new Generic_Files(new Generic_Strings(), testDir);
         //e = new Generic_Environment(testDir.getPath());
-        e = new Generic_Environment(f, s);
+        e = new Generic_Environment(f, Level.ALL, 100);
     }
 
     @After
