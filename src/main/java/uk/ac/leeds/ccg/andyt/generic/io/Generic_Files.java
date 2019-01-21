@@ -54,6 +54,10 @@ public class Generic_Files {
      */
     protected File LogDir;
 
+    public Generic_Files() {
+        this(new Generic_Strings());
+    }
+    
     /**
      * Defaults DataDir to a directory {@link Generic_Strings#s_data} in the
      * users current working directory.
