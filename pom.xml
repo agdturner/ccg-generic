@@ -6,7 +6,7 @@
     <groupId>uk.ac.leeds.ccg.andyt</groupId>
     <artifactId>agdt-java-generic</artifactId>
     <!--<version>1.1-SNAPSHOT</version>-->
-    <version>1.0.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>agdt-java-generic</name>
@@ -43,7 +43,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <agdt-java-generic.version>1.0-SNAPSHOT</agdt-java-generic.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -58,7 +57,6 @@
     </dependencies>
     
     <build>
-        <!-- To define the plugin version in the parent POM -->
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -73,7 +71,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-        <!-- To use the plugin goals in your POM or parent POM -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
