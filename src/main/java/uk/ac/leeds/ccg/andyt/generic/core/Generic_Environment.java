@@ -16,10 +16,8 @@
 package uk.ac.leeds.ccg.andyt.generic.core;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 
@@ -81,9 +79,11 @@ public class Generic_Environment {
     public Generic_Environment(Generic_Files f, Level level, int range) {
         Strings = f.getStrings();
         Files = f;
+        LoggingLevel = level;
+        Range = range;
         File dir;
         dir = Files.getLogDir();
-        if (dir.isDirectory()) {
+        if (java.nio.file.Files.exists(dir.toPath())) {
             dir = Generic_IO.addToArchive(dir, Range);
         } else {
             dir = Generic_IO.initialiseArchive(dir, Range);
@@ -102,10 +102,7 @@ public class Generic_Environment {
     }
 
     /**
-     * If {@link #Files} is <code>null</code> then it is initialised via the
-     * {@link Generic_Files#Generic_Files()}.
-     *
-     * @return {@link #Files}
+     * @return {@link #Files} initialising it first if it is {@code null}.
      */
     public Generic_Files getFiles() {
         if (Files == null) {
@@ -115,10 +112,7 @@ public class Generic_Environment {
     }
 
     /**
-     * If {@link #Strings} is <code>null</code> then it is initialised using
-     * {@link Generic_Strings#Generic_Strings()}.
-     *
-     * @return {@link #Strings}
+     * @return {@link #Strings} initialising it first if it is {@code null}.
      */
     public Generic_Strings getStrings() {
         if (Strings == null) {
@@ -130,7 +124,7 @@ public class Generic_Environment {
     /**
      * Writes s to a new line of the output log and also prints it to std.out.
      *
-     * @param s
+     * @param s The message to log. 
      * @param println Iff true then s is printed to std.out as well as to
      * {@link #LOG}.
      */

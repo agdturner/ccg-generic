@@ -1226,12 +1226,13 @@ public class Generic_IO {
      * @return File
      */
     public static File initialiseArchive(File dir, long range) {
-        File result;
-        long start = 0;
+        File r;
+        String start = "0";
         long end = range - 1;
-        result = new File(dir, "" + start + "_" + end + "/" + start);
-        result.mkdirs();
-        return result;
+        r = new File(dir, start + "_" + end);
+        r = new File(r, start);
+        r.mkdirs();
+        return r;
     }
 
     /**

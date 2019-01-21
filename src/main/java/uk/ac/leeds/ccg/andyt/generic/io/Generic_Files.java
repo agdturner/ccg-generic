@@ -35,33 +35,24 @@ public class Generic_Files {
     protected File DataDir;
 
     /**
-     * The input directory in {@link DataDir}.
+     * The input directory in {@link #DataDir}.
      */
     protected File InputDir;
 
     /**
-     * The generated directory in {@link DataDir}.
+     * The generated directory in {@link #DataDir}.
      */
     protected File GeneratedDir;
 
     /**
-     * The output directory in {@link DataDir}.
+     * The output directory in {@link #DataDir}.
      */
     protected File OutputDir;
 
     /**
-     * The log directory in {@link OuputDir}.
+     * The log directory in {@link #OutputDir}.
      */
     protected File LogDir;
-
-    /**
-     * Defaults {@link #Strings} to a new {@link Generic_Strings} instance and
-     * DataDir to a directory {@link Generic_Strings#s_data} in the users
-     * current working directory.
-     */
-    public Generic_Files() {
-        this(new Generic_Strings());
-    }
 
     /**
      * Defaults DataDir to a directory {@link Generic_Strings#s_data} in the
@@ -71,8 +62,7 @@ public class Generic_Files {
      */
     public Generic_Files(Generic_Strings s) {
         Strings = s;
-        DataDir = new File(System.getProperty("user.dir")
-                + System.getProperty("file.separator") + s.s_data);
+        DataDir = new File(System.getProperty("user.dir"), s.s_data);
     }
 
     /**
@@ -85,9 +75,9 @@ public class Generic_Files {
     }
 
     /**
-     * Sets {@link #DataDir} and sets
-     * {@link #InputDataDir}, {@link #GeneratedDataDir} and
-     * {@link #OutputDataDir} to <code>null</code>.
+     * Sets {@link #DataDir} to {@code d} and sets
+     * {@link #InputDir}, {@link #GeneratedDir} and {@link #OutputDir} to
+     * {@code null}.
      *
      * @param d What {@link #DataDir} is set to.
      */
@@ -163,11 +153,10 @@ public class Generic_Files {
         }
         return OutputDir;
     }
-    
+
     public File getLogDir() {
         if (LogDir == null) {
             LogDir = new File(getOutputDataDir(), Strings.s_log);
-            LogDir.mkdirs();
         }
         return LogDir;
     }
