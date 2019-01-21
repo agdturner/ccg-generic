@@ -37,17 +37,22 @@ public class Generic_Files {
     /**
      * The input directory in {@link DataDir}.
      */
-    protected File InputDataDir;
+    protected File InputDir;
 
     /**
      * The generated directory in {@link DataDir}.
      */
-    protected File GeneratedDataDir;
+    protected File GeneratedDir;
 
     /**
      * The output directory in {@link DataDir}.
      */
-    protected File OutputDataDir;
+    protected File OutputDir;
+
+    /**
+     * The log directory in {@link OuputDir}.
+     */
+    protected File LogDir;
 
     /**
      * Defaults {@link #Strings} to a new {@link Generic_Strings} instance and
@@ -97,9 +102,16 @@ public class Generic_Files {
             }
         }
         DataDir = d;
-        InputDataDir = null;
-        GeneratedDataDir = null;
-        OutputDataDir = null;
+        InputDir = null;
+        GeneratedDir = null;
+        OutputDir = null;
+    }
+
+    /**
+     * @return {@link #Strings}.
+     */
+    public Generic_Strings getStrings() {
+        return Strings;
     }
 
     /**
@@ -125,11 +137,11 @@ public class Generic_Files {
      * InputDataDir = new File(getDataDir(), Strings.s_input);}
      */
     public File getInputDataDir() {
-        if (InputDataDir == null) {
-            InputDataDir = new File(getDataDir(), Strings.s_input);
-            InputDataDir.mkdirs();
+        if (InputDir == null) {
+            InputDir = new File(getDataDir(), Strings.s_input);
+            InputDir.mkdirs();
         }
-        return InputDataDir;
+        return InputDir;
     }
 
     /**
@@ -137,18 +149,26 @@ public class Generic_Files {
      * @return GeneratedDataDir
      */
     public File getGeneratedDataDir() {
-        if (GeneratedDataDir == null) {
-            GeneratedDataDir = new File(getDataDir(), Strings.s_generated);
-            GeneratedDataDir.mkdirs();
+        if (GeneratedDir == null) {
+            GeneratedDir = new File(getDataDir(), Strings.s_generated);
+            GeneratedDir.mkdirs();
         }
-        return GeneratedDataDir;
+        return GeneratedDir;
     }
 
     public File getOutputDataDir() {
-        if (OutputDataDir == null) {
-            OutputDataDir = new File(getDataDir(), Strings.s_output);
-            OutputDataDir.mkdirs();
+        if (OutputDir == null) {
+            OutputDir = new File(getDataDir(), Strings.s_output);
+            OutputDir.mkdirs();
         }
-        return OutputDataDir;
+        return OutputDir;
+    }
+    
+    public File getLogDir() {
+        if (LogDir == null) {
+            LogDir = new File(getOutputDataDir(), Strings.s_log);
+            LogDir.mkdirs();
+        }
+        return LogDir;
     }
 }

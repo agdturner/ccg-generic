@@ -35,6 +35,7 @@ public class Generic_Strings {
     // Strings starting with a lower case letter
     public final String s_data = "data";
     public final String s_generated = "generated";
+    public final String s_log = "log";
     public final String s_input = "input";
     public final String s_output = "output";
     // Alphabets

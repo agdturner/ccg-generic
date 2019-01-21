@@ -736,22 +736,20 @@ public class Generic_IO {
     }
 
     /**
-     * @param file The file to write to.
+     * @param f The File to write to.
      * @param append If true an existing file will be appended otherwise it will
      * be overwritten.
      * @return PrintWriter
      */
-    public static PrintWriter getPrintWriter(File file, boolean append) {
-        PrintWriter result = null;
+    public static PrintWriter getPrintWriter(File f, boolean append) {
+        PrintWriter r = null;
         try {
-            result = new PrintWriter(
-                    new BufferedWriter(
-                            new FileWriter(file, append)));
+            r = new PrintWriter(new BufferedWriter(new FileWriter(f, append)));
         } catch (FileNotFoundException e) {
             System.err.println("Trying to handle " + e.getLocalizedMessage());
             System.err.println("Wait for 2 seconds then trying again to "
                     + "Generic_StaticIO.getPrintWriter(File, boolean).");
-            if (!file.exists()) {
+            if (!f.exists()) {
                 e.printStackTrace(System.err);
                 Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
                 // null will be returned...
@@ -759,19 +757,19 @@ public class Generic_IO {
                 // This can happen because of too many open files.
                 // Try waiting for 2 seconds and then repeating...
                 try {
-                    synchronized (file) {
-                        file.wait(2000L);
+                    synchronized (f) {
+                        f.wait(2000L);
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                return getPrintWriter(file, append);
+                return getPrintWriter(f, append);
             }
         } catch (IOException e) {
             e.printStackTrace(System.err);
             Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
         }
-        return result;
+        return r;
     }
 
     /**

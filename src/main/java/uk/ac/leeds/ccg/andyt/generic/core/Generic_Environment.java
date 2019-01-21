@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 
 /**
  * A class for constructing a generic environment object. Normally there is only
@@ -44,66 +45,60 @@ public class Generic_Environment {
     protected Generic_Strings Strings;
 
     /**
-     * Logging levels.
+     * The logging level.
      */
-    public static final int DEBUG_Level_FINEST = 0;
-    public static final int DEBUG_Level_FINE = 1;
-    public static final int DEBUG_Level_NORMAL = 2;
-    
+    public Level LoggingLevel;
+
+    /**
+     * The number of directories or files in the archive where the logs are
+     * stored.
+     */
+    protected int Range;
+
     /**
      * For writing output messages to.
      */
-    private PrintWriter PrintWriterOut;
+    protected transient final PrintWriter LOG;
 
     /**
-     * For writing error messages to.
-     */
-    private PrintWriter PrintWriterErr;
-    
-    /**
      * Creates a new instance.
+     *
+     * @param d The directory that will be set as the data directory.
+     * @param l What {@link #LoggingLevel} is set to.
+     * @param r What {@link #Range} is set to.
      */
-    protected Generic_Environment() {
+    public Generic_Environment(File d, Level l, int r) {
+        this(new Generic_Files(new Generic_Strings(), d), l, r);
     }
 
     /**
      * Creates a new instance.
      *
-     * @param dataDir 
+     * @param f What {@link #Files} is set to.
+     * @param level What {@link #LoggingLevel} is set to.
+     * @param range What {@link #Range} is set to.
      */
-    public Generic_Environment(File dataDir) {
-        Strings = new Generic_Strings();
-        Files = new Generic_Files(Strings, dataDir);
-        init();
-    }
-
-    protected final void init(){
-        File outDir = Files.getOutputDataDir();
-        File f;
-        f = new File(outDir, "Out.txt");
-        try {
-            PrintWriterOut = new PrintWriter(f);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_Environment.class.getName()).log(Level.SEVERE, null, ex);
+    public Generic_Environment(Generic_Files f, Level level, int range) {
+        Strings = f.getStrings();
+        Files = f;
+        File dir;
+        dir = Files.getLogDir();
+        if (dir.isDirectory()) {
+            dir = Generic_IO.addToArchive(dir, Range);
+        } else {
+            dir = Generic_IO.initialiseArchive(dir, Range);
         }
-        f = new File(outDir, "Err.txt");
-        try {
-            PrintWriterErr = new PrintWriter(f);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_Environment.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        dir.mkdirs();
+        LOG = Generic_IO.getPrintWriter(new File(dir, "log.txt"), false);
+        log("LoggingLevel = " + LoggingLevel.getName(), true);
     }
 
     /**
-     * Creates a new instance.
+     * Closes Log.
      *
-     * @param files What {@link #Files} is set to.
-     * @param s What {@link #Strings} to set to.
      */
-    public Generic_Environment(Generic_Files files, Generic_Strings s) {
-        Strings = s;
-        Files = files;
-        init();
+    protected void closeLog() {
+        LOG.close();
     }
 
     /**
@@ -136,65 +131,14 @@ public class Generic_Environment {
      * Writes s to a new line of the output log and also prints it to std.out.
      *
      * @param s
-     * @param println
+     * @param println Iff true then s is printed to std.out as well as to
+     * {@link #LOG}.
      */
-    public void logO(String s, boolean println) {
-        if (PrintWriterOut != null) {
-            PrintWriterOut.println(s);
-        }
+    public final void log(String s, boolean println) {
+        LOG.println(s);
+        LOG.flush();
         if (println) {
             System.out.println(s);
         }
     }
-
-    /**
-     * Writes s to a new line of the error log and also prints it to std.err.
-     *
-     * @param s
-     */
-    public void logE(String s) {
-        if (PrintWriterErr != null) {
-            PrintWriterErr.println(s);
-        }
-        System.err.println(s);
-    }
-    
-    /**
-     * Writes s to a new line of the output log and error log and also prints it
-     * to std.out.
-     *
-     * @param s
-     */
-    public void logEO(String s) {
-        logO(s, false);
-        logE(s);
-    }
-
-    /**
-     * Writes {@code e.getStackTrace()} to the error log and also prints it to
-     * std.err.
-     *
-     * @param e
-     */
-    public void logE(Exception e) {
-        StackTraceElement[] st;
-        st = e.getStackTrace();
-        for (StackTraceElement st1 : st) {
-            logE(st1.toString());
-        }
-    }
-
-    /**
-     * Writes e StackTrace to the error log and also prints it to std.err.
-     *
-     * @param e
-     */
-    public void logE(Error e) {
-        StackTraceElement[] st;
-        st = e.getStackTrace();
-        for (StackTraceElement st1 : st) {
-            logE(st1.toString());
-        }
-    }
-    
 }
