@@ -17,6 +17,10 @@ package uk.ac.leeds.ccg.andyt.generic.core;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.logging.Level;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
@@ -35,35 +39,61 @@ public class Generic_Environment {
     /**
      * A sharable instance of {@link Generic_Files}.
      */
-    protected Generic_Files Files;
+    protected Generic_Files files;
 
     /**
      * A sharable instance of {@link Generic_Strings}.
      */
-    protected Generic_Strings Strings;
+    protected Generic_Strings strings;
 
     /**
      * The logging level.
      */
-    public Level LoggingLevel;
+    public Level level;
 
     /**
      * The number of directories or files in the archive where the logs are
      * stored.
      */
-    protected int Range;
+    protected int range;
 
     /**
-     * For writing output messages to.
+     * A store of logs for writing output messages to. The keys are log IDs and
+     * the values are PrintWriters.
      */
-    protected transient final PrintWriter LOG;
+    protected transient final HashMap<Integer, PrintWriter> logs;
+
+    /**
+     * A lookup for checking if there is already a log with a given name.
+     */
+    protected transient final HashSet<String> logNamesInUse;
+
+    /**
+     * Creates a new instance. {@link #level} is defaulted to Level.FINE.
+     * {@link #range} is defaulted to 100.
+     *
+     * @param d The directory that will be set as the data directory.
+     */
+    public Generic_Environment(File d) {
+        this(new Generic_Files(new Generic_Strings(), d), Level.FINE, 100);
+    }
+
+    /**
+     * Creates a new instance. {@link #range} is defaulted to 100.
+     *
+     * @param d The directory that will be set as the data directory.
+     * @param l What {@link #level} is set to.
+     */
+    public Generic_Environment(File d, Level l) {
+        this(new Generic_Files(new Generic_Strings(), d), l, 100);
+    }
 
     /**
      * Creates a new instance.
      *
      * @param d The directory that will be set as the data directory.
-     * @param l What {@link #LoggingLevel} is set to.
-     * @param r What {@link #Range} is set to.
+     * @param l What {@link #level} is set to.
+     * @param r What {@link #range} is set to.
      */
     public Generic_Environment(File d, Level l, int r) {
         this(new Generic_Files(new Generic_Strings(), d), l, r);
@@ -72,67 +102,182 @@ public class Generic_Environment {
     /**
      * Creates a new instance.
      *
-     * @param f What {@link #Files} is set to.
-     * @param level What {@link #LoggingLevel} is set to.
-     * @param range What {@link #Range} is set to.
+     * @param f What {@link #files} is set to.
+     * @param l What {@link #level} is set to.
+     * @param r What {@link #range} is set to.
      */
-    public Generic_Environment(Generic_Files f, Level level, int range) {
-        Strings = f.getStrings();
-        Files = f;
-        LoggingLevel = level;
-        Range = range;
-        File dir;
-        dir = Files.getLogDir();
-        if (java.nio.file.Files.exists(dir.toPath())) {
-            dir = Generic_IO.addToArchive(dir, Range);
+    public Generic_Environment(Generic_Files f, Level l, int r) {
+        strings = f.getStrings();
+        files = f;
+        level = l;
+        range = r;
+        logs = new HashMap<>();
+        logNamesInUse = new HashSet<>();
+        initLog("Main");
+        log("LoggingLevel = " + level.getName(), true);
+    }
+
+    /**
+     * Initialises a new log with name s and a default file extension ".txt".
+     *
+     * @param s The name of the log.
+     * @return The ID of the log initialised.
+     */
+    public final int initLog(String s) {
+        return initLog(s, ".txt");
+    }
+
+    /**
+     * Initialises a new log with name s.
+     *
+     * @param s The name of the log.
+     * @param e The file extension.
+     * @return The ID of the log initialised.
+     */
+    public final int initLog(String s, String e) {
+        if (logNamesInUse.contains(s)) {
+            log("Warning log with name " + s + " is already in use. Another "
+                    + "is being set up!", 0, true);
         } else {
-            dir = Generic_IO.initialiseArchive(dir, Range);
+            logNamesInUse.add(s);
+        }
+        int logID = logs.size();
+        File dir;
+        dir = getLogDir(s);
+        PrintWriter pw;
+        pw = Generic_IO.getPrintWriter(new File(dir, s + e), false);
+        logs.put(logID, pw);
+        return logID;
+    }
+
+    /**
+     * Create and return a directory for a log file with name s.
+     *
+     * @param s The name of the log to be created.
+     * @return A new directory for a log. If this is the first log with this
+     * name, a new archive is set up. Otherwise an existing archive is used and
+     * a new archive leaf is set up in this for use.
+     */
+    protected File getLogDir(String s) {
+        File dir;
+        dir = new File(files.getLogDir(), s);
+        if (java.nio.file.Files.exists(dir.toPath())) {
+            dir = Generic_IO.addToArchive(dir, range);
+        } else {
+            dir = Generic_IO.initialiseArchive(dir, range);
         }
         dir.mkdirs();
-        LOG = Generic_IO.getPrintWriter(new File(dir, "log.txt"), false);
-        log("LoggingLevel = " + LoggingLevel.getName(), true);
+        return dir;
     }
 
     /**
-     * Closes Log.
-     *
+     * Closes Logs.
      */
-    protected void closeLog() {
-        LOG.close();
+    protected void closeLogs() {
+        logs.values().stream().forEach(pw -> {
+            pw.close();
+        });
     }
 
     /**
-     * @return {@link #Files} initialising it first if it is {@code null}.
+     * Closes Log with logID.
+     *
+     * @param logID The ID of the log to be closed.
+     */
+    public void closeLog(int logID) {
+        logs.get(logID).close();
+    }
+
+    /**
+     * @return {@link #files} initialising it first if it is {@code null}.
      */
     public Generic_Files getFiles() {
-        if (Files == null) {
-            Files = new Generic_Files(getStrings());
+        if (files == null) {
+            files = new Generic_Files(getStrings());
         }
-        return Files;
+        return files;
     }
 
     /**
-     * @return {@link #Strings} initialising it first if it is {@code null}.
+     * @return {@link #strings} initialising it first if it is {@code null}.
      */
     public Generic_Strings getStrings() {
-        if (Strings == null) {
-            Strings = new Generic_Strings();
+        if (strings == null) {
+            strings = new Generic_Strings();
         }
-        return Strings;
+        return strings;
     }
 
     /**
-     * Writes s to a new line of the output log and also prints it to std.out.
+     * Writes s to a new line of the log indexed by 0 and prints s to std.out.
      *
-     * @param s The message to log. 
-     * @param println Iff true then s is printed to std.out as well as to
-     * {@link #LOG}.
+     * @param s The message to log.
+     */
+    public final void log(String s) {
+        log(s, 0, true);
+    }
+
+    /**
+     * Writes s to a new line of the log indexed by 0 and prints it to std.out
+     * if println is true.
+     *
+     * @param s The message to log.
+     * @param println Iff true then s is also printed to std.out.
      */
     public final void log(String s, boolean println) {
-        LOG.println(s);
-        LOG.flush();
+        log(s, 0, println);
+    }
+
+    /**
+     * Writes s to a new line of log with ID logID and prints it to std.out.
+     *
+     * @param s The message to log.
+     * @param logID The ID of the log to write to.
+     */
+    public final void log(String s, int logID) {
+        log(s, logID, true);
+    }
+
+    /**
+     * Writes s to a new line of log with ID logID and prints it to std.out iff
+     * println is true.
+     *
+     * @param s The message to log.
+     * @param logID The ID of the log to write to.
+     * @param println Iff true then s is also printed to std.out.
+     */
+    public final void log(String s, int logID, boolean println) {
+        PrintWriter pw;
+        pw = logs.get(logID);
+        pw.println(s);
+        pw.flush();
         if (println) {
             System.out.println(s);
         }
     }
+
+    /**
+     * For writing lines to a log file with logID = 0.
+     *
+     * @param lines The lines to write.
+     */
+    public void log(Collection<String> lines) {
+        log(lines, 0, true);
+    }
+    
+    /**
+     * For writing lines to a log file.
+     *
+     * @param lines The lines to write.
+     * @param logID The ID of the log to write to.
+     * @param println Iff true then lines are also printed to std.out.
+     */
+    public void log(Collection<String> lines, int logID, boolean println) {
+        Iterator<String> iteS;
+        iteS = lines.iterator();
+        while (iteS.hasNext()) {
+            log(iteS.next(), logID);
+        }
+    }
+
 }

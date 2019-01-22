@@ -857,42 +857,49 @@ public class Generic_Collections {
      * @param m The map that is to be ordered by it's values.
      * @return Map
      */
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> m) {
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(
+            Map<K, V> m) {
         Map<K, V> r;
         List<Map.Entry<K, V>> list;
         list = new LinkedList<>(m.entrySet());
-        Collections.sort(list, (Map.Entry<K, V> o1, Map.Entry<K, V> o2) -> (o1.getValue()).compareTo(o2.getValue()));
+        Collections.sort(list, (Map.Entry<K, V> o1, Map.Entry<K, V> o2)
+                -> (o1.getValue()).compareTo(o2.getValue()));
         r = new LinkedHashMap<>();
         list.forEach((entry) -> {
             r.put(entry.getKey(), entry.getValue());
         });
         return r;
     }
-    
+
     /**
-     * For getting the maximum value in a collection of BigDecimal. 
-     * @param c
-     * @return the maximum value in {@code c} 
+     * For getting the maximum value in a collection of BigDecimals.
+     *
+     * @param c The collection of BigDecimals.
+     * @return the maximum value in {@code c}
      */
     public static BigDecimal getMax(Collection<BigDecimal> c) {
         Optional<BigDecimal> o;
         o = c.stream().parallel().max(BigDecimal::compareTo);
         return o.get();
     }
-    
+
     /**
-     * For getting the maximum value in a collection of BigDecimal. 
-     * @param c
-     * @return the maximum value in {@code c} 
+     * For getting the maximum value in a collection of BigDecimals.
+     *
+     * @param c The collection of BigDecimals.
+     * @return the maximum value in {@code c}
      */
     public static BigDecimal getMin(Collection<BigDecimal> c) {
         Optional<BigDecimal> o;
         o = c.stream().parallel().min(BigDecimal::compareTo);
         return o.get();
     }
-    
+
     /**
-     * @param c
+     * A test if b is coned in c.
+     *
+     * @param c The collection tested.
+     * @param b The value sought.
      * @return True iff b is in c.
      */
     public static boolean containsValue(Collection<BigDecimal> c, BigDecimal b) {

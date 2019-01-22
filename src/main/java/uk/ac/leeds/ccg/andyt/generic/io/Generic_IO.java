@@ -1847,26 +1847,5 @@ public class Generic_IO {
 //    public static boolean isStandardFileName(File f){
 //        return isStandardFileName(f.toString());
 //    } 
-    /**
-     * For writing data to a file.
-     *
-     * @param f The file to write to.
-     * @param h The header - The first line to write.
-     * @param lines The other lines to write.
-     */
-    public static void writeToFile(File f, String h, Collection<String> lines) {
-        try {
-            PrintWriter pw;
-            pw = new PrintWriter(f);
-            pw.println(h);
-            Iterator<String> iteS;
-            iteS = lines.iterator();
-            while (iteS.hasNext()) {
-                pw.println(iteS.next());
-            }
-            pw.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    
 }
