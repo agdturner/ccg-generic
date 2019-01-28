@@ -100,6 +100,16 @@ public class Generic_Environment {
     }
 
     /**
+     * Creates a new instance. {@link #level} is defaulted to Level.FINE.
+     * {@link #range} is defaulted to 100.
+     *
+     * @param f What {@link #files} is set to.
+     */
+    public Generic_Environment(Generic_Files f) {
+        this(f, Level.FINE, 100);
+    }
+    
+    /**
      * Creates a new instance.
      *
      * @param f What {@link #files} is set to.
