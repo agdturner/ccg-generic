@@ -126,6 +126,14 @@ public class Generic_Files {
     }
 
     /**
+     * {@code return new File(System.getProperty("user.dir"), "data");}
+     * @return A default directory called data in the user.dir.
+     */
+    public static File getDefaultDataDir() {
+        return new File(System.getProperty("user.dir"), "data");
+    }
+    
+    /**
      *
      * @return InputDataDir If null then InputDataDir is set using {@code
      * InputDataDir = new File(getDataDir(), Strings.s_input);}

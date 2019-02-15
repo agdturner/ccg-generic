@@ -69,27 +69,40 @@ public class Generic_Environment {
     protected transient final HashSet<String> logNamesInUse;
 
     /**
+     * Creates a new instance. The data directory is set using
+     * {@code Generic_Files.getDefaultDataDir()}.
+     * {@link Generic_Environment#Generic_Environment(java.io.File)}.
+     *
+     */
+    public Generic_Environment() {
+        this(Generic_Files.getDefaultDataDir());
+    }
+
+    /**
      * Creates a new instance. {@link #level} is defaulted to Level.FINE.
-     * {@link #range} is defaulted to 100.
+     * {@link Generic_Environment#Generic_Environment(java.io.File, java.util.logging.Level)}.
      *
      * @param d The directory that will be set as the data directory.
      */
     public Generic_Environment(File d) {
-        this(new Generic_Files(new Generic_Strings(), d), Level.FINE, 100);
+        this(d, Level.FINE);
     }
 
     /**
      * Creates a new instance. {@link #range} is defaulted to 100.
+     * {@link Generic_Environment#Generic_Environment(java.io.File, java.util.logging.Level, int)}.
      *
      * @param d The directory that will be set as the data directory.
      * @param l What {@link #level} is set to.
      */
     public Generic_Environment(File d, Level l) {
-        this(new Generic_Files(new Generic_Strings(), d), l, 100);
+        this(d, l, 100);
     }
 
     /**
-     * Creates a new instance.
+     * Creates a new instance. {@link #files} is set using
+     * {@code new Generic_Files(new Generic_Strings(), d)}.
+     * {@link Generic_Environment#Generic_Environment(uk.ac.leeds.ccg.andyt.generic.io.Generic_Files, java.util.logging.Level, int)}.
      *
      * @param d The directory that will be set as the data directory.
      * @param l What {@link #level} is set to.
@@ -100,19 +113,11 @@ public class Generic_Environment {
     }
 
     /**
-     * Creates a new instance. {@link #level} is defaulted to Level.FINE.
-     * {@link #range} is defaulted to 100.
+     * Creates a new instance. {@link #logs} is initialised using
+     * {@code new HashMap<>();}
      *
-     * @param f What {@link #files} is set to.
-     */
-    public Generic_Environment(Generic_Files f) {
-        this(f, Level.FINE, 100);
-    }
-    
-    /**
-     * Creates a new instance.
-     *
-     * @param f What {@link #files} is set to.
+     * @param f What {@link #files} is set to and from which {@link #strings} is
+     * set using {@code f.getStrings()}.
      * @param l What {@link #level} is set to.
      * @param r What {@link #range} is set to.
      */
@@ -128,13 +133,14 @@ public class Generic_Environment {
     }
 
     /**
-     * Initialises a new log with name s and a default file extension ".txt".
+     * Initialises a new log with name s and a default file extension
+     * ".log.txt".
      *
      * @param s The name of the log.
      * @return The ID of the log initialised.
      */
     public final int initLog(String s) {
-        return initLog(s, ".txt");
+        return initLog(s, ".log.txt");
     }
 
     /**
@@ -152,10 +158,8 @@ public class Generic_Environment {
             logNamesInUse.add(s);
         }
         int logID = logs.size();
-        File dir;
-        dir = getLogDir(s);
-        PrintWriter pw;
-        pw = Generic_IO.getPrintWriter(new File(dir, s + e), false);
+        File dir = getLogDir(s);
+        PrintWriter pw = Generic_IO.getPrintWriter(new File(dir, s + e), false);
         logs.put(logID, pw);
         return logID;
     }
@@ -274,7 +278,7 @@ public class Generic_Environment {
     public void log(Collection<String> lines) {
         log(lines, 0, true);
     }
-    
+
     /**
      * For writing lines to a log file.
      *
