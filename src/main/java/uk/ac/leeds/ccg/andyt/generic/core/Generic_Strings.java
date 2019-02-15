@@ -23,6 +23,8 @@ package uk.ac.leeds.ccg.andyt.generic.core;
  */
 public class Generic_Strings {
 
+    public static final String DATA = "data";
+
     // Strings starting with a capital letter
     public final String s_BigDecimal = "BigDecimal";
     public final String s_BigDouble = "BigDouble";

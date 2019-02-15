@@ -27,63 +27,63 @@ public class Generic_Files {
     /**
      * Transient instance of {@link Generic_Strings}.
      */
-    protected transient Generic_Strings Strings;
+    protected transient Generic_Strings strings;
 
     /**
      * The base level Data directory.
      */
-    protected File DataDir;
+    protected File dataDir;
 
     /**
-     * The input directory in {@link #DataDir}.
+     * The input directory in {@link #dataDir}.
      */
-    protected File InputDir;
+    protected File inputDir;
 
     /**
-     * The generated directory in {@link #DataDir}.
+     * The generated directory in {@link #dataDir}.
      */
-    protected File GeneratedDir;
+    protected File generatedDir;
 
     /**
-     * The output directory in {@link #DataDir}.
+     * The output directory in {@link #dataDir}.
      */
-    protected File OutputDir;
+    protected File outputDir;
 
     /**
-     * The log directory in {@link #OutputDir}.
+     * The log directory in {@link #outputDir}.
      */
-    protected File LogDir;
+    protected File logDir;
 
     public Generic_Files() {
         this(new Generic_Strings());
     }
-    
+
     /**
-     * Defaults DataDir to a directory {@link Generic_Strings#s_data} in the
-     * users current working directory.
+     * Defaults dataDir to what is returned from
+     * {@link Generic_Files#getDefaultDataDir()}.
      *
-     * @param s What {@link Strings} is set to.
+     * @param s What {@link #strings} is set to.
      */
     public Generic_Files(Generic_Strings s) {
-        Strings = s;
-        DataDir = new File(System.getProperty("user.dir"), s.s_data);
+        strings = s;
+        dataDir = getDefaultDataDir();
     }
 
     /**
-     * @param s What {@link #Strings} is set to.
-     * @param dir What {@link #DataDir} is set to.
+     * @param s What {@link #strings} is set to.
+     * @param dir What {@link #dataDir} is set to.
      */
     public Generic_Files(Generic_Strings s, File dir) {
-        Strings = s;
-        DataDir = dir;
+        strings = s;
+        dataDir = dir;
     }
 
     /**
-     * Sets {@link #DataDir} to {@code d} and sets
-     * {@link #InputDir}, {@link #GeneratedDir} and {@link #OutputDir} to
+     * Sets {@link #dataDir} to {@code d} and sets
+     * {@link #inputDir}, {@link #generatedDir} and {@link #outputDir} to
      * {@code null}.
      *
-     * @param d What {@link #DataDir} is set to.
+     * @param d What {@link #dataDir} is set to.
      */
     public final void setDataDirectory(File d) {
         if (!d.exists()) {
@@ -95,55 +95,56 @@ public class Generic_Files {
                         + ".setDataDirectory(String)");
             }
         }
-        DataDir = d;
-        InputDir = null;
-        GeneratedDir = null;
-        OutputDir = null;
+        dataDir = d;
+        inputDir = null;
+        generatedDir = null;
+        outputDir = null;
     }
 
     /**
-     * @return {@link #Strings}.
+     * @return {@link #strings}.
      */
     public Generic_Strings getStrings() {
-        return Strings;
+        return strings;
     }
 
     /**
-     * Set Strings to s.
+     * Set strings to s.
      *
-     * @param s What {@link #Strings} is set to.
+     * @param s What {@link #strings} is set to.
      */
     protected void setStrings(Generic_Strings s) {
-        this.Strings = s;
+        this.strings = s;
     }
 
     /**
      *
-     * @return DataDir
+     * @return dataDir
      */
     public File getDataDir() {
-        return DataDir;
+        return dataDir;
     }
 
     /**
      * {@code return new File(System.getProperty("user.dir"), "data");}
+     *
      * @return A default directory called data in the user.dir.
      */
     public static File getDefaultDataDir() {
-        return new File(System.getProperty("user.dir"), "data");
+        return new File(System.getProperty("user.dir"), Generic_Strings.DATA);
     }
-    
+
     /**
      *
      * @return InputDataDir If null then InputDataDir is set using {@code
-     * InputDataDir = new File(getDataDir(), Strings.s_input);}
+     * InputDataDir = new File(getDataDir(), strings.s_input);}
      */
     public File getInputDataDir() {
-        if (InputDir == null) {
-            InputDir = new File(getDataDir(), Strings.s_input);
-            InputDir.mkdirs();
+        if (inputDir == null) {
+            inputDir = new File(getDataDir(), strings.s_input);
+            inputDir.mkdirs();
         }
-        return InputDir;
+        return inputDir;
     }
 
     /**
@@ -151,25 +152,25 @@ public class Generic_Files {
      * @return GeneratedDataDir
      */
     public File getGeneratedDataDir() {
-        if (GeneratedDir == null) {
-            GeneratedDir = new File(getDataDir(), Strings.s_generated);
-            GeneratedDir.mkdirs();
+        if (generatedDir == null) {
+            generatedDir = new File(getDataDir(), strings.s_generated);
+            generatedDir.mkdirs();
         }
-        return GeneratedDir;
+        return generatedDir;
     }
 
     public File getOutputDataDir() {
-        if (OutputDir == null) {
-            OutputDir = new File(getDataDir(), Strings.s_output);
-            OutputDir.mkdirs();
+        if (outputDir == null) {
+            outputDir = new File(getDataDir(), strings.s_output);
+            outputDir.mkdirs();
         }
-        return OutputDir;
+        return outputDir;
     }
 
     public File getLogDir() {
-        if (LogDir == null) {
-            LogDir = new File(getOutputDataDir(), Strings.s_log);
+        if (logDir == null) {
+            logDir = new File(getOutputDataDir(), strings.s_log);
         }
-        return LogDir;
+        return logDir;
     }
 }
