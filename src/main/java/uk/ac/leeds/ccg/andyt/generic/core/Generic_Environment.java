@@ -69,6 +69,17 @@ public class Generic_Environment {
     protected transient final HashSet<String> logNamesInUse;
 
     /**
+     * The default Level for logging.
+     */
+    private static final Level DEFAULT_LEVEL = Level.FINE;
+
+    /**
+     * The default range in terms of the maximum number of files or directories
+     * to store in a directory.
+     */
+    private static final int DEFAULT_RANGE = 100;
+
+    /**
      * Creates a new instance. The data directory is set using
      * {@code Generic_Files.getDefaultDataDir()}.
      * {@link Generic_Environment#Generic_Environment(java.io.File)}.
@@ -85,7 +96,7 @@ public class Generic_Environment {
      * @param d The directory that will be set as the data directory.
      */
     public Generic_Environment(File d) {
-        this(d, Level.FINE);
+        this(d, DEFAULT_LEVEL);
     }
 
     /**
@@ -96,7 +107,7 @@ public class Generic_Environment {
      * @param l What {@link #level} is set to.
      */
     public Generic_Environment(File d, Level l) {
-        this(d, l, 100);
+        this(d, l, DEFAULT_RANGE);
     }
 
     /**
@@ -110,6 +121,17 @@ public class Generic_Environment {
      */
     public Generic_Environment(File d, Level l, int r) {
         this(new Generic_Files(new Generic_Strings(), d), l, r);
+    }
+
+    /**
+     * Creates a new instance. {@link #level} is defaulted to Level.FINE.
+     * {@link #range} is defaulted to 100.
+     *
+     * @param f What {@link #files} is set to and from which {@link #strings} is
+     * set using {@code f.getStrings()}.
+     */
+    public Generic_Environment(Generic_Files f) {
+        this(f, DEFAULT_LEVEL, DEFAULT_RANGE);
     }
 
     /**
