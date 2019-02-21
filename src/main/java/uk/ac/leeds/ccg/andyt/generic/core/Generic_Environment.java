@@ -293,6 +293,98 @@ public class Generic_Environment {
     }
 
     /**
+     * Prepends {@code s} with {@code "<"} and appends {@code s} with
+     * {@code ">"} then writes the result to a new line of the log indexed by 0
+     * and prints the result to std.out.
+     *
+     * @param s The message to log.
+     */
+    public final void logStartTag(String s) {
+        log(getStartTag(s), 0, true);
+    }
+
+    /**
+     * Prepends {@code s} with {@code "<"} and appends {@code s} with
+     * {@code ">"} then returns the result.
+     *
+     * @param s The String to be wrapped as a start tag then logged.
+     * @return {@code s} prepended with {@code "<"} and appended with
+     * {@code ">"}
+     */
+    public String getStartTag(String s) {
+        return "<" + s + ">";
+    }
+
+    /**
+     * Prepends {@code s} with {@code "<"} and appends {@code s} with
+     * {@code ">"} then writes the result to a new line of the log indexed by 0
+     * and prints the result to std.out iff {@code println} is true.
+     *
+     * @param s The String to be wrapped as a start tag then logged.
+     * @param println Iff true then the message is also printed to std.out.
+     */
+    public final void logStartTag(String s, boolean println) {
+        log(getStartTag(s), 0, println);
+    }
+
+    /**
+     * Prepends {@code s} with {@code "<"} and appends {@code s} with
+     * {@code ">"} then writes the result to a new line of the log indexed by {@code logID} and prints the message to std.out.
+     *
+     * @param s The String to be wrapped as a start tag then logged.
+     * @param logID The ID of the log to write to.
+     */
+    public final void logStartTag(String s, int logID) {
+        log(getStartTag(s), logID, true);
+    }
+    
+    /**
+     * Prepends {@code s} with {@code "</"} and appends {@code s} with
+     * {@code ">"} then writes the result to a new line of the log indexed by 0
+     * and prints the result to std.out.
+     *
+     * @param s The String to be wrapped as an end tag then logged.
+     */
+    public final void logEndTag(String s) {
+        log(getEndTag(s), 0, true);
+    }
+    
+    /**
+     * Prepends {@code s} with {@code "</"} and appends {@code s} with
+     * {@code ">"} then returns the result.
+     *
+     * @param s The String to be wrapped as an end tag then logged.
+     * @return {@code s} prepended with {@code "</"} and appended with
+     * {@code ">"}
+     */
+    public String getEndTag(String s) {
+        return "</" + s + ">";
+    }
+
+   /**
+     * Prepends {@code s} with {@code "</"} and appends {@code s} with
+     * {@code ">"} then writes the result to a new line of the log indexed by 0
+     * and prints the result to std.out iff {@code println} is true.
+     *
+     * @param s The String to be wrapped as a start tag then logged.
+     * @param println Iff true then the message is also printed to std.out.
+     */
+    public final void logEndTag(String s, boolean println) {
+        log(getEndTag(s), 0, println);
+    }
+
+    /**
+     * Prepends {@code s} with {@code "</"} and appends {@code s} with
+     * {@code ">"} then writes the result to a new line of the log indexed by {@code logID} and prints the message to std.out.
+     *
+     * @param s The String to be wrapped as a start tag then logged.
+     * @param logID The ID of the log to write to.
+     */
+    public final void logEndTag(String s, int logID) {
+        log(getEndTag(s), logID, true);
+    }
+
+    /**
      * For writing lines to a log file with logID = 0.
      *
      * @param lines The lines to write.
