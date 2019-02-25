@@ -15,7 +15,6 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.time;
 
-import java.io.Serializable;
 import java.time.YearMonth;
 import java.util.Objects;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
@@ -26,18 +25,12 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
  * Holds a reference to a YearMonth and provides methods to compare and process
  * year-months.
  */
-public class Generic_YearMonth
-        extends Generic_Object
-        implements Serializable, Comparable {
-
-    // For convenience
-    protected transient Generic_Strings Strings;
+public class Generic_YearMonth extends Generic_Object implements Comparable {
 
     public YearMonth YM;
 
     public Generic_YearMonth(Generic_Environment e) {
         super(e);
-        Strings = e.getStrings();
         YM = YearMonth.now();
     }
 
@@ -47,7 +40,6 @@ public class Generic_YearMonth
 
     public Generic_YearMonth(Generic_Environment e, YearMonth t) {
         super(e);
-        Strings = e.getStrings();
         YM = t;
     }
 
@@ -59,16 +51,15 @@ public class Generic_YearMonth
      */
     public Generic_YearMonth(Generic_Environment e, String s) {
         super(e);
-        Strings = e.getStrings();
         String[] split;
         split = s.split("-");
-        int year = new Integer(split[0]);
+        int year = Integer.valueOf(split[0]);
         String s2;
         s2 = split[1];
         if (s2.startsWith("0")) {
             s2 = s2.substring(1);
         }
-        int month = new Integer(s2);
+        int month = Integer.valueOf(s2);
         YM = YearMonth.of(year, month);
     }
 
@@ -106,7 +97,7 @@ public class Generic_YearMonth
         String result = "";
         int month = YM.getMonthValue();
         if (month < 10) {
-            result = Strings.symbol_0;
+            result = Generic_Strings.symbol_0;
         }
         result += Integer.toString(month);
         return result;

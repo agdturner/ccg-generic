@@ -15,13 +15,13 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.time;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
  * Holds a reference to a LocalDateTime and provides methods to compare and
@@ -30,7 +30,7 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
  *
  * @author Andy Turner
  */
-public class Generic_Time extends Generic_Date implements Serializable, Comparable {
+public class Generic_Time extends Generic_Date implements Comparable {
 
     public LocalDateTime LDT;
 
@@ -68,8 +68,8 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
      * @param s String
      */
     public Generic_Time(Generic_Environment e, String s) {
-        this(e, s, e.getStrings().symbol_minus, e.getStrings().s_T,
-                e.getStrings().symbol_colon);
+        this(e, s, Generic_Strings.symbol_minus, Generic_Strings.s_T,
+                Generic_Strings.symbol_colon);
     }
 
     /**
@@ -88,7 +88,7 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
         splitT = s.split(timedateSeparator);
         //super(split[0]);
         String[] split;
-        String s_0 = Strings.symbol_0;
+        String s_0 = Generic_Strings.symbol_0;
         String s2;
         int hour;
         int minute;
@@ -99,12 +99,12 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
             if (s2.startsWith(s_0)) {
                 s2 = s2.substring(1);
             }
-            hour = new Integer(s2);
+            hour = Integer.valueOf(s2);
             s2 = split[1];
             if (s2.startsWith(s_0)) {
                 s2 = s2.substring(1);
             }
-            minute = new Integer(s2);
+            minute = Integer.valueOf(s2);
             s2 = split[2];
             s2 = s2.substring(0, s2.length() - 1);
             if (s2.startsWith(s_0)) {
@@ -112,7 +112,7 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
             }
             second = 0;
             if (s2.length() > 0) {
-                second = new Integer(s2);
+                second = Integer.valueOf(s2);
             }
         } else {
             hour = 0;
@@ -143,9 +143,9 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
     }
 
     public Generic_Date getDate() {
-        Generic_Date result;
-        result = new Generic_Date(this);
-        return result;
+        Generic_Date r;
+        r = new Generic_Date(this);
+        return r;
     }
 
     /**
@@ -153,11 +153,9 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
      * @return YYYY-MM-DDTHH:MM:SSZ
      */
     public String toFormattedString0() {
-        return getYYYYMMDDHHMMSS(
-                Strings.symbol_minus,
-                Strings.s_T,
-                Strings.symbol_colon,
-                Strings.s_Z);
+        return getYYYYMMDDHHMMSS(Generic_Strings.symbol_minus,
+                Generic_Strings.s_T, Generic_Strings.symbol_colon,
+                Generic_Strings.s_Z);
     }
 
     /**
@@ -165,46 +163,43 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
      * @return YYYY-MM-DDTHH_MM_SSZ
      */
     public String toFormattedString1() {
-        return getYYYYMMDDHHMMSS(
-                Strings.symbol_minus,
-                Strings.s_T,
-                Strings.symbol_underscore,
-                Strings.s_Z);
+        return getYYYYMMDDHHMMSS(Generic_Strings.symbol_minus,
+                Generic_Strings.s_T, Generic_Strings.symbol_underscore,
+                Generic_Strings.s_Z);
     }
 
     public String toFormattedString2() {
-        return getYYYYMMDDHHMMSS(
-                Strings.special_emptyString,
-                Strings.special_emptyString,
-                Strings.special_emptyString,
-                Strings.special_emptyString);
+        return getYYYYMMDDHHMMSS(Generic_Strings.special_emptyString,
+                Generic_Strings.special_emptyString,
+                Generic_Strings.special_emptyString,
+                Generic_Strings.special_emptyString);
     }
 
     public String getYYYYMMDDHHMM() {
-        String result;
-        result = getYYYY() + getMM() + getDD() + getHH() + getMins();
-        return result;
+        String r;
+        r = getYYYY() + getMM() + getDD() + getHH() + getMins();
+        return r;
     }
 
     @Override
     public String getDD() {
-        String result = "";
+        String r = "";
         int dayOfMonth = LDT.getDayOfMonth();
         if (dayOfMonth < 10) {
-            result += Strings.symbol_0;
+            r += Generic_Strings.symbol_0;
         }
-        result += Integer.toString(dayOfMonth);
-        return result;
+        r += Integer.toString(dayOfMonth);
+        return r;
     }
 
     public String getHH() {
-        String result = "";
+        String r = "";
         int hour = LDT.getHour();
         if (hour < 10) {
-            result += Strings.symbol_0;
+            r += Generic_Strings.symbol_0;
         }
-        result += Integer.toString(hour);
-        return result;
+        r += Integer.toString(hour);
+        return r;
     }
 
     /**
@@ -214,23 +209,23 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
      * @return String
      */
     public String getMins() {
-        String result = "";
+        String r = "";
         int minute = LDT.getMinute();
         if (minute < 10) {
-            result += Strings.symbol_0;
+            r += Generic_Strings.symbol_0;
         }
-        result += Integer.toString(minute);
-        return result;
+        r += Integer.toString(minute);
+        return r;
     }
 
     public String getSS() {
-        String result = "";
+        String r = "";
         int second = LDT.getSecond();
         if (second < 10) {
-            result += Strings.symbol_0;
+            r += Generic_Strings.symbol_0;
         }
-        result += Integer.toString(second);
-        return result;
+        r += Integer.toString(second);
+        return r;
     }
 
     @Override
@@ -239,15 +234,15 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
     }
 
     public String getYYYYMMDDHHMMSS() {
-        String result;
-        result = super.toString();
-        result += Strings.s_T;
-        result += getHH();
-        result += Strings.symbol_colon;
-        result += getMins();
-        result += Strings.symbol_colon;
-        result += getSS();
-        return result;
+        String r;
+        r = super.toString();
+        r += Generic_Strings.s_T;
+        r += getHH();
+        r += Generic_Strings.symbol_colon;
+        r += getMins();
+        r += Generic_Strings.symbol_colon;
+        r += getSS();
+        return r;
     }
 
     public String getYYYYMMDDHHMMSS(
@@ -255,16 +250,16 @@ public class Generic_Time extends Generic_Date implements Serializable, Comparab
             String dateTimeDivider,
             String timeComponentDivider,
             String resultEnding) {
-        String result;
-        result = getYYYYMMDD(dateComponentDelimitter);
-        result += dateTimeDivider;
-        result += getHH();
-        result += timeComponentDivider;
-        result += getMins();
-        result += timeComponentDivider;
-        result += getSS();
-        result += resultEnding;
-        return result;
+        String r;
+        r = getYYYYMMDD(dateComponentDelimitter);
+        r += dateTimeDivider;
+        r += getHH();
+        r += timeComponentDivider;
+        r += getMins();
+        r += timeComponentDivider;
+        r += getSS();
+        r += resultEnding;
+        return r;
     }
 
     /**

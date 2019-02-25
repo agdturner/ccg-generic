@@ -16,6 +16,8 @@
 package uk.ac.leeds.ccg.andyt.generic.io;
 
 import java.io.File;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
@@ -23,11 +25,6 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
  * @author geoagdt
  */
 public class Generic_Files {
-
-    /**
-     * Transient instance of {@link Generic_Strings}.
-     */
-    protected transient Generic_Strings strings;
 
     /**
      * The base level Data directory.
@@ -54,27 +51,18 @@ public class Generic_Files {
      */
     protected File logDir;
 
-    public Generic_Files() {
-        this(new Generic_Strings());
-    }
-
     /**
      * Defaults dataDir to what is returned from
      * {@link Generic_Files#getDefaultDataDir()}.
-     *
-     * @param s What {@link #strings} is set to.
      */
-    public Generic_Files(Generic_Strings s) {
-        strings = s;
+    public Generic_Files() {
         dataDir = getDefaultDataDir();
     }
 
     /**
-     * @param s What {@link #strings} is set to.
      * @param dir What {@link #dataDir} is set to.
      */
-    public Generic_Files(Generic_Strings s, File dir) {
-        strings = s;
+    public Generic_Files(File dir) {
         dataDir = dir;
     }
 
@@ -102,22 +90,6 @@ public class Generic_Files {
     }
 
     /**
-     * @return {@link #strings}.
-     */
-    public Generic_Strings getStrings() {
-        return strings;
-    }
-
-    /**
-     * Set strings to s.
-     *
-     * @param s What {@link #strings} is set to.
-     */
-    protected void setStrings(Generic_Strings s) {
-        this.strings = s;
-    }
-
-    /**
      *
      * @return dataDir
      */
@@ -131,17 +103,17 @@ public class Generic_Files {
      * @return A default directory called data in the user.dir.
      */
     public static File getDefaultDataDir() {
-        return new File(System.getProperty("user.dir"), Generic_Strings.DATA);
+        return new File(System.getProperty("user.dir"), Generic_Strings.s_DATA);
     }
 
     /**
      *
      * @return InputDataDir If null then InputDataDir is set using {@code
-     * InputDataDir = new File(getDataDir(), strings.s_input);}
+     * InputDataDir = new File(getDataDir(), Generic_Strings.s_input);}
      */
     public File getInputDataDir() {
         if (inputDir == null) {
-            inputDir = new File(getDataDir(), strings.s_input);
+            inputDir = new File(getDataDir(), Generic_Strings.s_input);
             inputDir.mkdirs();
         }
         return inputDir;
@@ -153,7 +125,7 @@ public class Generic_Files {
      */
     public File getGeneratedDataDir() {
         if (generatedDir == null) {
-            generatedDir = new File(getDataDir(), strings.s_generated);
+            generatedDir = new File(getDataDir(), Generic_Strings.s_generated);
             generatedDir.mkdirs();
         }
         return generatedDir;
@@ -161,7 +133,7 @@ public class Generic_Files {
 
     public File getOutputDataDir() {
         if (outputDir == null) {
-            outputDir = new File(getDataDir(), strings.s_output);
+            outputDir = new File(getDataDir(), Generic_Strings.s_output);
             outputDir.mkdirs();
         }
         return outputDir;
@@ -169,7 +141,7 @@ public class Generic_Files {
 
     public File getLogDir() {
         if (logDir == null) {
-            logDir = new File(getOutputDataDir(), strings.s_log);
+            logDir = new File(getOutputDataDir(), Generic_Strings.s_log);
         }
         return logDir;
     }

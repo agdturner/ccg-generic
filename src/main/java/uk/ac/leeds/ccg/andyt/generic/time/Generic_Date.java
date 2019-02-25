@@ -15,20 +15,18 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.time;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 //import java.time.Month;
 import java.time.YearMonth;
 import java.util.Objects;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
  * Holds a reference to a LocalDate and provides methods to compare and process
  * dates.
  */
-public class Generic_Date
-        extends Generic_YearMonth
-        implements Serializable, Comparable {
+public class Generic_Date extends Generic_YearMonth implements Comparable {
 
     public LocalDate LD;
 
@@ -96,7 +94,7 @@ public class Generic_Date
         String r = "";
         int month = LD.getMonthValue();
         if (month < 10) {
-            r = Strings.symbol_0;
+            r = Generic_Strings.symbol_0;
         }
         r += Integer.toString(month);
         return r;
@@ -134,7 +132,7 @@ public class Generic_Date
         String result = "";
         int dayOfMonth = LD.getDayOfMonth();
         if (dayOfMonth < 10) {
-            result += Strings.symbol_0;
+            result += Generic_Strings.symbol_0;
         }
         result += Integer.toString(dayOfMonth);
         return result;

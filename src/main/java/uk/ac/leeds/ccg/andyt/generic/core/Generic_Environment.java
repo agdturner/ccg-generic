@@ -41,10 +41,10 @@ public class Generic_Environment {
      */
     protected Generic_Files files;
 
-    /**
-     * A sharable instance of {@link Generic_Strings}.
-     */
-    protected Generic_Strings strings;
+//    /**
+//     * A sharable instance of {@link Generic_Strings}.
+//     */
+//    protected Generic_Strings strings;
 
     /**
      * The logging level.
@@ -120,7 +120,7 @@ public class Generic_Environment {
      * @param r What {@link #range} is set to.
      */
     public Generic_Environment(File d, Level l, int r) {
-        this(new Generic_Files(new Generic_Strings(), d), l, r);
+        this(new Generic_Files(d), l, r);
     }
 
     /**
@@ -138,13 +138,11 @@ public class Generic_Environment {
      * Creates a new instance. {@link #logs} is initialised using
      * {@code new HashMap<>();}
      *
-     * @param f What {@link #files} is set to and from which {@link #strings} is
-     * set using {@code f.getStrings()}.
+     * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
      * @param r What {@link #range} is set to.
      */
     public Generic_Environment(Generic_Files f, Level l, int r) {
-        strings = f.getStrings();
         files = f;
         level = l;
         range = r;
@@ -229,21 +227,39 @@ public class Generic_Environment {
      */
     public Generic_Files getFiles() {
         if (files == null) {
-            files = new Generic_Files(getStrings());
+            files = new Generic_Files();
         }
         return files;
     }
 
+//    /**
+//     * @return {@link #strings} initialising it first if it is {@code null}.
+//     */
+//    public Generic_Strings getStrings() {
+//        if (strings == null) {
+//            strings = new Generic_Strings();
+//        }
+//        return strings;
+//    }
+
     /**
-     * @return {@link #strings} initialising it first if it is {@code null}.
+     * Sets {@link #files}.
+     * 
+     * @param f What {@link #files} is set to.
      */
-    public Generic_Strings getStrings() {
-        if (strings == null) {
-            strings = new Generic_Strings();
-        }
-        return strings;
+    public void setFiles(Generic_Files f) {
+        this.files = f;
     }
 
+//    /**
+//     * Sets {@link #strings}.
+//     * 
+//     * @param s What {@link #strings} is set to.
+//     */
+//    public void setStrings(Generic_Strings s) {
+//        this.strings = s;
+//    }
+    
     /**
      * Writes s to a new line of the log indexed by 0 and prints s to std.out.
      *
