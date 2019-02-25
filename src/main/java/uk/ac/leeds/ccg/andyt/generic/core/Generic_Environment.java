@@ -127,8 +127,7 @@ public class Generic_Environment {
      * Creates a new instance. {@link #level} is defaulted to Level.FINE.
      * {@link #range} is defaulted to 100.
      *
-     * @param f What {@link #files} is set to and from which {@link #strings} is
-     * set using {@code f.getStrings()}.
+     * @param f What {@link #files} is set to.
      */
     public Generic_Environment(Generic_Files f) {
         this(f, DEFAULT_LEVEL, DEFAULT_RANGE);
@@ -232,16 +231,6 @@ public class Generic_Environment {
         return files;
     }
 
-//    /**
-//     * @return {@link #strings} initialising it first if it is {@code null}.
-//     */
-//    public Generic_Strings getStrings() {
-//        if (strings == null) {
-//            strings = new Generic_Strings();
-//        }
-//        return strings;
-//    }
-
     /**
      * Sets {@link #files}.
      * 
@@ -250,15 +239,6 @@ public class Generic_Environment {
     public void setFiles(Generic_Files f) {
         this.files = f;
     }
-
-//    /**
-//     * Sets {@link #strings}.
-//     * 
-//     * @param s What {@link #strings} is set to.
-//     */
-//    public void setStrings(Generic_Strings s) {
-//        this.strings = s;
-//    }
     
     /**
      * Writes s to a new line of the log indexed by 0 and prints s to std.out.
