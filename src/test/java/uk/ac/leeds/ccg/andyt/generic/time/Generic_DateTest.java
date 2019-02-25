@@ -63,7 +63,7 @@ public class Generic_DateTest extends Generic_Object {
             testDir.mkdirs();
         }
         Generic_Files f;
-        f = new Generic_Files(new Generic_Strings(), testDir);
+        f = new Generic_Files(testDir);
         //e = new Generic_Environment(testDir.getPath());
         e = new Generic_Environment(f, Level.ALL, 100);
     }
