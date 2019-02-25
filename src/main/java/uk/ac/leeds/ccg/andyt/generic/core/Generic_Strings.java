@@ -40,6 +40,7 @@ public class Generic_Strings {
 
     // Strings starting with a lower case letter
     public static final String s_byte = "byte";
+    public static final String s_dat = "dat";
     public static final String s_data = "data";
     public static final String s_double = "double";
     public static final String s_float = "float";
