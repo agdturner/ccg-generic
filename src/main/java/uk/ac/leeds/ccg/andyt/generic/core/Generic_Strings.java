@@ -72,6 +72,7 @@ public class Generic_Strings {
     public static final String s_e = "e";
     public static final String s_f = "f";
     public static final String s_F = "F";
+    public static final String s_False = "False";
     public static final String s_Float = "Float";
     public static final String s_float = "float";
     public static final String s_G = "G";
