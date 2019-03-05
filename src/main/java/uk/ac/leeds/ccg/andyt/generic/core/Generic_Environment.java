@@ -45,7 +45,6 @@ public class Generic_Environment {
 //     * A sharable instance of {@link Generic_Strings}.
 //     */
 //    protected Generic_Strings strings;
-
     /**
      * The logging level.
      */
@@ -233,13 +232,13 @@ public class Generic_Environment {
 
     /**
      * Sets {@link #files}.
-     * 
+     *
      * @param f What {@link #files} is set to.
      */
     public void setFiles(Generic_Files f) {
         this.files = f;
     }
-    
+
     /**
      * Writes s to a new line of the log indexed by 0 and prints s to std.out.
      *
@@ -325,7 +324,8 @@ public class Generic_Environment {
 
     /**
      * Prepends {@code s} with {@code "<"} and appends {@code s} with
-     * {@code ">"} then writes the result to a new line of the log indexed by {@code logID} and prints the message to std.out.
+     * {@code ">"} then writes the result to a new line of the log indexed by
+     * {@code logID} and prints the message to std.out.
      *
      * @param s The String to be wrapped as a start tag then logged.
      * @param logID The ID of the log to write to.
@@ -333,7 +333,7 @@ public class Generic_Environment {
     public final void logStartTag(String s, int logID) {
         log(getStartTag(s), logID, true);
     }
-    
+
     /**
      * Prepends {@code s} with {@code "</"} and appends {@code s} with
      * {@code ">"} then writes the result to a new line of the log indexed by 0
@@ -344,7 +344,7 @@ public class Generic_Environment {
     public final void logEndTag(String s) {
         log(getEndTag(s), 0, true);
     }
-    
+
     /**
      * Prepends {@code s} with {@code "</"} and appends {@code s} with
      * {@code ">"} then returns the result.
@@ -357,7 +357,7 @@ public class Generic_Environment {
         return "</" + s + ">";
     }
 
-   /**
+    /**
      * Prepends {@code s} with {@code "</"} and appends {@code s} with
      * {@code ">"} then writes the result to a new line of the log indexed by 0
      * and prints the result to std.out iff {@code println} is true.
@@ -371,7 +371,8 @@ public class Generic_Environment {
 
     /**
      * Prepends {@code s} with {@code "</"} and appends {@code s} with
-     * {@code ">"} then writes the result to a new line of the log indexed by {@code logID} and prints the message to std.out.
+     * {@code ">"} then writes the result to a new line of the log indexed by
+     * {@code logID} and prints the message to std.out.
      *
      * @param s The String to be wrapped as a start tag then logged.
      * @param logID The ID of the log to write to.
