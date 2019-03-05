@@ -51,6 +51,8 @@ public class Generic_Strings {
     // Alphabetical list of commonly used word type Strings
     public static final String s_A = "A";
     public static final String s_a = "a";
+    public static final String s_ac = "ac";
+    public static final String s_andyt = "andyt";
     public static final String s_ArrayList = "ArrayList";
     public static final String s_B = "B";
     public static final String s_b = "b";
@@ -61,6 +63,7 @@ public class Generic_Strings {
     public static final String s_C = "C";
     public static final String s_D = "D";
     public static final String s_c = "c";
+    public static final String s_ccg = "ccg";
     public static final String s_d = "d";
     public static final String s_dat = "dat";
     public static final String s_DATA = "DATA";
@@ -78,6 +81,7 @@ public class Generic_Strings {
     public static final String s_G = "G";
     public static final String s_g = "g";
     public static final String s_generated = "generated";
+    public static final String s_generic = "generic";
     public static final String s_H = "H";
     public static final String s_h = "h";
     public static final String s_HashMap = "HashMap";
@@ -89,15 +93,18 @@ public class Generic_Strings {
     public static final String s_Integer = "Integer";
     public static final String s_J = "J";
     public static final String s_j = "j";
+    public static final String s_java = "java";
     public static final String s_K = "K";
     public static final String s_k = "k";
     public static final String s_L = "L";
     public static final String s_l = "l";
+    public static final String s_leeds = "leeds";
     public static final String s_log = "log";
     public static final String s_Long = "Long";
     public static final String s_long = "long";
     public static final String s_M = "M";
     public static final String s_m = "m";
+    public static final String s_main = "main";
     public static final String s_N = "N";
     public static final String s_n = "n";
     public static final String s_O = "O";
@@ -111,15 +118,17 @@ public class Generic_Strings {
     public static final String s_r = "r";
     public static final String s_S = "S";
     public static final String s_s = "s";
-    public static final String s_String = "String";
     public static final String s_Short = "Short";
     public static final String s_short = "short";
+    public static final String s_src = "src";
+    public static final String s_String = "String";
     public static final String s_T = "T";
     public static final String s_t = "t";
     public static final String s_TreeMap = "TreeMap";
     public static final String s_True = "True";
     public static final String s_U = "U";
     public static final String s_u = "u";
+    public static final String s_uk = "uk";
     public static final String s_V = "V";
     public static final String s_v = "v";
     public static final String s_W = "W";
