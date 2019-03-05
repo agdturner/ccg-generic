@@ -17,6 +17,7 @@ package uk.ac.leeds.ccg.andyt.generic.core;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,9 +28,9 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 
 /**
  * A class for constructing a generic environment object. Normally there is only
- * one such object in a running program. It is used to provide access to objects
- * that are commonly wanted and used. The idea is that there can be one main
- * copy of such objects that are shared saving memory.
+ * one such object in a running program. It is to provide access to other
+ * objects that are commonly used. The idea is that there only need by the one
+ * copy of such objects saving memory, time and confusion.
  *
  * @author Andy Turner
  * @version 1.0.0
@@ -41,10 +42,6 @@ public class Generic_Environment {
      */
     protected Generic_Files files;
 
-//    /**
-//     * A sharable instance of {@link Generic_Strings}.
-//     */
-//    protected Generic_Strings strings;
     /**
      * The logging level.
      */
@@ -193,7 +190,7 @@ public class Generic_Environment {
     protected File getLogDir(String s) {
         File dir;
         dir = new File(files.getLogDir(), s);
-        if (java.nio.file.Files.exists(dir.toPath())) {
+        if (Files.exists(dir.toPath())) {
             dir = Generic_IO.addToArchive(dir, range);
         } else {
             dir = Generic_IO.initialiseArchive(dir, range);
