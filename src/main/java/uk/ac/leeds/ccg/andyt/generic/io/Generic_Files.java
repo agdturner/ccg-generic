@@ -101,7 +101,7 @@ public class Generic_Files {
      * @return A default directory called data in the user.dir.
      */
     public static File getDefaultDataDir() {
-        return new File(System.getProperty("user.dir"), Generic_Strings.s_DATA);
+        return new File(System.getProperty("user.dir"), Generic_Strings.s_data);
     }
 
     /**
