@@ -64,8 +64,7 @@ public class Generic_Visualisation {
                 return loadImage(f);
             }
         } catch (IOException e) {
-            Generic_Log.LOGGER.log(
-                    Generic_Log.Generic_DefaultLogLevel, //Level.ALL,
+            Generic_Log.LOGGER.log(Generic_Log.DEFAULT_LEVEL, //Level.ALL,
                     e.getMessage());
             e.printStackTrace(System.err);
             System.exit(Generic_ErrorAndExceptionHandler.IOException);
@@ -124,7 +123,7 @@ public class Generic_Visualisation {
         }
 //        } catch (IOException e) {
 //            Generic_Log.LOGGER.log(
-//                    Generic_Log.Generic_DefaultLogLevel, //Level.ALL,
+//                    Generic_Log.DEFAULT_LEVEL, //Level.ALL,
 //                    e.getMessage());
 //            String methodName = "saveImage(BufferedImage,String,File)";
 //            System.err.println(e.getMessage());

@@ -129,6 +129,17 @@ public class Generic_Environment {
         this(f, DEFAULT_LEVEL, DEFAULT_RANGE);
     }
 
+     /**
+     * Creates a new instance. {@link #range} is defaulted to 100.
+     * {@link Generic_Environment#Generic_Environment(uk.ac.leeds.ccg.andyt.generic.io.Generic_Files, java.util.logging.Level, uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment)}.
+     *
+     * @param f What {@link #files} is set to.
+     * @param l What {@link #level} is set to.
+     */
+    public Generic_Environment(Generic_Files f, Level l){
+        this(f, l, DEFAULT_RANGE);
+    }
+            
     /**
      * Creates a new instance. {@link #logs} is initialised using
      * {@code new HashMap<>();}
@@ -188,8 +199,7 @@ public class Generic_Environment {
      * a new archive leaf is set up in this for use.
      */
     protected File getLogDir(String s) {
-        File dir;
-        dir = new File(files.getLogDir(), s);
+        File dir = new File(files.getLogDir(), s);
         if (Files.exists(dir.toPath())) {
             dir = Generic_IO.addToArchive(dir, range);
         } else {

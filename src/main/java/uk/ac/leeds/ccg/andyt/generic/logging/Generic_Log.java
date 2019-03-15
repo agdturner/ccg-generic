@@ -27,7 +27,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import java.util.logging.LoggingMXBean;
+import java.lang.management.PlatformLoggingMXBean;
+//import java.util.logging.LoggingMXBean;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.XMLFormatter;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
@@ -35,71 +36,20 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
 /**
  * A general abstract logging class.
  */
-public abstract class Generic_Log implements LoggingMXBean {
+//public abstract class Generic_Log implements LoggingMXBean {
+public abstract class Generic_Log implements PlatformLoggingMXBean {
 
     private static final String CLASS = Generic_Log.class.getName();
     private static final String PACKAGE = Generic_Log.class.getPackage().getName();
     public static Logger LOGGER;
-    /**
-     * For looking up logging
-     */
-//    protected static final HashMap<String, Level> loggerNameLevel_HashMap = new HashMap<String, Level>();
-//    protected static final HashMap<String, File> loggerNameFile_HashMap = new HashMap<String, File>();
-//    protected static final HashMap<File, FileHandler> loggerFileFileHandler_HashMap = new HashMap<File, FileHandler>();
-//    protected static final HashMap<FileHandler, File> loggerFileHandlerFile_HashMap = new HashMap<FileHandler, File>();
-//    protected HashMap<String, Level> loggerNameLevel_HashMap;
-//    protected HashMap<String, File> loggerNameFile_HashMap;
-//    protected HashMap<File, FileHandler> loggerFileFileHandler_HashMap;
-//    protected HashMap<FileHandler, File> loggerFileHandlerFile_HashMap;
-    //protected transient FileHandler _FileHandler;
     public static final String NAME = "Generic_Log";
-    public static final String DIR = "logs";
-    public static final int Generic_DefaultLogFileSizeLimit = Integer.MAX_VALUE;
-    public static final int Generic_DefaultLogFileCount = 5;
-    public static final boolean Generic_DefaultLogFileAppend = false;
+    public static final String DIR_NAME = "logs";
+    public static final int DEFAULT_LOG_FILESIZE_LIMIT = Integer.MAX_VALUE;
+    public static final int DEFAULT_LOG_FILE_COUNT = 5;
+    public static final boolean DEFAULT_APPEND = false;
     //protected transient static Logger _Logger;
-    public static Level Generic_DefaultLogLevel = Level.ALL;
+    public static Level DEFAULT_LEVEL = Level.ALL;
 
-//    public Generic_Log() {
-//    }
-//
-//    public Generic_Log(Generic_Log a_Generic_Log) {
-//        this.loggerNameLevel_HashMap = a_Generic_Log.loggerNameLevel_HashMap;
-//        this.loggerNameFile_HashMap = a_Generic_Log.loggerNameFile_HashMap;
-//        this.loggerFileHandlerFile_HashMap = a_Generic_Log.loggerFileHandlerFile_HashMap;
-//        this.loggerFileFileHandler_HashMap = a_Generic_Log.loggerFileFileHandler_HashMap;
-//        //this._FileHandler = a_Generic_Log._FileHandler;
-//    }
-//
-//    private void init() {
-//        LogManager.getLogManager().addLogger(Logger.getLogger(NAME));
-//        loggerNameLevel_HashMap = new HashMap<String, Level>();
-//        loggerNameLevel_HashMap.put(NAME, Generic_DefaultLogLevel);
-//        loggerNameFile_HashMap = new HashMap<String, File>();
-//        loggerFileFileHandler_HashMap = new HashMap<File, FileHandler>();
-//        loggerFileHandlerFile_HashMap = new HashMap<FileHandler, File>();
-//    }
-//
-//    public Generic_Log(
-//            Level level,
-//            File directory,
-//            String classname,
-//            String filename) {
-//        init(level,
-//                directory,
-//                classname,
-//                filename);
-//    }
-//
-//    public Generic_Log(
-//            Level level,
-//            File directory,
-//            String filename) {
-//        init(level,
-//                directory,
-//                NAME,
-//                filename);
-//    }
     /**
      * Creates loggers and registers them with the LogManager. The loggers
      * created are configured by reading a logging.properties configuration file
@@ -109,28 +59,23 @@ public abstract class Generic_Log implements LoggingMXBean {
      * System.getProperty("java.util.logging.config.file"))
      * </code>
      *
-     * @param loggingPropertiesFile File.
-     * @param directory The file directory base containing the
-     * logging.properties file (possibly at great depth!)
-     * @param logDirectory The directory into which and LoggingFiles will be
-     * stored (possibly at some depth)
-     * @param logname Typically the source package or some name for naming the
-     * loggers created
+     * @param f Logging Properties File.
+     * @param dir The directory containing the logging.properties file (possibly
+     * at great depth).
+     * @param logDirectory The directory into which log files will be created
+     * and stored (possibly at great depth).
+     * @param name Typically the source package or some name for naming the
+     * loggers created.
      */
     //public static Logger parseLoggingProperties(
-    public static void parseLoggingProperties(
-            File loggingPropertiesFile,
-            File directory,
-            File logDirectory,
-            String logname) {
-        String sourceMethod = "parseLoggingProperties(File,File,File,String)";
-        //Logger logname_Logger = Logger.getLogger(logname);
-        //logger = Logger.getLogger("");
-        LOGGER = Logger.getLogger(logname);
-        Properties logging_Properties = new Properties();
+    public static void parseLoggingProperties(File f, File dir, File logDirectory,
+            String name) {
+        String m = "parseLoggingProperties(File,File,File,String)";
+        LOGGER = Logger.getLogger(name);
+        Properties properties = new Properties();
         try {
-            FileInputStream fis = new FileInputStream(loggingPropertiesFile);
-            logging_Properties.load(fis);
+            FileInputStream fis = new FileInputStream(f);
+            properties.load(fis);
             fis.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -138,13 +83,13 @@ public abstract class Generic_Log implements LoggingMXBean {
 
         LogManager logManager = LogManager.getLogManager();
         try {
-            FileInputStream fis = new FileInputStream(loggingPropertiesFile);
+            FileInputStream fis = new FileInputStream(f);
             logManager.readConfiguration(fis);
             fis.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
             LOGGER.log(
-                    Level.SEVERE, "{0} in {1}.{2}", new Object[]{e.getMessage(), CLASS, sourceMethod});
+                    Level.SEVERE, "{0} in {1}.{2}", new Object[]{e.getMessage(), CLASS, m});
         }
 //        System.out.println(logManager.getProperty("java.util.logging.config.class"));
 //        System.out.println(logManager.getProperty("java.util.logging.config.file"));
@@ -166,11 +111,10 @@ public abstract class Generic_Log implements LoggingMXBean {
 //                System.out.println(key + " " + object.toString());
 //            }
 //        }
-        String level_String = logging_Properties.getProperty(
-                logname + ".level");
+        String s = properties.getProperty(name + ".level");
         Level level = null;
-        if (level_String != null) {
-            level = Level.parse(level_String);
+        if (s != null) {
+            level = Level.parse(s);
         } else {
             level = Level.ALL;
         }
@@ -179,7 +123,7 @@ public abstract class Generic_Log implements LoggingMXBean {
         //level = Logger.getLogger(GENESIS_Mortality.class.getName()).getLevel();
         // Initialise fileHandler
         //System.out.println(logging_Properties.getProperty("java.util.logging.FileHandler.limit"));
-        String fileHandlerLimit = logging_Properties.getProperty("java.util.logging.FileHandler.limit");
+        String fileHandlerLimit = properties.getProperty("java.util.logging.FileHandler.limit");
         int fileHandlerLimit_int;
         if (fileHandlerLimit != null) {
             fileHandlerLimit_int = Integer.parseInt(fileHandlerLimit);
@@ -187,7 +131,7 @@ public abstract class Generic_Log implements LoggingMXBean {
             fileHandlerLimit_int = 10000000;
         }
         //System.out.println(logging_Properties.getProperty("java.util.logging.FileHandler.count"));
-        String fileHandlerCount = logging_Properties.getProperty("java.util.logging.FileHandler.count");
+        String fileHandlerCount = properties.getProperty("java.util.logging.FileHandler.count");
         int fileHandlerCount_int;
         if (fileHandlerCount != null) {
             fileHandlerCount_int = Integer.parseInt(fileHandlerCount);
@@ -195,9 +139,9 @@ public abstract class Generic_Log implements LoggingMXBean {
             fileHandlerCount_int = 10;
         }
         // Set up FileHandler
-        FileHandler fileHandler = getFileHandler(level, logDirectory, logname, fileHandlerLimit_int, fileHandlerCount_int);
+        FileHandler fileHandler = getFileHandler(level, logDirectory, name, fileHandlerLimit_int, fileHandlerCount_int);
         //Generic_Log.getFileHandler(logname);
-        String fileHandlerFormatter_String = logging_Properties.getProperty("java.util.logging.FileHandler.formatter");
+        String fileHandlerFormatter_String = properties.getProperty("java.util.logging.FileHandler.formatter");
         if (fileHandlerFormatter_String != null) {
             fileHandlerFormatter_String = fileHandlerFormatter_String.trim();
             if (fileHandlerFormatter_String.equalsIgnoreCase("java.util.logging.SimpleFormatter")) {
@@ -210,7 +154,7 @@ public abstract class Generic_Log implements LoggingMXBean {
         } else {
             fileHandler.setFormatter(new SimpleFormatter());
         }
-        String fileHandlerLevel_String = logging_Properties.getProperty("java.util.logging.FileHandler.level");
+        String fileHandlerLevel_String = properties.getProperty("java.util.logging.FileHandler.level");
         if (fileHandlerLevel_String != null) {
             Level fileHandlerLevel = Level.parse(fileHandlerLevel_String.trim());
             if (fileHandlerLevel == null) {
@@ -222,11 +166,11 @@ public abstract class Generic_Log implements LoggingMXBean {
         LOGGER.addHandler(fileHandler);
         // Set up ConsoleHandler
         ConsoleHandler consoleHandler = new ConsoleHandler();
-        String consoleHandlerLevel_String = logging_Properties.getProperty("java.util.logging.ConsoleHandler.level");
+        String consoleHandlerLevel_String = properties.getProperty("java.util.logging.ConsoleHandler.level");
         if (consoleHandlerLevel_String != null) {
             Level consoleHandlerLevel = Level.parse(consoleHandlerLevel_String.trim());
             consoleHandler.setLevel(consoleHandlerLevel);
-            String consoleFormatter_String = logging_Properties.getProperty("java.util.logging.ConsoleHandler.formatter").trim();
+            String consoleFormatter_String = properties.getProperty("java.util.logging.ConsoleHandler.formatter").trim();
             if (consoleFormatter_String.equalsIgnoreCase("java.util.logging.SimpleFormatter")) {
                 consoleHandler.setFormatter(new SimpleFormatter());
             } else {
@@ -240,7 +184,7 @@ public abstract class Generic_Log implements LoggingMXBean {
         LOGGER.addHandler(consoleHandler);
         //LogManager.getLogManager().addLogger(logname_Logger);
         // Log System.getProperties()
-        Properties properties = System.getProperties();
+        properties = System.getProperties();
         Enumeration<Object> enumeration = properties.keys();
         String key_String;
         String property;
@@ -251,10 +195,10 @@ public abstract class Generic_Log implements LoggingMXBean {
             //logname_Logger.log(Level.ALL, "{0} {1}", new Object[]{key_String, property});
         }
         // Log loggingPropertiesKeys
-        Enumeration<Object> loggingPropertiesKeys = logging_Properties.keys();
+        Enumeration<Object> loggingPropertiesKeys = properties.keys();
         while (loggingPropertiesKeys.hasMoreElements()) {
             key_String = loggingPropertiesKeys.nextElement().toString();
-            property = logging_Properties.getProperty(key_String);
+            property = properties.getProperty(key_String);
             //logname_Logger.log(Level.ALL, "{0} {1}", new Object[]{key_String, property});
             LOGGER.log(Level.ALL, "{0} {1}", new Object[]{key_String, property});
         }
@@ -295,16 +239,10 @@ public abstract class Generic_Log implements LoggingMXBean {
 //        return LOGGER;
     }
 
-    public static FileHandler getFileHandler(
-            Level level,
-            File directory,
-            String name) {
-        return getFileHandler(
-                level,
-                directory,
-                name,
-                Generic_Log.Generic_DefaultLogFileSizeLimit,
-                Generic_Log.Generic_DefaultLogFileCount);
+    public static FileHandler getFileHandler(            Level level,            File directory,            String name) {
+        return getFileHandler(level,                directory,                name,
+                Generic_Log.DEFAULT_LOG_FILESIZE_LIMIT,
+                Generic_Log.DEFAULT_LOG_FILE_COUNT);
     }
 
     public static FileHandler getFileHandler(
@@ -336,7 +274,7 @@ public abstract class Generic_Log implements LoggingMXBean {
                     logFile.toString(),
                     logFileSizeLimit,
                     logFileCount,
-                    Generic_DefaultLogFileAppend);
+                    DEFAULT_APPEND);
 //            Generic_Log.loggerFileFileHandler_HashMap.put(logFile, fileHandler);
 //            Generic_Log.loggerFileHandlerFile_HashMap.put(fileHandler, logFile);
 //            Generic_Log.loggerNameFile_HashMap.put(name, logFile);
