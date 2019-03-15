@@ -77,7 +77,7 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. The data directory is set using
-     * {@code Generic_Files.getDefaultDataDir()}.
+     * {@code Generic_Files.getDefaultDataDir()}. See
      * {@link Generic_Environment#Generic_Environment(java.io.File)}.
      *
      */
@@ -86,7 +86,7 @@ public class Generic_Environment {
     }
 
     /**
-     * Creates a new instance. {@link #level} is defaulted to Level.FINE.
+     * Creates a new instance. {@link #level} is defaulted to Level.FINE. See
      * {@link Generic_Environment#Generic_Environment(java.io.File, java.util.logging.Level)}.
      *
      * @param d The directory that will be set as the data directory.
@@ -96,7 +96,7 @@ public class Generic_Environment {
     }
 
     /**
-     * Creates a new instance. {@link #range} is defaulted to 100.
+     * Creates a new instance. {@link #range} is defaulted to 100. See
      * {@link Generic_Environment#Generic_Environment(java.io.File, java.util.logging.Level, int)}.
      *
      * @param d The directory that will be set as the data directory.
@@ -108,7 +108,7 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. {@link #files} is set using
-     * {@code new Generic_Files(new Generic_Strings(), d)}.
+     * {@code new Generic_Files(new Generic_Strings(), d)}. See
      * {@link Generic_Environment#Generic_Environment(uk.ac.leeds.ccg.andyt.generic.io.Generic_Files, java.util.logging.Level, int)}.
      *
      * @param d The directory that will be set as the data directory.
@@ -130,9 +130,9 @@ public class Generic_Environment {
     }
 
      /**
-     * Creates a new instance. {@link #range} is defaulted to 100.
-     * {@link Generic_Environment#Generic_Environment(uk.ac.leeds.ccg.andyt.generic.io.Generic_Files, java.util.logging.Level, uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment)}.
-     *
+     * Creates a new instance. {@link #range} is defaulted to 100. See
+     * {@link Generic_Environment#Generic_Environment(uk.ac.leeds.ccg.andyt.generic.io.Generic_Files, java.util.logging.Level, int)}.
+     * 
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
      */
@@ -142,7 +142,8 @@ public class Generic_Environment {
             
     /**
      * Creates a new instance. {@link #logs} is initialised using
-     * {@code new HashMap<>();}
+     * {@code new HashMap<>();} {@link #logNamesInUse} is initialised using
+     * {@code new HashSet<>();}
      *
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
