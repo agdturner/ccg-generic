@@ -54,7 +54,7 @@ public class Generic_Files {
      * {@link Generic_Files#getDefaultDataDir()}.
      */
     public Generic_Files() {
-        dataDir = getDefaultDataDir();
+        this(getDefaultDataDir());
     }
 
     /**
