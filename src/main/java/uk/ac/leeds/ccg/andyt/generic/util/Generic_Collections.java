@@ -57,62 +57,62 @@ public class Generic_Collections {
         return null;
     }
 
+    /**
+     *
+     * @param min
+     * @param w Interval width
+     * @param map
+     * @param mc
+     * @return {@code Object[]} r of length 3 where:
+     * <ul>
+     * <li>r[0] = counts</li>
+     * <li>r[1] = labels</li>
+     * <li>r[2] = mins</li>
+     * </ul>
+     */
     public static Object[] getIntervalCountsLabelsMins(BigDecimal min,
-            BigDecimal intervalWidth, TreeMap<?, BigDecimal> map,
-            MathContext mc) {
-        Object[] result;
-        result = new Object[3];
-        TreeMap<Integer, Integer> counts;
-        counts = new TreeMap<>();
-        TreeMap<Integer, String> labels;
-        labels = new TreeMap<>();
-        TreeMap<Integer, BigDecimal> mins;
-        mins = new TreeMap<>();
-        Iterator<BigDecimal> ite;
-        ite = map.values().iterator();
+            BigDecimal w, TreeMap<?, BigDecimal> map, MathContext mc) {
+        Object[] r = new Object[3];
+        TreeMap<Integer, Integer> counts = new TreeMap<>();
+        TreeMap<Integer, String> labels = new TreeMap<>();
+        TreeMap<Integer, BigDecimal> mins = new TreeMap<>();
+        Iterator<BigDecimal> ite = map.values().iterator();
         while (ite.hasNext()) {
-            BigDecimal value = ite.next();
+            BigDecimal v = ite.next();
             int interval;
-            if (intervalWidth.compareTo(BigDecimal.ZERO) == 0) {
+            if (w.compareTo(BigDecimal.ZERO) == 0) {
                 interval = 0;
             } else {
-                interval = getInterval(min, intervalWidth, value, mc);
+                interval = getInterval(min, w, v, mc);
             }
-            addToTreeMapIntegerInteger(counts, interval, 1);
+            //addToTreeMapIntegerInteger(counts, interval, 1);
+            addToTreeMapValueInteger(counts, interval, 1);
             if (!labels.containsKey(interval)) {
-                BigDecimal intervalMin;
-                intervalMin = getIntervalMin(min, intervalWidth, interval);
-                BigDecimal intervalMax;
-                intervalMax = getIntervalMax(intervalMin, intervalWidth);
-                labels.put(interval, "" + intervalMin + " - " + intervalMax);
-                mins.put(interval, intervalMin);
+                BigDecimal imin = getIntervalMin(min, w, interval);
+                BigDecimal intervalMax = getIntervalMax(imin, w);
+                labels.put(interval, "" + imin + " - " + intervalMax);
+                mins.put(interval, imin);
             }
         }
-        result[0] = counts;
-        result[1] = labels;
-        result[2] = mins;
-        return result;
+        r[0] = counts;
+        r[1] = labels;
+        r[2] = mins;
+        return r;
     }
 
     public static BigDecimal getIntervalMin(BigDecimal min,
             BigDecimal intervalWidth, int interval) {
-        BigDecimal result;
-        result = min.add(new BigDecimal(interval).multiply(intervalWidth));
-        return result;
+        return min.add(new BigDecimal(interval).multiply(intervalWidth));
     }
 
     public static BigDecimal getIntervalMax(BigDecimal intervalMin,
             BigDecimal intervalWidth) {
-        BigDecimal result;
-        result = intervalMin.add(intervalWidth);
-        return result;
+        return intervalMin.add(intervalWidth);
     }
 
     public static int getInterval(BigDecimal min,
             BigDecimal intervalWidth, BigDecimal value, MathContext mc) {
-        int result;
-        result = (value.subtract(min)).divide(intervalWidth, mc).intValue();
-        return result;
+        return (value.subtract(min)).divide(intervalWidth, mc).intValue();
     }
 
     /**
@@ -120,25 +120,17 @@ public class Generic_Collections {
      * @return The min and max values in map.
      */
     public static BigDecimal[] getMinMaxBigDecimal(Map<?, BigDecimal> map) {
-        BigDecimal[] result;
-        result = new BigDecimal[2];
-        boolean firstValue;
-        firstValue = true;
-        Iterator<BigDecimal> ite;
-        ite = map.values().iterator();
+        BigDecimal[] r = new BigDecimal[2];
+        Iterator<BigDecimal> ite = map.values().iterator();
+        BigDecimal v = ite.next();
+        r[0] = v;
+        r[1] = v;
         while (ite.hasNext()) {
-            BigDecimal value;
-            value = ite.next();
-            if (firstValue) {
-                result[0] = value;
-                result[1] = value;
-                firstValue = false;
-            } else {
-                result[0] = result[0].min(value);
-                result[1] = result[1].max(value);
-            }
+            v = ite.next();
+            r[0] = r[0].min(v);
+            r[1] = r[1].max(v);
         }
-        return result;
+        return r;
     }
 
     /**
@@ -146,38 +138,32 @@ public class Generic_Collections {
      * @return The min and max values in map.
      */
     public static int[] getMinMaxInteger(Map<?, Integer> map) {
-        int[] result;
-        result = new int[2];
-        boolean firstValue;
-        firstValue = true;
-        Iterator<Integer> ite;
-        ite = map.values().iterator();
+        int[] r = new int[2];
+        Iterator<Integer> ite = map.values().iterator();
+        int v = ite.next();
+        r[0] = v;
+        r[1] = v;
         while (ite.hasNext()) {
-            int value;
-            value = ite.next();
-            if (firstValue) {
-                result[0] = value;
-                result[1] = value;
-                firstValue = false;
-            } else {
-                result[0] = Math.min(result[0], value);
-                result[1] = Math.max(result[1], value);
-            }
+            r[0] = Math.min(r[0], v);
+            r[1] = Math.max(r[1], v);
         }
-        return result;
+        return r;
     }
 
     /**
-     * @param keys0 Set
-     * @param keys1 Set
-     * @return HashSet
+     * Get the union of {@link s0} and {@link s1}.
+     *
+     * @param s0 Set
+     * @param s1 Set
+     * @return a new {@code HashSet<Integer>} which is the union of elements in
+     * {@link s0} and {@link s1}.
      */
     public static HashSet<Integer> getCompleteKeySet_HashSet(
-            Set<Integer> keys0, Set<Integer> keys1) {
-        HashSet<Integer> result = new HashSet<>();
-        result.addAll(keys0);
-        result.addAll(keys1);
-        return result;
+            Set<Integer> s0, Set<Integer> s1) {
+        HashSet<Integer> r = new HashSet<>();
+        r.addAll(s0);
+        r.addAll(s1);
+        return r;
     }
 
     /**
@@ -315,10 +301,8 @@ public class Generic_Collections {
      * @param value Integer
      */
     @Deprecated
-    public static void addToTreeMapIntegerInteger(
-            TreeMap<Integer, Integer> m,
-            Integer key,
-            Integer value) {
+    public static void addToTreeMapIntegerInteger(TreeMap<Integer, Integer> m,
+            Integer key, Integer value) {
         Integer currentValue = m.get(key);
         if (currentValue != null) {
             Integer newValue = currentValue + value;
@@ -329,24 +313,21 @@ public class Generic_Collections {
     }
 
     /**
-     * @param updateIntegerIntegerCounter TreeMap
-     * @param updateFromIntegerIntegerCounter TreeMap
+     * @param u updateIntegerIntegerCounter TreeMap
+     * @param uf updateFromIntegerIntegerCounter TreeMap
      */
-    public static void addToTreeMapIntegerInteger(
-            TreeMap<Integer, Integer> updateIntegerIntegerCounter,
-            TreeMap<Integer, Integer> updateFromIntegerIntegerCounter) {
-        if (updateFromIntegerIntegerCounter != null) {
-            Integer key;
-            Integer value;
-            for (Entry<Integer, Integer> entry : updateFromIntegerIntegerCounter.entrySet()) {
-                key = entry.getKey();
-                value = entry.getValue();
-                Integer currentValue = updateIntegerIntegerCounter.get(key);
+    public static void addToTreeMapIntegerInteger(TreeMap<Integer, Integer> u,
+            TreeMap<Integer, Integer> uf) {
+        if (uf != null) {
+            for (Entry<Integer, Integer> entry : uf.entrySet()) {
+                Integer key = entry.getKey();
+                Integer v = entry.getValue();
+                Integer currentValue = u.get(key);
                 if (currentValue != null) {
-                    Integer newValue = currentValue + value;
-                    updateIntegerIntegerCounter.put(key, newValue);
+                    Integer newValue = currentValue + v;
+                    u.put(key, newValue);
                 } else {
-                    updateIntegerIntegerCounter.put(key, value);
+                    u.put(key, v);
                 }
             }
         }
@@ -362,8 +343,8 @@ public class Generic_Collections {
      * @param v value
      * @return long
      */
-    public static <K> long addToTreeMapValueLong(TreeMap<K, Long> m,
-            K k, long v) {
+    public static <K> long addToTreeMapValueLong(TreeMap<K, Long> m, K k,
+            long v) {
         long r;
         Long v0 = m.get(k);
         if (v0 != null) {
@@ -409,10 +390,8 @@ public class Generic_Collections {
      */
     public static <K> TreeMap<K, Integer> addToTreeMapValueInteger(
             TreeMap<K, Integer> map0, TreeMap<K, Integer> map1) {
-        TreeMap<K, Integer> r;
-        r = deepCopyTreeMapValueInteger(map0);
-        Iterator<K> ite;
-        ite = map1.keySet().iterator();
+        TreeMap<K, Integer> r = deepCopyTreeMapValueInteger(map0);
+        Iterator<K> ite = map1.keySet().iterator();
         while (ite.hasNext()) {
             K k = ite.next();
             Integer v = map1.get(k);
@@ -470,8 +449,8 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      */
-    public static <K> void addToTreeMapValueBigInteger(
-            TreeMap<K, BigInteger> m, K k, BigInteger v) {
+    public static <K> void addToTreeMapValueBigInteger(TreeMap<K, BigInteger> m,
+            K k, BigInteger v) {
         BigInteger v0 = m.get(k);
         if (v0 != null) {
             BigInteger newValue = v0.add(v);
@@ -490,8 +469,8 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      */
-    public static <K> void addToTreeMapValueBigDecimal(
-            TreeMap<K, BigDecimal> m, K k, BigDecimal v) {
+    public static <K> void addToTreeMapValueBigDecimal(TreeMap<K, BigDecimal> m,
+            K k, BigDecimal v) {
         BigDecimal v0 = m.get(k);
         if (v0 != null) {
             BigDecimal newValue = v0.add(v);
@@ -506,38 +485,34 @@ public class Generic_Collections {
      * how many are not. Also we check how many values that are in set0 that are
      * not in set1.
      *
-     * @param set0 HashSet
-     * @param set1 HashSet
+     * @param s0 HashSet
+     * @param s1 HashSet
      * @return long[3] result {@code
      * result[0] = Count of how many values are in both set 0 and set 1;
      * result[1] = Count of how many values are in set 1, but not in set 0;
      * result[2] = Count of how many values are in set 0, but not in set 1;
      * }
      */
-    public static long[] getCounts(HashSet set0, HashSet set1) {
-        long[] result;
-        result = new long[3];
-        result[0] = 0;
-        result[1] = 0;
-        result[2] = 0;
-        Iterator ite;
-        ite = set1.iterator();
+    public static long[] getCounts(HashSet s0, HashSet s1) {
+        long[] r = new long[3];
+        r[0] = 0;
+        r[1] = 0;
+        r[2] = 0;
+        Iterator ite = s1.iterator();
         while (ite.hasNext()) {
-            Object o = ite.next();
-            if (set0.contains(o)) {
-                result[0]++;
+            if (s0.contains(ite.next())) {
+                r[0]++;
             } else {
-                result[1]++;
+                r[1]++;
             }
         }
-        ite = set0.iterator();
+        ite = s0.iterator();
         while (ite.hasNext()) {
-            Object o = ite.next();
-            if (!set1.contains(o)) {
-                result[2]++;
+            if (!s1.contains(ite.next())) {
+                r[2]++;
             }
         }
-        return result;
+        return r;
     }
 
     /**
@@ -546,8 +521,8 @@ public class Generic_Collections {
      * not in set1.
      *
      * @param <T> Type
-     * @param set0 HashSet
-     * @param set1 HashSet
+     * @param s0 HashSet
+     * @param s1 HashSet
      * @return Object[2] result {@code
      * Object[0] = union set view of elements in both set0 and set1
      * Object[1] = counts
@@ -556,75 +531,63 @@ public class Generic_Collections {
      * counts[2] = Count of how many values are in set 0, but not in set 1;
      * }
      */
-    public static <T> Object[] getUnionAndCounts(HashSet<T> set0, HashSet<T> set1) {
-        Object[] result;
-        result = new Object[2];
-        HashSet<T> union;
-        union = new HashSet<>();
-        union.addAll(set1);
-        union.retainAll(set0);
-        long[] counts;
-        counts = new long[3];
-        int unionSize;
-        unionSize = union.size();
+    public static <T> Object[] getUnionAndCounts(HashSet<T> s0, HashSet<T> s1) {
+        Object[] r = new Object[2];
+        HashSet<T> union = new HashSet<>();
+        union.addAll(s1);
+        union.retainAll(s0);
+        long[] counts = new long[3];
+        int unionSize = union.size();
         counts[0] = unionSize;
-        counts[1] = set1.size() - unionSize;
-        counts[2] = set0.size() - unionSize;
-        result[0] = union;
-        result[1] = counts;
-        return result;
+        counts[1] = s1.size() - unionSize;
+        counts[2] = s0.size() - unionSize;
+        r[0] = union;
+        r[1] = counts;
+        return r;
     }
 
     /**
-     * For all values in set1 we count how many values are in set0, and deduce
-     * how many are not.Also we check how many values that are in set0 that are
-     * not in set1.
+     * For all values in s1 we count how many values are in s0, and deduce how
+     * many are not.Also we check how many values that are in s0 that are not in
+     * s1.
      *
      * @param <T> Type
-     * @param set0 HashSet
-     * @param set1 HashSet
+     * @param s0 HashSet
+     * @param s1 HashSet
      * @return Object[2] result {@code
      * Object[0] = union set view of elements in both set0 and set1
      * Object[1] = counts
-     * counts[0] = Count of how many values are in both set 0 and set 1;
-     * counts[1] = Count of how many values are in set 1, but not in set 0;
-     * counts[2] = Count of how many values are in set 0, but not in set 1;
+     * counts[0] = Count of how many values are in both s0 and s1;
+     * counts[1] = Count of how many values are in s1, but not in s0;
+     * counts[2] = Count of how many values are in s0, but not in s1;
      * }
      */
-    public static <T> Object[] getUnionAndUniques(HashSet<T> set0, HashSet<T> set1) {
-        Object[] result;
-        result = new Object[3];
-        HashSet<T> union;
-        union = new HashSet<>();
-        union.addAll(set1);
-        union.retainAll(set0);
-        HashSet<T> set1unique;
-        set1unique = new HashSet<>();
-        set1unique.addAll(set1);
-        set1unique.removeAll(set0);
-        HashSet<T> set0unique;
-        set0unique = new HashSet<>();
-        set0unique.addAll(set0);
-        set0unique.removeAll(set1);
-        result[0] = union;
-        result[1] = set1unique;
-        result[2] = set0unique;
-        return result;
+    public static <T> Object[] getUnionAndUniques(HashSet<T> s0,
+            HashSet<T> s1) {
+        Object[] r = new Object[3];
+        HashSet<T> union = new HashSet<>();
+        union.addAll(s1);
+        union.retainAll(s0);
+        HashSet<T> set1unique = new HashSet<>();
+        set1unique.addAll(s1);
+        set1unique.removeAll(s0);
+        HashSet<T> set0unique = new HashSet<>();
+        set0unique.addAll(s0);
+        set0unique.removeAll(s1);
+        r[0] = union;
+        r[1] = set1unique;
+        r[2] = set0unique;
+        return r;
     }
 
     public static <K> TreeMap<K, BigInteger> deepCopyValueBigInteger(
             TreeMap<K, BigInteger> m) {
-        TreeMap<K, BigInteger> r;
-        r = new TreeMap<>();
-        Iterator<K> ite;
-        ite = m.keySet().iterator();
-        K k;
-        BigInteger vToCopy;
-        BigInteger vCopy;
+        TreeMap<K, BigInteger> r = new TreeMap<>();
+        Iterator<K> ite = m.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
-            vToCopy = m.get(k);
-            vCopy = new BigInteger(vToCopy.toString());
+            K k = ite.next();
+            BigInteger vToCopy = m.get(k);
+            BigInteger vCopy = new BigInteger(vToCopy.toString());
             r.put(k, vCopy);
         }
         return r;
@@ -632,13 +595,10 @@ public class Generic_Collections {
 
     public static <K> HashMap<K, String> deepCopyHashMapValueString(
             HashMap<K, String> m) {
-        HashMap<K, String> r;
-        r = new HashMap<>();
-        Iterator<K> ite;
-        ite = m.keySet().iterator();
-        K k;
+        HashMap<K, String> r = new HashMap<>();
+        Iterator<K> ite = m.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
+            K k = ite.next();
             r.put(k, m.get(k));
         }
         return r;
@@ -646,13 +606,10 @@ public class Generic_Collections {
 
     public static <K> HashMap<K, Integer> deepCopyHashMapValueInteger(
             HashMap<K, Integer> m) {
-        HashMap<K, Integer> r;
-        r = new HashMap<>();
-        Iterator<K> ite;
-        ite = m.keySet().iterator();
-        K k;
+        HashMap<K, Integer> r = new HashMap<>();
+        Iterator<K> ite = m.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
+            K k = ite.next();
             r.put(k, m.get(k));
         }
         return r;
@@ -660,13 +617,10 @@ public class Generic_Collections {
 
     public static <K, Integer> TreeMap<K, Integer> deepCopyTreeMapValueInteger(
             TreeMap<K, Integer> map) {
-        TreeMap<K, Integer> r;
-        r = new TreeMap<>();
-        Iterator<K> ite;
-        ite = map.keySet().iterator();
-        K k;
+        TreeMap<K, Integer> r = new TreeMap<>();
+        Iterator<K> ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
+            K k = ite.next();
             r.put(k, map.get(k));
         }
         return r;
@@ -674,17 +628,12 @@ public class Generic_Collections {
 
     public static <K> TreeMap<K, BigDecimal> deepCopyTreeMapValueBigDecimal(
             TreeMap<K, BigDecimal> m) {
-        TreeMap<K, BigDecimal> r;
-        r = new TreeMap<>();
-        Iterator<K> ite;
-        ite = m.keySet().iterator();
-        K k;
-        BigDecimal v0;
-        BigDecimal v1;
+        TreeMap<K, BigDecimal> r = new TreeMap<>();
+        Iterator<K> ite = m.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
-            v0 = m.get(k);
-            v1 = new BigDecimal(v0.toString());
+            K k = ite.next();
+            BigDecimal v0 = m.get(k);
+            BigDecimal v1 = new BigDecimal(v0.toString());
             r.put(k, v1);
         }
         return r;
@@ -692,35 +641,25 @@ public class Generic_Collections {
 
     public static <K> TreeMap<K, Long> deepCopyTreeMapValueLong(
             TreeMap<K, Long> m) {
-        TreeMap<K, Long> r;
-        r = new TreeMap<>();
-        Iterator<K> ite;
-        ite = m.keySet().iterator();
-        K k;
-        Long v0;
-        Long v1;
+        TreeMap<K, Long> r = new TreeMap<>();
+        Iterator<K> ite = m.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
-            v0 = m.get(k);
-            v1 = v0;
+            K k = ite.next();
+            Long v0 = m.get(k);
+            Long v1 = v0;
             r.put(k, v1);
         }
         return r;
     }
 
-    public static <K> void addToTreeMapValueLong(
-            TreeMap<K, Long> mapToAddTo,
+    public static <K> void addToTreeMapValueLong(TreeMap<K, Long> mapToAddTo,
             TreeMap<K, Long> mapToAdd) {
-        Iterator<K> ite;
-        ite = mapToAdd.keySet().iterator();
-        K k;
-        Long vToAdd;
-        Long vToAddTo;
+        Iterator<K> ite = mapToAdd.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
-            vToAdd = mapToAdd.get(k);
+            K k = ite.next();
+            Long vToAdd = mapToAdd.get(k);
             if (mapToAddTo.containsKey(k)) {
-                vToAddTo = mapToAddTo.get(k);
+                Long vToAddTo = mapToAddTo.get(k);
                 mapToAddTo.put(k, vToAdd + vToAddTo);
             } else {
                 mapToAddTo.put(k, vToAdd);
@@ -731,16 +670,12 @@ public class Generic_Collections {
     public static <K> void addToTreeMapValueBigDecimal(
             TreeMap<K, BigDecimal> mapToAddTo,
             TreeMap<K, BigDecimal> mapToAdd) {
-        Iterator<K> ite;
-        ite = mapToAdd.keySet().iterator();
-        K k;
-        BigDecimal vToAdd;
-        BigDecimal vToAddTo;
+        Iterator<K> ite = mapToAdd.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
-            vToAdd = mapToAdd.get(k);
+            K k = ite.next();
+            BigDecimal vToAdd = mapToAdd.get(k);
             if (mapToAddTo.containsKey(k)) {
-                vToAddTo = mapToAddTo.get(k);
+                BigDecimal vToAddTo = mapToAddTo.get(k);
                 mapToAddTo.put(k, vToAdd.add(vToAddTo));
             } else {
                 mapToAddTo.put(k, vToAdd);
@@ -751,16 +686,12 @@ public class Generic_Collections {
     public static <K> void addToTreeMapValueBigInteger(
             TreeMap<K, BigInteger> mapToAddTo,
             TreeMap<K, BigInteger> mapToAdd) {
-        Iterator<K> ite;
-        ite = mapToAdd.keySet().iterator();
-        K k;
-        BigInteger vToAdd;
-        BigInteger vToAddTo;
+        Iterator<K> ite = mapToAdd.keySet().iterator();
         while (ite.hasNext()) {
-            k = ite.next();
-            vToAdd = mapToAdd.get(k);
+            K k = ite.next();
+            BigInteger vToAdd = mapToAdd.get(k);
             if (mapToAddTo.containsKey(k)) {
-                vToAddTo = mapToAddTo.get(k);
+                BigInteger vToAddTo = mapToAddTo.get(k);
                 mapToAddTo.put(k, vToAdd.add(vToAddTo));
             } else {
                 mapToAddTo.put(k, vToAdd);
@@ -773,8 +704,7 @@ public class Generic_Collections {
      * @param i Integer
      * @return Integer
      */
-    public static Integer getMaxKey_Integer(TreeMap<Integer, ?> m,
-            Integer i) {
+    public static Integer getMaxKey_Integer(TreeMap<Integer, ?> m, Integer i) {
         if (m.isEmpty()) {
             return i;
         } else {
@@ -787,8 +717,7 @@ public class Generic_Collections {
      * @param i Integer
      * @return Integer
      */
-    public static Integer getMinKey_Integer(TreeMap<Integer, ?> m,
-            Integer i) {
+    public static Integer getMinKey_Integer(TreeMap<Integer, ?> m, Integer i) {
         if (m.isEmpty()) {
             return i;
         } else {
@@ -796,54 +725,42 @@ public class Generic_Collections {
         }
     }
 
-    public static BigDecimal getMaxValue_BigDecimal(
-            TreeMap<?, BigDecimal> m,
+    public static BigDecimal getMaxValue_BigDecimal(TreeMap<?, BigDecimal> m,
             BigDecimal initialMax_BigDecimal) {
         BigDecimal r = new BigDecimal(initialMax_BigDecimal.toString());
-        Iterator<BigDecimal> iterator = m.values().iterator();
-        BigDecimal v;
-        while (iterator.hasNext()) {
-            v = iterator.next();
-            r = r.max(v);
+        Iterator<BigDecimal> ite = m.values().iterator();
+        while (ite.hasNext()) {
+            r = r.max(ite.next());
         }
         return r;
     }
 
-    public static BigDecimal getMinValue_BigDecimal(
-            TreeMap<?, BigDecimal> m,
+    public static BigDecimal getMinValue_BigDecimal(TreeMap<?, BigDecimal> m,
             BigDecimal initialMin) {
-        BigDecimal result = new BigDecimal(initialMin.toString());
+        BigDecimal r = new BigDecimal(initialMin.toString());
         Iterator<BigDecimal> ite = m.values().iterator();
-        BigDecimal v;
         while (ite.hasNext()) {
-            v = ite.next();
-            result = result.min(v);
+            r = r.min(ite.next());
         }
-        return result;
+        return r;
     }
 
-    public static BigInteger getMaxValue_BigInteger(
-            TreeMap<?, BigInteger> m,
+    public static BigInteger getMaxValue_BigInteger(TreeMap<?, BigInteger> m,
             BigInteger initialMax) {
         BigInteger r = new BigInteger(initialMax.toString());
         Iterator<BigInteger> ite = m.values().iterator();
-        BigInteger value;
         while (ite.hasNext()) {
-            value = ite.next();
-            r = r.max(value);
+            r = r.max(ite.next());
         }
         return r;
     }
 
-    public static BigInteger getMinValue_BigInteger(
-            TreeMap<?, BigInteger> m,
+    public static BigInteger getMinValue_BigInteger(TreeMap<?, BigInteger> m,
             BigInteger initialMin) {
         BigInteger r = new BigInteger(initialMin.toString());
         Iterator<BigInteger> ite = m.values().iterator();
-        BigInteger value;
         while (ite.hasNext()) {
-            value = ite.next();
-            r = r.max(value);
+            r = r.max(ite.next());
         }
         return r;
     }
@@ -903,8 +820,6 @@ public class Generic_Collections {
      * @return True iff b is in c.
      */
     public static boolean containsValue(Collection<BigDecimal> c, BigDecimal b) {
-        boolean r;
-        r = c.stream().parallel().anyMatch(v -> v.equals(b));
-        return r;
+        return c.stream().parallel().anyMatch(v -> v.equals(b));
     }
 }
