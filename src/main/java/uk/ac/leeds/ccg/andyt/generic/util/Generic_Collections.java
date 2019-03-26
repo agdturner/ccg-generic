@@ -28,7 +28,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
@@ -336,7 +335,7 @@ public class Generic_Collections {
     public static void addToTreeMapIntegerInteger(TreeMap<Integer, Integer> u,
             TreeMap<Integer, Integer> uf) {
         if (uf != null) {
-            for (Entry<Integer, Integer> entry : uf.entrySet()) {
+            uf.entrySet().forEach((entry) -> {
                 Integer key = entry.getKey();
                 Integer v = entry.getValue();
                 Integer currentValue = u.get(key);
@@ -346,7 +345,7 @@ public class Generic_Collections {
                 } else {
                     u.put(key, v);
                 }
-            }
+            });
         }
     }
 
