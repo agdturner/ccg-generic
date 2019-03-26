@@ -59,10 +59,10 @@ public class Generic_Collections {
 
     /**
      *
-     * @param min
+     * @param min Min
      * @param w Interval width
-     * @param map
-     * @param mc
+     * @param map Map
+     * @param mc MathContext
      * @return {@code Object[]} r of length 3 where:
      * <ul>
      * <li>r[0] = counts</li>
@@ -100,19 +100,36 @@ public class Generic_Collections {
         return r;
     }
 
-    public static BigDecimal getIntervalMin(BigDecimal min,
-            BigDecimal intervalWidth, int interval) {
-        return min.add(new BigDecimal(interval).multiply(intervalWidth));
+    /**
+     * @param min Minimum
+     * @param w Interval width
+     * @param interval Interval
+     * @return {@code min.add(new BigDecimal(interval).multiply(w))}
+     */
+    public static BigDecimal getIntervalMin(BigDecimal min, BigDecimal w,
+            int interval) {
+        return min.add(new BigDecimal(interval).multiply(w));
     }
 
-    public static BigDecimal getIntervalMax(BigDecimal intervalMin,
-            BigDecimal intervalWidth) {
-        return intervalMin.add(intervalWidth);
+    /**
+     * @param min Minimum
+     * @param w Interval width
+     * @return {@code min.add(w)}
+     */
+    public static BigDecimal getIntervalMax(BigDecimal min, BigDecimal w) {
+        return min.add(w);
     }
 
-    public static int getInterval(BigDecimal min,
-            BigDecimal intervalWidth, BigDecimal value, MathContext mc) {
-        return (value.subtract(min)).divide(intervalWidth, mc).intValue();
+    /**
+     * @param min Minimum
+     * @param w Interval width
+     * @param v Value
+     * @param mc MathContext
+     * @return {@code (value.subtract(min)).divide(w, mc).intValue()}
+     */
+    public static int getInterval(BigDecimal min, BigDecimal w, BigDecimal v, 
+            MathContext mc) {
+        return (v.subtract(min)).divide(w, mc).intValue();
     }
 
     /**
@@ -151,12 +168,12 @@ public class Generic_Collections {
     }
 
     /**
-     * Get the union of {@link s0} and {@link s1}.
+     * Get the union of {@code s0} and {@code s1}.
      *
      * @param s0 Set
      * @param s1 Set
      * @return a new {@code HashSet<Integer>} which is the union of elements in
-     * {@link s0} and {@link s1}.
+     * {@code s0} and {@code s1}.
      */
     public static HashSet<Integer> getCompleteKeySet_HashSet(
             Set<Integer> s0, Set<Integer> s1) {
