@@ -52,6 +52,7 @@ public class Generic_Strings {
     public static final String s_A = "A";
     public static final String s_a = "a";
     public static final String s_ac = "ac";
+    public static final String s_All = "All";
     public static final String s_andyt = "andyt";
     public static final String s_ArrayList = "ArrayList";
     public static final String s_B = "B";
@@ -76,6 +77,8 @@ public class Generic_Strings {
     public static final String s_f = "f";
     public static final String s_F = "F";
     public static final String s_False = "False";
+    public static final String s_File = "File";
+    public static final String s_file = "file";
     public static final String s_Float = "Float";
     public static final String s_float = "float";
     public static final String s_G = "G";
