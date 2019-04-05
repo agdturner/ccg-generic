@@ -53,11 +53,8 @@ public abstract class Generic_Log implements PlatformLoggingMXBean {
     /**
      * Creates loggers and registers them with the LogManager. The loggers
      * created are configured by reading a logging.properties configuration file
-     * found as      <code>
-     * new File(
-     * directory.toString +
-     * System.getProperty("java.util.logging.config.file"))
-     * </code>
+     * found as
+     * {@code new File(dir.toString + System.getProperty("java.util.logging.config.file"))}
      *
      * @param f Logging Properties File.
      * @param dir The directory containing the logging.properties file (possibly
@@ -239,8 +236,8 @@ public abstract class Generic_Log implements PlatformLoggingMXBean {
 //        return LOGGER;
     }
 
-    public static FileHandler getFileHandler(            Level level,            File directory,            String name) {
-        return getFileHandler(level,                directory,                name,
+    public static FileHandler getFileHandler(Level level, File directory, String name) {
+        return getFileHandler(level, directory, name,
                 Generic_Log.DEFAULT_LOG_FILESIZE_LIMIT,
                 Generic_Log.DEFAULT_LOG_FILE_COUNT);
     }
