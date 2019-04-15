@@ -54,16 +54,14 @@ public class Generic_DateTest extends Generic_Object {
     @Before
     public void setUp() {
         // Init e
-        String dataDir;
-        dataDir = System.getProperty("user.dir");
+        String dataDir = System.getProperty("user.dir");
         System.out.println("user.dir " + dataDir);
         File testDir = new File(dataDir, "data");
         testDir = new File(testDir, "test");
         if (!testDir.exists()) {
             testDir.mkdirs();
         }
-        Generic_Files f;
-        f = new Generic_Files(testDir);
+        Generic_Files f = new Generic_Files(testDir);
         //e = new Generic_Environment(testDir.getPath());
         e = new Generic_Environment(f, Level.ALL, 100);
     }

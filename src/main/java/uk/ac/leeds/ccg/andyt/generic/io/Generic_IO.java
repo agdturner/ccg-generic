@@ -659,7 +659,7 @@ public class Generic_IO {
             // Delete the directory itself
             boolean del = file.delete();
             if (del) {
-                r[0]++;                
+                r[0]++;
             } else {
                 System.out.println("Not deleted " + file + " in "
                         + "Generic_IO.delete(File)!");
@@ -684,7 +684,8 @@ public class Generic_IO {
      * @param charsetName The name of a supported
      * {@link java.nio.charset.Charset charset} e.g. "UTF-8"
      * @return BufferedReader
-     * @throws java.io.UnsupportedEncodingException
+     * @throws java.io.UnsupportedEncodingException If InputStreamReader cannot
+     * be constructed from charsetName.
      */
     public static BufferedReader getBufferedReader(File f, String charsetName)
             throws UnsupportedEncodingException {
@@ -713,7 +714,7 @@ public class Generic_IO {
      * @param f File
      * @return new BufferedReader to read f.
      */
-    public static BufferedReader closeAndGetBufferedReader(BufferedReader br, 
+    public static BufferedReader closeAndGetBufferedReader(BufferedReader br,
             File f) {
         Generic_IO.closeBufferedReader(br);
         br = getBufferedReader(f);
@@ -911,7 +912,7 @@ public class Generic_IO {
         // st.ordinaryChar( ' ' );
         st.eolIsSignificant(true);
     }
-    
+
     private static void setWhitespaceAsWords(StreamTokenizer st) {
         st.wordChars('\t', '\t');
         st.wordChars(' ', ' ');
@@ -1275,6 +1276,12 @@ public class Generic_IO {
         if (archiveFiles.length == 0) {
             return -1L;
         } else {
+            File[] files0 = dir.listFiles();
+            if (files0.length == 1) {
+                if (files0[0].getName().contains(Generic_Strings.symbol_underscore)) {
+                    archiveFiles = files0[0].listFiles();
+                }
+            }
             TreeMap<Long, File> files;
             files = Generic_IO.getNumericallyOrderedFiles(archiveFiles);
             File last_File = files.lastEntry().getValue();
@@ -1467,7 +1474,7 @@ public class Generic_IO {
         long end0 = Long.valueOf(split0[1]);
         long newRange = range * (end0 + 1L);
         // Create new top directory and move in existing files
-        File newTop0 = new File(dir, "" + 0 + Generic_Strings.symbol_underscore 
+        File newTop0 = new File(dir, "" + 0 + Generic_Strings.symbol_underscore
                 + (newRange - 1L));
         File newTop = new File(newTop0.getPath());
         newTop0.mkdir();
@@ -1780,8 +1787,8 @@ public class Generic_IO {
      * @return int
      */
     public static int getFilePathLength(File f, File dir) {
-        int fl  = getFilePathLength(f);
-        int dl  = getFilePathLength(dir);
+        int fl = getFilePathLength(f);
+        int dl = getFilePathLength(dir);
         return fl - dl;
     }
 

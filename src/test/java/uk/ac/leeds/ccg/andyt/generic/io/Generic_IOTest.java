@@ -121,14 +121,14 @@ public class Generic_IOTest {
         f.mkdirs();
         long range = 100;
         long sizeOfArchive = 1001; //1000;
-        Generic_IO.initialiseArchive(f, range);
+        File dir0 = Generic_IO.initialiseArchive(f, range);
+        File dirHL = null;
         for (long id = 0; id < sizeOfArchive; id++) {
-            Generic_IO.addToArchive(f, range, id);
+            dirHL = Generic_IO.addToArchive(f, range, id);
         }
-        System.out.println(
-                "initialised archive with " + sizeOfArchive + " files");
-        String underscore = "_";
-        HashSet<File> leaves = Generic_IO.getArchiveLeafFilesSet(f, underscore);
+        System.out.println("dirHL " + dirHL);
+        System.out.println("initialised archive with " + sizeOfArchive + " files");
+        HashSet<File> leaves = Generic_IO.getArchiveLeafFilesSet(f);
         System.out.println(leaves.size());
         long[] deletedCounts = Generic_IO.delete(f);
         System.out.println(

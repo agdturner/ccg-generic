@@ -202,6 +202,15 @@ public class Generic_Environment {
     protected File getLogDir(String s) {
         File dir = new File(files.getLogDir(), s);
         if (Files.exists(dir.toPath())) {
+//            File[] files0 = dir.listFiles();
+//            if (files0.length == 0) {
+//                dir = Generic_IO.initialiseArchive(dir, range);
+//            }
+//            if (files0.length == 1) {
+//                if (files0[0].getName().contains(Generic_Strings.symbol_underscore)) {
+//                    dir = files0[0];
+//                }
+//            }
             dir = Generic_IO.addToArchive(dir, range);
         } else {
             dir = Generic_IO.initialiseArchive(dir, range);
