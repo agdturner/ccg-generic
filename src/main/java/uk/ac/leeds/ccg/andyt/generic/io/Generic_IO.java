@@ -221,7 +221,7 @@ public class Generic_IO {
                                 lastTokenBeforeEndOfFileIsEndOfLine = false;
                                 break;
                             case StreamTokenizer.TT_NUMBER:
-                                doNumber(st, line);
+                                line += doNumber(st);
                                 lastTokenBeforeEndOfFileIsEndOfLine = false;
                                 break;
                             default:
@@ -251,13 +251,15 @@ public class Generic_IO {
         }
     }
 
-    private static void doNumber(StreamTokenizer st, String line) {
+    private static String doNumber(StreamTokenizer st) {
+        String r;
         double number = st.nval;
         if (number == (long) number) {
-            line += (long) st.nval;
+            r = Long.toString((long) st.nval);
         } else {
-            line += st.nval;
+            r = Double.toString(st.nval);
         }
+        return r;
     }
 
     private static void doDefault(int token, String line) {
@@ -321,7 +323,7 @@ public class Generic_IO {
                                 lastTokenBeforeEndOfFileIsEndOfLine = false;
                                 break;
                             case StreamTokenizer.TT_NUMBER:
-                                doNumber(st, line);
+                                line += doNumber(st);
                                 lastTokenBeforeEndOfFileIsEndOfLine = false;
                                 break;
                             default:
