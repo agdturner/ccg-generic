@@ -838,6 +838,20 @@ public class Generic_IO {
                     Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Skips to the next line.
+     *
+     * @param br BufferedReader
+     */
+    public static void skipline(BufferedReader br) {
+        try {
+            br.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_IO.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Sets the syntax of st as follows:
