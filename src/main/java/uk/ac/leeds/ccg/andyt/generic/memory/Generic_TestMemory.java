@@ -57,10 +57,10 @@ public class Generic_TestMemory {
      * @return The TotalFreeMemory available as calculated from Runtime.
      */
     public long getTotalFreeMemory() {
-        long result;
+        long r;
         long allocatedMemory = Runtime.totalMemory();
         long freeMemory = Runtime.freeMemory();
-        result = freeMemory + (MaxMemory - allocatedMemory);
-        return result;
+        r = freeMemory + (MaxMemory - allocatedMemory);
+        return r;
     }
 }

@@ -40,8 +40,18 @@ public class Generic_Environment {
     /**
      * A sharable instance of {@link Generic_Files}.
      */
-    protected Generic_Files files;
+    public final Generic_Files files;
 
+    /**
+     * A sharable instance of {@link Generic_Strings}.
+     */
+    public final Generic_Strings strings;
+
+    /**
+     * A sharable instance of {@link Generic_IO}.
+     */
+    public final Generic_IO io;
+            
     /**
      * The logging level.
      */
@@ -67,13 +77,13 @@ public class Generic_Environment {
     /**
      * The default Level for logging.
      */
-    private static final Level DEFAULT_LEVEL = Level.FINE;
+    private static transient final Level DEFAULT_LEVEL = Level.FINE;
 
     /**
      * The default range in terms of the maximum number of files or directories
      * to store in a directory.
      */
-    private static final int DEFAULT_RANGE = 100;
+    private static transient final int DEFAULT_RANGE = 100;
 
     /**
      * Creates a new instance. The data directory is set using
@@ -116,7 +126,7 @@ public class Generic_Environment {
      * @param r What {@link #range} is set to.
      */
     public Generic_Environment(File d, Level l, int r) {
-        this(new Generic_Files(d), l, r);
+        this(new Generic_Files(new Generic_Strings(), d), l, r);
     }
 
     /**
@@ -151,6 +161,8 @@ public class Generic_Environment {
      */
     public Generic_Environment(Generic_Files f, Level l, int r) {
         files = f;
+        strings = f.strings;
+        io = new Generic_IO(this);
         level = l;
         range = r;
         logs = new HashMap<>();
@@ -186,7 +198,7 @@ public class Generic_Environment {
         }
         int logID = logs.size();
         File dir = getLogDir(s);
-        PrintWriter pw = Generic_IO.getPrintWriter(new File(dir, s + e), false);
+        PrintWriter pw = io.getPrintWriter(new File(dir, s + e), false);
         logs.put(logID, pw);
         return logID;
     }
@@ -211,9 +223,9 @@ public class Generic_Environment {
 //                    dir = files0[0];
 //                }
 //            }
-            dir = Generic_IO.addToArchive(dir, range);
+            dir = io.addToArchive(dir, range);
         } else {
-            dir = Generic_IO.initialiseArchive(dir, range);
+            dir = io.initialiseArchive(dir, range);
         }
         dir.mkdirs();
         return dir;
@@ -237,24 +249,24 @@ public class Generic_Environment {
         logs.get(logID).close();
     }
 
-    /**
-     * @return {@link #files} initialising it first if it is {@code null}.
-     */
-    public Generic_Files getFiles() {
-        if (files == null) {
-            files = new Generic_Files();
-        }
-        return files;
-    }
-
-    /**
-     * Sets {@link #files}.
-     *
-     * @param f What {@link #files} is set to.
-     */
-    public void setFiles(Generic_Files f) {
-        this.files = f;
-    }
+//    /**
+//     * @return {@link #files} initialising it first if it is {@code null}.
+//     */
+//    public Generic_Files getFiles() {
+//        if (files == null) {
+//            files = new Generic_Files();
+//        }
+//        return files;
+//    }
+//
+//    /**
+//     * Sets {@link #files}.
+//     *
+//     * @param f What {@link #files} is set to.
+//     */
+//    public void setFiles(Generic_Files f) {
+//        this.files = f;
+//    }
 
     /**
      * Writes s to a new line of the log indexed by 0 and prints s to std.out.

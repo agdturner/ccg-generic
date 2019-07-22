@@ -94,7 +94,7 @@ public class Generic_Date extends Generic_YearMonth implements Comparable {
         String r = "";
         int month = LD.getMonthValue();
         if (month < 10) {
-            r = Generic_Strings.symbol_0;
+            r = e.strings.symbol_0;
         }
         r += Integer.toString(month);
         return r;
@@ -111,11 +111,11 @@ public class Generic_Date extends Generic_YearMonth implements Comparable {
 
     @Override
     public String getYYYYMM(String delimeter) {
-        String result;
-        result = getYYYY();
-        result += delimeter;
-        result += getMM();
-        return result;
+        String r;
+        r = getYYYY();
+        r += delimeter;
+        r += getMM();
+        return r;
     }
 
     /**
@@ -129,13 +129,13 @@ public class Generic_Date extends Generic_YearMonth implements Comparable {
     }
 
     public String getDD() {
-        String result = "";
+        String r = "";
         int dayOfMonth = LD.getDayOfMonth();
         if (dayOfMonth < 10) {
-            result += Generic_Strings.symbol_0;
+            r += e.strings.symbol_0;
         }
-        result += Integer.toString(dayOfMonth);
-        return result;
+        r += Integer.toString(dayOfMonth);
+        return r;
     }
 
     @Override
@@ -157,11 +157,11 @@ public class Generic_Date extends Generic_YearMonth implements Comparable {
      * the - is replaced by dateComponentDelimitter.
      */
     public String getYYYYMMDD(String dateComponentDelimitter) {
-        String result;
-        result = getYYYYMM(dateComponentDelimitter);
-        result += dateComponentDelimitter;
-        result += getDD();
-        return result;
+        String r;
+        r = getYYYYMM(dateComponentDelimitter);
+        r += dateComponentDelimitter;
+        r += getDD();
+        return r;
     }
 
     @Override

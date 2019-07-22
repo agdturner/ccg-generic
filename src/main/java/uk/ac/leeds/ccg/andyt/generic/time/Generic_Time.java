@@ -21,7 +21,6 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
  * Holds a reference to a LocalDateTime and provides methods to compare and
@@ -68,8 +67,8 @@ public class Generic_Time extends Generic_Date implements Comparable {
      * @param s String
      */
     public Generic_Time(Generic_Environment e, String s) {
-        this(e, s, Generic_Strings.symbol_minus, Generic_Strings.s_T,
-                Generic_Strings.symbol_colon);
+        this(e, s, e.strings.symbol_minus, e.strings.s_T,
+                e.strings.symbol_colon);
     }
 
     /**
@@ -88,7 +87,7 @@ public class Generic_Time extends Generic_Date implements Comparable {
         splitT = s.split(timedateSeparator);
         //super(split[0]);
         String[] split;
-        String s_0 = Generic_Strings.symbol_0;
+        String s_0 = e.strings.symbol_0;
         String s2;
         int hour;
         int minute;
@@ -153,9 +152,9 @@ public class Generic_Time extends Generic_Date implements Comparable {
      * @return YYYY-MM-DDTHH:MM:SSZ
      */
     public String toFormattedString0() {
-        return getYYYYMMDDHHMMSS(Generic_Strings.symbol_minus,
-                Generic_Strings.s_T, Generic_Strings.symbol_colon,
-                Generic_Strings.s_Z);
+        return getYYYYMMDDHHMMSS(e.strings.symbol_minus,
+                e.strings.s_T, e.strings.symbol_colon,
+                e.strings.s_Z);
     }
 
     /**
@@ -163,16 +162,16 @@ public class Generic_Time extends Generic_Date implements Comparable {
      * @return YYYY-MM-DDTHH_MM_SSZ
      */
     public String toFormattedString1() {
-        return getYYYYMMDDHHMMSS(Generic_Strings.symbol_minus,
-                Generic_Strings.s_T, Generic_Strings.symbol_underscore,
-                Generic_Strings.s_Z);
+        return getYYYYMMDDHHMMSS(e.strings.symbol_minus,
+                e.strings.s_T, e.strings.symbol_underscore,
+                e.strings.s_Z);
     }
 
     public String toFormattedString2() {
-        return getYYYYMMDDHHMMSS(Generic_Strings.special_emptyString,
-                Generic_Strings.special_emptyString,
-                Generic_Strings.special_emptyString,
-                Generic_Strings.special_emptyString);
+        return getYYYYMMDDHHMMSS(e.strings.special_emptyString,
+                e.strings.special_emptyString,
+                e.strings.special_emptyString,
+                e.strings.special_emptyString);
     }
 
     public String getYYYYMMDDHHMM() {
@@ -186,7 +185,7 @@ public class Generic_Time extends Generic_Date implements Comparable {
         String r = "";
         int dayOfMonth = LDT.getDayOfMonth();
         if (dayOfMonth < 10) {
-            r += Generic_Strings.symbol_0;
+            r += e.strings.symbol_0;
         }
         r += Integer.toString(dayOfMonth);
         return r;
@@ -196,7 +195,7 @@ public class Generic_Time extends Generic_Date implements Comparable {
         String r = "";
         int hour = LDT.getHour();
         if (hour < 10) {
-            r += Generic_Strings.symbol_0;
+            r += e.strings.symbol_0;
         }
         r += Integer.toString(hour);
         return r;
@@ -212,7 +211,7 @@ public class Generic_Time extends Generic_Date implements Comparable {
         String r = "";
         int minute = LDT.getMinute();
         if (minute < 10) {
-            r += Generic_Strings.symbol_0;
+            r += e.strings.symbol_0;
         }
         r += Integer.toString(minute);
         return r;
@@ -222,7 +221,7 @@ public class Generic_Time extends Generic_Date implements Comparable {
         String r = "";
         int second = LDT.getSecond();
         if (second < 10) {
-            r += Generic_Strings.symbol_0;
+            r += e.strings.symbol_0;
         }
         r += Integer.toString(second);
         return r;
@@ -236,11 +235,11 @@ public class Generic_Time extends Generic_Date implements Comparable {
     public String getYYYYMMDDHHMMSS() {
         String r;
         r = super.toString();
-        r += Generic_Strings.s_T;
+        r += e.strings.s_T;
         r += getHH();
-        r += Generic_Strings.symbol_colon;
+        r += e.strings.symbol_colon;
         r += getMins();
-        r += Generic_Strings.symbol_colon;
+        r += e.strings.symbol_colon;
         r += getSS();
         return r;
     }
