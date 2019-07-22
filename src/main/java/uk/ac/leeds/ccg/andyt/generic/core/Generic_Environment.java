@@ -43,11 +43,6 @@ public class Generic_Environment {
     public final Generic_Files files;
 
     /**
-     * A sharable instance of {@link Generic_Strings}.
-     */
-    public final Generic_Strings strings;
-
-    /**
      * A sharable instance of {@link Generic_IO}.
      */
     public final Generic_IO io;
@@ -126,7 +121,7 @@ public class Generic_Environment {
      * @param r What {@link #range} is set to.
      */
     public Generic_Environment(File d, Level l, int r) {
-        this(new Generic_Files(new Generic_Strings(), d), l, r);
+        this(new Generic_Files(d), l, r);
     }
 
     /**
@@ -161,7 +156,6 @@ public class Generic_Environment {
      */
     public Generic_Environment(Generic_Files f, Level l, int r) {
         files = f;
-        strings = f.strings;
         io = new Generic_IO(this);
         level = l;
         range = r;

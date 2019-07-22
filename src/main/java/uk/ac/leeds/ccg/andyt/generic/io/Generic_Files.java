@@ -24,8 +24,6 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
  */
 public class Generic_Files {
 
-    public final Generic_Strings strings;
-    
     /**
      * The base level Data directory.
      */
@@ -53,19 +51,16 @@ public class Generic_Files {
 
     /**
      * Defaults dataDir to what is returned from
-      * @param s What {@link #strings} is set to.
       * {@link Generic_Files#getDefaultDataDir()}.
      */
-    public Generic_Files(Generic_Strings s) {
-        this(s, getDefaultDataDir());
+    public Generic_Files() {
+        this(getDefaultDataDir());
     }
 
     /**
-     * @param s What {@link #strings} is set to.
      * @param dir What {@link #dataDir} is set to.
      */
-    public Generic_Files(Generic_Strings s, File dir) {
-        strings = s;
+    public Generic_Files(File dir) {
         dataDir = dir;
     }
 
@@ -106,7 +101,7 @@ public class Generic_Files {
      * @return A default directory called data in the user.dir.
      */
     public static File getDefaultDataDir() {
-        return new File(System.getProperty("user.dir"), new Generic_Strings().s_data);
+        return new File(System.getProperty("user.dir"), Generic_Strings.s_data);
     }
 
     /**
@@ -116,7 +111,7 @@ public class Generic_Files {
      */
     public File getInputDataDir() {
         if (inputDir == null) {
-            inputDir = new File(getDataDir(), strings.s_input);
+            inputDir = new File(getDataDir(), Generic_Strings.s_input);
             inputDir.mkdirs();
         }
         return inputDir;
@@ -128,7 +123,7 @@ public class Generic_Files {
      */
     public File getGeneratedDataDir() {
         if (generatedDir == null) {
-            generatedDir = new File(getDataDir(), strings.s_generated);
+            generatedDir = new File(getDataDir(), Generic_Strings.s_generated);
             generatedDir.mkdirs();
         }
         return generatedDir;
@@ -136,7 +131,7 @@ public class Generic_Files {
 
     public File getOutputDataDir() {
         if (outputDir == null) {
-            outputDir = new File(getDataDir(), strings.s_output);
+            outputDir = new File(getDataDir(), Generic_Strings.s_output);
             outputDir.mkdirs();
         }
         return outputDir;
@@ -144,7 +139,7 @@ public class Generic_Files {
 
     public File getLogDir() {
         if (logDir == null) {
-            logDir = new File(getOutputDataDir(), strings.s_log);
+            logDir = new File(getOutputDataDir(), Generic_Strings.s_log);
         }
         return logDir;
     }

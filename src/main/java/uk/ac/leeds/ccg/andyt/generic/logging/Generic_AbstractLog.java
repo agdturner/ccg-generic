@@ -22,100 +22,72 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 //import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 
 /**
  * Abstract class to be extended by any class requiring logging.
  */
-public abstract class Generic_AbstractLog {
+public abstract class Generic_AbstractLog extends Generic_Object {
 
     /**
      * For logging
      */
-    protected transient FileHandler _Logger_FileHandler;
-    protected transient Logger _Logger;
+    protected transient FileHandler fh;
+    protected transient Logger logger;
 
-    public void init_Logger(
-            Level aLevel,
-            File directory,
-            String classname,
-            String filename) {
-        _Logger = Logger.getLogger(classname);
+    public void init_Logger(Level l, File dir, String classname, String filename) {
+        logger = Logger.getLogger(classname);
         try {
-            if (_Logger_FileHandler != null) {
-                _Logger.removeHandler(_Logger_FileHandler);
+            if (fh != null) {
+                logger.removeHandler(fh);
             }
-            File logDirectory = new File(
-                    directory.getCanonicalPath() +
-                    System.getProperty("file.separator") + "logs");
-            logDirectory.mkdirs();
-            _Logger_FileHandler = new FileHandler(
-                    logDirectory.getCanonicalPath() +
-                    System.getProperty("file.separator") + filename);
-        } catch (IOException aIOException) {
-            aIOException.printStackTrace();
+            File logDir = new File(dir.getCanonicalPath()
+                    + System.getProperty("file.separator") + "logs");
+            logDir.mkdirs();
+            fh = new FileHandler(logDir.getCanonicalPath()
+                    + System.getProperty("file.separator") + filename);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
             System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
-        _Logger.addHandler(_Logger_FileHandler);
-        _Logger.setLevel(aLevel);
+        logger.addHandler(fh);
+        logger.setLevel(l);
         //_Logger.setLevel(Level.ALL);
-        _Logger.exiting(
-                classname,
-                "init_Logger(Level,File,String)");
+        logger.exiting(classname, "init_Logger(Level,File,String,String)");
     }
 
-    public void init_Logger(
-            Level aLevel,
-            File directory,
-            String filename) {
-        _Logger = Logger.getAnonymousLogger();
+    public void init_Logger(Level l, File directory, String filename) {
+        logger = Logger.getAnonymousLogger();
         try {
-//            if (_Logger_FileHandler != null) {
-//                _Logger.removeHandler(_Logger_FileHandler);
-//            }
-            File logDirectory = new File(
-                    directory.getCanonicalPath() +
-                    System.getProperty("file.separator") + "logs");
-            logDirectory.mkdirs();
-            _Logger_FileHandler = new FileHandler(
-                    logDirectory.getCanonicalPath() +
-                    System.getProperty("file.separator") + filename);
-        } catch (IOException aIOException) {
-            aIOException.printStackTrace();
+            File logDir = new File(directory.getCanonicalPath()
+                    + System.getProperty("file.separator") + "logs");
+            logDir.mkdirs();
+            fh = new FileHandler(logDir.getCanonicalPath()
+                    + System.getProperty("file.separator") + filename);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
             System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
-        _Logger.addHandler(_Logger_FileHandler);
-        _Logger.setLevel(aLevel);
+        logger.addHandler(fh);
+        logger.setLevel(l);
         //_Logger.setLevel(Level.ALL);
-        _Logger.exiting(
-                this.getClass().getCanonicalName(),
+        logger.exiting(this.getClass().getCanonicalName(),
                 "init_Logger(Level,File,String)");
     }
 
-    public void init_Logger(
-            Level aLevel,
-            File directory) {
+    public void init_Logger(Level l, File dir) {
         String classname = this.getClass().getCanonicalName();
         String filename = classname + ".log";
-        init_Logger(
-                aLevel,
-                directory,
-                filename);
+        init_Logger(l, dir, filename);
     }
 
-    public void log(
-            String aString) {
-        System.out.println(aString);
-        _Logger.log(
-                _Logger.getLevel(),
-                aString);
+    public void log(String s) {
+        System.out.println(s);
+        logger.log(logger.getLevel(), s);
     }
 
-    public void log(
-            Level aLevel,
-            String aString) {
-        System.out.println(aString);
-        _Logger.log(
-                aLevel,
-                aString);
+    public void log(Level l, String s) {
+        System.out.println(s);
+        logger.log(l, s);
     }
 }

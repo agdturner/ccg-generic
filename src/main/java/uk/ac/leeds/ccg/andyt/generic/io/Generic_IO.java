@@ -45,6 +45,7 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 
 //import java.nio.file.S
@@ -64,7 +65,7 @@ public class Generic_IO extends Generic_Object {
 
     /**
      * Creates a new instance.
-     * @param e
+     * @param e Generic_Environment
      */
     public Generic_IO(Generic_Environment e) {
         super(e);
@@ -1299,13 +1300,13 @@ public class Generic_IO extends Generic_Object {
         } else {
             File[] files0 = dir.listFiles();
             if (files0.length == 1) {
-                if (files0[0].getName().contains(e.strings.symbol_underscore)) {
+                if (files0[0].getName().contains(Generic_Strings.symbol_underscore)) {
                     af = files0[0].listFiles();
                 }
             }
             TreeMap<Long, File> fs = getNumericallyOrderedFiles(af);
             File lf = fs.lastEntry().getValue();
-            if (lf.getName().contains(e.strings.symbol_underscore)) {
+            if (lf.getName().contains(Generic_Strings.symbol_underscore)) {
                 return getArchiveHighestLeaf(lf);
             } else {
                 r = Long.valueOf(lf.getName());
@@ -1321,7 +1322,7 @@ public class Generic_IO extends Generic_Object {
      */
     public long getArchiveRange(File dir) {
         File highestLeaf_File = getArchiveHighestLeafFile(dir);
-        String[] split = highestLeaf_File.getParentFile().getName().split(e.strings.symbol_underscore);
+        String[] split = highestLeaf_File.getParentFile().getName().split(Generic_Strings.symbol_underscore);
         long min = Long.valueOf(split[0]);
         long max = Long.valueOf(split[1]);
         return max - min + 1;
@@ -1362,7 +1363,7 @@ public class Generic_IO extends Generic_Object {
      */
     private HashSet<File> getArchiveLeafFilesSet0(File f) {
         HashSet<File> r = new HashSet<>();
-        if (f.getName().contains(e.strings.symbol_underscore)) {
+        if (f.getName().contains(Generic_Strings.symbol_underscore)) {
             File[] files = f.listFiles();
             for (File file : files) {
                 HashSet<File> s;
@@ -1399,7 +1400,7 @@ public class Generic_IO extends Generic_Object {
      */
     private TreeMap<Long, File> getArchiveLeafFilesMap0(File file) {
         TreeMap<Long, File> result = new TreeMap<>();
-        if (file.getName().contains(e.strings.symbol_underscore)) {
+        if (file.getName().contains(Generic_Strings.symbol_underscore)) {
             File[] files = file.listFiles();
             for (File f : files) {
                 TreeMap<Long, File> subresult = getArchiveLeafFilesMap0(f);
@@ -1438,7 +1439,7 @@ public class Generic_IO extends Generic_Object {
     private TreeMap<Long, File> getArchiveLeafFilesMap0(
             File file, long minID, long maxID) {
         TreeMap<Long, File> r = new TreeMap<>();
-        if (file.getName().contains(e.strings.symbol_underscore)) {
+        if (file.getName().contains(Generic_Strings.symbol_underscore)) {
             File[] files = file.listFiles();
             for (File f : files) {
                 r.putAll(getArchiveLeafFilesMap0(f, minID, maxID));
@@ -1469,7 +1470,7 @@ public class Generic_IO extends Generic_Object {
             TreeMap<Long, File> ofiles;
             ofiles = getNumericallyOrderedFiles2(files);
             File f = ofiles.lastEntry().getValue();
-            if (f.getName().contains(e.strings.symbol_underscore)) {
+            if (f.getName().contains(Generic_Strings.symbol_underscore)) {
                 return getArchiveHighestLeafFile(f);
             } else {
                 r = f;
@@ -1489,12 +1490,12 @@ public class Generic_IO extends Generic_Object {
         TreeMap<Long, File> ofiles;
         ofiles = getNumericallyOrderedFiles2(files);
         String dirName0 = getFilename(dir, ofiles.firstEntry().getValue());
-        String[] split0 = dirName0.split(e.strings.symbol_underscore);
+        String[] split0 = dirName0.split(Generic_Strings.symbol_underscore);
         //long start0 = new Long(split0[0]).longValue();
         long end0 = Long.valueOf(split0[1]);
         long newRange = range * (end0 + 1L);
         // Create new top directory and move in existing files
-        File newTop0 = new File(dir, "" + 0 + e.strings.symbol_underscore
+        File newTop0 = new File(dir, "" + 0 + Generic_Strings.symbol_underscore
                 + (newRange - 1L));
         File newTop = new File(newTop0.getPath());
         newTop0.mkdir();
@@ -1517,12 +1518,12 @@ public class Generic_IO extends Generic_Object {
         TreeMap<Long, File> ofiles = getNumericallyOrderedFiles2(files);
         File file0 = ofiles.firstEntry().getValue();
         String dirName0 = getFilename(dir, file0);
-        String[] split0 = dirName0.split(e.strings.symbol_underscore);
+        String[] split0 = dirName0.split(Generic_Strings.symbol_underscore);
         //long start0 = new Long(split0[0]).longValue();
         long end0 = Long.valueOf(split0[1]);
         long newRange = range * (end0 + 1L);
         // Create new top directory and move in existing files
-        File newTop0 = new File(dir, "" + 0 + e.strings.symbol_underscore + (newRange - 1L));
+        File newTop0 = new File(dir, "" + 0 + Generic_Strings.symbol_underscore + (newRange - 1L));
         File newTop = new File(newTop0.getPath());
         newTop0.mkdir();
         for (File f : files) {
@@ -1577,7 +1578,7 @@ public class Generic_IO extends Generic_Object {
                 "" + next_ID);
         String filename = getFilename(dir, newHighestLeafDir);
         // Test range
-        String[] split = filename.split(e.strings.symbol_underscore);
+        String[] split = filename.split(Generic_Strings.symbol_underscore);
         long startnew = Long.valueOf(split[0]);
         long endnew = Long.valueOf(split[1]);
         long rangenew = endnew - startnew;
@@ -1587,11 +1588,11 @@ public class Generic_IO extends Generic_Object {
         while (ite.hasNext()) {
             int index = ite.next();
             filename0 = filenames.get(index);
-            if (filename0.contains(e.strings.symbol_underscore)) {
+            if (filename0.contains(Generic_Strings.symbol_underscore)) {
                 break;
             }
         }
-        split = filename0.split(e.strings.symbol_underscore);
+        split = filename0.split(Generic_Strings.symbol_underscore);
         long startold = Long.parseLong(split[0]);
         long endold = Long.parseLong(split[1]);
         long rangeold = endold - startold;
@@ -1615,12 +1616,12 @@ public class Generic_IO extends Generic_Object {
                 "" + next_ID);
         String name = getFilename(dir, newHighestLeafDir);
         // Test range
-        String[] split = name.split(e.strings.symbol_underscore);
+        String[] split = name.split(Generic_Strings.symbol_underscore);
         long startnew = Long.valueOf(split[0]);
         long endnew = Long.valueOf(split[1]);
         long rangenew = endnew - startnew;
         String[] files = dir.list();
-        split = files[0].split(e.strings.symbol_underscore);
+        split = files[0].split(Generic_Strings.symbol_underscore);
         long startold = Long.valueOf(split[0]);
         long endold = Long.valueOf(split[1]);
         long rangeold = endold - startold;
@@ -1710,8 +1711,8 @@ public class Generic_IO extends Generic_Object {
         TreeMap<Long, File> r = new TreeMap<>();
         for (File file : files) {
             String name = file.getName();
-            if (name.contains(e.strings.symbol_underscore)) {
-                String[] split = name.split(e.strings.symbol_underscore);
+            if (name.contains(Generic_Strings.symbol_underscore)) {
+                String[] split = name.split(Generic_Strings.symbol_underscore);
                 if (split.length <= 2) {
                     long start;
                     try {
@@ -1746,8 +1747,8 @@ public class Generic_IO extends Generic_Object {
         String[] split;
         for (String list1 : list) {
             String name = list1;
-            if (name.contains(e.strings.symbol_underscore)) {
-                split = name.split(e.strings.symbol_underscore);
+            if (name.contains(Generic_Strings.symbol_underscore)) {
+                split = name.split(Generic_Strings.symbol_underscore);
                 if (split.length <= 2) {
                     try {
                         if (split.length == 2) {

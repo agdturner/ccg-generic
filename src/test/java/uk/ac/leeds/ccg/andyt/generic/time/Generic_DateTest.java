@@ -28,7 +28,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 
 /**
@@ -59,7 +58,7 @@ public class Generic_DateTest extends Generic_Object {
         if (!testDir.exists()) {
             testDir.mkdirs();
         }
-        Generic_Files f = new Generic_Files(new Generic_Strings(), testDir);
+        Generic_Files f = new Generic_Files(testDir);
         //e = new Generic_Environment(testDir.getPath());
         e = new Generic_Environment(f, Level.ALL, 100);
     }

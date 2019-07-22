@@ -19,6 +19,7 @@ import java.time.YearMonth;
 import java.util.Objects;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
  * Holds a reference to a YearMonth and provides methods to compare and process
@@ -96,7 +97,7 @@ public class Generic_YearMonth extends Generic_Object implements Comparable {
         String r = "";
         int month = YM.getMonthValue();
         if (month < 10) {
-            r = e.strings.symbol_0;
+            r = Generic_Strings.symbol_0;
         }
         r += Integer.toString(month);
         return r;

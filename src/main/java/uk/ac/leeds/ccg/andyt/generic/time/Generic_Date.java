@@ -94,7 +94,7 @@ public class Generic_Date extends Generic_YearMonth implements Comparable {
         String r = "";
         int month = LD.getMonthValue();
         if (month < 10) {
-            r = e.strings.symbol_0;
+            r = Generic_Strings.symbol_0;
         }
         r += Integer.toString(month);
         return r;
@@ -132,7 +132,7 @@ public class Generic_Date extends Generic_YearMonth implements Comparable {
         String r = "";
         int dayOfMonth = LD.getDayOfMonth();
         if (dayOfMonth < 10) {
-            r += e.strings.symbol_0;
+            r += Generic_Strings.symbol_0;
         }
         r += Integer.toString(dayOfMonth);
         return r;
