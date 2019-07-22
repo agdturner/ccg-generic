@@ -25,12 +25,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 
 /**
  *
  * @author geoagdt
  */
-public class Generic_IOTest {
+public class Generic_IOTest extends Generic_Object {
 
     public Generic_IOTest() {
     }
@@ -73,12 +75,13 @@ public class Generic_IOTest {
                 File newnewfile = new File(newfile, "file" + j);
                 try {
                     newnewfile.createNewFile();
-                } catch (IOException e) {
+                } catch (IOException ex) {
                 }
             }
         }
         TreeSet expResult = null;
-        TreeSet result = Generic_IO.recursiveFileList(file);
+        Generic_IO io = new Generic_IO(new Generic_Environment());
+        TreeSet result = io.recursiveFileList(file);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -104,7 +107,8 @@ public class Generic_IOTest {
 //            }
 //        }
         TreeSet expResult = null;
-        TreeSet result = Generic_IO.recursiveFileList(file, 1);
+        Generic_IO io = new Generic_IO(new Generic_Environment());
+        TreeSet result = io.recursiveFileList(file, 1);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -121,16 +125,17 @@ public class Generic_IOTest {
         f.mkdirs();
         long range = 100;
         long sizeOfArchive = 1001; //1000;
-        File dir0 = Generic_IO.initialiseArchive(f, range);
+        Generic_IO io = new Generic_IO(new Generic_Environment());
+        File dir0 = io.initialiseArchive(f, range);
         File dirHL = null;
         for (long id = 0; id < sizeOfArchive; id++) {
-            dirHL = Generic_IO.addToArchive(f, range, id);
+            dirHL = io.addToArchive(f, range, id);
         }
         System.out.println("dirHL " + dirHL);
         System.out.println("initialised archive with " + sizeOfArchive + " files");
-        HashSet<File> leaves = Generic_IO.getArchiveLeafFilesSet(f);
+        HashSet<File> leaves = io.getArchiveLeafFilesSet(f);
         System.out.println(leaves.size());
-        long[] deletedCounts = Generic_IO.delete(f);
+        long[] deletedCounts = io.delete(f);
         System.out.println(
                 "deleted archive which contained " + deletedCounts[0]
                 + " files and " + deletedCounts[1] + " directories");

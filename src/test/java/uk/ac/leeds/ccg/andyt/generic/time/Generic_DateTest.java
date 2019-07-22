@@ -49,8 +49,6 @@ public class Generic_DateTest extends Generic_Object {
     public static void tearDownClass() {
     }
 
-    Generic_Environment e;
-
     @Before
     public void setUp() {
         // Init e
@@ -61,7 +59,7 @@ public class Generic_DateTest extends Generic_Object {
         if (!testDir.exists()) {
             testDir.mkdirs();
         }
-        Generic_Files f = new Generic_Files(testDir);
+        Generic_Files f = new Generic_Files(new Generic_Strings(), testDir);
         //e = new Generic_Environment(testDir.getPath());
         e = new Generic_Environment(f, Level.ALL, 100);
     }
