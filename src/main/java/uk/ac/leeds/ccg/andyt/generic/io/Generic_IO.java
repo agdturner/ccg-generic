@@ -1813,6 +1813,10 @@ public class Generic_IO extends Generic_Object {
         return fl - dl;
     }
 
+    public File addDir(File dir, String s){
+        return new File(dir, s);
+    }
+    
 //    public boolean isStandardFileName(File f){
 //        return isStandardFileName(f.toString());
 //    } 
