@@ -25,22 +25,22 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 public class Generic_Files {
 
     /**
-     * The base level Data directory.
+     * The base level directory.
      */
-    protected File dataDir;
+    protected File dir;
 
     /**
-     * The input directory in {@link #dataDir}.
+     * The input directory in {@link #dir}.
      */
     protected File inputDir;
 
     /**
-     * The generated directory in {@link #dataDir}.
+     * The generated directory in {@link #dir}.
      */
     protected File generatedDir;
 
     /**
-     * The output directory in {@link #dataDir}.
+     * The output directory in {@link #dir}.
      */
     protected File outputDir;
 
@@ -50,38 +50,37 @@ public class Generic_Files {
     protected File logDir;
 
     /**
-     * Defaults dataDir to what is returned from
-      * {@link Generic_Files#getDefaultDataDir()}.
+     * Defaults dir to what is returned from
+      * {@link Generic_Files#getDefaultDir()}.
      */
     public Generic_Files() {
-        this(getDefaultDataDir());
+        this(getDefaultDir());
     }
 
     /**
-     * @param dir What {@link #dataDir} is set to.
+     * @param dir What {@link #dir} is set to.
      */
     public Generic_Files(File dir) {
-        dataDir = dir;
+        this.dir = dir;
     }
 
     /**
-     * Sets {@link #dataDir} to {@code d} and sets
+     * Sets {@link #dir} to {@code d} and sets
      * {@link #inputDir}, {@link #generatedDir} and {@link #outputDir} to
      * {@code null}.
      *
-     * @param d What {@link #dataDir} is set to.
+     * @param d What {@link #dir} is set to.
      */
-    public final void setDataDirectory(File d) {
+    public final void setDir(File d) {
         if (!d.exists()) {
             boolean successfulCreation;
             successfulCreation = d.mkdirs();
             if (!successfulCreation) {
-                throw new Error("The data directory " + d + " was not "
-                        + "created in " + this.getClass().getName()
-                        + ".setDataDirectory(String)");
+                throw new Error("The directory " + d + " was not created in " 
+                        + this.getClass().getName() + ".setDir(File)");
             }
         }
-        dataDir = d;
+        dir = d;
         inputDir = null;
         generatedDir = null;
         outputDir = null;
@@ -89,10 +88,10 @@ public class Generic_Files {
 
     /**
      *
-     * @return dataDir
+     * @return dir
      */
-    public File getDataDir() {
-        return dataDir;
+    public File getDir() {
+        return dir;
     }
 
     /**
@@ -100,18 +99,19 @@ public class Generic_Files {
      *
      * @return A default directory called data in the user.dir.
      */
-    public static File getDefaultDataDir() {
-        return new File(System.getProperty("user.dir"), Generic_Strings.s_data);
+    public static File getDefaultDir() {
+        return new File(System.getProperty("user.dir"), 
+                Generic_Strings.s_Generic);
     }
 
     /**
      *
-     * @return InputDataDir If null then InputDataDir is set using {@code
-     * InputDataDir = new File(getDataDir(), Generic_Strings.s_input);}
+     * @return InputDir If null then InputDir is set using {@code
+     * InputDir = new File(getDir(), Generic_Strings.s_input);}
      */
-    public File getInputDataDir() {
+    public File getInputDir() {
         if (inputDir == null) {
-            inputDir = new File(getDataDir(), Generic_Strings.s_input);
+            inputDir = new File(getDir(), Generic_Strings.s_input);
             inputDir.mkdirs();
         }
         return inputDir;
@@ -119,19 +119,19 @@ public class Generic_Files {
 
     /**
      *
-     * @return GeneratedDataDir
+     * @return GeneratedDir
      */
-    public File getGeneratedDataDir() {
+    public File getGeneratedDir() {
         if (generatedDir == null) {
-            generatedDir = new File(getDataDir(), Generic_Strings.s_generated);
+            generatedDir = new File(getDir(), Generic_Strings.s_generated);
             generatedDir.mkdirs();
         }
         return generatedDir;
     }
 
-    public File getOutputDataDir() {
+    public File getOutputDir() {
         if (outputDir == null) {
-            outputDir = new File(getDataDir(), Generic_Strings.s_output);
+            outputDir = new File(getDir(), Generic_Strings.s_output);
             outputDir.mkdirs();
         }
         return outputDir;
@@ -139,7 +139,7 @@ public class Generic_Files {
 
     public File getLogDir() {
         if (logDir == null) {
-            logDir = new File(getOutputDataDir(), Generic_Strings.s_log);
+            logDir = new File(getOutputDir(), Generic_Strings.s_log);
         }
         return logDir;
     }

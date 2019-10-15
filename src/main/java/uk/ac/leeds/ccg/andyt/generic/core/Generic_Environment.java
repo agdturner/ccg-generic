@@ -81,13 +81,11 @@ public class Generic_Environment {
     private static transient final int DEFAULT_RANGE = 100;
 
     /**
-     * Creates a new instance. The data directory is set using
-     * {@code Generic_Files.getDefaultDataDir()}. See
-     * {@link Generic_Environment#Generic_Environment(java.io.File)}.
-     *
+     * Creates a new instance. The directory is set by default to 
+     * {@code Generic_Files.getDefaultDir()}.
      */
     public Generic_Environment() {
-        this(Generic_Files.getDefaultDataDir());
+        this(Generic_Files.getDefaultDir());
     }
 
     /**
@@ -113,8 +111,8 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. {@link #files} is set using
-     * {@code new Generic_Files(new Generic_Strings(), d)}. See
-     * {@link Generic_Environment#Generic_Environment(uk.ac.leeds.ccg.andyt.generic.io.Generic_Files, java.util.logging.Level, int)}.
+     * {@code new Generic_Files(new Generic_Strings(d)}. See
+     * {@link #Generic_Environment(java.io.File, java.util.logging.Level, int)}.
      *
      * @param d The directory that will be set as the data directory.
      * @param l What {@link #level} is set to.
@@ -146,9 +144,10 @@ public class Generic_Environment {
     }
             
     /**
-     * Creates a new instance. {@link #logs} is initialised using
-     * {@code new HashMap<>();} {@link #logNamesInUse} is initialised using
-     * {@code new HashSet<>();}
+     * Creates a new instance: {@link #io} is initialised using
+     * {@code new Generic_IO(this)}; {@link #logs} is initialised using
+     * {@code new HashMap<>()}; {@link #logNamesInUse} is initialised using
+     * {@code new HashSet<>()}.
      *
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.

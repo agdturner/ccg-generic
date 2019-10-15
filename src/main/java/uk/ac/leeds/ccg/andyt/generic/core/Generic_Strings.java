@@ -84,6 +84,7 @@ public class Generic_Strings {
     public static final String s_G = "G";
     public static final String s_g = "g";
     public static final String s_generated = "generated";
+    public static final String s_Generic = "Generic";
     public static final String s_generic = "generic";
     public static final String s_H = "H";
     public static final String s_h = "h";
