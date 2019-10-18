@@ -15,6 +15,7 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.core;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -26,7 +27,7 @@ import java.io.Serializable;
  */
 public abstract class Generic_Object implements Serializable {
 
-    public transient Generic_Environment e;
+    protected transient Generic_Environment env;
 
     /**
      * Creates a new instance.
@@ -37,9 +38,32 @@ public abstract class Generic_Object implements Serializable {
     /**
      * Creates a new instance.
      *
-     * @param e The {@link Generic_Environment} that {@link e} is set to.
+     * @param e The {@link Generic_Environment} that {@link #env} is set to.
      */
     public Generic_Object(Generic_Environment e) {
-        this.e = e;
+        this.env = e;
+    }
+
+    /**
+     * Initialise if necessary and return {@link #env}.
+     *
+     * @return {@link #env} initialised if necessary.
+     * @throws java.io.IOException If env is null and when initialising it a
+     * log file was not initialised.
+     */
+    public Generic_Environment getEnv() throws IOException {
+        if (env == null) {
+            env = new Generic_Environment();
+        }
+        return env;
+    }
+
+    /**
+     * Sets {@link #env} to {@code e}.
+     *
+     * @param e The environment to set.
+     */
+    public void setEnv(Generic_Environment e) {
+        env = e;
     }
 }

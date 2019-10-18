@@ -35,11 +35,11 @@ public class Generic_Date extends Generic_YearMonth implements Comparable {
     }
 
     public Generic_Date(Generic_Date d) {
-        this(d.e, d.LD);
+        this(d.env, d.LD);
     }
 
     public Generic_Date(Generic_Time t) {
-        this(t.e, t.LDT.toLocalDate());
+        this(t.env, t.LDT.toLocalDate());
     }
 
     public Generic_Date(Generic_Environment e, LocalDate d) {

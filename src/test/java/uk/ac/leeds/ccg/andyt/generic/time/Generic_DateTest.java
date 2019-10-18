@@ -19,51 +19,50 @@
 package uk.ac.leeds.ccg.andyt.generic.time;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.logging.Logger;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_Defaults;
 
 /**
  *
  * @author geoagdt
  */
-public class Generic_DateTest extends Generic_Object {
+public class Generic_DateTest {
 
+    Generic_Environment env;
+    
     public Generic_DateTest() {
         //super();
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        // Init e
-        String dataDir = System.getProperty("user.dir");
-        System.out.println("user.dir " + dataDir);
-        File testDir = new File(dataDir, "data");
-        testDir = new File(testDir, "test");
-        if (!testDir.exists()) {
-            testDir.mkdirs();
+        File dir = Generic_Defaults.getDefaultDir();
+        try {
+            env = new Generic_Environment(dir);
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_DateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Generic_Files f = new Generic_Files(testDir);
-        //e = new Generic_Environment(testDir.getPath());
-        e = new Generic_Environment(f, Level.ALL, 100);
+        env.files.setEnv(env);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
     }
 
@@ -86,27 +85,33 @@ public class Generic_DateTest extends Generic_Object {
         month = 11;
         dayOfMonth = 9;
         days = 1;
-        instance = new Generic_Date(e, year, month, dayOfMonth);
+        instance = new Generic_Date(env, year, month, dayOfMonth);
+        env.log(instance.toString());
+        env.log("addDays(" + days + ")");
         instance.addDays(days);
+        env.log(instance.toString());
         dayOfMonth = 10;
-        t = new Generic_Date(e, year, month, dayOfMonth);
+        t = new Generic_Date(env, year, month, dayOfMonth);
         expResult = true;
         result = instance.equals(t);
-        assertEquals(expResult, result);
+        Assertions.assertEquals(expResult, result);
         // Test 2
         year = 2017;
         month = 9;
         dayOfMonth = 30;
         days = 1;
-        instance = new Generic_Date(e, year, month, dayOfMonth);
+        instance = new Generic_Date(env, year, month, dayOfMonth);
+        env.log(instance.toString());
+        env.log("addDays(" + days + ")");
         instance.addDays(days);
+        env.log(instance.toString());
         year = 2017;
         month = 10;
         dayOfMonth = 1;
-        t = new Generic_Date(e, year, month, dayOfMonth);
+        t = new Generic_Date(env, year, month, dayOfMonth);
         expResult = true;
         result = instance.equals(t);
-        assertEquals(expResult, result);
+        Assertions.assertEquals(expResult, result);
     }
 
     /**
@@ -119,10 +124,11 @@ public class Generic_DateTest extends Generic_Object {
         Generic_Date instance;
         boolean expResult = true;
         boolean result;
-        t = new Generic_Date(e, 2017, 11, 9);
-        instance = new Generic_Date(e, 2017, 11, 9);
+        t = new Generic_Date(env, 2017, 11, 9);
+        instance = new Generic_Date(env, 2017, 11, 9);
+        env.log(instance.toString());
         result = instance.isSameDay(t);
-        assertEquals(expResult, result);
+        Assertions.assertEquals(expResult, result);
     }
 
     /**
@@ -135,10 +141,11 @@ public class Generic_DateTest extends Generic_Object {
         String expResult;
         String result;
         // Test1
-        t = new Generic_Date(e, 2017, 1, 9);
+        t = new Generic_Date(env, 2017, 1, 9);
         result = t.getDD();
+        env.log(t.toString());
         expResult = "09";
-        assertEquals(expResult, result);
+        Assertions.assertEquals(expResult, result);
     }
 
     /**
@@ -147,10 +154,11 @@ public class Generic_DateTest extends Generic_Object {
     @Test
     public void testGetYYYYMMDD_0args() {
         System.out.println("getYYYYMMDD");
-        Generic_Date instance = new Generic_Date(e, 2017, 1, 9);
+        Generic_Date instance = new Generic_Date(env, 2017, 1, 9);
+        env.log(instance.toString());
         String expResult = "2017-01-09";
         String result = instance.getYYYYMMDD();
-        assertEquals(expResult, result);
+        Assertions.assertEquals(expResult, result);
     }
 
     /**
@@ -160,10 +168,11 @@ public class Generic_DateTest extends Generic_Object {
     public void testGetYYYYMMDD_String() {
         System.out.println("getYYYYMMDD");
         String dateComponentDelimitter = "_";
-        Generic_Date instance = new Generic_Date(e, 2017, 1, 9);
+        Generic_Date instance = new Generic_Date(env, 2017, 1, 9);
+        env.log(instance.toString());
         String expResult = "2017_01_09";
         String result = instance.getYYYYMMDD(dateComponentDelimitter);
-        assertEquals(expResult, result);
+        Assertions.assertEquals(expResult, result);
     }
 
 }

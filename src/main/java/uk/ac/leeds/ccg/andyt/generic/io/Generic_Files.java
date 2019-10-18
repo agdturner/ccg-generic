@@ -16,13 +16,17 @@
 package uk.ac.leeds.ccg.andyt.generic.io;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
  *
  * @author geoagdt
  */
-public class Generic_Files {
+public class Generic_Files extends Generic_Object {
 
     /**
      * The base level directory.
@@ -51,17 +55,49 @@ public class Generic_Files {
 
     /**
      * Defaults dir to what is returned from
-      * {@link Generic_Files#getDefaultDir()}.
+     * {@link Generic_Defaults#getDefaultDir()}.
      */
     public Generic_Files() {
-        this(getDefaultDir());
+        this(Generic_Defaults.getDefaultDir());
     }
 
     /**
-     * @param dir What {@link #dir} is set to.
+     * @param d What {@link #dir} is set to.
      */
-    public Generic_Files(File dir) {
-        this.dir = dir;
+    public Generic_Files(File d) {
+        initDir(d);
+    }
+
+    /**
+     * For initialising {@link #dir} and reporting whether the directory exists
+     * already or was successfully created. If it was not successfully created
+     * this should throw an Error.
+     *
+     * @param d
+     */
+    private void initDir(File d) {
+        if (d.exists()) {
+            String m = "Warning: The directory " + d + " already exists.";
+            if (env == null) {
+                System.out.println(m);
+            } else {
+                env.log(m);
+            }
+        } else {
+            boolean successfulCreation;
+            successfulCreation = d.mkdirs();
+            if (!successfulCreation) {
+                throw new Error("The directory " + d + " was not created in "
+                        + this.getClass().getName() + ".setDir(File)");
+            }
+            String m = "The directory " + d + " was successfully created.";
+            if (env == null) {
+                System.out.println(m);
+            } else {
+                env.log(m);
+            }
+        }
+        dir = d;
     }
 
     /**
@@ -72,18 +108,13 @@ public class Generic_Files {
      * @param d What {@link #dir} is set to.
      */
     public final void setDir(File d) {
-        if (!d.exists()) {
-            boolean successfulCreation;
-            successfulCreation = d.mkdirs();
-            if (!successfulCreation) {
-                throw new Error("The directory " + d + " was not created in " 
-                        + this.getClass().getName() + ".setDir(File)");
-            }
-        }
-        dir = d;
+        String m = getClass().getName() + ".setDir(File)";
+        env.logStartTag(m);
+        initDir(d);
         inputDir = null;
         generatedDir = null;
         outputDir = null;
+        env.logEndTag(m);
     }
 
     /**
@@ -92,16 +123,6 @@ public class Generic_Files {
      */
     public File getDir() {
         return dir;
-    }
-
-    /**
-     * {@code return new File(System.getProperty("user.dir"), "data");}
-     *
-     * @return A default directory called data in the user.dir.
-     */
-    public static File getDefaultDir() {
-        return new File(System.getProperty("user.dir"), 
-                Generic_Strings.s_Generic);
     }
 
     /**
@@ -143,4 +164,6 @@ public class Generic_Files {
         }
         return logDir;
     }
+
+    
 }

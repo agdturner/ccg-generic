@@ -27,12 +27,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 /**
  *
@@ -43,19 +43,19 @@ public class Generic_CollectionsTest {
     public Generic_CollectionsTest() {
     }
     
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
     }
     
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
     }
     
-    @Before
+    @BeforeEach
     public void setUp() {
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
     }
 
@@ -621,7 +621,7 @@ public class Generic_CollectionsTest {
         l.add(new BigDecimal(-10.0d));
         BigDecimal expResult = new BigDecimal(10.0d);
         BigDecimal result = Generic_Collections.getMax(l);
-        assertEquals(expResult, result);
+        Assertions.assertEquals(expResult, result);
     }
     
     /**
@@ -637,7 +637,7 @@ public class Generic_CollectionsTest {
         l.add(new BigDecimal(-10.0d));
         BigDecimal expResult = new BigDecimal(-10.0d);
         BigDecimal result = Generic_Collections.getMin(l);
-        assertEquals(expResult, result);
+        Assertions.assertEquals(expResult, result);
     }
     
     /**
@@ -653,10 +653,10 @@ public class Generic_CollectionsTest {
         l.add(new BigDecimal(-10.0d));
         BigDecimal b;
         b = new BigDecimal(-10.0d);
-        assertTrue(Generic_Collections.containsValue(l,b));
+        Assertions.assertTrue(Generic_Collections.containsValue(l,b));
         b = new BigDecimal(0.0d);
-        assertTrue(Generic_Collections.containsValue(l,b));
+        Assertions.assertTrue(Generic_Collections.containsValue(l,b));
         b = new BigDecimal(1.0d);
-        assertFalse(Generic_Collections.containsValue(l,b));
+        Assertions.assertFalse(Generic_Collections.containsValue(l,b));
     }
 }

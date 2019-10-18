@@ -15,6 +15,7 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.time;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -39,15 +40,15 @@ public class Generic_Time extends Generic_Date implements Comparable {
     }
 
     public Generic_Time(Generic_Time t) {
-        this(t.e, t.LDT);
+        this(t.env, t.LDT);
     }
 
-    public Generic_Time(Generic_Date d) {
-        this(d.e, LocalDateTime.of(d.LD, LocalTime.of(0, 0)));
+    public Generic_Time(Generic_Date d) throws IOException {
+        this(d.getEnv(), LocalDateTime.of(d.LD, LocalTime.of(0, 0)));
     }
 
-    public Generic_Time(Generic_Date d, LocalTime t) {
-        this(d.e, LocalDateTime.of(d.LD, t));
+    public Generic_Time(Generic_Date d, LocalTime t) throws IOException {
+        this(d.getEnv(), LocalDateTime.of(d.LD, t));
     }
 
     public Generic_Time(Generic_Environment e, LocalDateTime dt) {
