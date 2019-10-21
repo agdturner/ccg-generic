@@ -73,8 +73,9 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * A method which will try to swap any data.
      *
      * @return an indication if some data was swapped.
+     * @throws java.io.IOException
      */
-    public abstract boolean swapDataAny();
+    public abstract boolean swapDataAny() throws IOException ;
 
     /**
      * A method which will try to swap any data.
@@ -82,8 +83,10 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @param handleOutOfMemoryError If true this will try to handle any
      * OutOfMemoryError encountered in attempting to swap any data.
      * @return an indication if some data was swapped.
+     * @throws java.io.IOException
      */
-    public abstract boolean swapDataAny(boolean handleOutOfMemoryError);
+    public abstract boolean swapDataAny(boolean handleOutOfMemoryError) 
+            throws IOException;
 
     /**
      * May initialise Generic_TestMemory and Generic_TestMemory.Runtime.

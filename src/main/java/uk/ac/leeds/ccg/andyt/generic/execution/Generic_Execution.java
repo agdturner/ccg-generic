@@ -21,9 +21,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 
 /**
  * Generic utility class for execution handling.
@@ -31,21 +30,25 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
  * @author Andy Turner
  * @version 1.0.0
  */
-public class Generic_Execution {
+public class Generic_Execution extends Generic_Object {
 
     /**
-     * Default {@link #shutdownExecutorService(java.util.concurrent.ExecutorService,
-     * java.util.concurrent.Future, java.lang.Object, long, long)} 1000 and
-     * maxWait 10.
+     * Default:
+     * <ul>
+     * <li>delay = 1000</li>
+     * <li>maxWait 10</li>
+     * </ul>      {@link #shutdownExecutorService(java.util.concurrent.ExecutorService,
+     * java.util.concurrent.Future, java.lang.Object, long, long)} .
      *
-     * @param es ExecutorService
-     * @param futures Set of Futures
-     * @param o Object
+     * @param es ExecutorService.
+     * @param futures Set of Futures.
+     * @param o Object.
      *
+     * {
      * @see #shutdownExecutorService(java.util.concurrent.ExecutorService,
-     * java.util.concurrent.Future, java.lang.Object, long, long)
+     * java.util.concurrent.Future, java.lang.Object, long, long)}
      */
-    public static void shutdownExecutorService(ExecutorService es,
+    public void shutdownExecutorService(ExecutorService es,
             HashSet<Future> futures, Object o) {
         long delay = 1000;
         long maxWait = 10;
@@ -61,13 +64,12 @@ public class Generic_Execution {
      * @param maxWait Number of minutes to block shutdown after all futures
      * returned
      */
-    public static void shutdownExecutorService(ExecutorService es,
+    public void shutdownExecutorService(ExecutorService es,
             HashSet<Future> futures, Object o, long delay, long maxWait) {
         // What is still left to do from futures?
         Iterator<Future> ite = futures.iterator();
-        String m;
-        m = "There are " + futures.size() + " jobs to check.";
-        System.out.println(m);
+        String m = "There are " + futures.size() + " jobs to check.";
+        env.log(m);
         int doneJobsCounter = 0;
         int notDoneJobsCounter = 0;
         while (ite.hasNext()) {
@@ -79,45 +81,20 @@ public class Generic_Execution {
             }
         }
         m = "There are " + doneJobsCounter + " jobs done.";
-        System.out.println(m);
+        env.log(m);
         m = "There are " + notDoneJobsCounter + " jobs not done.";
-        System.out.println(m);
+        env.log(m);
         ite = futures.iterator();
+        long counter = 0;
         while (ite.hasNext()) {
             Future future = ite.next();
-            long counter = 0;
             while (!future.isDone()) {
-                m = "Job not done waiting " + delay + " milliseconds having "
-                        + "already waited " + counter + " milliseconds";
-                System.out.println(m);
-                counter += delay;
-                //try {
-                Generic_Execution.waitSychronized(o, delay);
-                //} catch (InterruptedException e) {
-                //    e.printStackTrace();
-                //}
+                counter = checkFuture(o, counter, delay);
             }
         }
         m = "Jobs done.";
-        System.out.println(m);
-        es.shutdown();
-        try {
-            boolean t;
-            t = es.awaitTermination(maxWait, TimeUnit.MINUTES);
-            m = "All output terminated " + t;
-            System.out.println(m);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Generic_Execution.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
-        List<Runnable> unfinishedJobs = es.shutdownNow();
-        if (unfinishedJobs.size() > 0) {
-            m = "There are " + unfinishedJobs.size() + " unfinshed jobs";
-            System.out.println(m);
-        } else {
-            m = "All jobs finished";
-            System.out.println(m);
-        }
+        env.log(m);
+        shutdownExecutorService( es, maxWait);
     }
 
     /**
@@ -127,13 +104,53 @@ public class Generic_Execution {
      * @param future Future
      * @param o Object
      */
-    public static void shutdownExecutorService(ExecutorService es,
+    public void shutdownExecutorService(ExecutorService es,
             Future future, Object o) {
         long delay = 1000;
         long maxWait = 10;
         shutdownExecutorService(es, future, o, delay, maxWait);
     }
 
+    /**
+     * 
+     * @param o An Object used for synchronise waiting.
+     * @param counter The counter to be updated and returned.
+     * @param delay The time to wait for the job to complete.
+     * @return An updated counter adding the time waited.
+     */
+    private long checkFuture(Object o, long counter, long delay) {
+        String m = "Job not done waiting " + delay + " milliseconds having "
+                + "already waited " + counter + " milliseconds.";
+        env.log(m);
+        counter += delay;
+        waitSychronized(env, o, delay);
+        return counter;
+    }
+
+    /**
+     * @param es The ExecutorService to shutdown.
+     * @param maxWait The maximum length of time to wait for shutdown.
+     */
+    private void shutdownExecutorService(ExecutorService es, long maxWait) {
+        String m;
+        es.shutdown();
+        try {
+            boolean t = es.awaitTermination(maxWait, TimeUnit.MINUTES);
+            m = "All output terminated " + t + ".";
+            env.log(m);
+        } catch (InterruptedException ex) {
+            env.log(ex.getMessage());
+        }
+        List<Runnable> unfinishedJobs = es.shutdownNow();
+        if (unfinishedJobs.size() > 0) {
+            m = "There are " + unfinishedJobs.size() + " unfinshed jobs.";
+            env.log(m);
+        } else {
+            m = "All jobs finished.";
+            env.log(m);
+        }
+}
+    
     /**
      *
      * @param es ExecutorService
@@ -143,58 +160,32 @@ public class Generic_Execution {
      * Future is returned.
      * @param maxWait Maximum time to wait before shutting down.
      */
-    public static void shutdownExecutorService(ExecutorService es,
+    public void shutdownExecutorService(ExecutorService es,
             Future future, Object o, long delay, long maxWait) {
         long counter = 0;
-        String m;
         while (!future.isDone()) {
-            m = "Job not done waiting " + delay + " milliseconds having already"
-                    + " waited " + counter + " milliseconds";
-            System.out.println(m);
-            counter += delay;
-            //try {
-            Generic_Execution.waitSychronized(o, delay);
-            //} catch (InterruptedException e) {
-            //    e.printStackTrace();
-            //}
-        }
-        m = "Job done.";
-        System.out.println(m);
-        es.shutdown();
-        try {
-            boolean t;
-            t = es.awaitTermination(maxWait, TimeUnit.MINUTES);
-            m = "All output terminated " + t;
-            System.out.println(m);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Generic_Execution.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
-        List<Runnable> unfinishedJobs = es.shutdownNow();
-        if (unfinishedJobs.size() > 0) {
-            m = "There were " + unfinishedJobs.size() + " unfinshed jobs";
-            System.out.println(m);
-        } else {
-            m = "All jobs finished";
-            System.out.println(m);
-        }
+                counter = checkFuture(o, counter, delay);
+            }
+        env.log("Job done.");
+        shutdownExecutorService( es, maxWait);
     }
 
     /**
-     * For delaying further execution of a program for <code>delay</code> number
+     * For delaying further execution of a program for {@code delay} number
      * of milliseconds.
      *
+     * @param env For logging.
      * @param o The Object used to synchronize the delay.
      * @param delay Number of milliseconds to wait.
      */
-    public static void waitSychronized(Object o, long delay) {
+    public static void waitSychronized(Generic_Environment env, Object o, 
+            long delay) {
         try {
             synchronized (o) {
                 o.wait(delay);
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(Generic_Visualisation.class.getName()).log(
-                    Level.SEVERE, null, ex);
+            env.log(ex.getMessage());
         }
     }
 }

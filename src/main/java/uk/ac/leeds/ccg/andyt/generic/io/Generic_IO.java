@@ -488,25 +488,19 @@ public class Generic_IO extends Generic_Object {
         try {
             r = new FileInputStream(f);
         } catch (FileNotFoundException ex) {
-            System.err.println("Trying to handle " + ex.getLocalizedMessage());
-            System.err.println("Wait for " + wait + " miliseconds then trying "
-                    + "again to getBufferedReader(File " + f.toString()
-                    + ", long).");
-            if (!f.exists()) {
-                //ex.printStackTrace(System.err);
-                Logger.getLogger(Generic_IO.class.getName()).log(
-                        Level.SEVERE, null, ex);
-                // null will be returned...
-            } else {
-                // This can happen because of too many open files.
-                // Try waiting for 2 seconds and then repeating...
-                Generic_Execution.waitSychronized(f, wait);
+            String m;
+            m = "Trying to handle " + ex.getLocalizedMessage() + " in " +
+                this.getClass().getName() + ".getFileInputStream(File,long).";
+            env.log(m);
+            if (f.exists()) {
+                m = "Wait for " + wait + " milliseconds then trying again...";
+                Generic_Execution.waitSychronized(env, f, wait);
+                env.log(m);
                 return getFileInputStream(f, wait * 2);
+            } else {
+                m = "returning null";
+                env.log(m);
             }
-//        } catch (IOException e) {
-//            e.printStackTrace(System.err);
-//            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, 
-//                null, e);
         }
         return r;
     }

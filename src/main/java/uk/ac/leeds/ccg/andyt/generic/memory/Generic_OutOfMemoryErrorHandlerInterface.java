@@ -15,6 +15,8 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.memory;
 
+import java.io.IOException;
+
 /**
  * An interface for handling OutOfMemoryErrors.
  */
@@ -25,8 +27,9 @@ public interface Generic_OutOfMemoryErrorHandlerInterface {
      * For a method that will try to ensure there is enough memory to continue.
      *
      * @return True if successful and false otherwise.
+     * @throws java.io.IOException
      */
-    boolean checkAndMaybeFreeMemory();
+    boolean checkAndMaybeFreeMemory() throws IOException;
 
     /**
      * For a method that will initialise the MemoryReserve.

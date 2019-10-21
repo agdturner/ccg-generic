@@ -28,14 +28,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
-import uk.ac.leeds.ccg.andyt.generic.logging.Generic_Log;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 
 /**
  * A class for holding generic visualisation methods.
  */
-public class Generic_Visualisation {
+public class Generic_Visualisation extends Generic_Object {
 
     /**
      * For loading a BufferedImage from a File.
@@ -43,7 +42,7 @@ public class Generic_Visualisation {
      * @param f File
      * @return BufferedImage
      */
-    public static BufferedImage loadImage(File f) {
+    public BufferedImage loadImage(File f) {
         BufferedImage bi = null;
         try {
             try {
@@ -64,10 +63,7 @@ public class Generic_Visualisation {
                 return loadImage(f);
             }
         } catch (IOException e) {
-            Generic_Log.LOGGER.log(Generic_Log.DEFAULT_LEVEL, //Level.ALL,
-                    e.getMessage());
             e.printStackTrace(System.err);
-            System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
         return bi;
     }
@@ -79,17 +75,16 @@ public class Generic_Visualisation {
      * @param format String
      * @param f File
      */
-    public static void saveImage(BufferedImage bi, String format, File f) {
-        String m;
-        m = "Generic_Visualisation.saveImage(BufferedImage,String,File)";
-        System.out.println("<" + m + ">");
+    public void saveImage(BufferedImage bi, String format, File f) {
+        String m = "Generic_Visualisation.saveImage(BufferedImage,String,File)";
+        env.logStartTag(m);
         if (bi != null) {
             try {
-                System.out.println("File " + f.toString());
+                env.log("File " + f.toString());
                 ImageIO.write(bi, format, f);
-            } catch (IIOException e) {
-                System.err.println("Trying to handle " + e.getLocalizedMessage());
-                System.err.println("Wait for 2 seconds then trying again to saveImage.");
+            } catch (IOException e) {
+                env.log("Trying to handle " + e.getLocalizedMessage());
+                env.log("Wait for 2 seconds then trying again to saveImage.");
                 //e.printStackTrace(System.err);
                 // This can happen because of too many open files.
                 // Try waiting for 2 seconds and then repeating...
@@ -98,40 +93,14 @@ public class Generic_Visualisation {
                         bi.wait(2000L);
                     }
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Generic_Visualisation.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                saveImage(bi, format, f);
-                //} catch (FileNotFoundException e) {
-                //} catch (IOException e) {
-            } catch (Exception e) {
-                System.err.println("Trying to handle " + e.getLocalizedMessage());
-                System.err.println("Wait for 2 seconds then trying again to saveImage.");
-                //e.printStackTrace(System.err);
-                // This can happen because of too many open files.
-                // Try waiting for 2 seconds and then repeating...
-                try {
-                    synchronized (bi) {
-                        bi.wait(2000L);
-                    }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Generic_Visualisation.class.getName()).log(Level.SEVERE, null, ex);
+                    env.log(ex.getMessage());
                 }
                 saveImage(bi, format, f);
             } finally {
-                // There is nothing to go in here as IMAGEIO deals with the stream.
+                // Nothing needed here as IMAGEIO should deal with the stream.
             }
         }
-//        } catch (IOException e) {
-//            Generic_Log.LOGGER.log(
-//                    Generic_Log.DEFAULT_LEVEL, //Level.ALL,
-//                    e.getMessage());
-//            String methodName = "saveImage(BufferedImage,String,File)";
-//            System.err.println(e.getMessage());
-//            System.err.println("Generic_Visualisation." + methodName);
-//            e.printStackTrace(System.err);
-//            System.exit(Generic_ErrorAndExceptionHandler.IOException);
-//        }
-        System.out.println("</" + m + ">");
+        env.logEndTag(m);
     }
 
     /**
@@ -139,26 +108,26 @@ public class Generic_Visualisation {
      * is hopefully long enough for all the graphics to be drawn.
      *
      * @param es ExecutorService
-     * @param o Object 
+     * @param o Object
      * @param timeInMilliseconds long
      * @param format String
      * @param bi BufferedImage
      * @param f File
      * @return Future
      */
-    public static Future saveImage(ExecutorService es, Object o,
-            BufferedImage bi, long timeInMilliseconds, String format, File f) {
+    public Future saveImage(ExecutorService es, Object o, BufferedImage bi, 
+            long timeInMilliseconds, String format, File f) {
         if (es == null) {
             es = Executors.newSingleThreadExecutor();
         }
-        Future result;
-        ImageSaver is = new ImageSaver(o, bi, timeInMilliseconds, format, f);
-        result = es.submit(is);
-        return result;
+        ImageSaver is = new ImageSaver(this, o, bi, timeInMilliseconds, format, f);
+        Future r = es.submit(is);
+        return r;
     }
 
-    public static class ImageSaver implements Runnable {
+    public class ImageSaver implements Runnable {
 
+        Generic_Visualisation v;
         Object o;
         BufferedImage bi;
         long timeInMilliseconds;
@@ -168,8 +137,9 @@ public class Generic_Visualisation {
         public ImageSaver() {
         }
 
-        public ImageSaver(Object o, BufferedImage bi, long timeInMilliseconds,
-                String format, File f) {
+        public ImageSaver(Generic_Visualisation v, Object o, BufferedImage bi,
+                long timeInMilliseconds, String format, File f) {
+            this.v = v;
             this.o = o;
             this.bi = bi;
             this.timeInMilliseconds = timeInMilliseconds;
@@ -179,8 +149,8 @@ public class Generic_Visualisation {
 
         @Override
         public void run() {
-            Generic_Execution.waitSychronized(o, timeInMilliseconds);
-            Generic_Visualisation.saveImage(bi, format, f);
+            Generic_Execution.waitSychronized(v.env, o, timeInMilliseconds);
+            v.saveImage(bi, format, f);
         }
     }
 
@@ -191,25 +161,28 @@ public class Generic_Visualisation {
      * @return Object[] r of size 2 where: r[0] = Toolkit.getDefaultToolkit();
      * r[1] = GraphicsEnvironment.getLocalGraphicsEnvironment().
      */
-    public static Object[] getHeadlessEnvironment() {
-        Object[] result = new Object[2];
+    public Object[] getHeadlessEnvironment() {
+        Object[] r = new Object[2];
         System.setProperty("java.awt.headless", "true");
         Toolkit tk = Toolkit.getDefaultToolkit();
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        //print_headless_check(ge);
-        result[0] = tk;
-        result[1] = ge;
-        return result;
+        //logIfHeadless(ge);
+        r[0] = tk;
+        r[1] = ge;
+        return r;
     }
 
     /**
      * Reports to std.out if ge is headless or not.
-     * 
+     *
      * @param ge GraphicsEnvironment
      */
-    public static void print_headless_check(GraphicsEnvironment ge) {
-        boolean headless_check = ge.isHeadlessInstance();
-        System.out.println("headless_check " + headless_check);
+    public void logIfHeadless(GraphicsEnvironment ge) {
+        if(ge.isHeadlessInstance()) {
+            env.log("GraphicsEnvironment is headless");
+        } else {
+            env.log("GraphicsEnvironment is not headless");
+        }
     }
 
     /**
