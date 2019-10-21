@@ -15,12 +15,9 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.memory;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A class to be extended for memory management involving the controlled
@@ -33,7 +30,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * For tests on the available memory.
      */
-    public transient Generic_TestMemory Generic_TestMemory;
+    public transient Generic_TestMemory tm;
 
     /**
      * For storing the default as to whether OutOfMemoryErrors are handled.
@@ -65,7 +62,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
     /**
      * Reserve memory that can be set to null and garbage collected so as to
      * provide room in memory for handling OutOfMemoryErrors involving the
-     * identification and writing of parts of data to filespace.
+     * identification and writing of data to disk.
      */
     protected transient int[] MemoryReserve;
 
@@ -75,7 +72,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @return an indication if some data was swapped.
      * @throws java.io.IOException if there is a problem swapping data.
      */
-    public abstract boolean swapDataAny() throws IOException ;
+    public abstract boolean swapDataAny() throws IOException;
 
     /**
      * A method which will try to swap any data.
@@ -85,16 +82,16 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @return an indication if some data was swapped.
      * @throws java.io.IOException if there is a problem swapping data.
      */
-    public abstract boolean swapDataAny(boolean handleOutOfMemoryError) 
+    public abstract boolean swapDataAny(boolean handleOutOfMemoryError)
             throws IOException;
 
     /**
-     * May initialise Generic_TestMemory and Generic_TestMemory.Runtime.
+     * May initialise tm and tm.Runtime.
      *
-     * @return Generic_TestMemory.Runtime
+     * @return tm.Runtime
      */
     public Runtime getRuntime() {
-        return getGeneric_TestMemory().Runtime;
+        return getTm().Runtime;
     }
 
     /**
@@ -161,18 +158,18 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @return true if there is enough memory to continue and false otherwise.
      */
     @Override
-    public abstract boolean checkAndMaybeFreeMemory();
+    public abstract boolean checkAndMaybeFreeMemory() throws IOException;
 
     /**
-     * For initialising and returning Generic_TestMemory.
+     * For initialising and returning tm.
      *
-     * @return Generic_TestMemory (after default construction if null)
+     * @return tm (after default construction if null)
      */
-    protected Generic_TestMemory getGeneric_TestMemory() {
-        if (Generic_TestMemory == null) {
-            Generic_TestMemory = new Generic_TestMemory();
+    protected Generic_TestMemory getTm() {
+        if (tm == null) {
+            tm = new Generic_TestMemory();
         }
-        return Generic_TestMemory;
+        return tm;
     }
 
     /**
@@ -181,55 +178,6 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * @return long
      */
     public long getTotalFreeMemory() {
-        return getGeneric_TestMemory().getTotalFreeMemory();
-    }
-
-    /**
-     * For initialising a File from String _String.
-     *
-     * @param file String
-     * @return File
-     */
-    public File initFile(String file) {
-        File result = new File(file);
-        result.getParentFile().mkdirs();
-        try {
-            result.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_OutOfMemoryErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        checkAndMaybeFreeMemory();
-        return result;
-    }
-
-    /**
-     * For initialising a File.
-     *
-     * @param dir File
-     * @param filename String
-     * @return File
-     */
-    public File initFile(File dir, String filename) {
-        File result = new File(dir, filename);
-        dir.mkdirs();
-        try {
-            result.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_OutOfMemoryErrorHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
-
-    /**
-     * For initialising a File Directory.
-     *
-     * @param parentFile File
-     * @param s String name of directory.
-     * @return File
-     */
-    public File initFileDirectory(File parentFile, String s) {
-        File result = new File(parentFile, s);
-        result.mkdirs();
-        return result;
+        return getTm().getTotalFreeMemory();
     }
 }
