@@ -27,7 +27,7 @@ public interface Generic_OutOfMemoryErrorHandlerInterface {
      * For a method that will try to ensure there is enough memory to continue.
      *
      * @return True if successful and false otherwise.
-     * @throws java.io.IOException
+     * @throws java.io.IOException if there is a problem swapping data.
      */
     boolean checkAndMaybeFreeMemory() throws IOException;
 
