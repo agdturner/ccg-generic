@@ -139,7 +139,7 @@ public class Generic_IO extends Generic_Object {
     public void writeObject(Object o, File f) {
         try {
             f.getParentFile().mkdirs();
-            try ( ObjectOutputStream oos = getObjectOutputStream(f)) {
+            try (ObjectOutputStream oos = getObjectOutputStream(f)) {
                 oos.writeUnshared(o);
                 oos.flush();
                 oos.reset();
@@ -161,7 +161,7 @@ public class Generic_IO extends Generic_Object {
         Object r = null;
         if (f.length() != 0) {
             try {
-                try ( ObjectInputStream ois = getObjectInputStream(f)) {
+                try (ObjectInputStream ois = getObjectInputStream(f)) {
                     r = ois.readUnshared();
                 }
             } catch (IOException ex) {
@@ -405,7 +405,8 @@ public class Generic_IO extends Generic_Object {
             }
         }
         try {
-            try ( BufferedInputStream bis = getBufferedInputStream(f);  BufferedOutputStream bos = getBufferedOutputStream(outf)) {
+            try (BufferedInputStream bis = getBufferedInputStream(f);
+                    BufferedOutputStream bos = getBufferedOutputStream(outf)) {
                 /**
                  * bufferSize should be power of 2 (e.g. Math.pow(2, 12)), but
                  * nothing too big.
@@ -433,48 +434,44 @@ public class Generic_IO extends Generic_Object {
     /**
      * @param f File.
      * @return BufferedInputStream
+     * @throws java.io.FileNotFoundException If the file exists but is a
+     * directory rather than a regular file, does not exist but cannot be
+     * created, or cannot be opened for any other reason.
      */
-    public BufferedInputStream getBufferedInputStream(File f) {
+    public BufferedInputStream getBufferedInputStream(File f)
+            throws FileNotFoundException {
         return new BufferedInputStream(getFileInputStream(f));
     }
 
     /**
      * @param f File.
      * @return FileInputStream
+     * @throws java.io.FileNotFoundException If the file exists but is a
+     * directory rather than a regular file, does not exist but cannot be
+     * created, or cannot be opened for any other reason.
      */
-    public FileInputStream getFileInputStream(File f) {
+    public FileInputStream getFileInputStream(File f) throws FileNotFoundException {
         FileInputStream r = null;
         try {
             r = new FileInputStream(f);
         } catch (FileNotFoundException ex) {
-            System.err.println("Trying to handle " + ex.getLocalizedMessage());
-            System.err.println("Wait for 2 seconds then trying again to "
-                    + "getFileInputStream(File " + f.toString() + ").");
-            if (!f.exists()) {
-                //ex.printStackTrace(System.err);
-                Logger.getLogger(Generic_IO.class.getName()).log(
-                        Level.SEVERE, null, ex);
-                // null will be returned...
-            } else {
-                // This can happen because of too many open files.
-                // Try waiting for 2 seconds and then repeating...
+            if (f.exists()) {
                 long wait = 2000L;
-                try {
-                    synchronized (f) {
-                        f.wait(wait);
-                    }
-                } catch (InterruptedException ex2) {
-                    Logger.getLogger(Generic_IO.class.getName()).log(
-                            Level.SEVERE, null, ex2);
-                }
+                fileWait(wait, f);
                 return getFileInputStream(f, wait);
+            } else {
+                throw ex;
             }
-//        } catch (IOException e) {
-//            e.printStackTrace(System.err);
-//            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, e);
         }
         return r;
     }
+
+    protected void fileWait(long wait, Object o) {
+        env.log("Maybe there are too many open files... "
+                + "waiting for " + wait + " milliseconds...");
+        Generic_Execution.waitSychronized(env, o, wait);
+    }
+    
 
     /**
      * @param f File.
@@ -482,92 +479,69 @@ public class Generic_IO extends Generic_Object {
      * FileInputStream again if it failed the first time (this may happen if
      * waiting for a file to be written).
      * @return FileInputStream
+     * @throws java.io.FileNotFoundException If the file exists but is a
+     * directory rather than a regular file, does not exist but cannot be
+     * created, or cannot be opened for any other reason.
      */
-    public FileInputStream getFileInputStream(File f, long wait) {
-        FileInputStream r = null;
+    public FileInputStream getFileInputStream(File f, long wait)
+            throws FileNotFoundException {
         try {
-            r = new FileInputStream(f);
+            return new FileInputStream(f);
         } catch (FileNotFoundException ex) {
-            String m;
-            m = "Trying to handle " + ex.getLocalizedMessage() + " in " +
-                this.getClass().getName() + ".getFileInputStream(File,long).";
-            env.log(m);
             if (f.exists()) {
-                m = "Wait for " + wait + " milliseconds then trying again...";
-                Generic_Execution.waitSychronized(env, f, wait);
-                env.log(m);
-                return getFileInputStream(f, wait * 2);
+                fileWait(wait, f);
+                return getFileInputStream(f, wait * 2L);
             } else {
-                m = "returning null";
-                env.log(m);
+                throw ex;
             }
         }
-        return r;
     }
 
     /**
-     * @param f File.
-     * @return FileOutputStream
-     */
-    public FileOutputStream getFileOutputStream(File f) {
-        FileOutputStream r = null;
-        try {
-            r = new FileOutputStream(f);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Generic_IO.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
-        return r;
-    }
-
-    /**
-     * @param f File.
-     * @return BufferedOutputStream
-     */
-    public BufferedOutputStream getBufferedOutputStream(File f) {
-        return new BufferedOutputStream(getFileOutputStream(f));
-    }
-
-    /**
-     * Returns a Buffered PrintWriter.
+     * For getting a {@link BufferedOutputStream} to write to {@code f}.
      *
-     * @param f File.
-     * @param append if true then file is to be appended to otherwise file is to
-     * be overwritten.
-     * @return BufferedWriter
+     * @param f The {@link File} for a file to be written to.
+     * @return A {@link BufferedOutputStream} for writing to {@code f}.
+     * @throws java.io.FileNotFoundException If the file exists but is a
+     * directory rather than a regular file, does not exist but cannot be
+     * created, or cannot be opened for any other reason.
      */
-    public BufferedWriter getBufferedWriter(File f, boolean append) {
+    public BufferedOutputStream getBufferedOutputStream(File f)
+            throws FileNotFoundException {
+        return new BufferedOutputStream(new FileOutputStream(f));
+    }
+
+    /**
+     * For getting a {@link BufferedWriter}.
+     *
+     * @param f The {@link File} for a file to be written to.
+     * @param append if true then file is appended to otherwise file is
+     * overwritten.
+     * @return A {@link BufferedWriter} for writing to {@code f}.
+     * @throws java.io.IOException If one is encountered and not otherwise
+     * handled.
+     */
+    public BufferedWriter getBufferedWriter(File f, boolean append) throws IOException {
         return new BufferedWriter(getPrintWriter(f, append));
     }
 
     /**
-     * @param f File.
-     * @return ObjectInputStream
+     * @param f The {@link File} for a file to be written to.
+     * @return An {@link ObjectInputStream} for writing to {@code f}.
+     * @throws java.io.IOException If one is encountered and not otherwise
+     * handled.
      */
-    public ObjectInputStream getObjectInputStream(File f) {
-        ObjectInputStream r = null;
-        try {
-            r = new ObjectInputStream(getBufferedInputStream(f));
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_IO.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
-        return r;
+    public ObjectInputStream getObjectInputStream(File f) throws IOException {
+        return new ObjectInputStream(getBufferedInputStream(f));
     }
 
     /**
      * @param f File.
-     * @return ObjectOutputStream
+     * @return An {@link ObjectOutputStream) for writing to {@code f}.
+     * @throws java.io.IOException If IOException has not been handled.
      */
-    public ObjectOutputStream getObjectOutputStream(File f) {
-        ObjectOutputStream r = null;
-        try {
-            r = new ObjectOutputStream(getBufferedOutputStream(f));
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_IO.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
-        return r;
+    public ObjectOutputStream getObjectOutputStream(File f) throws IOException {
+        return new ObjectOutputStream(getBufferedOutputStream(f));
     }
 
     private void copyDirectory(File dirToCopy, File dirToCopyTo) {
@@ -683,8 +657,12 @@ public class Generic_IO extends Generic_Object {
     /**
      * @param f File.
      * @return BufferedReader
+     * @throws java.io.FileNotFoundException If the file exists but is a
+     * directory rather than a regular file, does not exist but cannot be
+     * created, or cannot be opened for any other reason.
      */
-    public BufferedReader getBufferedReader(File f) {
+    public BufferedReader getBufferedReader(File f)
+            throws FileNotFoundException {
         return new BufferedReader(new InputStreamReader(getFileInputStream(f)));
     }
 
@@ -695,9 +673,12 @@ public class Generic_IO extends Generic_Object {
      * @return BufferedReader
      * @throws java.io.UnsupportedEncodingException If InputStreamReader cannot
      * be constructed from charsetName.
+     * @throws java.io.FileNotFoundException If the file exists but is a
+     * directory rather than a regular file, does not exist but cannot be
+     * created, or cannot be opened for any other reason.
      */
     public BufferedReader getBufferedReader(File f, String charsetName)
-            throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException, FileNotFoundException {
         return new BufferedReader(new InputStreamReader(getFileInputStream(f),
                 charsetName));
     }
@@ -712,7 +693,7 @@ public class Generic_IO extends Generic_Object {
             br.close();
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
-            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
+            env.log(ex.getMessage());
         }
     }
 
@@ -722,8 +703,12 @@ public class Generic_IO extends Generic_Object {
      * @param br BufferedReader
      * @param f File
      * @return new BufferedReader to read f.
+     * @throws FileNotFoundException If the file exists but is a directory
+     * rather than a regular file, does not exist but cannot be created, or
+     * cannot be opened for any other reason.
      */
-    public BufferedReader closeAndGetBufferedReader(BufferedReader br, File f) {
+    public BufferedReader closeAndGetBufferedReader(BufferedReader br, File f)
+            throws FileNotFoundException {
         closeBufferedReader(br);
         br = getBufferedReader(f);
         return br;
@@ -734,38 +719,52 @@ public class Generic_IO extends Generic_Object {
      * @param append If true an existing file will be appended otherwise it will
      * be overwritten.
      * @return PrintWriter
+     * @throws IOException If the file exists but is a directory rather than a
+     * regular file, does not exist but cannot be created, or cannot be opened
+     * for any other reason.
      */
-    public PrintWriter getPrintWriter(File f, boolean append) {
-        PrintWriter r = null;
+    public PrintWriter getPrintWriter(File f, boolean append) 
+            throws IOException {
         try {
-            r = new PrintWriter(new BufferedWriter(new FileWriter(f, append)));
+            return new PrintWriter(new BufferedWriter(
+                    new FileWriter(f, append)));
         } catch (FileNotFoundException ex) {
-            System.err.println("Trying to handle " + ex.getLocalizedMessage());
-            System.err.println("Wait for 2 seconds then trying again to "
-                    + "Generic_StaticIO.getPrintWriter(File, boolean).");
-            if (!f.exists()) {
-                ex.printStackTrace(System.err);
-                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
-                // null will be returned...
+            if (f.exists()) {
+                long wait = 2000L;
+                fileWait(wait, f);
+                return getPrintWriter(f, append, wait);
             } else {
-                // This can happen because of too many open files.
-                // Try waiting for 2 seconds and then repeating...
-                try {
-                    synchronized (f) {
-                        f.wait(2000L);
-                    }
-                } catch (InterruptedException ex2) {
-                    Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex2);
-                }
-                return getPrintWriter(f, append);
+                throw ex;
             }
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return r;
     }
 
+    /**
+     * @param f The File to write to.
+     * @param append If true an existing file will be appended otherwise it will
+     * be overwritten.
+     * @param wait Time in milliseconds to wait before trying to open the
+     * FileInputStream again if it failed the first time (this may happen if
+     * waiting for a file to be written).
+     * @return PrintWriter
+     * @throws IOException If the file exists but is a directory rather than a
+     * regular file, does not exist but cannot be created, or cannot be opened
+     * for any other reason.
+     */
+    public PrintWriter getPrintWriter(File f, boolean append, long wait) 
+            throws IOException {
+        try {
+            return new PrintWriter(new BufferedWriter(new FileWriter(f, append)));
+        } catch (FileNotFoundException ex) {
+            if (f.exists()) {
+                fileWait(wait, f);
+                return getPrintWriter(f, append, wait * 2L);
+            } else {
+                throw ex;
+            }
+        }
+    }
+    
     /**
      *
      * @param f File.
@@ -1280,7 +1279,7 @@ public class Generic_IO extends Generic_Object {
         }
         File dir1 = dir0[0];
         boolean allPathsOK;
-        try ( Stream<Path> paths = Files.walk(Paths.get(dir1.getPath()))) {
+        try (Stream<Path> paths = Files.walk(Paths.get(dir1.getPath()))) {
             //paths.forEach(System.out::println);
             //paths.forEach(path -> testPathSystem.out.println(path));
 //            paths.forEach(path -> {
@@ -1638,7 +1637,8 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Use instead {@link Files#move(java.nio.file.Path, java.nio.file.Path, java.nio.file.CopyOption...)}.
+     * Use instead
+     * {@link Files#move(java.nio.file.Path, java.nio.file.Path, java.nio.file.CopyOption...)}.
      *
      * @param o origin File
      * @param d destination File
