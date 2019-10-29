@@ -24,10 +24,9 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 
@@ -35,6 +34,10 @@ import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
  * A class for holding generic visualisation methods.
  */
 public class Generic_Visualisation extends Generic_Object {
+
+    public Generic_Visualisation(Generic_Environment e) {
+        super(e);
+    }
 
     /**
      * For loading a BufferedImage from a File.
@@ -48,18 +51,11 @@ public class Generic_Visualisation extends Generic_Object {
             try {
                 bi = ImageIO.read(f);
             } catch (IIOException e) {
-                //} catch (FileNotFoundException e) {
-                //} catch (IOException e) {
-                //} catch (Exception e) {
-                // This can happen because of too many open files.
-                // Try waiting for a 2 seconds and then repeating...
-                try {
-                    synchronized (f) {
-                        f.wait(2000L);
-                    }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Generic_Visualisation.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                /**
+                 * This can happen because of too many open files. Try waiting
+                 * for a 2 seconds and then repeating...
+                 */
+                Generic_Execution.waitSychronized(env, f, 2000L);
                 return loadImage(f);
             }
         } catch (IOException e) {
@@ -115,7 +111,7 @@ public class Generic_Visualisation extends Generic_Object {
      * @param f File
      * @return Future
      */
-    public Future saveImage(ExecutorService es, Object o, BufferedImage bi, 
+    public Future saveImage(ExecutorService es, Object o, BufferedImage bi,
             long timeInMilliseconds, String format, File f) {
         if (es == null) {
             es = Executors.newSingleThreadExecutor();
@@ -178,7 +174,7 @@ public class Generic_Visualisation extends Generic_Object {
      * @param ge GraphicsEnvironment
      */
     public void logIfHeadless(GraphicsEnvironment ge) {
-        if(ge.isHeadlessInstance()) {
+        if (ge.isHeadlessInstance()) {
             env.log("GraphicsEnvironment is headless");
         } else {
             env.log("GraphicsEnvironment is not headless");
