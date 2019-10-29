@@ -53,7 +53,7 @@ public class Generic_Visualisation extends Generic_Object {
             } catch (IIOException e) {
                 /**
                  * This can happen because of too many open files. Try waiting
-                 * for a 2 seconds and then repeating...
+                 * for 2 seconds and then repeating...
                  */
                 Generic_Execution.waitSychronized(env, f, 2000L);
                 return loadImage(f);
@@ -79,18 +79,11 @@ public class Generic_Visualisation extends Generic_Object {
                 env.log("File " + f.toString());
                 ImageIO.write(bi, format, f);
             } catch (IOException e) {
-                env.log("Trying to handle " + e.getLocalizedMessage());
-                env.log("Wait for 2 seconds then trying again to saveImage.");
-                //e.printStackTrace(System.err);
-                // This can happen because of too many open files.
-                // Try waiting for 2 seconds and then repeating...
-                try {
-                    synchronized (bi) {
-                        bi.wait(2000L);
-                    }
-                } catch (InterruptedException ex) {
-                    env.log(ex.getMessage());
-                }
+                /**
+                 * This can happen because of too many open files. Try waiting
+                 * for 2 seconds and then repeating...
+                 */
+                Generic_Execution.waitSychronized(env, f, 2000L);
                 saveImage(bi, format, f);
             } finally {
                 // Nothing needed here as IMAGEIO should deal with the stream.
