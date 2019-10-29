@@ -525,9 +525,10 @@ public class Generic_IO extends Generic_Object {
         return new BufferedWriter(getPrintWriter(f, append));
     }
 
+    //@return An {@link ObjectInputStream} for reading from {@code f}.
     /**
      * @param f The {@link File} for a file to be written to.
-     * @return An {@link ObjectInputStream} for writing to {@code f}.
+     * @return See comment above!
      * @throws java.io.IOException If one is encountered and not otherwise
      * handled.
      */
@@ -535,9 +536,10 @@ public class Generic_IO extends Generic_Object {
         return new ObjectInputStream(getBufferedInputStream(f));
     }
 
+    //@return An {@link ObjectOutputStream} for writing to {@code f}.
     /**
      * @param f File.
-     * @return An {@link ObjectOutputStream) for writing to {@code f}.
+     * @return See comment above!
      * @throws java.io.IOException If IOException has not been handled.
      */
     public ObjectOutputStream getObjectOutputStream(File f) throws IOException {
@@ -1670,7 +1672,7 @@ public class Generic_IO extends Generic_Object {
      * @param dir The base directory File of the Archive to grow.
      * @param range The maximum number of directories in any directory.
      * @return File The File of the added directory.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If there is an IOException.
      */
     public File addToArchive(File dir, long range) throws IOException {
         Long next_ID = getArchiveHighestLeaf(dir);
