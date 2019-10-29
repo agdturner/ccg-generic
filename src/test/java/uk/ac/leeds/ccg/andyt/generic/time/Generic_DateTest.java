@@ -59,7 +59,6 @@ public class Generic_DateTest {
         } catch (IOException ex) {
             Logger.getLogger(Generic_DateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        env.files.setEnv(env);
     }
 
     @AfterEach

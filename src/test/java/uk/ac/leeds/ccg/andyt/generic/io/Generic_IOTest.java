@@ -18,23 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.io;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.io.StreamTokenizer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -44,7 +29,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
@@ -74,7 +58,6 @@ public class Generic_IOTest {
         } catch (IOException ex) {
             Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        env.files.setEnv(env);
     }
 
     @AfterEach
@@ -117,7 +100,6 @@ public class Generic_IOTest {
     @Test
     public void testWriteObject_Object_File() {
         System.out.println("writeObject");
-        Generic_Object o = env.files;
         String prefix = "Generic_Files";
         String suffix = Generic_Strings.symbol_dot + Generic_Strings.s_dat;
         File f = null;
@@ -128,11 +110,11 @@ public class Generic_IOTest {
         }
         env.log("Test file for env.files " + f);
         Generic_IO instance = env.io;
-        instance.writeObject(o, f);
+        instance.writeObject(env.files, f);
         // Make sure it is a new file
         f = getNewTestFile(prefix, suffix);
         env.log("Test file for env.files " + f);
-        instance.writeObject(o, f);
+        instance.writeObject(env.files, f);
     }
 
     public File getNewTestFile(String prefix, String suffix) {

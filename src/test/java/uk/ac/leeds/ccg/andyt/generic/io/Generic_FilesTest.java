@@ -58,7 +58,6 @@ public class Generic_FilesTest {
         } catch (IOException ex) {
             Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        env.files.setEnv(env);
     }
 
     @AfterEach
@@ -70,27 +69,30 @@ public class Generic_FilesTest {
      */
     @Test
     public void testSetDir() {
-        System.out.println("setDir");
-        File d = new File(System.getProperty("user.dir"),
-                Generic_Strings.s_data + "test");
-        Generic_Files instance = new Generic_Files();
-        instance.setEnv(env);
-        instance.setDir(d);
-        File dir = instance.getDir();
-        Assertions.assertEquals(d, dir);
-        Assertions.assertTrue(d.exists());
-        File genD = new File(dir, Generic_Strings.s_generated);
-        d = instance.getGeneratedDir();
-        Assertions.assertEquals(genD, d);
-        Assertions.assertTrue(genD.exists());
-        File inputD = new File(dir, Generic_Strings.s_input);
-        d = instance.getInputDir();
-        Assertions.assertEquals(inputD, d);
-        Assertions.assertTrue(inputD.exists());
-        File outputD = new File(dir, Generic_Strings.s_output);
-        d = instance.getOutputDir();
-        Assertions.assertEquals(outputD, d);
-        Assertions.assertTrue(outputD.exists());
+        try {
+            System.out.println("setDir");
+            File d = new File(env.files.getGeneratedDir(), "test");
+            Generic_Environment e = new Generic_Environment(d);
+            Generic_Files instance = new Generic_Files(d);
+            instance.setDir(d);
+            File dir = instance.getDir();
+            Assertions.assertEquals(d, dir);
+            Assertions.assertTrue(d.exists());
+            File genD = new File(dir, Generic_Strings.s_generated);
+            d = instance.getGeneratedDir();
+            Assertions.assertEquals(genD, d);
+            Assertions.assertTrue(genD.exists());
+            File inputD = new File(dir, Generic_Strings.s_input);
+            d = instance.getInputDir();
+            Assertions.assertEquals(inputD, d);
+            Assertions.assertTrue(inputD.exists());
+            File outputD = new File(dir, Generic_Strings.s_output);
+            d = instance.getOutputDir();
+            Assertions.assertEquals(outputD, d);
+            Assertions.assertTrue(outputD.exists());
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -98,12 +100,17 @@ public class Generic_FilesTest {
      */
     @Test
     public void testGetDir() {
-        System.out.println("getDir");
-        Generic_Files instance = new Generic_Files();
-        File expResult = new File(System.getProperty("user.dir"),
-                Generic_Strings.s_data);
-        File result = instance.getDir();
-        Assertions.assertEquals(expResult, result);
+        try {
+            System.out.println("getDir");
+            Generic_Environment e = new Generic_Environment();
+            Generic_Files instance = new Generic_Files(e.files.dir);
+            File expResult = new File(System.getProperty("user.dir"),
+                    Generic_Strings.s_data);
+            File result = instance.getDir();
+            Assertions.assertEquals(expResult, result);
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -123,13 +130,17 @@ public class Generic_FilesTest {
      */
     @Test
     public void testGetInputDir() {
-        System.out.println("getInputDir");
-        Generic_Files instance = new Generic_Files();
-        File expResult = new File(System.getProperty("user.dir"),
-                Generic_Strings.s_data);
-        expResult = new File(expResult, Generic_Strings.s_input);
-        File result = instance.getInputDir();
-        Assertions.assertEquals(expResult, result);
+        try {
+            System.out.println("getInputDir");
+            Generic_Environment e = new Generic_Environment();
+            File expResult = new File(System.getProperty("user.dir"),
+                    Generic_Strings.s_data);
+            expResult = new File(expResult, Generic_Strings.s_input);
+            File result = e.files.getInputDir();
+            Assertions.assertEquals(expResult, result);
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -137,13 +148,17 @@ public class Generic_FilesTest {
      */
     @Test
     public void testGetGeneratedDir() {
-        System.out.println("getGeneratedDir");
-        Generic_Files instance = new Generic_Files();
-        File expResult = new File(System.getProperty("user.dir"),
-                Generic_Strings.s_data);
-        expResult = new File(expResult, Generic_Strings.s_generated);
-        File result = instance.getGeneratedDir();
-       Assertions.assertEquals(expResult, result);
+        try {
+            System.out.println("getGeneratedDir");
+            Generic_Environment e = new Generic_Environment();
+            File expResult = new File(System.getProperty("user.dir"),
+                    Generic_Strings.s_data);
+            expResult = new File(expResult, Generic_Strings.s_generated);
+            File result = e.files.getGeneratedDir();
+            Assertions.assertEquals(expResult, result);
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -151,13 +166,17 @@ public class Generic_FilesTest {
      */
     @Test
     public void testGetOutputDir() {
-        System.out.println("getOutputDir");
-        Generic_Files instance = new Generic_Files();
-        File expResult = new File(System.getProperty("user.dir"),
-                Generic_Strings.s_data);
-        expResult = new File(expResult, Generic_Strings.s_output);
-        File result = instance.getOutputDir();
-        Assertions.assertEquals(expResult, result);
+        try {
+            System.out.println("getOutputDir");
+            Generic_Environment e = new Generic_Environment();
+            File expResult = new File(System.getProperty("user.dir"),
+                    Generic_Strings.s_data);
+            expResult = new File(expResult, Generic_Strings.s_output);
+            File result = e.files.getOutputDir();
+            Assertions.assertEquals(expResult, result);
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -165,13 +184,17 @@ public class Generic_FilesTest {
      */
     @Test
     public void testGetLogDir() {
-        System.out.println("getLogDir");
-        Generic_Files instance = new Generic_Files();
-        File expResult = new File(System.getProperty("user.dir"),
-                Generic_Strings.s_data);
-        expResult = new File(expResult, Generic_Strings.s_output);
-        expResult = new File(expResult, Generic_Strings.s_log);
-        File result = instance.getLogDir();
-        Assertions.assertEquals(expResult, result);
+        try {
+            System.out.println("getLogDir");
+            Generic_Environment e = new Generic_Environment();
+            File expResult = new File(System.getProperty("user.dir"),
+                    Generic_Strings.s_data);
+            expResult = new File(expResult, Generic_Strings.s_output);
+            expResult = new File(expResult, Generic_Strings.s_log);
+            File result = e.files.getLogDir();
+            Assertions.assertEquals(expResult, result);
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
