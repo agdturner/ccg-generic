@@ -61,12 +61,6 @@ public class Generic_IO extends Generic_Object {
 
     /**
      * Creates a new instance.
-     */
-    private Generic_IO() {
-    }
-
-    /**
-     * Creates a new instance.
      *
      * @param e Generic_Environment
      */

@@ -31,12 +31,6 @@ public abstract class Generic_Object implements Serializable {
 
     /**
      * Creates a new instance.
-     */
-    protected Generic_Object() {
-    }
-
-    /**
-     * Creates a new instance.
      *
      * @param e The {@link Generic_Environment} that {@link #env} is set to.
      */

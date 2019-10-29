@@ -16,14 +16,15 @@
 package uk.ac.leeds.ccg.andyt.generic.io;
 
 import java.io.File;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
+import java.io.IOException;
+import java.io.Serializable;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 
 /**
  *
  * @author geoagdt
  */
-public class Generic_Files extends Generic_Object {
+public class Generic_Files implements Serializable {
 
     /**
      * The base level directory.
@@ -51,48 +52,34 @@ public class Generic_Files extends Generic_Object {
     protected File logDir;
 
     /**
-     * Defaults dir to what is returned from
-     * {@link Generic_Defaults#getDefaultDir()}.
-     */
-    public Generic_Files() {
-        this(Generic_Defaults.getDefaultDir());
-    }
-
-    /**
      * @param d What {@link #dir} is set to.
+     * @throws java.io.IOException If the directory
      */
-    public Generic_Files(File d) {
+    public Generic_Files(File d) throws IOException {
         initDir(d);
     }
 
     /**
-     * For initialising {@link #dir} and reporting whether the directory exists
-     * already or was successfully created. If it was not successfully created
-     * this should throw an Error.
+     * For initialising {@link #dir} to {@code d} and reporting whether the
+     * directory exists already or was successfully created. If it was not
+     * successfully created this should throw an IOException.
      *
      * @param d
+     * @throws java.io.IOException If {@link dir} cannot be set to {@code d}.
      */
-    private void initDir(File d) {
+    private void initDir(File d) throws IOException {
+        String m = "The directory " + d;
         if (d.exists()) {
-            String m = "Warning: The directory " + d + " already exists.";
-            if (env == null) {
-                System.out.println(m);
-            } else {
-                env.log(m);
-            }
+            System.err.println("Warning: " + m + " already exists.");
         } else {
             boolean successfulCreation;
             successfulCreation = d.mkdirs();
             if (!successfulCreation) {
-                throw new Error("The directory " + d + " was not created in "
-                        + this.getClass().getName() + ".setDir(File)");
+                throw new IOException(m + " does not exist and could not be "
+                        + "created in " + this.getClass().getName()
+                        + ".initDir(File)");
             }
-            String m = "The directory " + d + " was successfully created.";
-            if (env == null) {
-                System.out.println(m);
-            } else {
-                env.log(m);
-            }
+            System.out.println(m + " was successfully created.");
         }
         dir = d;
     }
@@ -103,15 +90,13 @@ public class Generic_Files extends Generic_Object {
      * {@code null}.
      *
      * @param d What {@link #dir} is set to.
+     * @throws java.io.IOException If {@link dir} cannot be set to {@code d}.
      */
-    public final void setDir(File d) {
-        String m = getClass().getName() + ".setDir(File)";
-        env.logStartTag(m);
+    public final void setDir(File d) throws IOException {
         initDir(d);
         inputDir = null;
         generatedDir = null;
         outputDir = null;
-        env.logEndTag(m);
     }
 
     /**
@@ -162,5 +147,4 @@ public class Generic_Files extends Generic_Object {
         return logDir;
     }
 
-    
 }

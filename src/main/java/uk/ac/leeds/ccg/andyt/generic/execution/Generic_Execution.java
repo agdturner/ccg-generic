@@ -32,12 +32,16 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
  */
 public class Generic_Execution extends Generic_Object {
 
+    public Generic_Execution(Generic_Environment e){
+        super(e);        
+    }
+    
     /**
      * Default:
      * <ul>
      * <li>delay = 1000</li>
      * <li>maxWait 10</li>
-     * </ul>      {@link #shutdownExecutorService(java.util.concurrent.ExecutorService,
+     * </ul> null     {@link #shutdownExecutorService(java.util.concurrent.ExecutorService,
      * java.util.concurrent.Future, java.lang.Object, long, long)} .
      *
      * @param es ExecutorService.
@@ -68,8 +72,7 @@ public class Generic_Execution extends Generic_Object {
             HashSet<Future> futures, Object o, long delay, long maxWait) {
         // What is still left to do from futures?
         Iterator<Future> ite = futures.iterator();
-        String m = "There are " + futures.size() + " jobs to check.";
-        env.log(m);
+        env.log("There are " + futures.size() + " jobs to check.");
         int doneJobsCounter = 0;
         int notDoneJobsCounter = 0;
         while (ite.hasNext()) {
@@ -80,10 +83,8 @@ public class Generic_Execution extends Generic_Object {
                 notDoneJobsCounter++;
             }
         }
-        m = "There are " + doneJobsCounter + " jobs done.";
-        env.log(m);
-        m = "There are " + notDoneJobsCounter + " jobs not done.";
-        env.log(m);
+        env.log("There are " + doneJobsCounter + " jobs done.");
+        env.log("There are " + notDoneJobsCounter + " jobs not done.");
         ite = futures.iterator();
         long counter = 0;
         while (ite.hasNext()) {
@@ -92,9 +93,8 @@ public class Generic_Execution extends Generic_Object {
                 counter = checkFuture(o, counter, delay);
             }
         }
-        m = "Jobs done.";
-        env.log(m);
-        shutdownExecutorService( es, maxWait);
+        env.log("Jobs done.");
+        shutdownExecutorService(es, maxWait);
     }
 
     /**
@@ -112,16 +112,15 @@ public class Generic_Execution extends Generic_Object {
     }
 
     /**
-     * 
+     *
      * @param o An Object used for synchronise waiting.
      * @param counter The counter to be updated and returned.
      * @param delay The time to wait for the job to complete.
      * @return An updated counter adding the time waited.
      */
     private long checkFuture(Object o, long counter, long delay) {
-        String m = "Job not done waiting " + delay + " milliseconds having "
-                + "already waited " + counter + " milliseconds.";
-        env.log(m);
+        env.log("Job not done waiting " + delay + " milliseconds having "
+                + "already waited " + counter + " milliseconds.");
         counter += delay;
         waitSychronized(env, o, delay);
         return counter;
@@ -132,25 +131,21 @@ public class Generic_Execution extends Generic_Object {
      * @param maxWait The maximum length of time to wait for shutdown.
      */
     private void shutdownExecutorService(ExecutorService es, long maxWait) {
-        String m;
         es.shutdown();
         try {
             boolean t = es.awaitTermination(maxWait, TimeUnit.MINUTES);
-            m = "All output terminated " + t + ".";
-            env.log(m);
+            env.log("All output terminated " + t + ".");
         } catch (InterruptedException ex) {
             env.log(ex.getMessage());
         }
         List<Runnable> unfinishedJobs = es.shutdownNow();
         if (unfinishedJobs.size() > 0) {
-            m = "There are " + unfinishedJobs.size() + " unfinshed jobs.";
-            env.log(m);
+            env.log("There are " + unfinishedJobs.size() + " unfinshed jobs.");
         } else {
-            m = "All jobs finished.";
-            env.log(m);
+            env.log("All jobs finished.");
         }
-}
-    
+    }
+
     /**
      *
      * @param es ExecutorService
@@ -164,21 +159,21 @@ public class Generic_Execution extends Generic_Object {
             Future future, Object o, long delay, long maxWait) {
         long counter = 0;
         while (!future.isDone()) {
-                counter = checkFuture(o, counter, delay);
-            }
+            counter = checkFuture(o, counter, delay);
+        }
         env.log("Job done.");
-        shutdownExecutorService( es, maxWait);
+        shutdownExecutorService(es, maxWait);
     }
 
     /**
-     * For delaying further execution of a program for {@code delay} number
-     * of milliseconds.
+     * For delaying further execution of a program for {@code delay} number of
+     * milliseconds.
      *
      * @param env For logging.
      * @param o The Object used to synchronize the delay.
      * @param delay Number of milliseconds to wait.
      */
-    public static void waitSychronized(Generic_Environment env, Object o, 
+    public static void waitSychronized(Generic_Environment env, Object o,
             long delay) {
         try {
             synchronized (o) {

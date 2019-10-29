@@ -83,8 +83,8 @@ public class Generic_Environment {
     private static transient final int DEFAULT_RANGE = 100;
 
     /**
-     * Creates a new instance.The directory is set by default to
-     * {@code Generic_Files.getDefaultDir()}.
+     * Creates a new instance. The directory is set by default to
+     * {@link Generic_Defaults#getDefaultDir()}.
      *
      * @throws java.io.IOException If a log file was not initialised.
      */
