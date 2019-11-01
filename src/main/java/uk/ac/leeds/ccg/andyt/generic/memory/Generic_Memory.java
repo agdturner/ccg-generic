@@ -18,21 +18,24 @@ package uk.ac.leeds.ccg.andyt.generic.memory;
 import java.io.IOException;
 
 /**
- * An interface for handling OutOfMemoryErrors.
+ * An interface for handling issues related to computer memory.
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
-public interface Generic_OutOfMemoryErrorHandlerInterface {
+public interface Generic_Memory {
 
-    //static final long serialVersionUID = 1L;
     /**
      * For a method that will try to ensure there is enough memory to continue.
      *
-     * @return True if successful and false otherwise.
-     * @throws java.io.IOException if there is a problem swapping data.
+     * @return true iff the checks was successful.
+     * @throws java.io.IOException if there is a problem swapping data to a 
+     * cache.
      */
     boolean checkAndMaybeFreeMemory() throws IOException;
 
     /**
-     * For a method that will initialise the MemoryReserve.
+     * For a method that will initialise a MemoryReserve.
      */
     void initMemoryReserve();
 }

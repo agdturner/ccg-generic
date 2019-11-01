@@ -23,14 +23,17 @@ import java.util.Arrays;
  * A class to be extended for memory management involving the controlled
  * swapping of parts of data from the fast access memory to files and the
  * handling of OutOfMemoryErrors should they be encountered.
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
-public abstract class Generic_OutOfMemoryErrorHandler
-        implements Generic_OutOfMemoryErrorHandlerInterface, Serializable {
+public abstract class Generic_MemoryManager 
+        implements Generic_Memory, Serializable {
 
     /**
      * For tests on the available memory.
      */
-    public transient Generic_TestMemory tm;
+    public transient Generic_MemoryTest MemoryTest;
 
     /**
      * For storing the default as to whether OutOfMemoryErrors are handled.
@@ -67,31 +70,28 @@ public abstract class Generic_OutOfMemoryErrorHandler
     protected transient int[] MemoryReserve;
 
     /**
-     * A method which will try to swap any data.
+     * A method which will try to cache any data.
      *
-     * @return an indication if some data was swapped.
-     * @throws java.io.IOException if there is a problem swapping data.
+     * @return an indication if some data was cached.
      */
-    public abstract boolean swapDataAny() throws IOException;
+    public abstract boolean cacheDataAny();
 
     /**
      * A method which will try to swap any data.
      *
-     * @param handleOutOfMemoryError If true this will try to handle any
+     * @param hoome If true this will try to handle any
      * OutOfMemoryError encountered in attempting to swap any data.
      * @return an indication if some data was swapped.
-     * @throws java.io.IOException if there is a problem swapping data.
      */
-    public abstract boolean swapDataAny(boolean handleOutOfMemoryError)
-            throws IOException;
-
+    public abstract boolean cacheDataAny(boolean hoome);
+    
     /**
-     * May initialise tm and tm.Runtime.
+     * This may initialise {@link #MemoryTest}.
      *
-     * @return tm.Runtime
+     * @return MemoryTest.runtime
      */
     public Runtime getRuntime() {
-        return getTm().Runtime;
+        return getMemoryTest().runtime;
     }
 
     /**
@@ -144,7 +144,7 @@ public abstract class Generic_OutOfMemoryErrorHandler
      * is called.
      */
     public final void clearMemoryReserve() {
-        //log(Runtime.getRuntime().freeMemory());
+        //log(runtime.getRuntime().freeMemory());
         this.MemoryReserve = null;
         //System.gc();
     }
@@ -161,23 +161,21 @@ public abstract class Generic_OutOfMemoryErrorHandler
     public abstract boolean checkAndMaybeFreeMemory() throws IOException;
 
     /**
-     * For initialising and returning tm.
+     * For initialising and returning {@link #MemoryTest}.
      *
-     * @return tm (after default construction if null)
+     * @return {@link #MemoryTest} (possibly after initialisation).
      */
-    protected Generic_TestMemory getTm() {
-        if (tm == null) {
-            tm = new Generic_TestMemory();
+    protected Generic_MemoryTest getMemoryTest() {
+        if (MemoryTest == null) {
+            MemoryTest = new Generic_MemoryTest();
         }
-        return tm;
+        return MemoryTest;
     }
 
     /**
-     * return getGeneric_TestMemory().getTotalFreeMemory();
-     *
-     * @return long
+     * @return The amount of free memory available.
      */
     public long getTotalFreeMemory() {
-        return getTm().getTotalFreeMemory();
+        return getMemoryTest().getTotalFreeMemory();
     }
 }

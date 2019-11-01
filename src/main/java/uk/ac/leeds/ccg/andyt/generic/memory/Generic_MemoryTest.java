@@ -16,19 +16,22 @@
 package uk.ac.leeds.ccg.andyt.generic.memory;
 
 /**
- * A class with methods that help in testing computer memory.
+ * For getting information about computer memory.
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
-public class Generic_TestMemory {
+public class Generic_MemoryTest {
 
     /**
-     * A reference to the Runtime.
+     * A reference to the runtime.
      */
-    protected transient Runtime Runtime;
+    protected transient final Runtime runtime;
 
     /**
      * For storing a record of the maximum amount of memory available to the
      * JVM. By default a java process is given a maximum allowed amount of
-     * memory so it is failsafe. A user can control how much this maximum in
+     * memory so it is fail safe. A user can control how much this maximum in
      * the java run command options.
      */
     private final long MaxMemory;
@@ -36,30 +39,30 @@ public class Generic_TestMemory {
     /**
      * Creates a new instance of Generic_TestMemory
      */
-    public Generic_TestMemory() {
-        Runtime = Runtime.getRuntime();
-        MaxMemory = Runtime.maxMemory();
+    public Generic_MemoryTest() {
+        runtime = Runtime.getRuntime();
+        MaxMemory = runtime.maxMemory();
     }
 
     /**
      * Creates a new instance of Generic_TestMemory using runtime.
      *
-     * @param runtime Runtime
+     * @param runtime runtime
      */
-    public Generic_TestMemory(Runtime runtime) {
-        Runtime = runtime;
-        MaxMemory = Runtime.maxMemory();
+    public Generic_MemoryTest(Runtime runtime) {
+        this.runtime = runtime;
+        MaxMemory = this.runtime.maxMemory();
     }
 
     /**
      * For returning the total free memory.
      *
-     * @return The TotalFreeMemory available as calculated from Runtime.
+     * @return The TotalFreeMemory available as calculated from runtime.
      */
     public long getTotalFreeMemory() {
         long r;
-        long allocatedMemory = Runtime.totalMemory();
-        long freeMemory = Runtime.freeMemory();
+        long allocatedMemory = runtime.totalMemory();
+        long freeMemory = runtime.freeMemory();
         r = freeMemory + (MaxMemory - allocatedMemory);
         return r;
     }
