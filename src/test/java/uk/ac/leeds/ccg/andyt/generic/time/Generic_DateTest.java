@@ -53,7 +53,7 @@ public class Generic_DateTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Defaults.getDefaultDir();
+        File dir = Generic_Defaults.getDataDir();
         try {
             env = new Generic_Environment(dir);
         } catch (IOException ex) {
