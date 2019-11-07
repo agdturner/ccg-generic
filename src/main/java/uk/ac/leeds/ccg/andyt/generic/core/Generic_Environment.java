@@ -84,12 +84,12 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. The directory is set by default to
-     * {@link Generic_Defaults#getDefaultDir()}.
+     * {@link Generic_Defaults#getDataDir()}.
      *
      * @throws java.io.IOException If a log file was not initialised.
      */
     public Generic_Environment() throws IOException {
-        this(Generic_Defaults.getDefaultDir());
+        this(Generic_Defaults.getDataDir());
     }
 
     /**

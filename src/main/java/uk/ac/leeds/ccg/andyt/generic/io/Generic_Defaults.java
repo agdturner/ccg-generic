@@ -27,12 +27,18 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
  */
 public class Generic_Defaults {
     
-    /**
-     * {@code return new File(System.getProperty("user.dir"), "data");}
-     *
-     * @return A default directory called data in the user.dir.
-     */
-    public static File getDefaultDir() {
-        return new File(System.getProperty("user.dir"), Generic_Strings.s_data);
+    public static File getHomeDir() {
+        //return new File(System.getProperty("user.dir"));
+        return new File("C:/Users/geoagdt/");
+    }
+    
+    public static File getDataDir() {
+        return new File(getHomeDir(), Generic_Strings.s_data);
+    }
+
+    public static File getSrcDir() {
+        File r = new File(getHomeDir(), Generic_Strings.s_src);
+        r = new File(r, Generic_Strings.s_java);
+        return r;
     }
 }
