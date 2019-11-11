@@ -89,7 +89,7 @@ public class Generic_Environment {
      * @throws java.io.IOException If a log file was not initialised.
      */
     public Generic_Environment() throws IOException {
-        this(Generic_Defaults.getDataDir());
+        this(new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic));
     }
 
     /**
@@ -343,7 +343,7 @@ public class Generic_Environment {
     public String getStartTag(String s) {
         return "<" + s + ">";
     }
-
+    
     /**
      * Prepends {@code s} with {@code "<"} and appends {@code s} with
      * {@code ">"} then writes the result to a new line of the log indexed by 0
@@ -438,5 +438,4 @@ public class Generic_Environment {
             log(iteS.next(), logID);
         }
     }
-
 }

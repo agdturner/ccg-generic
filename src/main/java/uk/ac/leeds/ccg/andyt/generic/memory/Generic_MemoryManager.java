@@ -44,8 +44,14 @@ public abstract class Generic_MemoryManager
      * A default controlling the amount of memory that is reserved and cleared
      * for handling OutOfMemoryErrors should they be encountered.
      */
-    public final int Default_Memory_Threshold = 6000000;//4000000;
+    public static final int Default_Memory_Threshold = 6000000;//4000000;
 
+    /**
+     * Stores the amount of memory that is reserved and cleared
+     * for handling OutOfMemoryErrors should they be encountered.
+     */
+    public long Memory_Threshold;
+    
     /**
      * For use when OutOfMemory handling is definitely not wanted. It is thought
      * better to have this rather than use a false value as and when as it
