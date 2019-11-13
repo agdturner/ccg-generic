@@ -60,10 +60,18 @@ public class Generic_Files implements Serializable {
     }
 
     /**
-     * @return A default data directory. 
+     * @return
+     * {@code new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic)}
      */
-    public static File getDefaultDataDir() {
-        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
+    public static File getDefaultGenericDir() {
+        return new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
+    }
+
+    /**
+     * @return Default directory.
+     */
+    public static File getDefaultDir() {
+        File dir = getDefaultGenericDir();
         dir = new File(dir, Generic_Strings.s_generic);
         return dir;
     }
