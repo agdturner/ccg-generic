@@ -94,7 +94,7 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. {@link #level} is defaulted to Level.FINE. See
-     * {@link Generic_Environment#Generic_Environment(java.io.File, java.util.logging.Level)}.
+     * {@link Generic_Environment#Generic_Environment(File,Level)}.
      *
      * @param d The directory that will be set as the data directory.
      * @throws java.io.IOException If a log file was not initialised.
@@ -105,7 +105,7 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. {@link #range} is defaulted to 100. See
-     * {@link Generic_Environment#Generic_Environment(java.io.File, java.util.logging.Level, int)}.
+     * {@link Generic_Environment#Generic_Environment(File,Level,int)}.
      *
      * @param d The directory that will be set as the data directory.
      * @param l What {@link #level} is set to.
@@ -118,7 +118,7 @@ public class Generic_Environment {
     /**
      * Creates a new instance. {@link #files} is set using
      * {@code new Generic_Files(new Generic_Strings(d)}. See
-     * {@link #Generic_Environment(java.io.File, java.util.logging.Level, int)}.
+     * {@link #Generic_Environment(File,Level,int)}.
      *
      * @param d The directory that will be set as the data directory.
      * @param l What {@link #level} is set to.
@@ -131,24 +131,26 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. {@link #level} is defaulted to Level.FINE.
-     * {@link #range} is defaulted to 100.
+     * {@link #range} is defaulted to 100. {@link #initLog(String)} or
+     * {@link #initLog(String,String)} still needs to be called to set up the
+     * log.
      *
      * @param f What {@link #files} is set to.
-     * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(Generic_Files f) throws IOException {
+    public Generic_Environment(Generic_Files f) {
         this(f, DEFAULT_LEVEL, DEFAULT_RANGE);
     }
 
     /**
      * Creates a new instance. {@link #range} is defaulted to 100. See
-     * {@link Generic_Environment#Generic_Environment(uk.ac.leeds.ccg.andyt.generic.io.Generic_Files, java.util.logging.Level, int)}.
+     * {@link Generic_Environment#Generic_Environment(Generic_Files,Level,int)}.
+     * {@link #initLog(String)} or {@link #initLog(String,String)} still needs
+     * to be called to set up the log.
      *
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
-     * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(Generic_Files f, Level l) throws IOException {
+    public Generic_Environment(Generic_Files f, Level l) {
         this(f, l, DEFAULT_RANGE);
     }
 
@@ -156,23 +158,21 @@ public class Generic_Environment {
      * Creates a new instance: {@link #io} is initialised using
      * {@code new Generic_IO(this)}; {@link #logs} is initialised using
      * {@code new HashMap<>()}; {@link #logNamesInUse} is initialised using
-     * {@code new HashSet<>()}.
+     * {@code new HashSet<>()}. {@link #initLog(String)} or
+     * {@link #initLog(String,String)} still needs to be called to set up the
+     * log.
      *
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
      * @param r What {@link #range} is set to.
-     * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(Generic_Files f, Level l, int r) throws IOException {
+    public Generic_Environment(Generic_Files f, Level l, int r) {
         files = f;
-        //files.env = this;
         io = new Generic_IO(this);
         level = l;
         range = r;
         logs = new HashMap<>();
         logNamesInUse = new HashSet<>();
-        initLog("Main");
-        log("LoggingLevel = " + level.getName(), true);
     }
 
     /**
@@ -184,7 +184,7 @@ public class Generic_Environment {
      * @throws java.io.IOException If a log file was not initialised.
      */
     public final int initLog(String s) throws IOException {
-        return initLog(s, ".log.txt");
+        return initLog(s, "_log.txt");
     }
 
     /**
@@ -206,6 +206,7 @@ public class Generic_Environment {
         File dir = getLogDir(s);
         PrintWriter pw = io.getPrintWriter(new File(dir, s + e), false);
         logs.put(logID, pw);
+        log("LoggingLevel = " + level.getName(), true);
         return logID;
     }
 
@@ -343,7 +344,7 @@ public class Generic_Environment {
     public String getStartTag(String s) {
         return "<" + s + ">";
     }
-    
+
     /**
      * Prepends {@code s} with {@code "<"} and appends {@code s} with
      * {@code ">"} then writes the result to a new line of the log indexed by 0
