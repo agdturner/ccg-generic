@@ -51,6 +51,7 @@ public class Generic_Strings {
     // Alphabetical list of commonly used word type Strings
     public static final String s_A = "A";
     public static final String s_a = "a";
+    public static final String s_agdt = "agdt";
     public static final String s_ac = "ac";
     public static final String s_All = "All";
     public static final String s_andyt = "andyt";

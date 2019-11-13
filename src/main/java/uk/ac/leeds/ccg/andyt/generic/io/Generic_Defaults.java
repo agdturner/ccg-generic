@@ -37,8 +37,14 @@ public class Generic_Defaults {
     }
 
     public static File getSrcDir() {
-        File r = new File(getHomeDir(), Generic_Strings.s_src);
+        File r = new File(getHomeDir(), Generic_Strings.s_agdt);
         r = new File(r, Generic_Strings.s_java);
         return r;
     }
+    
+    public static File getProjectDir() {
+        return new File(getHomeDir(), Generic_Strings.s_project);
+    }
+
+    
 }

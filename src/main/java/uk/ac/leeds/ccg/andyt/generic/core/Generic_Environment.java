@@ -136,8 +136,9 @@ public class Generic_Environment {
      * log.
      *
      * @param f What {@link #files} is set to.
+     * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(Generic_Files f) {
+    public Generic_Environment(Generic_Files f) throws IOException {
         this(f, DEFAULT_LEVEL, DEFAULT_RANGE);
     }
 
@@ -149,8 +150,9 @@ public class Generic_Environment {
      *
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
+     * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(Generic_Files f, Level l) {
+    public Generic_Environment(Generic_Files f, Level l) throws IOException {
         this(f, l, DEFAULT_RANGE);
     }
 
@@ -165,14 +167,16 @@ public class Generic_Environment {
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
      * @param r What {@link #range} is set to.
+     * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(Generic_Files f, Level l, int r) {
+    public Generic_Environment(Generic_Files f, Level l, int r) throws IOException {
         files = f;
         io = new Generic_IO(this);
         level = l;
         range = r;
         logs = new HashMap<>();
         logNamesInUse = new HashSet<>();
+        initLog(this.getClass().getSimpleName());
     }
 
     /**
@@ -203,8 +207,8 @@ public class Generic_Environment {
             logNamesInUse.add(s);
         }
         int logID = logs.size();
-        File dir = getLogDir(s);
-        PrintWriter pw = io.getPrintWriter(new File(dir, s + e), false);
+        File d = getLogDir(s);
+        PrintWriter pw = io.getPrintWriter(new File(d, s + e), false);
         logs.put(logID, pw);
         log("LoggingLevel = " + level.getName(), true);
         return logID;

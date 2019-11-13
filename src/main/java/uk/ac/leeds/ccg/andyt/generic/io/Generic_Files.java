@@ -60,6 +60,15 @@ public class Generic_Files implements Serializable {
     }
 
     /**
+     * @return A default data directory. 
+     */
+    public static File getDefaultDataDir() {
+        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
+        dir = new File(dir, Generic_Strings.s_generic);
+        return dir;
+    }
+
+    /**
      * For initialising {@link #dir} to {@code d} and reporting whether the
      * directory exists already or was successfully created. If it was not
      * successfully created this should throw an IOException.
@@ -68,9 +77,13 @@ public class Generic_Files implements Serializable {
      * @throws java.io.IOException If {@link dir} cannot be set to {@code d}.
      */
     private void initDir(File d) throws IOException {
+        dir = d;
         String m = "The directory " + d;
         if (d.exists()) {
-            System.err.println("Warning: " + m + " already exists.");
+            System.out.println("Warning: " + m + " already exists in "
+                    + this.getClass().getName() + ".initDir(File). Generally "
+                    + "this is fine, but data in " + getGeneratedDir() + " and "
+                    + getOutputDir() + " may be overwritten or modified.");
         } else {
             boolean successfulCreation;
             successfulCreation = d.mkdirs();
@@ -81,7 +94,6 @@ public class Generic_Files implements Serializable {
             }
             System.out.println(m + " was successfully created.");
         }
-        dir = d;
     }
 
     /**
