@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 
 /**
  *
@@ -39,6 +40,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_Defaults;
 public class Generic_DateTest {
 
     Generic_Environment env;
+    int logID;
 
     public Generic_DateTest() {
         //super();
@@ -54,11 +56,10 @@ public class Generic_DateTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
-        dir = new File(dir, Generic_Strings.s_generic);
+        File dir = Generic_Files.getDefaultDataDir();
         try {
             env = new Generic_Environment(dir);
-            env.initLog(this.getClass().getSimpleName());
+            logID = env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
             Logger.getLogger(Generic_DateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -73,7 +74,8 @@ public class Generic_DateTest {
      */
     @Test
     public void testAddDays() {
-        System.out.println("addDays");
+        env.log("addDays", logID);
+        //System.out.println("addDays");
         int year;
         int month;
         int dayOfMonth;
@@ -121,7 +123,8 @@ public class Generic_DateTest {
      */
     @Test
     public void testIsSameDay() {
-        System.out.println("isSameDay");
+        env.log("isSameDay", logID);
+        //System.out.println("isSameDay");
         Generic_Date t;
         Generic_Date instance;
         boolean expResult = true;
@@ -138,7 +141,8 @@ public class Generic_DateTest {
      */
     @Test
     public void testGetDD() {
-        System.out.println("getDD");
+        env.log("getDD", logID);
+        //System.out.println("getDD");
         Generic_Date t;
         String expResult;
         String result;
@@ -155,7 +159,8 @@ public class Generic_DateTest {
      */
     @Test
     public void testGetYYYYMMDD_0args() {
-        System.out.println("getYYYYMMDD");
+        env.log("getYYYYMMDD", logID);
+        //System.out.println("getYYYYMMDD");
         Generic_Date instance = new Generic_Date(env, 2017, 1, 9);
         env.log(instance.toString());
         String expResult = "2017-01-09";
@@ -168,7 +173,8 @@ public class Generic_DateTest {
      */
     @Test
     public void testGetYYYYMMDD_String() {
-        System.out.println("getYYYYMMDD");
+        env.log("getYYYYMMDD", logID);
+        //System.out.println("getYYYYMMDD");
         String dateComponentDelimitter = "_";
         Generic_Date instance = new Generic_Date(env, 2017, 1, 9);
         env.log(instance.toString());

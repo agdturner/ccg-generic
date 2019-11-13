@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.andyt.generic.time.Generic_DateTest;
 
 /**
@@ -49,6 +50,7 @@ import uk.ac.leeds.ccg.andyt.generic.time.Generic_DateTest;
 public class Generic_CollectionsTest {
 
     Generic_Environment env;
+    int logID;
 
     public Generic_CollectionsTest() {
     }
@@ -63,11 +65,10 @@ public class Generic_CollectionsTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
-        dir = new File(dir, Generic_Strings.s_generic);
+        File dir = Generic_Files.getDefaultDataDir();
         try {
             env = new Generic_Environment(dir);
-            env.initLog(this.getClass().getSimpleName());
+            logID = env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
             Logger.getLogger(Generic_DateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -630,7 +631,8 @@ public class Generic_CollectionsTest {
      */
     @Test
     public void testGetMax() {
-        env.log("getMax");
+        env.log("getMax", logID);
+        //env.log("getMax");
         ArrayList<BigDecimal> l;
         l = new ArrayList<>();
         l.add(new BigDecimal(0.0d));
@@ -646,7 +648,8 @@ public class Generic_CollectionsTest {
      */
     @Test
     public void testGetMin() {
-        env.log("getMin");
+        env.log("getMin", logID);
+        //env.log("getMin");
         ArrayList<BigDecimal> l;
         l = new ArrayList<>();
         l.add(new BigDecimal(0.0d));
@@ -662,7 +665,8 @@ public class Generic_CollectionsTest {
      */
     @Test
     public void testContainsValue() {
-        env.log("containsValue");
+        env.log("containsValue", logID);
+        //env.log("containsValue");
         ArrayList<BigDecimal> l;
         l = new ArrayList<>();
         l.add(new BigDecimal(0.0d));

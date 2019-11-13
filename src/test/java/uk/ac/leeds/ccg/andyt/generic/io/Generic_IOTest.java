@@ -38,6 +38,7 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 public class Generic_IOTest {
 
     Generic_Environment env;
+    int logID;
 
     public Generic_IOTest() {
     }
@@ -52,11 +53,10 @@ public class Generic_IOTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
-        dir = new File(dir, Generic_Strings.s_generic);
+        File dir = Generic_Files.getDefaultDataDir();
         try {
             env = new Generic_Environment(dir);
-            env.initLog(this.getClass().getSimpleName());
+            logID = env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
             Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,7 +101,8 @@ public class Generic_IOTest {
      */
     @Test
     public void testWriteObject_Object_File() {
-        System.out.println("writeObject");
+        env.log("writeObject", logID);
+        //System.out.println("writeObject");
         String prefix = "Generic_Files";
         String suffix = Generic_Strings.symbol_dot + Generic_Strings.s_dat;
         File f = null;
@@ -692,7 +693,8 @@ public class Generic_IOTest {
      */
     @Test
     public void testInitialiseArchive_File_long() {
-        System.out.println("initialiseArchive");
+        env.log("initialiseArchive", logID);
+        //System.out.println("initialiseArchive");
         File dir = new File(env.files.getGeneratedDir(), "testArchive");
         long range = 10L;
         File expResult;
@@ -1046,7 +1048,8 @@ public class Generic_IOTest {
      */
     @Test
     public void testGetFilePathLength_File() {
-        System.out.println("getFilePathLength");
+        env.log("getFilePathLength", logID);
+        //System.out.println("getFilePathLength");
         File f = env.files.getGeneratedDir();
         Generic_IO instance = env.io;
         int limit = 100;
@@ -1060,7 +1063,8 @@ public class Generic_IOTest {
      */
     @Test
     public void testCreateNewFile() {
-        System.out.println("createNewFile");
+        env.log("createNewFile", logID);
+        //System.out.println("createNewFile");
         File dir = env.files.getGeneratedDir();
         String prefix = "prefix";
         String suffix = "suffix";
