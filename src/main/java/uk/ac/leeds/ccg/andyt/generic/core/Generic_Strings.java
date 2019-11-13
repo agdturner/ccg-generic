@@ -116,6 +116,7 @@ public class Generic_Strings {
     public static final String s_output = "output";
     public static final String s_P = "P";
     public static final String s_p = "p";
+    public static final String s_project = "project";
     public static final String s_Q = "Q";
     public static final String s_q = "q";
     public static final String s_R = "R";
