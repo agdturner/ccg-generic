@@ -53,7 +53,7 @@ public class Generic_IOTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Files.getDefaultDataDir();
+        File dir = Generic_Files.getDefaultDir();
         try {
             env = new Generic_Environment(dir);
             logID = env.initLog(this.getClass().getSimpleName());
@@ -1066,8 +1066,8 @@ public class Generic_IOTest {
         env.log("createNewFile", logID);
         //System.out.println("createNewFile");
         File dir = env.files.getGeneratedDir();
-        String prefix = "prefix";
-        String suffix = "suffix";
+        String prefix = "test";
+        String suffix = ".dat";
         Generic_IO instance = env.io;
         File f = null;
         try {

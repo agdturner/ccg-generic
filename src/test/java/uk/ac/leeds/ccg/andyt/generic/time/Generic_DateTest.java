@@ -56,7 +56,7 @@ public class Generic_DateTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Files.getDefaultDataDir();
+        File dir = Generic_Files.getDefaultDir();
         try {
             env = new Generic_Environment(dir);
             logID = env.initLog(this.getClass().getSimpleName());
