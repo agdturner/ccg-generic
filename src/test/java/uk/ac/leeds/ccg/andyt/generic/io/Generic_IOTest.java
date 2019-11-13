@@ -52,9 +52,11 @@ public class Generic_IOTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Defaults.getDataDir();
+        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
+        dir = new File(dir, Generic_Strings.s_generic);
         try {
             env = new Generic_Environment(dir);
+            env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
             Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
         }

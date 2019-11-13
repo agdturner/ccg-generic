@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -27,34 +29,50 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.andyt.generic.time.Generic_DateTest;
 
 /**
  *
  * @author geoagdt
  */
 public class Generic_CollectionsTest {
-    
+
+    Generic_Environment env;
+
     public Generic_CollectionsTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
+        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
+        dir = new File(dir, Generic_Strings.s_generic);
+        try {
+            env = new Generic_Environment(dir);
+            env.initLog(this.getClass().getSimpleName());
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_DateTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -607,13 +625,12 @@ public class Generic_CollectionsTest {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-    
     /**
      * Test of getMax method, of class Generic_Collections.
      */
     @Test
     public void testGetMax() {
-        System.out.println("getMax");
+        env.log("getMax");
         ArrayList<BigDecimal> l;
         l = new ArrayList<>();
         l.add(new BigDecimal(0.0d));
@@ -623,13 +640,13 @@ public class Generic_CollectionsTest {
         BigDecimal result = Generic_Collections.getMax(l);
         Assertions.assertEquals(expResult, result);
     }
-    
+
     /**
      * Test of getMax method, of class Generic_Collections.
      */
     @Test
     public void testGetMin() {
-        System.out.println("getMin");
+        env.log("getMin");
         ArrayList<BigDecimal> l;
         l = new ArrayList<>();
         l.add(new BigDecimal(0.0d));
@@ -639,13 +656,13 @@ public class Generic_CollectionsTest {
         BigDecimal result = Generic_Collections.getMin(l);
         Assertions.assertEquals(expResult, result);
     }
-    
+
     /**
      * Test of getMax method, of class Generic_Collections.
      */
     @Test
     public void testContainsValue() {
-        System.out.println("containsValue");
+        env.log("containsValue");
         ArrayList<BigDecimal> l;
         l = new ArrayList<>();
         l.add(new BigDecimal(0.0d));
@@ -653,10 +670,10 @@ public class Generic_CollectionsTest {
         l.add(new BigDecimal(-10.0d));
         BigDecimal b;
         b = new BigDecimal(-10.0d);
-        Assertions.assertTrue(Generic_Collections.containsValue(l,b));
+        Assertions.assertTrue(Generic_Collections.containsValue(l, b));
         b = new BigDecimal(0.0d);
-        Assertions.assertTrue(Generic_Collections.containsValue(l,b));
+        Assertions.assertTrue(Generic_Collections.containsValue(l, b));
         b = new BigDecimal(1.0d);
-        Assertions.assertFalse(Generic_Collections.containsValue(l,b));
+        Assertions.assertFalse(Generic_Collections.containsValue(l, b));
     }
 }

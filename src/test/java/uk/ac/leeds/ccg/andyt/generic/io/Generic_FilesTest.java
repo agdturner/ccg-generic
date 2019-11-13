@@ -52,9 +52,11 @@ public class Generic_FilesTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Defaults.getDataDir();
+        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
+        dir = new File(dir, Generic_Strings.s_generic);
         try {
             env = new Generic_Environment(dir);
+            env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
             Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }

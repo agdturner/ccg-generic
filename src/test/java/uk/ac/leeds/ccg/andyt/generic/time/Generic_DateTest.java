@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_Defaults;
 
 /**
@@ -38,7 +39,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_Defaults;
 public class Generic_DateTest {
 
     Generic_Environment env;
-    
+
     public Generic_DateTest() {
         //super();
     }
@@ -53,9 +54,11 @@ public class Generic_DateTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Defaults.getDataDir();
+        File dir = new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
+        dir = new File(dir, Generic_Strings.s_generic);
         try {
             env = new Generic_Environment(dir);
+            env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
             Logger.getLogger(Generic_DateTest.class.getName()).log(Level.SEVERE, null, ex);
         }
