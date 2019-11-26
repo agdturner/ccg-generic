@@ -2,13 +2,17 @@
 
 https://github.com/agdturner/agdt-java-generic
 
-A Java library with generally useful classes and methods that have been abstracted from other libraries which now depend on this. Highlights:
+A Java library with generally useful classes and methods.
+
+Highlights:
 1. Generic_Archive
 https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/io/Generic_Archive.java
 A class of methods for storing data on disk in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
 2. memory
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/memory
 A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to files and this tends to make use of a Generic_Archive.
+
+This code has been abstracted from many other libraries over the years, nearly all of which now depend on this.
 
 
 ## Package details
@@ -132,8 +136,8 @@ A class for holding generic visualisation methods.
 
 
 ## Current Version and platform requirements
-Java 8 or higher.
-The current development version is 1.0-Snapshot.
+Now developed and tested on Java 11. It may be possible to compile and run on earlier versions of the Java Standard Development Kit.
+The current version is 1.0-Snapshot which is being refined. The aim is to produce a fully mature stable 1.0.0 release soon... 
 
 ## Development Roadmap
 ### Version 1.0.0
