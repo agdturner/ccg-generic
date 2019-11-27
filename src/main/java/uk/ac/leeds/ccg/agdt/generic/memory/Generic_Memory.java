@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.generic.memory;
+package uk.ac.leeds.ccg.agdt.generic.memory;
 
 import java.io.IOException;
 

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.generic.util;
+package uk.ac.leeds.ccg.agdt.generic.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

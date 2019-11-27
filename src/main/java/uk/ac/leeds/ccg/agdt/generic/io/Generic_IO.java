@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.generic.io;
+package uk.ac.leeds.ccg.agdt.generic.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -44,11 +44,11 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
-import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_ErrorAndExceptionHandler;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Object;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.agdt.generic.execution.Generic_Execution;
 
 //import java.nio.file.S
 //TODO http://java.sun.com/docs/books/tutorial/essential/io/legacy.html#mapping

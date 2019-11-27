@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.generic.lang;
+package uk.ac.leeds.ccg.agdt.generic.lang;
 
 import java.util.Set;
 
@@ -27,12 +27,32 @@ public class Generic_String {
 
     /**
      * Adds the numbers 0 to 9 inclusive to s.
-     * @param s 
+     *
+     * @param s
      */
     public static void addNumerals(Set<String> s) {
         for (int i = 0; i < 10; i++) {
             s.add(Integer.toString(i));
         }
+    }
+
+    /**
+     * @param s A String a copy of which is returned with all white-space
+     * removed.
+     * @return A copy of s which is returned with all white-space removed.
+     */
+    public static String getNoWhitespace(String s) {
+        return s.trim().replaceAll("\\s+", "");
+    }
+
+    /**
+     * @param s A String a copy of which an upper case version is returned with
+     * all white-space removed.
+     * @return A copy of s which is returned in upper case and with all
+     * white-space removed.
+     */
+    public String getNoWhitespaceUpperCase(String s) {
+        return getNoWhitespace(s).toUpperCase();
     }
 
     /**

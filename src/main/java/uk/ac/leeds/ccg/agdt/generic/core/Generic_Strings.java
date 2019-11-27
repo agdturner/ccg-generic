@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.generic.core;
+package uk.ac.leeds.ccg.agdt.generic.core;
 
 /**
  * A class that holds commonly used Strings.

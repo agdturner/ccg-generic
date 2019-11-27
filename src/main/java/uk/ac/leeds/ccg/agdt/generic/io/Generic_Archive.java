@@ -16,35 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.generic.io;
-
-import java.io.File;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
+package uk.ac.leeds.ccg.agdt.generic.io;
 
 /**
  *
  * @author geoagdt
  */
-public class Generic_Defaults {
-    
-    public static File getHomeDir() {
-        //return new File(System.getProperty("user.dir"));
-        return new File("C:/Users/geoagdt/");
-    }
-    
-    public static File getDataDir() {
-        return new File(getHomeDir(), Generic_Strings.s_data);
-    }
-
-    public static File getSrcDir() {
-        File r = new File(getHomeDir(), Generic_Strings.s_agdt);
-        r = new File(r, Generic_Strings.s_java);
-        return r;
-    }
-    
-    public static File getProjectDir() {
-        return new File(getHomeDir(), Generic_Strings.s_project);
-    }
-
+public class Generic_Archive {
     
 }

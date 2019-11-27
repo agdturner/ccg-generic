@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.generic.time;
+package uk.ac.leeds.ccg.agdt.generic.time;
 
 import java.time.LocalDate;
 //import java.time.Month;
 import java.time.YearMonth;
 import java.util.Objects;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
  * Holds a reference to a LocalDate and provides methods to compare and process

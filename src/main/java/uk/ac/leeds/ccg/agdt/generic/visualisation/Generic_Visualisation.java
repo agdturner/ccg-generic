@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.generic.visualisation;
+package uk.ac.leeds.ccg.agdt.generic.visualisation;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -26,9 +26,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Object;
-import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Object;
+import uk.ac.leeds.ccg.agdt.generic.execution.Generic_Execution;
 
 /**
  * A class for holding generic visualisation methods.
