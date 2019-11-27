@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.io;
 
+import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
+import uk.ac.leeds.ccg.agdt.generic.io.Generic_IO;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -28,8 +30,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
  *
