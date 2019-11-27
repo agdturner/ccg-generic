@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.generic.util;
+package uk.ac.leeds.ccg.agdt.generic.util;
 
 import uk.ac.leeds.ccg.agdt.generic.util.Generic_Collections;
 import java.io.File;
@@ -42,7 +42,7 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
-import uk.ac.leeds.ccg.andyt.generic.time.Generic_DateTest;
+import uk.ac.leeds.ccg.agdt.generic.time.Generic_DateTest;
 
 /**
  *
