@@ -51,7 +51,7 @@ public class Generic_String {
      * @return A copy of s which is returned in upper case and with all
      * white-space removed.
      */
-    public String getNoWhitespaceUpperCase(String s) {
+    public static String getNoWhitespaceUpperCase(String s) {
         return getNoWhitespace(s).toUpperCase();
     }
 
