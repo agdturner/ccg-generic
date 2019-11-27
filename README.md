@@ -136,21 +136,23 @@ A class for holding generic visualisation methods.
 
 
 ## Current Version and platform requirements
-Now developed and tested on Java 11. It may be possible to compile and run on earlier versions of the Java Standard Development Kit.
-The current version is 1.0-Snapshot which is being refined. The aim is to produce a fully mature stable 1.0.0 release soon... 
+Stable version 1.0.0 is released.
+Development version is 1.1-Snapshot.
+Developed and tested on Java 11. It may be possible to compile and run on earlier versions of the Java Standard Development Kit.
 
 ## Development Roadmap
-### Version 1.0.0
-- Standardise variable and method names.
-- Remove deprecated methods.
+### Version 1.0.1
+- A first bug fix release on the 1.0 branch. It is unclear if this will be needed...
+### Version 1.1.0
 - Review and develop unit tests.
-- Proposed release date - undecided.
+- Add features - see issues for feature requests.
 
 ## Dependencies
-There are no third party dependencies, but JUnit 5 is used for unit testing. Please see the pom.xml for details.
+There are no third party dependencies.
+JUnit 5 is used for unit testing. Please see the pom.xml for details.
 
 ## Contributions
-Please raise issues and submit pull requests in the usual way. Contributions will be acknowledged.
+Please raise issues and submit feature requests in the usual way. Contributions will be acknowledged.
 
 ## LICENCE
 Please see the standard Apache 2.0 open source LICENCE.
