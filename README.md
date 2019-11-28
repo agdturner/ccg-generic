@@ -57,7 +57,7 @@ A serializable class that holds a transient reference to a Generic_Environment i
 A class that holds commonly used Strings.
 
 
-### 2. executionagdt
+### 2. execution
 
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/execution
 
@@ -106,6 +106,16 @@ https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/l
 Utility methods for String transformations. Most of these are redundant and deprecated.
 
 
+### 5. math
+
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/math
+
+Contains methods for adding two Numbers and testing if Numbers are in the range of other Numbers.
+
+
+### 6. execution
+
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/execution
 ### 5. memory
 
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/memory
