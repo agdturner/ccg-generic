@@ -2,6 +2,7 @@ uk.ac.leeds.ccg.agdt.generic.core
 uk.ac.leeds.ccg.agdt.generic.execution
 uk.ac.leeds.ccg.agdt.generic.io
 uk.ac.leeds.ccg.agdt.generic.lang
+uk.ac.leeds.ccg.agdt.generic.math
 uk.ac.leeds.ccg.agdt.generic.memory
 uk.ac.leeds.ccg.agdt.generic.time
 uk.ac.leeds.ccg.agdt.generic.util

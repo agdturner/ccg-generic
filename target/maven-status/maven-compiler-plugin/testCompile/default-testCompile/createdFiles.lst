@@ -1,4 +1,5 @@
-uk\ac\leeds\ccg\andyt\generic\util\Generic_CollectionsTest.class
-uk\ac\leeds\ccg\andyt\generic\io\Generic_FilesTest.class
-uk\ac\leeds\ccg\andyt\generic\time\Generic_DateTest.class
-uk\ac\leeds\ccg\andyt\generic\io\Generic_IOTest.class
+uk\ac\leeds\ccg\agdt\generic\io\Generic_IOTest.class
+uk\ac\leeds\ccg\agdt\generic\util\Generic_CollectionsTest.class
+uk\ac\leeds\ccg\agdt\generic\math\Generic_MathTest.class
+uk\ac\leeds\ccg\agdt\generic\io\Generic_FilesTest.class
+uk\ac\leeds\ccg\agdt\generic\time\Generic_DateTest.class
