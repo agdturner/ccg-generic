@@ -540,7 +540,7 @@ public class Generic_Math {
     }
 
     /**
-     * This first calls {@link #testDouble(java.math.BigDecimal) on x.
+     * This first calls {@link #testDouble(java.math.BigDecimal)} on x.
      *
      * @param x Value to test.
      * @param epsilon If x cannot be stored as a Double within this distance of
@@ -581,7 +581,7 @@ public class Generic_Math {
     }
 
     /**
-     * This first calls {@link #testFloat(java.math.BigDecimal) on x.
+     * This first calls {@link #testFloat(java.math.BigDecimal)} on x.
      *
      * @param x Value to test.
      * @param epsilon If x cannot be stored as a Float within this distance of x

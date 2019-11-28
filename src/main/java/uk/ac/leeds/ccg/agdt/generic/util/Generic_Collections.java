@@ -275,10 +275,10 @@ public class Generic_Collections {
     /**
      * Adds to a mapped number. If m does not already contain the key k then i
      * is mapped to k. Otherwise the value for k is obtained from m and i is
-     * added to it using {@link #add(java.lang.Number, java.lang.Number)}. This
+     * added to it using {@link Generic_Math#add(java.lang.Number, java.lang.Number)}. This
      * may result in infinite values being added to m or ArithmeticExceptions
      * being thrown all depending on the result of any additions as calculated
-     * via {@link #add(java.lang.Number, java.lang.Number)}.
+     * via {@link Generic_Math#add(java.lang.Number, java.lang.Number)}.
      *
      * @param <K> Key
      * @param m The map that is to be added to.
@@ -363,7 +363,7 @@ public class Generic_Collections {
      * @param uf The map to update u from by adding values.
      */
     public static <K, V1 extends Number, V2 extends Number> void addToMap(
-            TreeMap<K, V1> u, TreeMap<K, V2> uf) {
+            Map<K, V1> u, Map<K, V2> uf) {
         if (uf != null) {
             uf.entrySet().forEach((entry) -> {
                 K key = entry.getKey();
@@ -382,7 +382,7 @@ public class Generic_Collections {
     }
 
     /**
-     * Use {@link #addToMap(java.util.Map, java.util.Map).
+     * Use {@link #addToMap(java.util.Map, java.util.Map)} instead.
      *
      * @param u updateIntegerIntegerCounter TreeMap
      * @param uf updateFromIntegerIntegerCounter TreeMap
