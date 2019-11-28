@@ -35,17 +35,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_ErrorAndExceptionHandler;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.execution.Generic_Execution;
@@ -139,9 +135,8 @@ public class Generic_IO extends Generic_Object {
                 oos.reset();
             }
         } catch (IOException ex) {
-            System.err.print(ex.getMessage());
+            env.log(ex.getMessage());
             ex.printStackTrace(System.err);
-            System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
     }
 
@@ -158,14 +153,9 @@ public class Generic_IO extends Generic_Object {
                 try (ObjectInputStream ois = getObjectInputStream(f)) {
                     r = ois.readUnshared();
                 }
-            } catch (IOException ex) {
-                System.err.print(ex.getMessage());
+            } catch (IOException | ClassNotFoundException ex) {
+                env.log(ex.getMessage());
                 ex.printStackTrace(System.err);
-                System.exit(Generic_ErrorAndExceptionHandler.IOException);
-            } catch (ClassNotFoundException ex) {
-                System.err.print(ex.getMessage());
-                ex.printStackTrace(System.err);
-                System.exit(Generic_ErrorAndExceptionHandler.ClassNotFoundException);
             }
         }
         return r;
@@ -185,183 +175,10 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Read File into an ArrayList. The ArrayList will have a size equal to the
-     * number of lines in the file and each element will have all the characters
-     * in a line represented as Strings.
-     *
-     * @param f The file to be returned as a String.
-     * @return ArrayList
-     */
-    public ArrayList<String> readIntoArrayList_String(File f) {
-        return readIntoArrayList_String(f, 1);
-    }
-
-    /**
-     * Read File into an ArrayList. The ArrayList will have a size equal to the
-     * number of lines in the file and each element will have all the characters
-     * in a line represented as Strings.
-     *
-     * @param f The file to be returned as a String.
-     * @param n The number of lines after the first is printed to std_out using
-     * System.out.println(line). (n should not be equal to 0)
-     * @return ArrayList
-     */
-    public ArrayList<String> readIntoArrayList_String(File f, int n) {
-        ArrayList<String> r = null;
-        if (f.exists()) {
-            try {
-                BufferedReader br = getBufferedReader(f);
-                if (br != null) {
-                    r = new ArrayList<>();
-                    StreamTokenizer st = new StreamTokenizer(br);
-                    int token = st.nextToken();
-                    st.eolIsSignificant(true);
-                    String line = "";
-                    int RecordID = 0;
-                    boolean lastTokenBeforeEndOfFileIsEndOfLine = false;
-                    while (!(token == StreamTokenizer.TT_EOF)) {
-                        switch (token) {
-                            case StreamTokenizer.TT_EOL:
-                                doEOL(r, line, n, RecordID);
-                                RecordID++;
-                                lastTokenBeforeEndOfFileIsEndOfLine = true;
-                                break;
-                            case StreamTokenizer.TT_WORD:
-                                line += st.sval;
-                                lastTokenBeforeEndOfFileIsEndOfLine = false;
-                                break;
-                            case StreamTokenizer.TT_NUMBER:
-                                line += doNumber(st);
-                                lastTokenBeforeEndOfFileIsEndOfLine = false;
-                                break;
-                            default:
-                                doDefault(token, line);
-                                lastTokenBeforeEndOfFileIsEndOfLine = false;
-                        }
-                        token = st.nextToken();
-                    }
-                    if (lastTokenBeforeEndOfFileIsEndOfLine == false) {
-                        r.add(line);
-                    }
-                    br.close();
-                }
-            } catch (IOException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-        return r;
-    }
-
-    private void doEOL(ArrayList<String> r, String line, int n, int RecordID) {
-        r.add(line);
-        System.out.println(line);
-        line = "";
-        if (RecordID % n == 0) {
-            System.out.println(line);
-        }
-    }
-
-    private String doNumber(StreamTokenizer st) {
-        String r;
-        double number = st.nval;
-        if (number == (long) number) {
-            r = Long.toString((long) st.nval);
-        } else {
-            r = Double.toString(st.nval);
-        }
-        return r;
-    }
-
-    private void doDefault(int token, String line) {
-        if (token == 26 || token == 160) {
-            // A type of space " ". It is unusual as st 
-            // probably already set to parse space as
-            // words.
-            line += (char) token;
-        } else if (token == 13) {
-            // These are returns or tabs or something...
-            //line += (char) token;
-        } else {
-            //line += (char) token;
-        }
-//        System.out.println("line so far " + line);
-//        System.out.println("Odd token " + token + " \"" + (char) token + "\" encountered.");
-    }
-
-    /**
-     * Read File into an ArrayList. The ArrayList will have a size equal to the
-     * number of lines in the file and each element will have all the characters
-     * in a line represented as Strings.
-     *
-     * @param f The file to be returned as a String.
-     * @param n The number of lines after the first is printed to std_out using
-     * System.out.println(line).
-     * @param firstLine The first line index (index starting from 0) that is
-     * included.
-     * @param lastLine The last line index (index starting from 0) that is
-     * included.
-     * @return ArrayList
-     */
-    public ArrayList<String> readIntoArrayList_String(File f, int n,
-            int firstLine, int lastLine) {
-        ArrayList<String> r = null;
-        if (f.exists()) {
-            try {
-                BufferedReader br = getBufferedReader(f);
-                if (br != null) {
-                    r = new ArrayList<>();
-                    StreamTokenizer st = new StreamTokenizer(br);
-                    int token = st.nextToken();
-                    st.eolIsSignificant(true);
-                    String line = "";
-                    int RecordID = firstLine;
-                    int lineNumber = 0;
-                    boolean lastTokenBeforeEndOfFileIsEndOfLine = false;
-                    while (!(token == StreamTokenizer.TT_EOF)) {
-                        switch (token) {
-                            case StreamTokenizer.TT_EOL:
-                                lineNumber++;
-                                if (lineNumber >= firstLine) {
-                                    doEOL(r, line, n, RecordID);
-                                    RecordID++;
-                                    lastTokenBeforeEndOfFileIsEndOfLine = true;
-                                }
-                                break;
-                            case StreamTokenizer.TT_WORD:
-                                line += st.sval;
-                                lastTokenBeforeEndOfFileIsEndOfLine = false;
-                                break;
-                            case StreamTokenizer.TT_NUMBER:
-                                line += doNumber(st);
-                                lastTokenBeforeEndOfFileIsEndOfLine = false;
-                                break;
-                            default:
-                                doDefault(token, line);
-                                lastTokenBeforeEndOfFileIsEndOfLine = false;
-                        }
-                        if (lineNumber < lastLine) {
-                            token = st.nextToken();
-                        } else {
-                            break;
-                        }
-                    }
-                    if (lastTokenBeforeEndOfFileIsEndOfLine == false) {
-                        r.add(line);
-                    }
-                    br.close();
-                }
-            } catch (IOException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-        return r;
-    }
-
-    /**
      * @param f A file (which is not a directory) to be copied.
      * @param d The output directory to copy to.
      */
-    private void copyFile(File f, File d) {
+    private void copyFile(File f, File d) throws IOException {
         copyFile(f, d, f.getName());
     }
 
@@ -370,58 +187,42 @@ public class Generic_IO extends Generic_Object {
      * @param d The output directory to copy to.
      * @param outputFileName The name for the file that will be created in
      * outDir.
+     * @throws java.io.IOException IF IOException is encountered.
      */
-    public void copyFile(File f, File d, String outputFileName) {
+    public void copyFile(File f, File d, String outputFileName)
+            throws IOException {
         if (!f.exists()) {
-            System.err.println("!input_File.exists() in "
-                    + Generic_IO.class.getCanonicalName()
-                    + ".copy(File(" + f + "),File(" + d + "))");
-            System.exit(Generic_ErrorAndExceptionHandler.IOException);
+            throw new IOException("File " + f + " does not exist in "
+                    + this.getClass().getName() + ".copyFile(File,File,String)");
         }
         if (!d.exists()) {
             d.mkdirs();
         }
         File outf = new File(d, outputFileName);
         if (outf.exists()) {
-            System.out.println("Overwriting File " + outf + " in "
-                    + Generic_IO.class.getCanonicalName()
-                    + ".copy(File(" + f + "),File(" + d + "))");
+            env.log("Overwriting File " + outf + " in "
+                    + this.getClass().getName() + ".copyFile(File,File,String)");
         } else {
-            try {
-                outf.createNewFile();
-            } catch (IOException ex) {
-                System.err.print(ex.getMessage());
-                System.err.println("Unable to createNewFile " + outf + " in "
-                        + Generic_IO.class.getCanonicalName()
-                        + ".copy(File(" + f + "),File(" + d + "))");
-                ex.printStackTrace(System.err);
-                System.exit(Generic_ErrorAndExceptionHandler.IOException);
-            }
+            outf.createNewFile();
         }
-        try {
-            try (BufferedInputStream bis = getBufferedInputStream(f);
-                    BufferedOutputStream bos = getBufferedOutputStream(outf)) {
-                /**
-                 * bufferSize should be power of 2 (e.g. Math.pow(2, 12)), but
-                 * nothing too big.
-                 */
-                int bufferSize = 2048;
-                long nArrayReads = f.length() / bufferSize;
-                long nSingleReads = f.length() - (nArrayReads * bufferSize);
-                byte[] b = new byte[bufferSize];
-                for (int i = 0; i < nArrayReads; i++) {
-                    bis.read(b);
-                    bos.write(b);
-                }
-                for (int i = 0; i < nSingleReads; i++) {
-                    bos.write(bis.read());
-                }
-                bos.flush();
+        try (BufferedInputStream bis = getBufferedInputStream(f);
+                BufferedOutputStream bos = getBufferedOutputStream(outf)) {
+            /**
+             * bufferSize should be power of 2 (e.g. Math.pow(2, 12)), but
+             * nothing too big.
+             */
+            int bufferSize = 2048;
+            long nArrayReads = f.length() / bufferSize;
+            long nSingleReads = f.length() - (nArrayReads * bufferSize);
+            byte[] b = new byte[bufferSize];
+            for (int i = 0; i < nArrayReads; i++) {
+                bis.read(b);
+                bos.write(b);
             }
-        } catch (IOException ex) {
-            System.err.print(ex.getMessage());
-            ex.printStackTrace(System.err);
-            System.exit(Generic_ErrorAndExceptionHandler.IOException);
+            for (int i = 0; i < nSingleReads; i++) {
+                bos.write(bis.read());
+            }
+            bos.flush();
         }
     }
 
@@ -465,7 +266,6 @@ public class Generic_IO extends Generic_Object {
                 + "waiting for " + wait + " milliseconds...");
         Generic_Execution.waitSychronized(env, o, wait);
     }
-    
 
     /**
      * @param f File.
@@ -540,64 +340,50 @@ public class Generic_IO extends Generic_Object {
         return new ObjectOutputStream(getBufferedOutputStream(f));
     }
 
-    private void copyDirectory(File dirToCopy, File dirToCopyTo) {
-        try {
-            if (!dirToCopyTo.mkdir()) {
-                dirToCopyTo.mkdirs();
+    private void copyDirectory(File dirToCopy, File dirToCopyTo) throws IOException {
+        if (!dirToCopyTo.mkdir()) {
+            dirToCopyTo.mkdirs();
+        }
+        if (!dirToCopy.isDirectory()) {
+            throw new IOException("Expecting File " + dirToCopy
+                    + " to be a directory in "
+                    + this.getClass().getName() + ".copyDirectory(File,File)");
+        }
+        if (!dirToCopyTo.isDirectory()) {
+            throw new IOException("Expecting File " + dirToCopyTo
+                    + " To be a directory in "
+                    + this.getClass().getName() + ".copyDirectory(File,File)");
+        }
+        File dir = new File(dirToCopyTo, dirToCopy.getName());
+        dir.mkdir();
+        File[] dirToCopyFiles = dirToCopy.listFiles();
+        for (File f : dirToCopyFiles) {
+            if (f.isFile()) {
+                copyFile(f, dir);
+            } else {
+                copyDirectory(f, dir);
             }
-            if (!dirToCopy.isDirectory()) {
-                throw new IOException("Expecting File " + dirToCopy
-                        + " To be a directory in "
-                        + Generic_IO.class.getName()
-                        + ".copyDirectory(File,File)");
-            }
-            if (!dirToCopyTo.isDirectory()) {
-                throw new IOException("Expecting File " + dirToCopyTo
-                        + " To be a directory in "
-                        + Generic_IO.class.getName()
-                        + ".copy(File,File)");
-            }
-            File dir = new File(dirToCopyTo, dirToCopy.getName());
-            dir.mkdir();
-            File[] dirToCopyFiles = dirToCopy.listFiles();
-            for (File f : dirToCopyFiles) {
-                if (f.isFile()) {
-                    copyFile(f, dir);
-                } else {
-                    copyDirectory(f, dir);
-                }
-            }
-        } catch (IOException ex) {
-            System.err.print(ex.getMessage());
-            ex.printStackTrace(System.err);
-            System.exit(Generic_ErrorAndExceptionHandler.IOException);
         }
     }
 
     /**
      * @param fileOrDirToCopy File.
      * @param dirToCopyTo Directory.
+     * @throws java.io.IOException If IOException encountered.
      */
-    public void copy(File fileOrDirToCopy, File dirToCopyTo) {
-        try {
-            if (!dirToCopyTo.mkdir()) {
-                dirToCopyTo.mkdirs();
-            }
-            if (!dirToCopyTo.isDirectory()) {
-                throw new IOException("Expecting File " + dirToCopyTo
-                        + "To be a directory in "
-                        + Generic_IO.class.getName()
-                        + ".copy(File,File)");
-            }
-            if (fileOrDirToCopy.isFile()) {
-                copyFile(fileOrDirToCopy, dirToCopyTo);
-            } else {
-                copyDirectory(fileOrDirToCopy, dirToCopyTo);
-            }
-        } catch (IOException ex) {
-            System.err.print(ex.getMessage());
-            ex.printStackTrace(System.err);
-            System.exit(Generic_ErrorAndExceptionHandler.IOException);
+    public void copy(File fileOrDirToCopy, File dirToCopyTo) throws IOException {
+        if (!dirToCopyTo.mkdir()) {
+            dirToCopyTo.mkdirs();
+        }
+        if (!dirToCopyTo.isDirectory()) {
+            throw new IOException("Expecting File " + dirToCopyTo
+                    + "To be a directory in "
+                    + this.getClass().getName() + ".copy(File,File)");
+        }
+        if (fileOrDirToCopy.isFile()) {
+            copyFile(fileOrDirToCopy, dirToCopyTo);
+        } else {
+            copyDirectory(fileOrDirToCopy, dirToCopyTo);
         }
     }
 
@@ -719,7 +505,7 @@ public class Generic_IO extends Generic_Object {
      * regular file, does not exist but cannot be created, or cannot be opened
      * for any other reason.
      */
-    public PrintWriter getPrintWriter(File f, boolean append) 
+    public PrintWriter getPrintWriter(File f, boolean append)
             throws IOException {
         try {
             return new PrintWriter(new BufferedWriter(
@@ -747,7 +533,7 @@ public class Generic_IO extends Generic_Object {
      * regular file, does not exist but cannot be created, or cannot be opened
      * for any other reason.
      */
-    public PrintWriter getPrintWriter(File f, boolean append, long wait) 
+    public PrintWriter getPrintWriter(File f, boolean append, long wait)
             throws IOException {
         try {
             return new PrintWriter(new BufferedWriter(new FileWriter(f, append)));
@@ -760,7 +546,7 @@ public class Generic_IO extends Generic_Object {
             }
         }
     }
-    
+
     /**
      *
      * @param f File.
@@ -826,31 +612,12 @@ public class Generic_IO extends Generic_Object {
      * Skips to the next token of StreamTokenizer.TT_EOL type in st.nextToken().
      *
      * @param st StreamTokenizer
+     * @throws java.io.IOException If IOException encountered.
      */
-    public void skipline(StreamTokenizer st) {
-        int token;
-        try {
+    public void skipline(StreamTokenizer st) throws IOException {
+        int token = st.nextToken();
+        while (token != StreamTokenizer.TT_EOL) {
             token = st.nextToken();
-            while (token != StreamTokenizer.TT_EOL) {
-                token = st.nextToken();
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_IO.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Skips to the next line.
-     *
-     * @param br BufferedReader
-     */
-    public void skipline(BufferedReader br) {
-        try {
-            br.readLine();
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_IO.class.getName()).log(
-                    Level.SEVERE, null, ex);
         }
     }
 
@@ -1638,26 +1405,19 @@ public class Generic_IO extends Generic_Object {
      *
      * @param o origin File
      * @param d destination File
+     * @throws java.io.IOException If IOException encountered.
      */
     @Deprecated
-    public void move(File o, File d) {
+    public void move(File o, File d) throws IOException {
         if (o.isDirectory()) {
             d.mkdir();
             for (File file : o.listFiles()) {
                 move(file, new File(d, file.getName()));
             }
-            try {
-                Files.delete(o.toPath());
-            } catch (IOException ex) {
-                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Files.delete(o.toPath());
         } else {
-            try {
-                Files.move(Paths.get(o.getPath()), Paths.get(d.getPath()),
-                        StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException ex) {
-                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Files.move(Paths.get(o.getPath()), Paths.get(d.getPath()),
+                    StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
@@ -1875,26 +1635,19 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Method to calculate the length of the file path. Windows 7 operating
-     * systems generally have a technical restriction of 260 characters or less
-     * for file paths. So a file path that is greater than 250 characters it can
-     * be a worry - especially if the files are to be zipped up and transferred
-     * to a Windows 7 machine.
+     * Method to calculate the length of the file path.Windows 7 operating
+ systems generally have a technical restriction of 260 characters or less
+ for file paths. So a file path that is greater than 250 characters it can
+ be a worry - especially if the files are to be zipped up and transferred
+ to a Windows 7 machine.
      *
      * @param f File for which the path length is returned.
      * @return int
+     * @throws java.io.IOException If encountered.
      */
-    public int getFilePathLength(File f) {
+    public int getFilePathLength(File f) throws IOException {
         int r;
-        String s;
-        try {
-            s = f.getCanonicalPath();
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
-            env.log("Attempting to return absolute path as getCanonicalPath() "
-                    + "resulted in an IOException!");
-            s = f.getAbsolutePath();
-        }
+        String s = f.getCanonicalPath();
         r = s.length();
         return r;
     }
@@ -1904,8 +1657,9 @@ public class Generic_IO extends Generic_Object {
      * @param f File.
      * @param dir File.
      * @return int
+     * @throws java.io.IOException If encountered.
      */
-    public int getFilePathLength(File f, File dir) {
+    public int getFilePathLength(File f, File dir) throws IOException {
         int fl = getFilePathLength(f);
         int dl = getFilePathLength(dir);
         return fl - dl;
