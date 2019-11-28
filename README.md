@@ -6,13 +6,38 @@ A Java library with generally useful classes and methods.
 
 Highlights:
 1. Generic_Archive
-https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/io/Generic_Archive.java
+https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/io/Generic_Archive.java
 A class of methods for storing data on disk in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
 2. memory
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/memory
-A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to files and this tends to make use of a Generic_Archive.
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/memory
+A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to files and this tends to make use of a Generic_Archive for organising those files.
 
-This code has been abstracted from many other libraries over the years, nearly all of which now depend on this.
+This code has been abstracted from numerous other libraries which now depend on this.
+
+## Status, Current Version and platform requirements
+Version 1.0.0 is in the process of being released. Ahead of this release the code is being reviewed and documentation improved.
+Developed and tested on Java 11.
+
+## Development Roadmap
+### Version 1.0.x
+- For bug fixes of 1.0 as required.
+- These are to be released on a best effort basis.
+### Version 1.1.0
+- Standardise logging - Currently no logging framework is used, but it would probably be good to use one. This development is being considered.
+### Version 1.2.0
+- Potentially add other features. This development is being considered. If it gets underway then some details will be posted here.
+
+## Dependencies
+Please see the pom.xml for details.
+There are no third party dependencies.
+JUnit 5 is used for unit testing.
+
+## Contributions
+Please raise issues and submit feature requests in the usual way.
+Contributions to developing this code are to be acknowledged as appropriate.
+
+## LICENCE
+Please see the standard Apache 2.0 open source LICENCE.
 
 
 ## Package details
@@ -23,9 +48,6 @@ https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/l
 
 #### Generic_Environment
 A generic environment class for those things that most objects might want to access.
-
-#### Generic_ErrorAndExceptionHandler
-A set of int codes for representing different types of Errors and Exceptions. 
 
 #### Generic_Object
 A serializable class that holds a transient reference to a Generic_Environment instance (env).
@@ -133,26 +155,3 @@ https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/l
 
 #### Generic_Visualisation
 A class for holding generic visualisation methods.
-
-
-## Current Version and platform requirements
-Stable version 1.0.0 is released.
-Development version is 1.1-Snapshot.
-Developed and tested on Java 11. It may be possible to compile and run on earlier versions of the Java Standard Development Kit.
-
-## Development Roadmap
-### Version 1.0.1
-- A first bug fix release on the 1.0 branch. It is unclear if this will be needed...
-### Version 1.1.0
-- Review and develop unit tests.
-- Add features - see issues for feature requests.
-
-## Dependencies
-There are no third party dependencies.
-JUnit 5 is used for unit testing. Please see the pom.xml for details.
-
-## Contributions
-Please raise issues and submit feature requests in the usual way. Contributions will be acknowledged.
-
-## LICENCE
-Please see the standard Apache 2.0 open source LICENCE.
