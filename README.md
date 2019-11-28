@@ -57,9 +57,9 @@ A serializable class that holds a transient reference to a Generic_Environment i
 A class that holds commonly used Strings.
 
 
-### 2. execution
+### 2. executionagdt
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/execution
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/execution
 
 For handling processing/execution.
 
@@ -69,7 +69,7 @@ Generic utility class for execution handling.
 
 ### 3. io
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/io
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/io
 
 For handling input and output (IO).
 
@@ -100,7 +100,7 @@ General IO utility class for initialising things like BufferedReaders and for se
 
 ### 4. lang
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/lang
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/lang
 
 #### Generic_String
 Utility methods for String transformations. Most of these are redundant and deprecated.
@@ -108,7 +108,7 @@ Utility methods for String transformations. Most of these are redundant and depr
 
 ### 5. memory
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/memory
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/memory
 
 #### Generic_MemoryManager
 A class to be extended for memory management involving the caching data from the fast access memory to files and the handling of OutOfMemoryErrors should they be encountered.
@@ -122,7 +122,7 @@ A class with methods that help in testing the avilablity and usage of computer m
 
 ### 6. time
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/time
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/time
 
 #### Generic_Date
 Holds a reference to a LocalDate and provides methods to compare and process dates.
@@ -140,7 +140,7 @@ Holds a reference to a YearMonth and provides methods to compare and process yea
 
 ### 7. util
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/util
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/util
 
 #### Generic_Collections
 For processing and manipulating collections including Lists, Arrays, Sets and Maps.
@@ -151,7 +151,7 @@ This predates java.time but was used in programs that ticked through time acting
 
 ### 8. visualisation
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/visualisation
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/visualisation
 
 #### Generic_Visualisation
 A class for holding generic visualisation methods.
