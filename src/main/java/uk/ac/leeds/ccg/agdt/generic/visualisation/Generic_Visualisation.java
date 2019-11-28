@@ -1,5 +1,5 @@
-/**
- * Copyright 2012 Centre for Computational Geography, University of Leeds.
+/*
+ * Copyright 2019 Andy Turner, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.ac.leeds.ccg.agdt.generic.visualisation;
 
 import java.awt.Font;
@@ -32,6 +33,9 @@ import uk.ac.leeds.ccg.agdt.generic.execution.Generic_Execution;
 
 /**
  * A class for holding generic visualisation methods.
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Visualisation extends Generic_Object {
 
@@ -44,24 +48,20 @@ public class Generic_Visualisation extends Generic_Object {
      *
      * @param f File
      * @return BufferedImage
+     * @throws java.io.IOException If encountered.
      */
-    public BufferedImage loadImage(File f) {
-        BufferedImage bi = null;
+    public BufferedImage loadImage(File f) throws IOException {
         try {
-            try {
-                bi = ImageIO.read(f);
-            } catch (IIOException e) {
-                /**
-                 * This can happen because of too many open files. Try waiting
-                 * for 2 seconds and then repeating...
-                 */
-                Generic_Execution.waitSychronized(env, f, 2000L);
-                return loadImage(f);
-            }
-        } catch (IOException e) {
-            e.printStackTrace(System.err);
+            return ImageIO.read(f);
+        } catch (IIOException ex) {
+            /**
+             * This can happen because of too many open files. Try waiting for 2
+             * seconds and then repeating...
+             */
+            env.log(ex.getMessage());
+            Generic_Execution.waitSychronized(env, f, 2000L);
+            return loadImage(f);
         }
-        return bi;
     }
 
     /**
@@ -72,17 +72,18 @@ public class Generic_Visualisation extends Generic_Object {
      * @param f File
      */
     public void saveImage(BufferedImage bi, String format, File f) {
-        String m = "Generic_Visualisation.saveImage(BufferedImage,String,File)";
+        String m = this.getClass().getName() 
+                + ".saveImage(BufferedImage,String,File) to " + f;
         env.logStartTag(m);
         if (bi != null) {
             try {
-                env.log("File " + f.toString());
                 ImageIO.write(bi, format, f);
-            } catch (IOException e) {
+            } catch (IOException ex) {
                 /**
                  * This can happen because of too many open files. Try waiting
                  * for 2 seconds and then repeating...
                  */
+                env.log(ex.getMessage());
                 Generic_Execution.waitSychronized(env, f, 2000L);
                 saveImage(bi, format, f);
             } finally {

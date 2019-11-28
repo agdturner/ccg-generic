@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Centre for Computational Geography, University of Leeds.
+ * Copyright 2019 Andy Turner, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.ac.leeds.ccg.agdt.generic.time;
 
 import java.io.IOException;
@@ -26,12 +27,13 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
  * Holds a reference to a LocalDateTime and provides methods to compare and
- * process times. Not to be confused with:
- * uk.ac.leeds.ccg.andyt.generic.util.Generic_Time
+ * process times. It should not be confused with the identically named
+ * {@link uk.ac.leeds.ccg.agdt.generic.util.Generic_Time} class.
  *
  * @author Andy Turner
+ * @version 1.0.0
  */
-public class Generic_Time extends Generic_Date implements Comparable {
+public class Generic_Time extends Generic_Date {
 
     public LocalDateTime LDT;
 
@@ -85,35 +87,31 @@ public class Generic_Time extends Generic_Date implements Comparable {
     public Generic_Time(Generic_Environment e, String s, String dateDelimeter,
             String timedateSeparator, String timeDelimeter) {
         super(e, s);
-        String[] splitT;
-        splitT = s.split(timedateSeparator);
-        //super(split[0]);
-        String[] split;
-        String s_0 = Generic_Strings.symbol_0;
-        String s2;
+        String[] splitT = s.split(timedateSeparator);
         int hour;
         int minute;
         int second;
         if (splitT.length == 2) {
-            split = splitT[1].split(timeDelimeter);
-            s2 = split[0];
-            if (s2.startsWith(s_0)) {
-                s2 = s2.substring(1);
+            String s_0 = Generic_Strings.symbol_0;
+            String[] split = splitT[1].split(timeDelimeter);
+            String s0 = split[0];
+            if (s0.startsWith(s_0)) {
+                s0 = s0.substring(1);
             }
-            hour = Integer.valueOf(s2);
-            s2 = split[1];
-            if (s2.startsWith(s_0)) {
-                s2 = s2.substring(1);
+            hour = Integer.valueOf(s0);
+            s0 = split[1];
+            if (s0.startsWith(s_0)) {
+                s0 = s0.substring(1);
             }
-            minute = Integer.valueOf(s2);
-            s2 = split[2];
-            s2 = s2.substring(0, s2.length() - 1);
-            if (s2.startsWith(s_0)) {
-                s2 = s2.substring(1);
+            minute = Integer.valueOf(s0);
+            s0 = split[2];
+            s0 = s0.substring(0, s0.length() - 1);
+            if (s0.startsWith(s_0)) {
+                s0 = s0.substring(1);
             }
             second = 0;
-            if (s2.length() > 0) {
-                second = Integer.valueOf(s2);
+            if (s0.length() > 0) {
+                second = Integer.valueOf(s0);
             }
         } else {
             hour = 0;
@@ -123,8 +121,13 @@ public class Generic_Time extends Generic_Date implements Comparable {
         setTime(hour, minute, second);
     }
 
-    public void addMinutes(int minutes) {
-        LDT = LDT.plusMinutes(minutes);
+    /**
+     * Adds m to {@link #LDT} and re-initialises {@link #LD}.
+     * 
+     * @param m minutes 
+     */
+    public void addMinutes(int m) {
+        LDT = LDT.plusMinutes(m);
         LD = LDT.toLocalDate();
     }
 
@@ -294,14 +297,6 @@ public class Generic_Time extends Generic_Date implements Comparable {
         int hash = 3;
         hash = 89 * hash + Objects.hashCode(LDT);
         return hash;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        if (o instanceof Generic_Time) {
-            return compareTo((Generic_Time) o);
-        }
-        return super.compareTo(o);
     }
 
     public int compareTo(Generic_Time t) {

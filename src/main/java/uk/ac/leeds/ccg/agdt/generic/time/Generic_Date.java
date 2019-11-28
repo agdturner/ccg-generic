@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Centre for Computational Geography, University of Leeds.
+ * Copyright 2019 Andy Turner, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.ac.leeds.ccg.agdt.generic.time;
 
 import java.time.LocalDate;
@@ -26,7 +27,7 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
  * Holds a reference to a LocalDate and provides methods to compare and process
  * dates.
  */
-public class Generic_Date extends Generic_YearMonth implements Comparable {
+public class Generic_Date extends Generic_YearMonth {
 
     public LocalDate LD;
 
@@ -184,14 +185,6 @@ public class Generic_Date extends Generic_YearMonth implements Comparable {
         int hash = 3;
         hash = 97 * hash + Objects.hashCode(LD);
         return hash;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        if (o instanceof Generic_Date) {
-            return compareTo((Generic_Date) o);
-        }
-        return super.compareTo(o);
     }
 
     public int compareTo(Generic_Date d) {

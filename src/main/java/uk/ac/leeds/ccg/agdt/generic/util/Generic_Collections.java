@@ -1,5 +1,5 @@
-/**
- * Copyright (C) Centre for Computational Geography, University of Leeds.
+/*
+ * Copyright 2019 Andy Turner, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.ac.leeds.ccg.agdt.generic.util;
 
 import java.math.BigDecimal;
@@ -31,29 +32,50 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
 
 /**
  * For processing and manipulating collections including Lists, Arrays, Sets and
  * Maps.
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Collections {
 
     /**
-     * Returns a key in M that is mapped to the value input. If there are
-     * multiple keys mapped to the value, this returns the first one that is
-     * come across.
-     *
-     * @param m Map
-     * @param value Object
-     * @return Object
+     * @param <K> The type of keys in m.
+     * @param <V> The type of values in m.
+     * @param m The map for which the keys that map to v are returned.
+     * @param v The value v for which the keys in m are returned.
+     * @return A set of keys from m mapped to the value v.
      */
-    public static Object getKeyFromValue(Map m, Object value) {
-        for (Object o : m.keySet()) {
-            if (m.get(o).equals(value)) {
-                return o;
-            }
-        }
-        return null;
+    public static <K, V> HashSet<K> getKeys(Map<K, V> m, V v) {
+        HashSet<K> r = new HashSet<>();
+        m.keySet().parallelStream().filter((k) -> (m.get(k).equals(v))).forEachOrdered((k) -> {
+            r.add(k);
+        });
+        return r;
+    }
+
+    /**
+     * @param <K> The type of keys in m.
+     * @param <V> The type of values in m and things in vs.
+     * @param m The map for which the keys that map to v are returned.
+     * @param vs The set of values for which the keys in m are returned.
+     * @return A set of keys from m mapped to the values in vs.
+     */
+    public static <K, V> HashSet<K> getKeys(Map<K, V> m, Set<V> vs) {
+        HashSet<K> r = new HashSet<>();
+        vs.parallelStream().forEach(v -> {
+            r.addAll(getKeys(m, v));
+        });
+//        Iterator<V> ite = vs.iterator();
+//        while (ite.hasNext()) {
+//            V v = ite.next();
+//            r.addAll(getKeys(m, v));
+//        }
+        return r;
     }
 
     /**
@@ -126,7 +148,7 @@ public class Generic_Collections {
      * @param mc MathContext
      * @return {@code (value.subtract(min)).divide(w, mc).intValue()}
      */
-    public static int getInterval(BigDecimal min, BigDecimal w, BigDecimal v, 
+    public static int getInterval(BigDecimal min, BigDecimal w, BigDecimal v,
             MathContext mc) {
         return (v.subtract(min)).divide(w, mc).intValue();
     }
@@ -167,13 +189,15 @@ public class Generic_Collections {
     }
 
     /**
-     * Get the union of {@code s0} and {@code s1}.
+     * Get the union of {@code s0} and {@code s1}. Use
+     * {@link #getUnion(java.util.Set, java.util.Set)} instead.
      *
      * @param s0 Set
      * @param s1 Set
      * @return a new {@code HashSet<Integer>} which is the union of elements in
      * {@code s0} and {@code s1}.
      */
+    @Deprecated
     public static HashSet<Integer> getCompleteKeySet_HashSet(
             Set<Integer> s0, Set<Integer> s1) {
         HashSet<Integer> r = new HashSet<>();
@@ -183,7 +207,25 @@ public class Generic_Collections {
     }
 
     /**
-     * If m contain the key k, then v is added to the HashSet. Otherwise a new
+     * Get the union of {@code s0} and {@code s1} as a
+     * {@link java.util.HashSet}.
+     *
+     * @param <K> The type of thing in the sets to union and in the result
+     * returned.
+     * @param s0 Set
+     * @param s1 Set
+     * @return a new {@link java.util.HashSet} which contains all the unique
+     * elements in {@code s0} and {@code s1}.
+     */
+    public static <K> HashSet<K> getUnion(Set<K> s0, Set<K> s1) {
+        HashSet<K> r = new HashSet<>();
+        r.addAll(s0);
+        r.addAll(s1);
+        return r;
+    }
+
+    /**
+     * If m contains the key k, then v is added to the HashSet. Otherwise a new
      * HashSet is created and added to m using the key k and v is added to the
      * HashSet.
      *
@@ -193,8 +235,8 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      */
-    public static <K, V> void addToMap(HashMap<K, HashSet<V>> m, K k, V v) {
-        HashSet<V> s;
+    public static <K, V> void addToMap(Map<K, Set<V>> m, K k, V v) {
+        Set<V> s;
         if (m.containsKey(k)) {
             s = m.get(k);
         } else {
@@ -218,9 +260,9 @@ public class Generic_Collections {
      * @param k2 key2
      * @param v value
      */
-    public static <K, K2, V> void addToMap(HashMap<K, HashMap<K2, V>> m, K k,
+    public static <K, K2, V> void addToMap(Map<K, Map<K2, V>> m, K k,
             K2 k2, V v) {
-        HashMap<K2, V> m2;
+        Map<K2, V> m2;
         if (m.containsKey(k)) {
             m2 = m.get(k);
         } else {
@@ -231,56 +273,31 @@ public class Generic_Collections {
     }
 
     /**
-     * If m contain the key k, then v is added to the HashSet. Otherwise a new
-     * HashSet is created and added to m using the key k and v is added to the
-     * HashSet.
-     *
-     * @param <K> Key
-     * @param <V> Value
-     * @param m Map
-     * @param k key
-     * @param v value
-     */
-    public static <K, V> void addToMap(TreeMap<K, HashSet<V>> m, K k, V v) {
-        HashSet<V> s;
-        if (m.containsKey(k)) {
-            s = m.get(k);
-        } else {
-            s = new HashSet<>();
-            m.put(k, s);
-        }
-        s.add(v);
-    }
-
-//    public static <K, V> void addToMap(Map<K, Set<V>> m, K k, V v) {
-//        Set<V> s;
-//        if (m.containsKey(k)) {
-//            s = m.get(k);
-//        } else {
-//            s = new HashSet<>();
-//            m.put(k, s);
-//        }
-//        s.add(v);
-//    }
-    /**
-     * Adds to a integer counting map.
+     * Adds to a mapped number. If m does not already contain the key k then i
+     * is mapped to k. Otherwise the value for k is obtained from m and i is
+     * added to it using {@link #add(java.lang.Number, java.lang.Number)}. This
+     * may result in infinite values being added to m or ArithmeticExceptions
+     * being thrown all depending on the result of any additions as calculated
+     * via {@link #add(java.lang.Number, java.lang.Number)}.
      *
      * @param <K> Key
      * @param m The map that is to be added to.
      * @param k The key which value is added to or initialised.
      * @param i The amount to be added to the map.
      */
-    public static <K> void addToMap(Map<K, Integer> m, K k, Integer i) {
+    public static <K> void addToMap(Map<K, Number> m, K k, Number i) {
         if (!m.containsKey(k)) {
-            m.put(k, 1);
+            m.put(k, i);
         } else {
-            m.put(k, m.get(k) + 1);
+            m.put(k, Generic_Math.add(m.get(k), i));
         }
     }
 
     /**
-     * Adds v to the ArrayList in m indexed by k.If such a list does not yet
-     * exist it is created.
+     * Adds v to the ArrayList in m indexed by k if the last element of m is not
+     * already the value v. If m does not already contain k then a new ArrayList
+     * of type V is created with v added to it and this is added to the map
+     * using the key k.
      *
      * @param <K> Key
      * @param <V> Value
@@ -310,7 +327,8 @@ public class Generic_Collections {
 
     /**
      * Adds value to the value at a_TreeMapIntegerIntegerCounter.get(key) if it
-     * exists or puts the key, value into a_TreeMapIntegerIntegerCounter
+     * exists or puts the key, value into a_TreeMapIntegerIntegerCounter Use
+     * {@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}.
      *
      * @param m Map
      * @param key Integer
@@ -329,9 +347,47 @@ public class Generic_Collections {
     }
 
     /**
+     * This will add the values in uf to the values in u for any existing keys.
+     * Where keys in u do not exist, the the numerical value of these in uf are
+     * put in u. This may result in infinite numbers being values in u (where
+     * the resulting addition is beyond the bounds of the type of V1). Existing
+     * keys in u that are mapped to null values are removed. NaN values may also
+     * be added to u if infinite values added are the opposite infinities.
+     * ArithmeticExceptions might also be throws if NaN type values are
+     * attempted to be added to types that cannot represent NaN.
+     *
+     * @param <K> The types of key in u and f.
+     * @param <V1> The type of Number values in u.
+     * @param <V2> The type of Number values in uf.
+     * @param u The map to updated by adding to the values from uf.
+     * @param uf The map to update u from by adding values.
+     */
+    public static <K, V1 extends Number, V2 extends Number> void addToMap(
+            TreeMap<K, V1> u, TreeMap<K, V2> uf) {
+        if (uf != null) {
+            uf.entrySet().forEach((entry) -> {
+                K key = entry.getKey();
+                V2 v2 = entry.getValue();
+                V1 v1 = u.get(key);
+                if (v1 != null) {
+                    V1 v = Generic_Math.add2(v1, v2);
+                    if (v != null) {
+                        u.put(key, v);
+                    }
+                } else {
+                    u.remove(key);
+                }
+            });
+        }
+    }
+
+    /**
+     * Use {@link #addToMap(java.util.Map, java.util.Map).
+     *
      * @param u updateIntegerIntegerCounter TreeMap
      * @param uf updateFromIntegerIntegerCounter TreeMap
      */
+    @Deprecated
     public static void addToTreeMapIntegerInteger(TreeMap<Integer, Integer> u,
             TreeMap<Integer, Integer> uf) {
         if (uf != null) {

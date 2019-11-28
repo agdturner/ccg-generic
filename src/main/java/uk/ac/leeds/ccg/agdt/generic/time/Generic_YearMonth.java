@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Centre for Computational Geography, University of Leeds.
+ * Copyright 2019 Andy Turner, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.ac.leeds.ccg.agdt.generic.time;
 
 import java.time.YearMonth;
@@ -22,10 +23,14 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
- * Holds a reference to a YearMonth and provides methods to compare and process
- * year-months.
+ * Holds a reference to a {@link java.time.YearMonth} and provides methods to
+ * compare and process year-months.
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
-public class Generic_YearMonth extends Generic_Object implements Comparable {
+public class Generic_YearMonth extends Generic_Object
+        implements Comparable<Generic_YearMonth> {
 
     public YearMonth YM;
 
@@ -51,11 +56,9 @@ public class Generic_YearMonth extends Generic_Object implements Comparable {
      */
     public Generic_YearMonth(Generic_Environment e, String s) {
         super(e);
-        String[] split;
-        split = s.split("-");
+        String[] split = s.split("-");
         int year = Integer.valueOf(split[0]);
-        String s2;
-        s2 = split[1];
+        String s2 = split[1];
         if (s2.startsWith("0")) {
             s2 = s2.substring(1);
         }
@@ -145,28 +148,21 @@ public class Generic_YearMonth extends Generic_Object implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        if (o instanceof Generic_YearMonth) {
-            return compareTo((Generic_YearMonth) o);
-        }
-        return -1;
-    }
-
     public int compareTo(Generic_YearMonth t) {
-        int Year = YM.getYear();
-        int tYear = t.YM.getYear();
-        if (Year > tYear) {
+        int y = YM.getYear();
+        int ty = t.YM.getYear();
+        if (y > ty) {
             return 1;
         } else {
-            if (Year < tYear) {
+            if (y < ty) {
                 return -1;
             } else {
-                int Month = YM.getMonthValue();
-                int tMonth = t.YM.getMonthValue();
-                if (Month > tMonth) {
+                int m = YM.getMonthValue();
+                int tm = t.YM.getMonthValue();
+                if (m > tm) {
                     return 1;
                 } else {
-                    if (Month < tMonth) {
+                    if (m < tm) {
                         return -1;
                     } else {
                         return 0;

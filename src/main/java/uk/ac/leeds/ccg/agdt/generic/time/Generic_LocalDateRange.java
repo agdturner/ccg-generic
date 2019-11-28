@@ -1,5 +1,5 @@
 /*
-  * Copyright (C) 2010 Centre for Computational Geography, University of Leeds.
+ * Copyright 2019 Andy Turner, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package uk.ac.leeds.ccg.agdt.generic.time;
 
 import java.time.LocalDate;
 
 /**
+ * Used for representing a single continuous date period using two
+ * {@link java.time.LocalDate} instances - {@link #start} and {@link #end}.
  *
  * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_LocalDateRange {
 

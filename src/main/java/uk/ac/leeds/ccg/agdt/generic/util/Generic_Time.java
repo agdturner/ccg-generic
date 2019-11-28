@@ -1,34 +1,33 @@
 /*
-  * Copyright (C) 2010 Andy Turner, University of Leeds.
+ * Copyright 2019 Andy Turner, University of Leeds.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package uk.ac.leeds.ccg.agdt.generic.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-//
 
 /**
- * This predates java.time but was used in programs that ticked through time
- * acting effectively like a clock. ~It also holds methods to help process dates
- * and aggregate results to hours and months etc. Not to be confused with
- * uk.ac.leeds.ccg.andyt.generic.time.Generic_Time
+ * This predates java.time. It was developed for dynamic models that ticked
+ * through time. It has methods to help process dates and times and to aggregate
+ * data by these. It should not be confused with the identically named
+ * {@link uk.ac.leeds.ccg.agdt.generic.time.Generic_Time} class.
  *
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Time {
 
@@ -38,8 +37,19 @@ public class Generic_Time {
     public static final int MilliSecondsInSecond = 1000;
     public static final int MilliSecondsInHour = MilliSecondsInSecond * SecondsInHour;
 
+    /**
+     * The day represented by this time.
+     */
     private int day;
+
+    /**
+     * The month represented by this time.
+     */
     private int month;
+    
+    /**
+     * The year represented by this time.
+     */
     private int year;
 
     public Generic_Time() {
@@ -73,6 +83,15 @@ public class Generic_Time {
         System.out.println(time);
     }
 
+    /**
+     * Converts millis to a String detailing the number of days, hours, minutes,
+     * seconds and milliseconds in millis.
+     *
+     * @param millis The number of millisecnds to be reported in a String form
+     * detailing the number of days, hours, minutes, seconds and milliseconds.
+     * @return A String form of millis detailing the number of days, hours,
+     * minutes, seconds and milliseconds for millis.
+     */
     public static String getTime(long millis) {
 
         int MilliSecondsInDay = 24 * MilliSecondsInHour;
@@ -98,56 +117,49 @@ public class Generic_Time {
             seconds++;
             millis2 -= MilliSecondsInSecond;
         }
-        String result;
-        result = "" + days + " day(s) " + hours + " hour(s) "
+        return "" + days + " day(s) " + hours + " hour(s) "
                 + minutes + " minute(s) " + seconds + " second(s) "
                 + millis2 + " millisecond(s)";
-        return result;
     }
 
     /**
-     * @return * {@code
-     * ArrayList<String> result;
-     * result = new ArrayList<String>();
-     * result.add("Jan");
-     * result.add("Feb");
-     * result.add("Mar");
-     * result.add("Apr");
-     * result.add("May");
-     * result.add("Jun");
-     * result.add("Jul");
-     * result.add("Aug");
-     * result.add("Sep");
-     * result.add("Oct");
-     * result.add("Nov");
-     * result.add("Dec");
-     * return result;
-     * }
+     * @return a list starting "Jan" and ending "Dec".
      */
     public static ArrayList<String> getMonths3Letters() {
-        ArrayList<String> result;
-        result = new ArrayList<>();
-        result.add("Jan");
-        result.add("Feb");
-        result.add("Mar");
-        result.add("Apr");
-        result.add("May");
-        result.add("Jun");
-        result.add("Jul");
-        result.add("Aug");
-        result.add("Sep");
-        result.add("Oct");
-        result.add("Nov");
-        result.add("Dec");
-        return result;
+        ArrayList<String> r;
+        r = new ArrayList<>();
+        r.add("Jan");
+        r.add("Feb");
+        r.add("Mar");
+        r.add("Apr");
+        r.add("May");
+        r.add("Jun");
+        r.add("Jul");
+        r.add("Aug");
+        r.add("Sep");
+        r.add("Oct");
+        r.add("Nov");
+        r.add("Dec");
+        return r;
     }
 
-    public static int getMonth(
-            String month,
-            ArrayList<String> month3Letters) {
+    /**
+     * In the case where month3Letters is from {@link #getMonths3Letters()} and
+     * month is "January" or "Jan" or "Janu" (etc.) then this will return 1.
+     *
+     * @param month A month e.g. "January" for which the index of a three letter
+     * version + 1 is returned.
+     * @param month3Letters For example see {@link #getMonths3Letters()}.
+     * @return An int represent the month Jan = 1, Dec = 12.
+     */
+    public static int getMonth(String month, ArrayList<String> month3Letters) {
         return month3Letters.indexOf(month.substring(0, 3)) + 1;
     }
 
+    /**
+     * @param monthNumber "01" to "12" representing January to December.
+     * @return "Jan" for monthNumber "01" ... "Dec" for monthNumber "12".
+     */
     public static String getMonth3Letters(
             String monthNumber) {
         if (monthNumber.equalsIgnoreCase("01")) {
@@ -189,6 +201,11 @@ public class Generic_Time {
         return null;
     }
 
+    /**
+     * @param monthNumber expected values 1 to 12 inclusive.
+     * @return "Jan" for monthNumber = 1, ..., "Dec" for monthNumber = 12. For
+     * any other value {@code null} is returned.
+     */
     public static String getMonth3Letters(
             int monthNumber) {
         if (monthNumber == 1) {
@@ -230,6 +247,11 @@ public class Generic_Time {
         return null;
     }
 
+    /**
+     * @param month3Letters Expecting "Jan", to "Dec".
+     * @return For month3Letters "Jan" return "01", ..., month3Letters "Dec"
+     * return "12". For non recognised month3Letters return {@code null}.
+     */
     public static String getMonthNumber(String month3Letters) {
         if (month3Letters.equalsIgnoreCase("Jan")) {
             return "01";
@@ -270,6 +292,11 @@ public class Generic_Time {
         return null;
     }
 
+    /**
+     * @param month3Letters Expecting "Jan", ..., "Dec".
+     * @return 1 if month3Letters is "Jan", ..., 12 if month3Letters is "Dec"
+     * and -1 otherwise.
+     */
     public static int getMonthInt(String month3Letters) {
         if (month3Letters.equalsIgnoreCase("Jan")) {
             return 1;
@@ -310,15 +337,22 @@ public class Generic_Time {
         return -1;
     }
 
+    /**
+     * @param year0 The earlier times year.
+     * @param year1 The latter times year.
+     * @param month0 The earlier times month.
+     * @param month1 The latter times month.
+     * @return The difference in months calculated as year1, month1 subtract
+     * year0, month0.
+     */
     public static int getMonthDiff(int year0, int year1, int month0, int month1) {
-        int result;
-        result = (year1 - year0) * 12;
-        result += month1 - month0;
-        return result;
+        int r = (year1 - year0) * 12;
+        r += month1 - month0;
+        return r;
     }
 
     /**
-     * @return Current clock date as yyyy-MM-dd format
+     * @return Current clock date in yyyy-MM-dd format.
      */
     public static String getDate() {
         Calendar cal = Calendar.getInstance();
@@ -329,7 +363,7 @@ public class Generic_Time {
     }
 
     /**
-     * @return Current clock date as yyyy-MM-dd HH:mm:ss format
+     * @return Current clock date in yyyy-MM-dd HH:mm:ss format.
      */
     public static String getDateAndTime() {
         Calendar cal = Calendar.getInstance();
@@ -340,7 +374,7 @@ public class Generic_Time {
     }
 
     /**
-     * @return Current clock date as yyyy-MM-dd-HH format
+     * @return Current clock date in yyyy-MM-dd-HH format.
      */
     public static String getDateAndTimeHourDir() {
         Calendar cal = Calendar.getInstance();
@@ -350,26 +384,50 @@ public class Generic_Time {
         return formatted;
     }
 
+    /**
+     * @return A copy of {@link #day}.
+     */
     public int getDay() {
         return day;
     }
 
+    /**
+     * Sets {@link #day} to day.
+     *
+     * @param day The value to set {@link #day} to.
+     */
     public void setDay(int day) {
         this.day = day;
     }
 
+    /**
+     * @return A copy of {@link #month}.
+     */
     public int getMonth() {
         return month;
     }
 
+    /**
+     * Sets {@link #month} to month.
+     *
+     * @param month The value to set {@link #month} to.
+     */
     public void setMonth(int month) {
         this.month = month;
     }
 
+    /**
+     * @return A copy of {@link #year}.
+     */
     public int getYear() {
         return year;
     }
 
+    /**
+     * Sets {@link #year} to year.
+     *
+     * @param year The value to set {@link #year} to.
+     */
     public void setYear(int year) {
         this.year = year;
     }
