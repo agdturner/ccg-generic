@@ -1047,9 +1047,10 @@ public class Generic_IOTest {
 //    }
     /**
      * Test of getFilePathLength method, of class Generic_IO.
+     * @throws java.io.IOException If encountered.
      */
     @Test
-    public void testGetFilePathLength_File() {
+    public void testGetFilePathLength_File() throws IOException {
         env.log("getFilePathLength", logID);
         //System.out.println("getFilePathLength");
         File f = env.files.getGeneratedDir();
