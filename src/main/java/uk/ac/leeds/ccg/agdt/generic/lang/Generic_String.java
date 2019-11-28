@@ -21,14 +21,14 @@ import java.util.Set;
  * Some useful methods for transforming Strings.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class Generic_String {
 
     /**
      * Adds the numbers 0 to 9 inclusive to s.
      *
-     * @param s
+     * @param s The set to add the numerals to.
      */
     public static void addNumerals(Set<String> s) {
         for (int i = 0; i < 10; i++) {
