@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.agdt.generic.math;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -115,6 +115,170 @@ public class Generic_MathTest {
             Generic_Math.add2(Long.MAX_VALUE, 1L);
         });
 
+    }
+
+    /**
+     * Test of testDouble method, of class Generic_Math.
+     */
+    @Test
+    public void testTestDouble_BigDecimal() {
+        System.out.println("testDouble");
+        // Test 1
+        Generic_Math.testDouble(Generic_Math.DOUBLE_MAXVALUE);
+        // Test 2
+        Assertions.assertThrows(ArithmeticException.class, () -> {
+            Generic_Math.testDouble(Generic_Math.DOUBLE_MAXVALUE
+                    .add(BigDecimal.ONE));
+        });
+        // Test 3
+        Generic_Math.testDouble(Generic_Math.DOUBLE_MAXVALUE_NEG);
+        // Test 4
+        Assertions.assertThrows(ArithmeticException.class, () -> {
+            Generic_Math.testDouble(Generic_Math.DOUBLE_MAXVALUE_NEG.
+                    subtract(BigDecimal.ONE));
+        });
+    }
+
+    /**
+     * Test of testFloat method, of class Generic_Math.
+     */
+    @Test
+    public void testTestFloat_BigDecimal() {
+        System.out.println("testFloat");
+        // Test 1
+        Generic_Math.testFloat(Generic_Math.FLOAT_MAXVALUE);
+        // Test 2
+        Assertions.assertThrows(ArithmeticException.class, () -> {
+            Generic_Math.testFloat(Generic_Math.FLOAT_MAXVALUE
+                    .add(BigDecimal.ONE));
+        });
+        // Test 3
+        Generic_Math.testFloat(Generic_Math.FLOAT_MAXVALUE_NEG);
+        // Test 4
+        Assertions.assertThrows(ArithmeticException.class, () -> {
+            Generic_Math.testFloat(Generic_Math.FLOAT_MAXVALUE_NEG
+                    .subtract(BigDecimal.ONE));
+        });
+    }
+
+    /**
+     * Test of testDouble method, of class Generic_Math.
+     */
+    @Test
+    public void testTestDouble_BigDecimal_BigDecimal() {
+        System.out.println("testDouble");
+        BigDecimal x;
+        BigDecimal epsilon;
+        int expResult;
+        int result;
+        // Test 1
+        epsilon = BigDecimal.ZERO;
+        expResult = 0;
+        double d = 10d;
+        x = new BigDecimal(String.valueOf(d));
+        result = Generic_Math.testDouble(x, epsilon);
+        assertEquals(expResult, result);
+        // Test 2
+        x = new BigDecimal("0.1");
+        epsilon = BigDecimal.ZERO;
+        expResult = 0;
+        result = Generic_Math.testDouble(x, epsilon);
+        assertEquals(expResult, result);
+        // Test 3
+        x = new BigDecimal("0.1");
+        x = x.add(x).add(x);
+        epsilon = BigDecimal.ZERO;
+        expResult = 0;
+        result = Generic_Math.testDouble(x, epsilon);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of testDouble2 method, of class Generic_Math.
+     */
+    @Test
+    public void testTestDouble2() {
+        System.out.println("testDouble2");
+        BigDecimal x = Generic_Math.DOUBLE_MAXVALUE;
+        System.out.println(x.toString());
+        BigDecimal epsilon = BigDecimal.ZERO;
+        boolean expResult = true;
+        boolean result = Generic_Math.testDouble2(x, epsilon);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of testFloat method, of class Generic_Math.
+     */
+    @Test
+    public void testTestFloat_BigDecimal_BigDecimal() {
+        System.out.println("testFloat");
+        BigDecimal x;
+        BigDecimal epsilon;
+        int expResult;
+        int result;
+        // Test 1
+        epsilon = BigDecimal.ZERO;
+        expResult = 0;
+        double d = 10d;
+        x = new BigDecimal(String.valueOf(d));
+        result = Generic_Math.testFloat(x, epsilon);
+        assertEquals(expResult, result);
+        // Test 2
+        x = new BigDecimal("0.1");
+        epsilon = BigDecimal.ZERO;
+        expResult = -1;
+        result = Generic_Math.testFloat(x, epsilon);
+        assertEquals(expResult, result);
+        // Test 3
+        x = new BigDecimal("0.1");
+        x = x.add(x).add(x);
+        epsilon = BigDecimal.ZERO;
+        expResult = -1;
+        result = Generic_Math.testFloat(x, epsilon);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of testFloat2 method, of class Generic_Math.
+     */
+    @Test
+    public void testTestFloat2() {
+        System.out.println("testFloat2");
+        BigDecimal x = Generic_Math.FLOAT_MAXVALUE;
+        System.out.println(x.toString());
+        BigDecimal epsilon = BigDecimal.ZERO;
+        boolean expResult = true;
+        boolean result = Generic_Math.testFloat2(x, epsilon);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of compare method, of class Generic_Math.
+     */
+    @Test
+    public void testCompare() {
+        System.out.println("compare");
+        BigDecimal x = new BigDecimal(Double.toString(0.1D + 0.1D + 0.1D));
+        BigDecimal xd = new BigDecimal("0.3");
+        BigDecimal epsilon = BigDecimal.ZERO;
+        int expResult = 1;
+        int result = Generic_Math.compare(x, xd, epsilon);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of compare2 method, of class Generic_Math.
+     */
+    @Test
+    public void testCompare2() {
+        System.out.println("compare2");
+        BigDecimal x = new BigDecimal(Double.toString(0.1D + 0.1D + 0.1D));
+        BigDecimal xd = new BigDecimal("0.3");
+        BigDecimal epsilon = BigDecimal.ZERO;
+        boolean expResult = false;
+        boolean result = Generic_Math.compare2(x, xd, epsilon);
+        assertEquals(expResult, result);
     }
 
 }
