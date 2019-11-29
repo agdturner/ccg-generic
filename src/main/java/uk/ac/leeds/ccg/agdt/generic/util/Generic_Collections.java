@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.agdt.generic.util;
 
 import java.math.BigDecimal;
@@ -107,7 +106,7 @@ public class Generic_Collections {
                 interval = getInterval(min, w, v, mc);
             }
             //addToTreeMapIntegerInteger(counts, interval, 1);
-            addToTreeMapValueInteger(counts, interval, 1);
+            addToMapInteger(counts, interval, 1);
             if (!labels.containsKey(interval)) {
                 BigDecimal imin = getIntervalMin(min, w, interval);
                 BigDecimal intervalMax = getIntervalMax(imin, w);
@@ -146,7 +145,7 @@ public class Generic_Collections {
      * @param w Interval width
      * @param v Value
      * @param mc MathContext
-     * @return {@code (value.subtract(min)).divide(w, mc).intValue()}
+     * @return {@code (v.subtract(min)).divide(w, mc).intValue()}
      */
     public static int getInterval(BigDecimal min, BigDecimal w, BigDecimal v,
             MathContext mc) {
@@ -154,12 +153,13 @@ public class Generic_Collections {
     }
 
     /**
-     * @param map Map
-     * @return The min and max values in map.
+     * @param <K> A generic key.
+     * @param m Map
+     * @return BigDecimal[] with the minimum and maximum values in m.
      */
-    public static BigDecimal[] getMinMaxBigDecimal(Map<?, BigDecimal> map) {
+    public static <K> BigDecimal[] getMinMaxBigDecimal(Map<K, BigDecimal> m) {
         BigDecimal[] r = new BigDecimal[2];
-        Iterator<BigDecimal> ite = map.values().iterator();
+        Iterator<BigDecimal> ite = m.values().iterator();
         BigDecimal v = ite.next();
         r[0] = v;
         r[1] = v;
@@ -172,12 +172,13 @@ public class Generic_Collections {
     }
 
     /**
-     * @param map Map
-     * @return The min and max values in map.
+     * @param <K> A generic key.
+     * @param m Map
+     * @return int[] r containing the minimum and maximum values in m.
      */
-    public static int[] getMinMaxInteger(Map<?, Integer> map) {
+    public static <K> int[] getMinMaxInteger(Map<K, Integer> m) {
         int[] r = new int[2];
-        Iterator<Integer> ite = map.values().iterator();
+        Iterator<Integer> ite = m.values().iterator();
         int v = ite.next();
         r[0] = v;
         r[1] = v;
@@ -260,8 +261,8 @@ public class Generic_Collections {
      * @param k2 key2
      * @param v value
      */
-    public static <K, K2, V> void addToMap(Map<K, Map<K2, V>> m, K k,
-            K2 k2, V v) {
+    public static <K, K2, V> void addToMap(Map<K, Map<K2, V>> m, K k, K2 k2,
+            V v) {
         Map<K2, V> m2;
         if (m.containsKey(k)) {
             m2 = m.get(k);
@@ -275,10 +276,11 @@ public class Generic_Collections {
     /**
      * Adds to a mapped number. If m does not already contain the key k then i
      * is mapped to k. Otherwise the value for k is obtained from m and i is
-     * added to it using {@link Generic_Math#add(java.lang.Number, java.lang.Number)}. This
-     * may result in infinite values being added to m or ArithmeticExceptions
-     * being thrown all depending on the result of any additions as calculated
-     * via {@link Generic_Math#add(java.lang.Number, java.lang.Number)}.
+     * added to it using
+     * {@link Generic_Math#add(java.lang.Number, java.lang.Number)}. This may
+     * result in infinite values being added to m or ArithmeticExceptions being
+     * thrown all depending on the result of any additions as calculated via
+     * {@link Generic_Math#add(java.lang.Number, java.lang.Number)}.
      *
      * @param <K> Key
      * @param m The map that is to be added to.
@@ -326,24 +328,35 @@ public class Generic_Collections {
     }
 
     /**
-     * Adds value to the value at a_TreeMapIntegerIntegerCounter.get(key) if it
-     * exists or puts the key, value into a_TreeMapIntegerIntegerCounter Use
-     * {@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}.
+     * Adds v to the value of m corresponding with k.If there is no such k in m
+     * or the value m.get(k) is null then v is added to m addressed by k. This
+     * does not check if the resulting value overflows. If this might happen
+     * then perhaps use either:
+     * <ul>
+     * <ol>{@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}
+     * instead which would in such a case throw an ArithmeticException.that
+     * case.</ol>
+     * <ol>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.lang.Object)}
+     * instead as BigIntegers do not overflow.</ol>
+     * </ul>
      *
-     * @param m Map
-     * @param key Integer
-     * @param value Integer
+     * @param <K> Key
+     * @param m TreeMap
+     * @param k key
+     * @param v value
+     * @return The resulting value in m mapped by k.
      */
-    @Deprecated
-    public static void addToTreeMapIntegerInteger(TreeMap<Integer, Integer> m,
-            Integer key, Integer value) {
-        Integer currentValue = m.get(key);
-        if (currentValue != null) {
-            Integer newValue = currentValue + value;
-            m.put(key, newValue);
+    public static <K> Integer addToMapInteger(Map<K, Integer> m, K k,
+            Integer v) {
+        Integer v0 = m.get(k);
+        int r;
+        if (v0 != null) {
+            r = v0 + v;
         } else {
-            m.put(key, value);
+            r = v;
         }
+        m.put(k, r);
+        return r;
     }
 
     /**
@@ -381,42 +394,42 @@ public class Generic_Collections {
         }
     }
 
-    /**
-     * Use {@link #addToMap(java.util.Map, java.util.Map)} instead.
-     *
-     * @param u updateIntegerIntegerCounter TreeMap
-     * @param uf updateFromIntegerIntegerCounter TreeMap
-     */
-    @Deprecated
-    public static void addToTreeMapIntegerInteger(TreeMap<Integer, Integer> u,
-            TreeMap<Integer, Integer> uf) {
-        if (uf != null) {
-            uf.entrySet().forEach((entry) -> {
-                Integer key = entry.getKey();
+    public static <K> void addToMapInteger(Map<K, Integer> mapToAddTo,
+            Map<K, Integer> mapToAdd) {
+        if (mapToAdd != null) {
+            mapToAdd.entrySet().forEach((entry) -> {
+                K k = entry.getKey();
                 Integer v = entry.getValue();
-                Integer currentValue = u.get(key);
-                if (currentValue != null) {
-                    Integer newValue = currentValue + v;
-                    u.put(key, newValue);
+                Integer v0 = mapToAddTo.get(k);
+                if (v0 != null) {
+                    mapToAddTo.put(k, v0 + v);
                 } else {
-                    u.put(key, v);
+                    mapToAddTo.put(k, v);
                 }
             });
         }
     }
 
     /**
-     * Adds value to the value at map.get(key) if it exists or puts the key,
-     * value into map.
+     * Adds v to the value of m corresponding with k.If there is no such k in m
+     * or the value m.get(k) is null then v is added to m addressed by k. This
+     * does not check if the resulting value overflows. If this might happen
+     * then perhaps use either:
+     * <ul>
+     * <ol>{@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}
+     * instead which would in such a case throw an ArithmeticException.that
+     * case.</ol>
+     * <ol>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.lang.Object)}
+     * instead as BigIntegers do not overflow.</ol>
+     * </ul>
      *
      * @param <K> Key
      * @param m TreeMap
      * @param k key
      * @param v value
-     * @return long
+     * @return The resulting value in m mapped by k.
      */
-    public static <K> long addToTreeMapValueLong(TreeMap<K, Long> m, K k,
-            long v) {
+    public static <K> long addToMapLong(Map<K, Long> m, K k, Long v) {
         long r;
         Long v0 = m.get(k);
         if (v0 != null) {
@@ -429,58 +442,15 @@ public class Generic_Collections {
     }
 
     /**
-     * Adds v to the value of m given by k if it exists or puts the v into m at
-     * k.
-     *
-     * @param <K> Key
-     * @param m TreeMap
-     * @param k key
-     * @param v value
-     * @return The resulting value of adding v to m.
-     */
-    public static <K> int addToTreeMapValueInteger(TreeMap<K, Integer> m,
-            K k, int v) {
-        int r;
-        Integer v0 = m.get(k);
-        if (v0 != null) {
-            r = v0 + v;
-        } else {
-            r = v;
-        }
-        m.put(k, r);
-        return r;
-    }
-
-    /**
-     * Adds value to the value at map.get(key) if it exists or puts the key,
-     * value into map.
-     *
-     * @param <K> Key
-     * @param map0 TreeMap
-     * @param map1 TreeMap
-     * @return TreeMap
-     */
-    public static <K> TreeMap<K, Integer> addToTreeMapValueInteger(
-            TreeMap<K, Integer> map0, TreeMap<K, Integer> map1) {
-        TreeMap<K, Integer> r = deepCopyTreeMapValueInteger(map0);
-        Iterator<K> ite = map1.keySet().iterator();
-        while (ite.hasNext()) {
-            K k = ite.next();
-            Integer v = map1.get(k);
-            Generic_Collections.addToTreeMapValueInteger(r, k, v);
-        }
-        return r;
-    }
-
-    /**
      * Sets the value in map to the max of map.get(key) and value.
      *
-     * @param m TreeMap
+     * @param <K> A generic key.
+     * @param m Map
      * @param k key
      * @param v value
      */
-    public static void setMaxValueTreeMapStringInteger(
-            TreeMap<String, Integer> m, String k, Integer v) {
+    public static <K> void setMaxValueInteger(Map<K, Integer> m, K k,
+            Integer v) {
         Integer v0 = m.get(k);
         if (v0 != null) {
             int v1 = Math.max(v0, v);
@@ -495,12 +465,13 @@ public class Generic_Collections {
     /**
      * Sets the value in map to the min of map.get(key) and value.
      *
-     * @param m TreeMap
+     * @param <K> Generic key.
+     * @param m Map
      * @param k key
      * @param v value
      */
-    public static void setMinValueTreeMapStringInteger(
-            TreeMap<String, Integer> m, String k, Integer v) {
+    public static <K> void setMinValueInteger(Map<K, Integer> m, K k, 
+            Integer v) {
         Integer v0 = m.get(k);
         if (v0 != null) {
             Integer v1 = Math.min(v0, v);
@@ -514,42 +485,48 @@ public class Generic_Collections {
 
     /**
      * Adds v to the value of m corresponding with k. If there is no such k in m
-     * or the value m.get(k) is null or
+     * or the value m.get(k) is null then v is added to m addressed by k.
      *
      * @param <K> Key
      * @param m TreeMap
      * @param k key
      * @param v value
+     * @return The resulting value in m mapped by k.
      */
-    public static <K> void addToTreeMapValueBigInteger(TreeMap<K, BigInteger> m,
+    public static <K> BigInteger addToMapBigInteger(Map<K, BigInteger> m,
             K k, BigInteger v) {
         BigInteger v0 = m.get(k);
+        BigInteger r;
         if (v0 != null) {
-            BigInteger newValue = v0.add(v);
-            m.put(k, newValue);
+            r = v0.add(v);
         } else {
-            m.put(k, v);
+            r = v;
         }
+        m.put(k, r);
+        return r;
     }
 
     /**
      * Adds v to the value of m corresponding with k. If there is no such k in m
-     * or the value m.get(k) is null or
+     * or the value m.get(k) is null then v is added to m addressed by k.
      *
      * @param <K> Key
      * @param m TreeMap
      * @param k key
      * @param v value
+     * @return The resulting value in m mapped by k.
      */
-    public static <K> void addToTreeMapValueBigDecimal(TreeMap<K, BigDecimal> m,
+    public static <K> BigDecimal addToMapBigDecimal(Map<K, BigDecimal> m,
             K k, BigDecimal v) {
         BigDecimal v0 = m.get(k);
+        BigDecimal r;
         if (v0 != null) {
-            BigDecimal newValue = v0.add(v);
-            m.put(k, newValue);
+            r = v0.add(v);
         } else {
-            m.put(k, v);
+            r = v;
         }
+        m.put(k, r);
+        return r;
     }
 
     /**
@@ -652,7 +629,7 @@ public class Generic_Collections {
         return r;
     }
 
-    public static <K> TreeMap<K, BigInteger> deepCopyValueBigInteger(
+    public static <K> TreeMap<K, BigInteger> deepCopyTreeMapBigInteger(
             TreeMap<K, BigInteger> m) {
         TreeMap<K, BigInteger> r = new TreeMap<>();
         Iterator<K> ite = m.keySet().iterator();
@@ -665,7 +642,7 @@ public class Generic_Collections {
         return r;
     }
 
-    public static <K> HashMap<K, String> deepCopyHashMapValueString(
+    public static <K> HashMap<K, String> deepCopyHashMapString(
             HashMap<K, String> m) {
         HashMap<K, String> r = new HashMap<>();
         Iterator<K> ite = m.keySet().iterator();
@@ -676,7 +653,7 @@ public class Generic_Collections {
         return r;
     }
 
-    public static <K> HashMap<K, Integer> deepCopyHashMapValueInteger(
+    public static <K> HashMap<K, Integer> deepCopyHashMapInteger(
             HashMap<K, Integer> m) {
         HashMap<K, Integer> r = new HashMap<>();
         Iterator<K> ite = m.keySet().iterator();
@@ -687,7 +664,7 @@ public class Generic_Collections {
         return r;
     }
 
-    public static <K, Integer> TreeMap<K, Integer> deepCopyTreeMapValueInteger(
+    public static <K, Integer> TreeMap<K, Integer> deepCopyTreeMapInteger(
             TreeMap<K, Integer> map) {
         TreeMap<K, Integer> r = new TreeMap<>();
         Iterator<K> ite = map.keySet().iterator();
@@ -698,7 +675,7 @@ public class Generic_Collections {
         return r;
     }
 
-    public static <K> TreeMap<K, BigDecimal> deepCopyTreeMapValueBigDecimal(
+    public static <K> TreeMap<K, BigDecimal> deepCopyTreeMapBigDecimal(
             TreeMap<K, BigDecimal> m) {
         TreeMap<K, BigDecimal> r = new TreeMap<>();
         Iterator<K> ite = m.keySet().iterator();
@@ -711,7 +688,7 @@ public class Generic_Collections {
         return r;
     }
 
-    public static <K> TreeMap<K, Long> deepCopyTreeMapValueLong(
+    public static <K> TreeMap<K, Long> deepCopyTreeMapLong(
             TreeMap<K, Long> m) {
         TreeMap<K, Long> r = new TreeMap<>();
         Iterator<K> ite = m.keySet().iterator();
@@ -724,82 +701,88 @@ public class Generic_Collections {
         return r;
     }
 
-    public static <K> void addToTreeMapValueLong(TreeMap<K, Long> mapToAddTo,
-            TreeMap<K, Long> mapToAdd) {
+    public static <K> void addToMapLong(Map<K, Long> mapToAddTo,
+            Map<K, Long> mapToAdd) {
         Iterator<K> ite = mapToAdd.keySet().iterator();
         while (ite.hasNext()) {
             K k = ite.next();
-            Long vToAdd = mapToAdd.get(k);
+            Long v = mapToAdd.get(k);
             if (mapToAddTo.containsKey(k)) {
-                Long vToAddTo = mapToAddTo.get(k);
-                mapToAddTo.put(k, vToAdd + vToAddTo);
+                mapToAddTo.put(k, v + mapToAddTo.get(k));
             } else {
-                mapToAddTo.put(k, vToAdd);
+                mapToAddTo.put(k, v);
             }
         }
     }
 
-    public static <K> void addToTreeMapValueBigDecimal(
-            TreeMap<K, BigDecimal> mapToAddTo,
-            TreeMap<K, BigDecimal> mapToAdd) {
+    public static <K> void addToMapBigDecimal(Map<K, BigDecimal> mapToAddTo,
+            Map<K, BigDecimal> mapToAdd) {
         Iterator<K> ite = mapToAdd.keySet().iterator();
         while (ite.hasNext()) {
             K k = ite.next();
-            BigDecimal vToAdd = mapToAdd.get(k);
+            BigDecimal v = mapToAdd.get(k);
             if (mapToAddTo.containsKey(k)) {
-                BigDecimal vToAddTo = mapToAddTo.get(k);
-                mapToAddTo.put(k, vToAdd.add(vToAddTo));
+                mapToAddTo.put(k, v.add(mapToAddTo.get(k)));
             } else {
-                mapToAddTo.put(k, vToAdd);
+                mapToAddTo.put(k, v);
             }
         }
     }
 
-    public static <K> void addToTreeMapValueBigInteger(
-            TreeMap<K, BigInteger> mapToAddTo,
-            TreeMap<K, BigInteger> mapToAdd) {
+    public static <K> void addToMapBigInteger(Map<K, BigInteger> mapToAddTo,
+            Map<K, BigInteger> mapToAdd) {
         Iterator<K> ite = mapToAdd.keySet().iterator();
         while (ite.hasNext()) {
             K k = ite.next();
-            BigInteger vToAdd = mapToAdd.get(k);
+            BigInteger v = mapToAdd.get(k);
             if (mapToAddTo.containsKey(k)) {
-                BigInteger vToAddTo = mapToAddTo.get(k);
-                mapToAddTo.put(k, vToAdd.add(vToAddTo));
+                mapToAddTo.put(k, v.add(mapToAddTo.get(k)));
             } else {
-                mapToAddTo.put(k, vToAdd);
+                mapToAddTo.put(k, v);
             }
         }
     }
 
     /**
-     * @param m TreeMap
-     * @param i Integer
-     * @return Integer
+     * @param <K> Any type of key that is comparable.
+     * @param <V> Any type of value.
+     * @param m TreeMap with ordered Keys.
+     * @param k A key which will be returned if m.isEmpty().
+     * @return The first key in m or k if m.isEmpty().
      */
-    public static Integer getMaxKey_Integer(TreeMap<Integer, ?> m, Integer i) {
+    public static <K, V> K getFirstKey(TreeMap<K, V> m, K k) {
         if (m.isEmpty()) {
-            return i;
+            return k;
+        } else {
+            return m.firstKey();
+        }
+    }
+
+    /**
+     * @param <K> Any type of key that is comparable.
+     * @param <V> Any type of value.
+     * @param m TreeMap with ordered Keys.
+     * @param k A key which will be returned if m.isEmpty().
+     * @return The last key in m or k if m.isEmpty().
+     */
+    public static <K, V> K getLastKey(TreeMap<K, V> m, K k) {
+        if (m.isEmpty()) {
+            return k;
         } else {
             return m.lastKey();
         }
     }
 
     /**
-     * @param m TreeMap
-     * @param i Integer
-     * @return Integer
+     * @param <K> A generic key for m.
+     * @param m The map to find the maximum of the values in.
+     * @param x Equal to the minimum value that would be returned.
+     * @return The maximum of the BigDecimal values in m and x, or a copy of x
+     * if m is empty.
      */
-    public static Integer getMinKey_Integer(TreeMap<Integer, ?> m, Integer i) {
-        if (m.isEmpty()) {
-            return i;
-        } else {
-            return m.lastKey();
-        }
-    }
-
-    public static BigDecimal getMaxValue_BigDecimal(TreeMap<?, BigDecimal> m,
-            BigDecimal initialMax_BigDecimal) {
-        BigDecimal r = new BigDecimal(initialMax_BigDecimal.toString());
+    public static <K> BigDecimal getMaxValueBigDecimal(Map<K, BigDecimal> m,
+            BigDecimal x) {
+        BigDecimal r = new BigDecimal(x.toString());
         Iterator<BigDecimal> ite = m.values().iterator();
         while (ite.hasNext()) {
             r = r.max(ite.next());
@@ -807,9 +790,16 @@ public class Generic_Collections {
         return r;
     }
 
-    public static BigDecimal getMinValue_BigDecimal(TreeMap<?, BigDecimal> m,
-            BigDecimal initialMin) {
-        BigDecimal r = new BigDecimal(initialMin.toString());
+    /**
+     * @param <K> A generic key for m.
+     * @param m The map to find the minimum of the values in.
+     * @param x Equal to the maximum value that would be returned.
+     * @return The minimum of the BigDecimal values in m and x, or a copy of x
+     * if m is empty.
+     */
+    public static <K> BigDecimal getMinValueBigDecimal(Map<K, BigDecimal> m,
+            BigDecimal x) {
+        BigDecimal r = new BigDecimal(x.toString());
         Iterator<BigDecimal> ite = m.values().iterator();
         while (ite.hasNext()) {
             r = r.min(ite.next());
@@ -817,9 +807,16 @@ public class Generic_Collections {
         return r;
     }
 
-    public static BigInteger getMaxValue_BigInteger(TreeMap<?, BigInteger> m,
-            BigInteger initialMax) {
-        BigInteger r = new BigInteger(initialMax.toString());
+    /**
+     * @param <K> A generic key for m.
+     * @param m The map to find the maximum of the values in.
+     * @param x Equal to the minimum value that would be returned.
+     * @return The maximum of the BigDecimal values in m and x, or a copy of x
+     * if m is empty.
+     */
+    public static <K> BigInteger getMaxValueBigInteger(Map<K, BigInteger> m,
+            BigInteger x) {
+        BigInteger r = new BigInteger(x.toString());
         Iterator<BigInteger> ite = m.values().iterator();
         while (ite.hasNext()) {
             r = r.max(ite.next());
@@ -827,9 +824,16 @@ public class Generic_Collections {
         return r;
     }
 
-    public static BigInteger getMinValue_BigInteger(TreeMap<?, BigInteger> m,
-            BigInteger initialMin) {
-        BigInteger r = new BigInteger(initialMin.toString());
+    /**
+     * @param <K> A generic key for m.
+     * @param m The map to find the minimum of the values in.
+     * @param x Equal to the maximum value that would be returned.
+     * @return The minimum of the BigInteger values in m and x, or a copy of x
+     * if m is empty.
+     */
+    public static <K> BigInteger getMinValueBigInteger(TreeMap<K, BigInteger> m,
+            BigInteger x) {
+        BigInteger r = new BigInteger(x.toString());
         Iterator<BigInteger> ite = m.values().iterator();
         while (ite.hasNext()) {
             r = r.max(ite.next());
@@ -848,12 +852,10 @@ public class Generic_Collections {
      */
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(
             Map<K, V> m) {
-        Map<K, V> r;
-        List<Map.Entry<K, V>> list;
-        list = new LinkedList<>(m.entrySet());
+        Map<K, V> r = new LinkedHashMap<>();
+        List<Map.Entry<K, V>> list = new LinkedList<>(m.entrySet());
         Collections.sort(list, (Map.Entry<K, V> o1, Map.Entry<K, V> o2)
                 -> (o1.getValue()).compareTo(o2.getValue()));
-        r = new LinkedHashMap<>();
         list.forEach((entry) -> {
             r.put(entry.getKey(), entry.getValue());
         });
@@ -885,7 +887,7 @@ public class Generic_Collections {
     }
 
     /**
-     * A test if b is coned in c.
+     * A test if b is contained in c.
      *
      * @param c The collection tested.
      * @param b The value sought.

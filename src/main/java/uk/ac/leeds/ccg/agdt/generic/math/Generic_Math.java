@@ -17,26 +17,59 @@ package uk.ac.leeds.ccg.agdt.generic.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
+ * Generic Math
+ *
+ * Methods for adding two Numbers and testing if Numbers are in the range of
+ * other Numbers.
  *
  * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Math {
 
     /**
-     * Used for testing. If values are greater than this then storing them as
-     * Double values is dubious. The t0String() conversion is necessary
-     * otherwise the number is too large.
+     * Stores the second largest finite double. The largest is:
+     *
+     * new BigDecimal(Double.MAX_VALUE)
+     *
+     * Values greater than this are best not stored as doubles and nearby values
+     * may not necessarily be stored any differently to this - if stored as a
+     * double - due to the way floating point numbers operate with narrowing
+     * conversions.
      */
     public static final BigDecimal DOUBLE_MAXVALUE = new BigDecimal(
-            Double.toString(Double.MAX_VALUE));
+            String.valueOf(Double.MAX_VALUE));
+    //public static final BigDecimal DOUBLE_MAXVALUE = new BigDecimal(
+    //        Double.toString(Double.MAX_VALUE));
 
     /**
-     * Used for testing. If values are less than this then storing them as
-     * Double values is dubious.
+     * Stores the third largest finite double.
+     */
+    public static final BigDecimal DOUBLE_MAXVALUE_PEN = new BigDecimal(
+            String.valueOf(Math.nextDown(Double.MAX_VALUE)));
+
+    /**
+     * Stores a negative finite double with the second largest magnitude. The
+     * largest is:
+     *
+     * new BigDecimal(-Double.MAX_VALUE)
+     *
+     * Values less than this are best not stored as doubles and nearby values
+     * may not necessarily be stored any differently to this - if stored as a
+     * double - due to the way floating point numbers operate with narrowing
+     * conversions.
      */
     public static final BigDecimal DOUBLE_MAXVALUE_NEG = DOUBLE_MAXVALUE.negate();
+
+    /**
+     * Stores a negative finite double with the third largest magnitude.
+     */
+    public static final BigDecimal DOUBLE_MINVALUE_PEN = new BigDecimal(
+            String.valueOf(Math.nextUp(-Double.MAX_VALUE)));
 
     /**
      * Used for testing. If values are greater than this then storing them as
@@ -44,13 +77,140 @@ public class Generic_Math {
      * the number is too large.
      */
     public static final BigDecimal FLOAT_MAXVALUE = new BigDecimal(
-            Float.toString(Float.MAX_VALUE));
+            String.valueOf(Float.MAX_VALUE));
+    //public static final BigDecimal FLOAT_MAXVALUE = new BigDecimal(
+    //        Float.toString(Float.MAX_VALUE));
 
     /**
      * Used for testing. If values are less than this then storing them as Float
      * values is dubious.
      */
     public static final BigDecimal FLOAT_MAXVALUE_NEG = FLOAT_MAXVALUE.negate();
+
+    /**
+     * For adding two generic Numbers x and y of the same type. The numbers x
+     * and y are converted as appropriate into BigInteger or BigDecimal (for
+     * integer type or floating point numbers respectively - if they are not
+     * already of these types). In the general case, the converted numbers are
+     * then added and the result cast into the type T and returned. If the
+     * result of adding the two numbers cannot be stored exactly in the case of
+     * integer type numerical addition then an ArithmeticException is thrown. If
+     * the result of adding the two numbers is beyond the range in the type of
+     * numbers being added then an ArithmeticExcpetion is thrown unless
+     * infinities are involved (except when the two numbers being added are
+     * opposite infinities - in which case an ArithmeticException is thrown). If
+     * one number is positive or negative infinity then that infinity is
+     * returned. In cases where the values being added are represented in
+     * floating point precision the results are a consequence of a narrowing
+     * digital conversion. (N.B. If desirable then if numbers do not increase or
+     * decrease as expected then there could be an implementation that throws an
+     * ArithmeticException in cases where a narrowing digital conversion does
+     * not result in a larger or smaller number as is typically mathematically
+     * expected in a sum.
+     *
+     * @param <T> The type T of the Numbers x and y.
+     * @param x A Number to add.
+     * @param y A Number to add.
+     * @return The result of adding x and y expressed in the same type as x and
+     * y.
+     */
+    public static <T extends Number> T add(T x, T y) {
+        if (x == null || y == null) {
+            return null;
+        }
+        if (x instanceof BigDecimal) {
+            return (T) ((BigDecimal) x).add((BigDecimal) y);
+        } else if (x instanceof BigInteger) {
+            return (T) ((BigInteger) x).add((BigInteger) y);
+        } else {
+            if (x instanceof Double) {
+                Double x0 = (Double) x;
+                // Deal with special cases.
+                if (x0.isNaN()) {
+                    return (T) x0;
+                }
+                Double y0 = (Double) y;
+                if (y0.isNaN()) {
+                    return (T) y0;
+                }
+                if (x0 == Double.POSITIVE_INFINITY) {
+                    if (y0 == Double.NEGATIVE_INFINITY) {
+                        throw new ArithmeticException("Attempting to add "
+                                + "positive and negative infinity.");
+                        //return (T) (Double) Double.NaN;
+                    } else {
+                        return (T) x0;
+                    }
+                } else if (x0 == Double.NEGATIVE_INFINITY) {
+                    if (y0 == Double.POSITIVE_INFINITY) {
+                        throw new ArithmeticException("Attempting to add "
+                                + "positive and negative infinity.");
+                        //return (T) (Double) Double.NaN;
+                    } else {
+                        return (T) x0;
+                    }
+                } else {
+                    BigDecimal x1 = BigDecimal.valueOf(x0);
+                    BigDecimal y1 = BigDecimal.valueOf(y0);
+                    BigDecimal sum = x1.add(y1);
+                    testDouble(sum);
+                    return (T) (Double) sum.doubleValue();
+                }
+            } else if (x instanceof Float) {
+                Float x0 = (Float) x;
+                // Deal with special cases.
+                if (x0.isNaN()) {
+                    return (T) x0;
+                }
+                Float y0 = (Float) y;
+                if (y0.isNaN()) {
+                    return (T) y0;
+                }
+                if (x0 == Float.POSITIVE_INFINITY) {
+                    if (y0 == Float.NEGATIVE_INFINITY) {
+                        throw new ArithmeticException("Attempting to add "
+                                + "positive and negative infinity.");
+                        //return (T) (Float) Float.NaN;
+                    } else {
+                        return (T) x0;
+                    }
+                } else if (x0 == Float.NEGATIVE_INFINITY) {
+                    if (y0 == Float.POSITIVE_INFINITY) {
+                        throw new ArithmeticException("Attempting to add "
+                                + "positive and negative infinity.");
+                        //return (T) (Float) Float.NaN;
+                    } else {
+                        return (T) x0;
+                    }
+                } else {
+                    BigDecimal x1 = BigDecimal.valueOf(x0);
+                    BigDecimal y1 = BigDecimal.valueOf(y0);
+                    BigDecimal sum = x1.add(y1);
+                    testFloat(sum);
+                    return (T) (Float) sum.floatValue();
+                }
+            } else if (x instanceof Long) {
+                BigInteger x0 = BigInteger.valueOf((Long) x);
+                BigInteger y0 = BigInteger.valueOf((Long) y);
+                return (T) (Long) x0.add(y0).longValueExact();
+            } else if (x instanceof Integer) {
+                BigInteger x0 = BigInteger.valueOf((Integer) x);
+                BigInteger y0 = BigInteger.valueOf((Integer) y);
+                return (T) (Integer) x0.add(y0).intValueExact();
+            } else if (x instanceof Short) {
+                BigInteger x0 = BigInteger.valueOf((Short) x);
+                BigInteger y0 = BigInteger.valueOf((Short) y);
+                return (T) (Short) x0.add(y0).shortValueExact();
+            } else if (x instanceof Byte) {
+                BigInteger x0 = BigInteger.valueOf((Byte) x);
+                BigInteger y0 = BigInteger.valueOf((Byte) y);
+                return (T) (Byte) x0.add(y0).byteValueExact();
+            } else {
+                throw new IllegalArgumentException("Type T=" + x.getClass()
+                        + " is not supported in Generic_Collections.add(T, T)");
+            }
+        }
+    }
 
     /**
      * For adding two generic Numbers of the same type. The types of number are
@@ -535,32 +695,7 @@ public class Generic_Math {
         }
         if (x.compareTo(DOUBLE_MAXVALUE_NEG) == -1) {
             throw new ArithmeticException("x " + x.toString() + " is less "
-                    + "than Double.Max_Value.");
-        }
-    }
-
-    /**
-     * This first calls {@link #testDouble(java.math.BigDecimal)} on x.
-     *
-     * @param x Value to test.
-     * @param epsilon If x cannot be stored as a Double within this distance of
-     * x then an ArithmeticException is thrown.
-     * @throws ArithmeticException if x cannot be stored as a Double within
-     * epsilon distance of x.
-     */
-    public static void testDouble(BigDecimal x, BigDecimal epsilon) {
-        testDouble(x);
-        Double xd = x.doubleValue();
-        BigDecimal x2 = new BigDecimal(xd);
-        if (x2.compareTo(x.subtract(epsilon)) == -1) {
-            throw new ArithmeticException("x " + x.toString() + " when "
-                    + "converted to a Double is more than " + epsilon.toString()
-                    + " less than x.");
-        }
-        if (x2.compareTo(x.add(epsilon)) == 1) {
-            throw new ArithmeticException("x " + x.toString() + " when "
-                    + "converted to a Double is more than " + epsilon.toString()
-                    + " more than x.");
+                    + "than -Double.Max_Value.");
         }
     }
 
@@ -572,162 +707,172 @@ public class Generic_Math {
     public static void testFloat(BigDecimal x) {
         if (x.compareTo(FLOAT_MAXVALUE) == 1) {
             throw new ArithmeticException("x " + x.toString() + " is greater "
-                    + "than Double.Max_Value.");
+                    + "than Float.Max_Value.");
         }
         if (x.compareTo(FLOAT_MAXVALUE_NEG) == -1) {
             throw new ArithmeticException("x " + x.toString() + " is less "
-                    + "than Double.Max_Value.");
+                    + "than -Float.Max_Value.");
         }
     }
 
     /**
-     * This first calls {@link #testFloat(java.math.BigDecimal)} on x.
+     * Tests if x can be represented within epsilon as a double. Choose epsilon
+     * equal to BigDecimal.ZERO to test 100% accuracy.
      *
-     * @param x Value to test.
-     * @param epsilon If x cannot be stored as a Float within this distance of x
-     * then an ArithmeticException is thrown.
-     * @throws ArithmeticException if x cannot be stored as a Float within
-     * epsilon distance of x.
+     * @param x Number to test.
+     * @param epsilon The allowed range either side of x for the double
+     * representation.
+     * @return -1 if x cannot be represented as a double within epsilon and the
+     * nearest representation is less than x; 1 if x cannot be represented as a
+     * double within epsilon and the nearest representation is greater than x; 0
+     * otherwise.
      */
-    public static void testFloat(BigDecimal x, BigDecimal epsilon) {
-        testFloat(x);
-        Float xd = x.floatValue();
-        BigDecimal x2 = new BigDecimal(xd);
-        if (x2.compareTo(x.subtract(epsilon)) == -1) {
-            throw new ArithmeticException("x " + x.toString() + " when "
-                    + "converted to a Float is more than " + epsilon.toString()
-                    + " less than x.");
-        }
-        if (x2.compareTo(x.add(epsilon)) == 1) {
-            throw new ArithmeticException("x " + x.toString() + " when "
-                    + "converted to a Float is more than " + epsilon.toString()
-                    + " more than x.");
-        }
+    public static int testDouble(BigDecimal x, BigDecimal epsilon) {
+        double xd = x.doubleValue();
+        //double xd = Double.valueOf(x.toString());
+        //System.out.println(xd);
+        //System.out.println(Double.toString(xd));
+        /**
+         * Simply using:
+         *
+         * BigDecimal xToCompare = new BigDecimal(xd);
+         *
+         * Fails!
+         *
+         * Precision needs to be handled explicitly.
+         */
+        BigDecimal xToCompare = new BigDecimal(Double.toString(xd),
+                getMathContextForComparison(x));
+        return compare(x, xToCompare, epsilon);
     }
 
     /**
-     * For adding two generic Numbers x and y of the same type. The numbers x
-     * and y are converted as appropriate into BigInteger or BigDecimal (for
-     * integer type or floating point numbers respectively - if they are not
-     * already of these types). In the general case, the converted numbers are
-     * then added and the result cast into the type T and returned. If the
-     * result of adding the two numbers cannot be stored exactly in the case of
-     * integer type numerical addition then an ArithmeticException is thrown. If
-     * the result of adding the two numbers is beyond the range in the type of
-     * numbers being added then an ArithmeticExcpetion is thrown unless
-     * infinities are involved (except when the two numbers being added are
-     * opposite infinities - in which case an ArithmeticException is thrown). If
-     * one number is positive or negative infinity then that infinity is
-     * returned. In cases where the values being added are represented in
-     * floating point precision the results are a consequence of a narrowing
-     * digital conversion. (N.B. If desirable then if numbers do not increase or
-     * decrease as expected then there could be an implementation that throws an
-     * ArithmeticException in cases where a narrowing digital conversion does
-     * not result in a larger or smaller number as is typically mathematically
-     * expected in a sum.
+     * Compares x and xd. If the difference is greater than epsilon then -1 is
+     * returned if x is less than xd.subtract(epsilon), 1 is returned if x is
+     * greater than xd.add(epsilon); 0 otherwise (i.e. x and xd are within
+     * epsilon).
      *
-     * @param <T> The type T of the Numbers x and y.
-     * @param x A Number to add.
-     * @param y A Number to add.
-     * @return The result of adding x and y expressed in the same type as x and
-     * y.
+     * @param x
+     * @param xd
+     * @param epsilon
+     * @return
      */
-    public static <T extends Number> T add(T x, T y) {
-        if (x == null || y == null) {
-            return null;
+    public static int compare(BigDecimal x, BigDecimal xd, BigDecimal epsilon) {
+        if (x.compareTo(xd.subtract(epsilon)) == -1) {
+            return -1;
         }
-        if (x instanceof BigDecimal) {
-            return (T) ((BigDecimal) x).add((BigDecimal) y);
-        } else if (x instanceof BigInteger) {
-            return (T) ((BigInteger) x).add((BigInteger) y);
-        } else {
-            if (x instanceof Double) {
-                Double x0 = (Double) x;
-                // Deal with special cases.
-                if (x0.isNaN()) {
-                    return (T) x0;
-                }
-                Double y0 = (Double) y;
-                if (y0.isNaN()) {
-                    return (T) y0;
-                }
-                if (x0 == Double.POSITIVE_INFINITY) {
-                    if (y0 == Double.NEGATIVE_INFINITY) {
-                        throw new ArithmeticException("Attempting to add "
-                                + "positive and negative infinity.");
-                        //return (T) (Double) Double.NaN;
-                    } else {
-                        return (T) x0;
-                    }
-                } else if (x0 == Double.NEGATIVE_INFINITY) {
-                    if (y0 == Double.POSITIVE_INFINITY) {
-                        throw new ArithmeticException("Attempting to add "
-                                + "positive and negative infinity.");
-                        //return (T) (Double) Double.NaN;
-                    } else {
-                        return (T) x0;
-                    }
-                } else {
-                    BigDecimal x1 = BigDecimal.valueOf(x0);
-                    BigDecimal y1 = BigDecimal.valueOf(y0);
-                    BigDecimal sum = x1.add(y1);
-                    testDouble(sum);
-                    return (T) (Double) sum.doubleValue();
-                }
-            } else if (x instanceof Float) {
-                Float x0 = (Float) x;
-                // Deal with special cases.
-                if (x0.isNaN()) {
-                    return (T) x0;
-                }
-                Float y0 = (Float) y;
-                if (y0.isNaN()) {
-                    return (T) y0;
-                }
-                if (x0 == Float.POSITIVE_INFINITY) {
-                    if (y0 == Float.NEGATIVE_INFINITY) {
-                        throw new ArithmeticException("Attempting to add "
-                                + "positive and negative infinity.");
-                        //return (T) (Float) Float.NaN;
-                    } else {
-                        return (T) x0;
-                    }
-                } else if (x0 == Float.NEGATIVE_INFINITY) {
-                    if (y0 == Float.POSITIVE_INFINITY) {
-                        throw new ArithmeticException("Attempting to add "
-                                + "positive and negative infinity.");
-                        //return (T) (Float) Float.NaN;
-                    } else {
-                        return (T) x0;
-                    }
-                } else {
-                    BigDecimal x1 = BigDecimal.valueOf(x0);
-                    BigDecimal y1 = BigDecimal.valueOf(y0);
-                    BigDecimal sum = x1.add(y1);
-                    testFloat(sum);
-                    return (T) (Float) sum.floatValue();
-                }
-            } else if (x instanceof Long) {
-                BigInteger x0 = BigInteger.valueOf((Long) x);
-                BigInteger y0 = BigInteger.valueOf((Long) y);
-                return (T) (Long) x0.add(y0).longValueExact();
-            } else if (x instanceof Integer) {
-                BigInteger x0 = BigInteger.valueOf((Integer) x);
-                BigInteger y0 = BigInteger.valueOf((Integer) y);
-                return (T) (Integer) x0.add(y0).intValueExact();
-            } else if (x instanceof Short) {
-                BigInteger x0 = BigInteger.valueOf((Short) x);
-                BigInteger y0 = BigInteger.valueOf((Short) y);
-                return (T) (Short) x0.add(y0).shortValueExact();
-            } else if (x instanceof Byte) {
-                BigInteger x0 = BigInteger.valueOf((Byte) x);
-                BigInteger y0 = BigInteger.valueOf((Byte) y);
-                return (T) (Byte) x0.add(y0).byteValueExact();
-            } else {
-                throw new IllegalArgumentException("Type T=" + x.getClass()
-                        + " is not supported in Generic_Collections.add(T, T)");
-            }
+        if (x.compareTo(xd.add(epsilon)) == 1) {
+            return 1;
         }
+        return 0;
     }
 
+    /**
+     * Tests if x can be represented within epsilon as a double. Choose epsilon
+     * equal to BigDecimal.ZERO to test 100% accuracy.
+     *
+     * @param x Number to test.
+     * @param epsilon The allowed range either side of x for the double
+     * representation.
+     * @return false if x cannot be represented as a double within epsilon; true
+     * otherwise.
+     */
+    public static boolean testDouble2(BigDecimal x, BigDecimal epsilon) {
+        double xd = x.doubleValue();
+        //double xd = Double.valueOf(x.toString());
+        //System.out.println(xd);
+        //System.out.println(Double.toString(xd));
+        /**
+         * Simply using:
+         *
+         * BigDecimal xToCompare = new BigDecimal(xd);
+         *
+         * Fails!
+         *
+         * Precision needs to be handled explicitly.
+         */
+        BigDecimal xToCompare = new BigDecimal(Double.toString(xd),
+                getMathContextForComparison(x));
+        return compare2(x, xToCompare, epsilon);
+    }
+
+    public static MathContext getMathContextForComparison(BigDecimal x) {
+        int ul = x.unscaledValue().toString().length();
+        // 2 is added to precision in the MathContext to cope with any rounding.
+        MathContext mc = new MathContext(
+                ul + (int) Math.pow(10, ul) + x.scale() + 2, // Precision.
+                RoundingMode.FLOOR);
+        return mc;
+    }
+
+    public static int getPrecision(BigDecimal x) {
+        int ul = x.unscaledValue().toString().length();
+        return ul + (int) Math.pow(10, ul) + x.scale();
+    }
+
+    public static int getPrecisionSafe(BigDecimal x) {
+        return getPrecision(x) + 2;
+    }
+
+    /**
+     * Compares x and xd. If the difference is greater than epsilon then false
+     * is returned. Otherwise true is returned.
+     *
+     * @param x
+     * @param xd
+     * @param epsilon
+     * @return
+     */
+    public static boolean compare2(BigDecimal x, BigDecimal xd, BigDecimal epsilon) {
+        if (x.compareTo(xd.subtract(epsilon)) == -1) {
+            return false;
+        }
+        return x.compareTo(xd.add(epsilon)) != 1;
+    }
+
+    /**
+     * Tests if x can be represented within epsilon as a float. Choose epsilon
+     * equal to BigDecimal.ZERO to test 100% accuracy.
+     *
+     * @param x Number to test.
+     * @param epsilon The allowed range either side of x for the float
+     * representation.
+     * @return -1 if x cannot be represented as a float within epsilon and the
+     * nearest representation is less than x; 1 if x cannot be represented as a
+     * float within epsilon and the nearest representation is greater than x; 0
+     * otherwise.
+     */
+    public static int testFloat(BigDecimal x, BigDecimal epsilon) {
+        float xd = x.floatValue();
+        return compare(x, new BigDecimal(xd), epsilon);
+    }
+
+    /**
+     * Tests if x can be represented within epsilon as a float. Choose epsilon
+     * equal to BigDecimal.ZERO to test 100% accuracy.
+     *
+     * @param x Number to test.
+     * @param epsilon The allowed range either side of x for the float
+     * representation.
+     * @return false if x cannot be represented as a float within epsilon; true
+     * otherwise.
+     */
+    public static boolean testFloat2(BigDecimal x, BigDecimal epsilon) {
+        float xd = x.floatValue();
+        //float xd = Float.valueOf(x.toString());
+        //System.out.println(xd);
+        //System.out.println(Float.toString(xd));
+        /**
+         * Simply using:
+         *
+         * BigDecimal xToCompare = new BigDecimal(xd);
+         *
+         * Fails!
+         *
+         * Precision needs to be handled explicitly.
+         */
+        BigDecimal xToCompare = new BigDecimal(Float.toString(xd),
+                getMathContextForComparison(x));
+        return compare2(x, xToCompare, epsilon);
+    }
 }
