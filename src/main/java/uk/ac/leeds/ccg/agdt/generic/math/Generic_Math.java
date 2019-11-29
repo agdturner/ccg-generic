@@ -752,10 +752,11 @@ public class Generic_Math {
      * greater than xd.add(epsilon); 0 otherwise (i.e. x and xd are within
      * epsilon).
      *
-     * @param x
-     * @param xd
-     * @param epsilon
-     * @return
+     * @param x A number to compare.
+     * @param xd A number to compare.
+     * @param epsilon The allowed error epsilon.
+     * @return -1 if x is less than xd.subtract(epsilon), 1 if x is greater than 
+     * xd.add(epsilon) and 0 otherwise.
      */
     public static int compare(BigDecimal x, BigDecimal xd, BigDecimal epsilon) {
         if (x.compareTo(xd.subtract(epsilon)) == -1) {
@@ -818,10 +819,11 @@ public class Generic_Math {
      * Compares x and xd. If the difference is greater than epsilon then false
      * is returned. Otherwise true is returned.
      *
-     * @param x
-     * @param xd
-     * @param epsilon
-     * @return
+     * @param x A number to compare.
+     * @param xd A number to compare.
+     * @param epsilon The allowed error epsilon.
+     * @return true if x is less than xd.add(epsilon) and greater than 
+     * xd.subtract(epsilon) and false otherwise.
      */
     public static boolean compare2(BigDecimal x, BigDecimal xd, BigDecimal epsilon) {
         if (x.compareTo(xd.subtract(epsilon)) == -1) {

@@ -333,11 +333,11 @@ public class Generic_Collections {
      * does not check if the resulting value overflows. If this might happen
      * then perhaps use either:
      * <ul>
-     * <ol>{@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}
+     * <li>{@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}
      * instead which would in such a case throw an ArithmeticException.that
-     * case.</ol>
-     * <ol>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.lang.Object)}
-     * instead as BigIntegers do not overflow.</ol>
+     * case.</li>
+     * <li>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.lang.Object)}
+     * instead as BigIntegers do not overflow.</li>
      * </ul>
      *
      * @param <K> Key
@@ -416,11 +416,11 @@ public class Generic_Collections {
      * does not check if the resulting value overflows. If this might happen
      * then perhaps use either:
      * <ul>
-     * <ol>{@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}
+     * <li>{@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}
      * instead which would in such a case throw an ArithmeticException.that
-     * case.</ol>
-     * <ol>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.lang.Object)}
-     * instead as BigIntegers do not overflow.</ol>
+     * case.</li>
+     * <li>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.lang.Object)}
+     * instead as BigIntegers do not overflow.</li>
      * </ul>
      *
      * @param <K> Key
