@@ -43,6 +43,8 @@ import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
 public class Generic_Collections {
 
     /**
+     * Create and return a HashSet of keys that map to the value v.
+     * 
      * @param <K> The type of keys in m.
      * @param <V> The type of values in m.
      * @param m The map for which the keys that map to v are returned.
@@ -336,7 +338,7 @@ public class Generic_Collections {
      * <li>{@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}
      * instead which would in such a case throw an ArithmeticException.that
      * case.</li>
-     * <li>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.lang.Object)}
+     * <li>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.math.BigInteger)}
      * instead as BigIntegers do not overflow.</li>
      * </ul>
      *
@@ -414,13 +416,13 @@ public class Generic_Collections {
      * Adds v to the value of m corresponding with k.If there is no such k in m
      * or the value m.get(k) is null then v is added to m addressed by k. This
      * does not check if the resulting value overflows. If this might happen
-     * then perhaps use either:
+     * then either check or instead use either:
      * <ul>
      * <li>{@link #addToMap(java.util.Map, java.lang.Object, java.lang.Object)}
-     * instead which would in such a case throw an ArithmeticException.that
-     * case.</li>
-     * <li>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.lang.Object)}
-     * instead as BigIntegers do not overflow.</li>
+     * - which would in such a case throw an ArithmeticException in the case of
+     * a numerical overflow.</li>
+     * <li>{@link #addToMapBigInteger(java.util.Map, java.lang.Object, java.math.BigInteger)}
+     * - as BigIntegers do not overflow.</li>
      * </ul>
      *
      * @param <K> Key
@@ -470,7 +472,7 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      */
-    public static <K> void setMinValueInteger(Map<K, Integer> m, K k, 
+    public static <K> void setMinValueInteger(Map<K, Integer> m, K k,
             Integer v) {
         Integer v0 = m.get(k);
         if (v0 != null) {
