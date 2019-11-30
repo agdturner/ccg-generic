@@ -1,5 +1,7 @@
-uk\ac\leeds\ccg\agdt\generic\io\Generic_IOTest.class
 uk\ac\leeds\ccg\agdt\generic\util\Generic_CollectionsTest.class
 uk\ac\leeds\ccg\agdt\generic\math\Generic_MathTest.class
+uk\ac\leeds\ccg\agdt\generic\util\Generic_CollectionsTest$GetKeys_Map_GenericType.class
 uk\ac\leeds\ccg\agdt\generic\io\Generic_FilesTest.class
+uk\ac\leeds\ccg\agdt\generic\io\Generic_IOTest.class
+uk\ac\leeds\ccg\agdt\generic\util\Generic_CollectionsTest$GetKeys_Map_GenericType$WhenX.class
 uk\ac\leeds\ccg\agdt\generic\time\Generic_DateTest.class
