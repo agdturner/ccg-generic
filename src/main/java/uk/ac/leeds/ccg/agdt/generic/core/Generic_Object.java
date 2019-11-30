@@ -28,6 +28,8 @@ import java.io.Serializable;
  */
 public abstract class Generic_Object implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     protected transient Generic_Environment env;
 
     /**
