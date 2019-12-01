@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.agdt.generic.io;
 
-import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
-import uk.ac.leeds.ccg.agdt.generic.io.Generic_IO;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -53,12 +52,12 @@ public class Generic_IOTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Files.getDefaultDir();
         try {
-            env = new Generic_Environment(dir);
+            Generic_Files files = new Generic_Files(new Generic_Defaults());
+            env = new Generic_Environment(files);
             logID = env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
-            Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -101,30 +100,34 @@ public class Generic_IOTest {
      */
     @Test
     public void testWriteObject_Object_File() {
-        env.log("writeObject", logID);
-        //System.out.println("writeObject");
-        String prefix = "Generic_Files";
-        String suffix = Generic_Strings.symbol_dot + Generic_Strings.s_dat;
-        File f = null;
         try {
-            f = getTestFile(prefix, suffix);
+            env.log("writeObject", logID);
+            String prefix = "Generic_Files";
+            String suffix = Generic_Strings.symbol_dot + Generic_Strings.s_dat;
+            Path f = null;
+            try {
+                f = getTestFile(prefix, suffix);
+            } catch (IOException ex) {
+                Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            env.log("Test file for env.files " + f);
+            Generic_IO instance = env.io;
+            instance.writeObject(env.files, f);
+            // Make sure it is a new file
+            f = getNewTestFile(prefix, suffix);
+            env.log("Test file for env.files " + f);
+            instance.writeObject(env.files, f);
         } catch (IOException ex) {
-            Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(System.err);
+            env.log(ex.getMessage());
         }
-        env.log("Test file for env.files " + f);
-        Generic_IO instance = env.io;
-        instance.writeObject(env.files, f);
-        // Make sure it is a new file
-        f = getNewTestFile(prefix, suffix);
-        env.log("Test file for env.files " + f);
-        instance.writeObject(env.files, f);
     }
 
-    public File getNewTestFile(String prefix, String suffix) {
-        return new File(env.files.getGeneratedDir(), prefix + suffix);
+    public Path getNewTestFile(String prefix, String suffix) throws IOException {
+        return Paths.get(env.files.getGeneratedDir().toString(), prefix + suffix);
     }
 
-    public File getTestFile(String prefix, String suffix) throws IOException {
+    public Path getTestFile(String prefix, String suffix) throws IOException {
         return env.io.createNewFile(env.files.getGeneratedDir(), prefix, suffix);
     }
 
@@ -693,53 +696,46 @@ public class Generic_IOTest {
      */
     @Test
     public void testInitialiseArchive_File_long() {
-        env.log("initialiseArchive", logID);
-        //System.out.println("initialiseArchive");
-        File dir = new File(env.files.getGeneratedDir(), "testArchive");
-        long range = 10L;
-        File expResult;
-        if (dir.exists()) {
-            expResult = env.io.getArchiveHighestLeafFile(dir);
+        try {
+            env.log("initialiseArchive", logID);
+            //System.out.println("initialiseArchive");
+            Path dir = Paths.get(env.files.getGeneratedDir().toString(),
+                    "testArchive");
+            long range = 10L;
+            Path expResult;
+            if (Files.exists(dir)) {
+                expResult = env.io.getArchiveHighestLeafFile(dir);
+                /**
+                 * Let us assume that dir is an archive directory. So the
+                 * archive already exists and an attempt to initialise an
+                 * archive using exists = false should result in an IOException.
+                 */
+                Assertions.assertThrows(IOException.class, () -> {
+                    env.io.initialiseArchive(dir, range, false);
+                });
+            } else {
+                /**
+                 * If the archive does not already exist then initialise it.
+                 */
+                env.io.initialiseArchive(dir, range, false);
+                expResult = env.io.getArchiveHighestLeafFile(dir);
+            }
             /**
-             * Let us assume that dir is an archive directory. So the archive
-             * already exists and an attempt to initialise an archive using
-             * exists = false should result in an IOException.
+             * So the archive should exist now and if we try to initialise with
+             * exists = false then we expect an IOException. This is included
+             * here for completeness.
              */
             Assertions.assertThrows(IOException.class, () -> {
-                env.io.initialiseArchive(dir, range, false);
+                Path result = env.io.initialiseArchive(dir, range, false);
             });
-        } else {
             /**
-             * If the archive does not already exist then initialise it.
+             * Test initialising an existing archive.
              */
-            try {
-                env.io.initialiseArchive(dir, range, false);
-            } catch (IOException ex) {
-                Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            expResult = env.io.getArchiveHighestLeafFile(dir);
-        }
-        /**
-         * So the archive should exist now and if we try to initialise with
-         * exists = false then we expect an IOException. This is included here
-         * for completeness.
-         */
-        Assertions.assertThrows(IOException.class, () -> {
-            File result = env.io.initialiseArchive(dir, range, false);
-        });
-        /**
-         * Test initialising an existing archive.
-         */
-        try {
-            File result = env.io.initialiseArchive(dir, range, true);
+            Path result = env.io.initialiseArchive(dir, range, true);
             Assertions.assertEquals(result, expResult);
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        /**
-         * Add some new leaf files to the archive and test again.
-         */
-        try {
+            /**
+             * Add some new leaf files to the archive and test again.
+             */
             for (int i = 0; i < range; i++) {
                 for (int j = 0; j < range; j++) {
                     for (int k = 0; k < range; k++) {
@@ -751,307 +747,25 @@ public class Generic_IOTest {
                 }
                 env.io.testArchiveIntegrity(dir);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        expResult = env.io.getArchiveHighestLeafFile(dir);
-        try {
-            File result = env.io.initialiseArchive(dir, range, true);
+            expResult = env.io.getArchiveHighestLeafFile(dir);
+            result = env.io.initialiseArchive(dir, range, true);
             Assertions.assertEquals(result, expResult);
         } catch (IOException ex) {
-            Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(System.err);
+            env.log(ex.getMessage());
         }
-
     }
-
-//    /**
-//     * Test of initialiseArchive method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testInitialiseArchive_3args() throws Exception {
-//        System.out.println("initialiseArchive");
-//        File dir = new File(env.files.getGeneratedDir(), "testArchive");
-//        long range = 0L;
-//        long n = 0L;
-//        Generic_IO instance = null;
-//        instance.initialiseArchive(dir, range, n);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of initialiseArchiveAndReturnFileMap method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testInitialiseArchiveAndReturnFileMap() throws Exception {
-//        System.out.println("initialiseArchiveAndReturnFileMap");
-//        File dir = null;
-//        long range = 0L;
-//        long n = 0L;
-//        Generic_IO instance = null;
-//        TreeMap<Long, File> expResult = null;
-//        TreeMap<Long, File> result = instance.initialiseArchiveAndReturnFileMap(dir, range, n);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//    /**
-//     * Test of getArchiveHighestLeaf method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetArchiveHighestLeaf() {
-//        System.out.println("getArchiveHighestLeaf");
-//        File dir = null;
-//        Generic_IO instance = null;
-//        long expResult = 0L;
-//        long result = instance.getArchiveHighestLeaf(dir);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getArchiveRange method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetArchiveRange() {
-//        System.out.println("getArchiveRange");
-//        File dir = null;
-//        Generic_IO instance = null;
-//        long expResult = 0L;
-//        long result = instance.getArchiveRange(dir);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getArchiveLeafFilesSet method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetArchiveLeafFilesSet() {
-//        System.out.println("getArchiveLeafFilesSet");
-//        File dir = null;
-//        Generic_IO instance = null;
-//        HashSet<File> expResult = null;
-//        HashSet<File> result = instance.getArchiveLeafFilesSet(dir);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getArchiveLeafFilesMap method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetArchiveLeafFilesMap_File() {
-//        System.out.println("getArchiveLeafFilesMap");
-//        File dir = null;
-//        Generic_IO instance = null;
-//        TreeMap<Long, File> expResult = null;
-//        TreeMap<Long, File> result = instance.getArchiveLeafFilesMap(dir);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getArchiveLeafFilesMap method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetArchiveLeafFilesMap_3args() {
-//        System.out.println("getArchiveLeafFilesMap");
-//        File dir = null;
-//        long minID = 0L;
-//        long maxID = 0L;
-//        Generic_IO instance = null;
-//        TreeMap<Long, File> expResult = null;
-//        TreeMap<Long, File> result = instance.getArchiveLeafFilesMap(dir, minID, maxID);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getArchiveHighestLeafFile method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetArchiveHighestLeafFile() {
-//        System.out.println("getArchiveHighestLeafFile");
-//        File dir = null;
-//        Generic_IO instance = null;
-//        File expResult = null;
-//        File result = instance.getArchiveHighestLeafFile(dir);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of growArchiveBase method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGrowArchiveBase_File_long() {
-//        System.out.println("growArchiveBase");
-//        File dir = null;
-//        long range = 0L;
-//        Generic_IO instance = null;
-//        File expResult = null;
-//        File result = instance.growArchiveBase(dir, range);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of growArchiveBase method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGrowArchiveBase_3args() {
-//        System.out.println("growArchiveBase");
-//        File dir = null;
-//        long range = 0L;
-//        long next_ID = 0L;
-//        Generic_IO instance = null;
-//        File expResult = null;
-//        File result = instance.growArchiveBase(dir, range, next_ID);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of move method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testMove() {
-//        System.out.println("move");
-//        File o = null;
-//        File d = null;
-//        Generic_IO instance = null;
-//        instance.move(o, d);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of addToArchive method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testAddToArchive_File_long() {
-//        System.out.println("addToArchive");
-//        File dir = null;
-//        long range = 0L;
-//        Generic_IO instance = null;
-//        File expResult = null;
-//        File result = instance.addToArchive(dir, range);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of addToArchive method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testAddToArchive_3args() {
-//        System.out.println("addToArchive");
-//        File dir = null;
-//        long range = 0L;
-//        long next_ID = 0L;
-//        Generic_IO instance = null;
-//        File expResult = null;
-//        File result = instance.addToArchive(dir, range, next_ID);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getFileThatExists method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetFileThatExists() throws Exception {
-//        System.out.println("getFileThatExists");
-//        File dir = null;
-//        String filename = "";
-//        Generic_IO instance = null;
-//        File expResult = null;
-//        File result = instance.getFileThatExists(dir, filename);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getFilename method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetFilename() {
-//        System.out.println("getFilename");
-//        File dir = null;
-//        File f = null;
-//        Generic_IO instance = null;
-//        String expResult = "";
-//        String result = instance.getFilename(dir, f);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getNumericallyOrderedFiles method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetNumericallyOrderedFiles_FileArr() {
-//        System.out.println("getNumericallyOrderedFiles");
-//        File[] files = null;
-//        Generic_IO instance = null;
-//        TreeMap<Long, File> expResult = null;
-//        TreeMap<Long, File> result = instance.getNumericallyOrderedFiles(files);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getNumericallyOrderedFiles2 method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetNumericallyOrderedFiles2() {
-//        System.out.println("getNumericallyOrderedFiles2");
-//        File[] files = null;
-//        Generic_IO instance = null;
-//        TreeMap<Long, File> expResult = null;
-//        TreeMap<Long, File> result = instance.getNumericallyOrderedFiles2(files);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getNumericallyOrderedFiles method, of class Generic_IO.
-//     */
-//    @Test
-//    public void testGetNumericallyOrderedFiles_File() {
-//        System.out.println("getNumericallyOrderedFiles");
-//        File dir = null;
-//        Generic_IO instance = null;
-//        HashMap<Integer, String> expResult = null;
-//        HashMap<Integer, String> result = instance.getNumericallyOrderedFiles(dir);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    
     /**
      * Test of getFilePathLength method, of class Generic_IO.
+     *
      * @throws java.io.IOException If encountered.
      */
     @Test
     public void testGetFilePathLength_File() throws IOException {
         env.log("getFilePathLength", logID);
         //System.out.println("getFilePathLength");
-        File f = env.files.getGeneratedDir();
+        Path f = env.files.getGeneratedDir();
         Generic_IO instance = env.io;
         int limit = 100;
         int result = instance.getFilePathLength(f);
@@ -1065,18 +779,17 @@ public class Generic_IOTest {
     @Test
     public void testCreateNewFile() {
         env.log("createNewFile", logID);
-        //System.out.println("createNewFile");
-        File dir = env.files.getGeneratedDir();
-        String prefix = "test";
-        String suffix = ".dat";
-        Generic_IO instance = env.io;
-        File f = null;
         try {
-            f = instance.createNewFile(dir, prefix, suffix);
+            Path dir = env.files.getGeneratedDir();
+            String prefix = "test";
+            String suffix = ".dat";
+            Generic_IO instance = env.io;
+            Path f = instance.createNewFile(dir, prefix, suffix);
+            Assertions.assertTrue(Files.exists(f));
         } catch (IOException ex) {
-            Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(System.err);
+            env.log(ex.getMessage());
         }
-        Assertions.assertTrue(f.exists());
     }
 
 }

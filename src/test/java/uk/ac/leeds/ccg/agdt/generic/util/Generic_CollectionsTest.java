@@ -15,18 +15,10 @@
  */
 package uk.ac.leeds.ccg.agdt.generic.util;
 
-import uk.ac.leeds.ccg.agdt.generic.util.Generic_Collections;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.MathContext;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -34,10 +26,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
-import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.agdt.generic.time.Generic_DateTest;
 
@@ -45,6 +34,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.agdt.generic.io.Generic_FilesTest;
 
 
 /**
@@ -71,12 +62,12 @@ public class Generic_CollectionsTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Files.getDefaultDir();
         try {
-            env = new Generic_Environment(dir);
+            Generic_Files files = new Generic_Files(new Generic_Defaults());
+            env = new Generic_Environment(files);
             logID = env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
-            Logger.getLogger(Generic_DateTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

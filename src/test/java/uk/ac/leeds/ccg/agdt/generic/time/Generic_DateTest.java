@@ -16,8 +16,6 @@
 
 package uk.ac.leeds.ccg.agdt.generic.time;
 
-import uk.ac.leeds.ccg.agdt.generic.time.Generic_Date;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,9 +26,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
+import uk.ac.leeds.ccg.agdt.generic.io.Generic_FilesTest;
 
 /**
  *
@@ -55,12 +53,12 @@ public class Generic_DateTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Files.getDefaultDir();
         try {
-            env = new Generic_Environment(dir);
+            Generic_Files files = new Generic_Files(new Generic_Defaults());
+            env = new Generic_Environment(files);
             logID = env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
-            Logger.getLogger(Generic_DateTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.agdt.generic.io;
 
-import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -36,7 +36,7 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
  */
 public class Generic_FilesTest {
 
-    Generic_Environment env;
+    static Generic_Environment env;
     int logID;
 
     public Generic_FilesTest() {
@@ -44,6 +44,13 @@ public class Generic_FilesTest {
 
     @BeforeAll
     public static void setUpClass() {
+        try {
+            Generic_Files files = new Generic_Files(new Generic_Defaults());
+            files.setDir(files.getDefaultGenericDir());
+            env = new Generic_Environment(files);
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @AfterAll
@@ -52,12 +59,11 @@ public class Generic_FilesTest {
 
     @BeforeEach
     public void setUp() {
-        File dir = Generic_Files.getDefaultDir();
         try {
-            env = new Generic_Environment(dir);
             logID = env.initLog(this.getClass().getSimpleName());
         } catch (IOException ex) {
-            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(System.err);
+            env.log(ex.getMessage());
         }
     }
 
@@ -73,96 +79,119 @@ public class Generic_FilesTest {
         try {
             env.log("setDir", logID);
             //System.out.println("setDir");
-            File d = new File(env.files.getGeneratedDir(), "test");
-            Generic_Files instance = new Generic_Files(d);
-            instance.setDir(d);
-            File dir = instance.getDir();
+            Path d = Paths.get(env.files.getGeneratedDir().toString(), "test");
+            Generic_Files instance = new Generic_Files(new Generic_Defaults(d));
+            //instance.setDir(d);
+            Path dir = instance.getDir();
             Assertions.assertEquals(d, dir);
-            Assertions.assertTrue(d.exists());
-            File genD = new File(dir, Generic_Strings.s_generated);
+            Assertions.assertTrue(Files.exists(d));
+            Path genD = Paths.get(dir.toString(), Generic_Strings.s_generated);
             d = instance.getGeneratedDir();
             Assertions.assertEquals(genD, d);
-            Assertions.assertTrue(genD.exists());
-            File inputD = new File(dir, Generic_Strings.s_input);
+            Assertions.assertTrue(Files.exists(genD));
+            Path inputD = Paths.get(dir.toString(), Generic_Strings.s_input);
             d = instance.getInputDir();
             Assertions.assertEquals(inputD, d);
-            Assertions.assertTrue(inputD.exists());
-            File outputD = new File(dir, Generic_Strings.s_output);
+            Assertions.assertTrue(Files.exists(inputD));
+            Path outputD = Paths.get(dir.toString(), Generic_Strings.s_output);
             d = instance.getOutputDir();
             Assertions.assertEquals(outputD, d);
-            Assertions.assertTrue(outputD.exists());
+            Assertions.assertTrue(Files.exists(outputD));
         } catch (IOException ex) {
-            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(System.err);
+            env.log(ex.getMessage());
         }
     }
 
-    /**
-     * Test of getDir method, of class Generic_Files.
-     */
-    @Test
-    public void testGetDir() {
-        try {
-            env.log("getDir", logID);
-            //System.out.println("getDir");
-            Generic_Files instance = new Generic_Files(env.files.getDir());
-            File expResult = Generic_Files.getDefaultDir();
-            File result = instance.getDir();
-            Assertions.assertEquals(expResult, result);
-        } catch (IOException ex) {
-            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Test of getInputDir method, of class Generic_Files.
-     */
-    @Test
-    public void testGetInputDir() {
-        env.log("getInputDir", logID);
-        //System.out.println("getInputDir");
-        File expResult = Generic_Files.getDefaultDir();
-        expResult = new File(expResult, Generic_Strings.s_input);
-        File result = env.files.getInputDir();
-        Assertions.assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getGeneratedDir method, of class Generic_Files.
-     */
-    @Test
-    public void testGetGeneratedDir() {
-        env.log("getGeneratedDir", logID);
-        //System.out.println("getGeneratedDir");
-        File expResult = Generic_Files.getDefaultDir();
-        expResult = new File(expResult, Generic_Strings.s_generated);
-        File result = env.files.getGeneratedDir();
-        Assertions.assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getOutputDir method, of class Generic_Files.
-     */
-    @Test
-    public void testGetOutputDir() {
-        env.log("getOutputDir", logID);
-        //System.out.println("getOutputDir");
-        File expResult = Generic_Files.getDefaultDir();
-        expResult = new File(expResult, Generic_Strings.s_output);
-        File result = env.files.getOutputDir();
-        Assertions.assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getLogDir method, of class Generic_Files.
-     */
-    @Test
-    public void testGetLogDir() {
-        env.log("getLogDir", logID);
-        //System.out.println("getLogDir");
-        File expResult = Generic_Files.getDefaultDir();
-        expResult = new File(expResult, Generic_Strings.s_output);
-        expResult = new File(expResult, Generic_Strings.s_log);
-        File result = env.files.getLogDir();
-        Assertions.assertEquals(expResult, result);
-    }
+//    /**
+//     * Test of getDir method, of class Generic_Files.
+//     */
+//    @Test
+//    public void testGetDir() {
+//        try {
+//            env.log("getDir", logID);
+//            //System.out.println("getDir");
+//            Generic_Files files = new Generic_Files(new Generic_Defaults(
+//                    env.files.getDir()));
+//            Path expResult = files.getDefaultDir();
+//            Path result = files.getDir();
+//            Assertions.assertEquals(expResult, result);
+//        } catch (IOException ex) {
+//            ex.printStackTrace(System.err);
+//            env.log(ex.getMessage());
+//        }
+//    }
+//
+//    /**
+//     * Test of getInputDir method, of class Generic_Files.
+//     */
+//    @Test
+//    public void testGetInputDir() {
+//        try {
+//            env.log("getInputDir", logID);
+//            //System.out.println("getInputDir");
+//            Path expResult = Paths.get(env.files.getDefaultDir().toString(),
+//                    Generic_Strings.s_input);
+//            Path result = env.files.getInputDir();
+//            Assertions.assertEquals(expResult, result);
+//        } catch (IOException ex) {
+//            ex.printStackTrace(System.err);
+//            env.log(ex.getMessage());
+//        }
+//    }
+//
+//    /**
+//     * Test of getGeneratedDir method, of class Generic_Files.
+//     */
+//    @Test
+//    public void testGetGeneratedDir() {
+//        try {
+//            env.log("getGeneratedDir", logID);
+//            //System.out.println("getGeneratedDir");
+//            Path expResult = Paths.get(env.files.getDefaultDir().toString(),
+//                    Generic_Strings.s_generated);
+//            Path result = env.files.getGeneratedDir();
+//            Assertions.assertEquals(expResult, result);
+//        } catch (IOException ex) {
+//            ex.printStackTrace(System.err);
+//            env.log(ex.getMessage());
+//        }
+//
+//    }
+//
+//    /**
+//     * Test of getOutputDir method, of class Generic_Files.
+//     */
+//    @Test
+//    public void testGetOutputDir() {
+//        try {
+//            env.log("getOutputDir", logID);
+//            //System.out.println("getOutputDir");
+//            Path expResult = Paths.get(env.files.getDefaultDir().toString(),
+//                    Generic_Strings.s_output);
+//            Path result = env.files.getOutputDir();
+//            Assertions.assertEquals(expResult, result);
+//        } catch (IOException ex) {
+//            ex.printStackTrace(System.err);
+//            env.log(ex.getMessage());
+//        }
+//    }
+//
+//    /**
+//     * Test of getLogDir method, of class Generic_Files.
+//     */
+//    @Test
+//    public void testGetLogDir() {
+//        try {
+//            env.log("getLogDir", logID);
+//            //System.out.println("getLogDir");
+//            Path expResult = Paths.get(env.files.getDefaultDir().toString(),
+//                    Generic_Strings.s_output, Generic_Strings.s_log);
+//            Path result = env.files.getLogDir();
+//            Assertions.assertEquals(expResult, result);
+//        } catch (IOException ex) {
+//            ex.printStackTrace(System.err);
+//            env.log(ex.getMessage());
+//        }
+//    }
 }
