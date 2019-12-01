@@ -16,65 +16,74 @@
 
 package uk.ac.leeds.ccg.agdt.generic.io;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
- *
- * @author geoagdt
+ * Generic Files, for 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Files implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
-     * The base level directory.
+     * The Generic defaults.
      */
-    protected File dir;
+    protected final Generic_Defaults defaults;
+    
+    /**
+     * The base level directory. Ser from {@link #defaults}.
+     */
+    protected Path dir;
 
     /**
      * The input directory in {@link #dir}.
      */
-    protected File inputDir;
+    protected Path inputDir;
 
     /**
      * The generated directory in {@link #dir}.
      */
-    protected File generatedDir;
+    protected Path generatedDir;
 
     /**
      * The output directory in {@link #dir}.
      */
-    protected File outputDir;
+    protected Path outputDir;
 
     /**
      * The log directory in {@link #outputDir}.
      */
-    protected File logDir;
+    protected Path logDir;
 
     /**
      * @param d What {@link #dir} is set to.
      * @throws java.io.IOException If the directory
      */
-    public Generic_Files(File d) throws IOException {
-        initDir(d);
+    public Generic_Files(Generic_Defaults d) throws IOException {
+        defaults = d;
+        initDir(d.getDataDir());
     }
 
     /**
      * @return
      * {@code new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic)}
      */
-    public static File getDefaultGenericDir() {
-        return new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic);
+    public Path getDefaultGenericDir() {
+        return Paths.get(defaults.getDataDir().toString(), Generic_Strings.s_generic);
     }
 
     /**
      * @return Default directory.
      */
-    public static File getDefaultDir() {
-        File dir = getDefaultGenericDir();
-        dir = new File(dir, Generic_Strings.s_generic);
-        return dir;
+    public Path getDefaultDir() {
+        return Paths.get(dir.toString(), Generic_Strings.s_generic);
     }
 
     /**
@@ -85,22 +94,16 @@ public class Generic_Files implements Serializable {
      * @param d
      * @throws java.io.IOException If {@link dir} cannot be set to {@code d}.
      */
-    private void initDir(File d) throws IOException {
+    private void initDir(Path d) throws IOException {
         dir = d;
         String m = "The directory " + d;
-        if (d.exists()) {
+        if (Files.exists(d)) {
             System.out.println("Warning: " + m + " already exists in "
                     + this.getClass().getName() + ".initDir(File). Generally "
                     + "this is fine, but data in " + getGeneratedDir() + " and "
                     + getOutputDir() + " may be overwritten or modified.");
         } else {
-            boolean successfulCreation;
-            successfulCreation = d.mkdirs();
-            if (!successfulCreation) {
-                throw new IOException(m + " does not exist and could not be "
-                        + "created in " + this.getClass().getName()
-                        + ".initDir(File)");
-            }
+            Files.createDirectories(d);
             System.out.println(m + " was successfully created.");
         }
     }
@@ -113,7 +116,7 @@ public class Generic_Files implements Serializable {
      * @param d What {@link #dir} is set to.
      * @throws java.io.IOException If {@link dir} cannot be set to {@code d}.
      */
-    public final void setDir(File d) throws IOException {
+    public final void setDir(Path d) throws IOException {
         initDir(d);
         inputDir = null;
         generatedDir = null;
@@ -121,49 +124,64 @@ public class Generic_Files implements Serializable {
     }
 
     /**
-     *
-     * @return dir
+     * @return A copy of {@link #dir}
      */
-    public File getDir() {
-        return dir;
+    public Path getDir() {
+        return Paths.get(dir.toString());
     }
 
     /**
-     *
-     * @return InputDir If null then InputDir is set using {@code
-     * InputDir = new File(getDir(), Generic_Strings.s_input);}
+     * @return If {@link #inputDir} is null then it is set using {@code
+     * inputDir = Paths.get(dir.toString(), Generic_Strings.s_input);} then it 
+     * is returned.
+     * @throws java.io.IOException If encountered.
      */
-    public File getInputDir() {
+    public Path getInputDir() throws IOException {
         if (inputDir == null) {
-            inputDir = new File(getDir(), Generic_Strings.s_input);
-            inputDir.mkdirs();
+            inputDir = Paths.get(dir.toString(), Generic_Strings.s_input);
+            Files.createDirectories(inputDir);
         }
         return inputDir;
     }
 
     /**
-     *
-     * @return GeneratedDir
+     * @return If {@link #generatedDir} is null then it is set using {@code
+     * inputDir = Paths.get(dir.toString(), Generic_Strings.s_generated);} then it 
+     * is returned.
+     * @throws java.io.IOException If encountered.
      */
-    public File getGeneratedDir() {
+    public Path getGeneratedDir() throws IOException {
         if (generatedDir == null) {
-            generatedDir = new File(getDir(), Generic_Strings.s_generated);
-            generatedDir.mkdirs();
+            generatedDir = Paths.get(dir.toString(), Generic_Strings.s_generated);
+            Files.createDirectories(generatedDir);
         }
         return generatedDir;
     }
 
-    public File getOutputDir() {
+    /**
+     * @return If {@link #outputDir} is null then it is set using {@code
+     * inputDir = Paths.get(dir.toString(), Generic_Strings.s_output);} then it 
+     * is returned.
+     * @throws java.io.IOException If encountered.
+     */
+    public Path getOutputDir() throws IOException {
         if (outputDir == null) {
-            outputDir = new File(getDir(), Generic_Strings.s_output);
-            outputDir.mkdirs();
+            outputDir = Paths.get(dir.toString(), Generic_Strings.s_output);
+            Files.createDirectories(outputDir);
         }
         return outputDir;
     }
 
-    public File getLogDir() {
+    /**
+     * @return If {@link #logDir} is null then it is set using {@code
+     * inputDir = Paths.get(dir.toString(), Generic_Strings.s_log);} then it 
+     * is returned.
+     * @throws java.io.IOException If encountered.
+     */
+    public Path getLogDir() throws IOException {
         if (logDir == null) {
-            logDir = new File(getOutputDir(), Generic_Strings.s_log);
+            logDir = Paths.get(dir.toString(), Generic_Strings.s_log);
+            Files.createDirectories(logDir);
         }
         return logDir;
     }

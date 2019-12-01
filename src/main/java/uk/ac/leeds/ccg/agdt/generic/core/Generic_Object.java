@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.agdt.generic.core;
 
 import java.io.IOException;
 import java.io.Serializable;
+import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 
 /**
- * An abstract serializable class. Instances hold a transient reference to a
- * {@link Generic_Environment} instance.
+ * To be generally extended by other classes in this library so each is
+ * serializable and has a transient reference to a {@link Generic_Environment}
+ * instance for memory management should that be necessary.
  *
  * @author Andy Turner
  * @version 1.0.0
@@ -45,12 +46,12 @@ public abstract class Generic_Object implements Serializable {
      * Initialise if necessary and return {@link #env}.
      *
      * @return {@link #env} initialised if necessary.
-     * @throws java.io.IOException If env is null and when initialising it a
-     * log file was not initialised.
+     * @throws java.io.IOException If env is null and when initialising it a log
+     * file was not initialised.
      */
     public Generic_Environment getEnv() throws IOException {
         if (env == null) {
-            env = new Generic_Environment();
+            env = new Generic_Environment(new Generic_Defaults());
         }
         return env;
     }

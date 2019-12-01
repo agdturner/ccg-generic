@@ -16,33 +16,62 @@
 
 package uk.ac.leeds.ccg.agdt.generic.io;
 
-import java.io.File;
+//import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
- *
- * @author geoagdt
+ * Generic Defaults. A class for holding IO defaults.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Defaults {
     
-    public static File getHomeDir() {
-        //return new File(System.getProperty("user.dir"));
-        return new File("C:/Users/geoagdt/");
-    }
+    protected final Path dir;
     
-    public static File getDataDir() {
-        return new File(getHomeDir(), Generic_Strings.s_data);
+    /**
+     * Defaults dir to the users home directory.
+     */
+    public Generic_Defaults() {
+        this(Paths.get(System.getProperty("user.home")));
+        //this(Paths.get(System.getProperty("user.dir")));
     }
 
-    public static File getSrcDir() {
-        File r = new File(getHomeDir(), Generic_Strings.s_agdt);
-        r = new File(r, Generic_Strings.s_java);
-        return r;
+    /**
+     * @param dir Duplicated to initialise {@link #dir}. 
+     */
+    public Generic_Defaults(Path dir) {
+        this.dir = Paths.get(dir.toString());
     }
     
-    public static File getProjectDir() {
-        return new File(getHomeDir(), Generic_Strings.s_project);
+    /**
+     * @return a copy of {@link #dir}. 
+     */
+    public Path getDir() {
+        return Paths.get(dir.toString());
+    }
+    
+    /**
+     * @return {@code new File(dir, Generic_Strings.s_data)} 
+     */
+    public Path getDataDir() {
+        return Paths.get(dir.toString(), Generic_Strings.s_data);
     }
 
+    /**
+     * @return {@code new File(dir, Generic_Strings.s_src)} 
+     */
+    public Path getSrcDir() {
+        return Paths.get(dir.toString(), Generic_Strings.s_src);
+    }
     
+    /**
+     * @return {@code new File(dir, Generic_Strings.s_project)} 
+     */
+    public Path getProjectDir() {
+        return Paths.get(dir.toString(), Generic_Strings.s_project);
+    }
+
 }

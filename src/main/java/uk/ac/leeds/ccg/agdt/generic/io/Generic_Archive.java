@@ -18,7 +18,8 @@ package uk.ac.leeds.ccg.agdt.generic.io;
 
 /**
  *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Archive {
     

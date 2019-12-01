@@ -16,10 +16,11 @@
 
 package uk.ac.leeds.ccg.agdt.generic.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -84,23 +85,13 @@ public class Generic_Environment {
     private static transient final int DEFAULT_RANGE = 100;
 
     /**
-     * Creates a new instance. The directory is set by default to
-     * {@link Generic_Defaults#getDataDir()}.
-     *
-     * @throws java.io.IOException If a log file was not initialised.
-     */
-    public Generic_Environment() throws IOException {
-        this(new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic));
-    }
-
-    /**
      * Creates a new instance. {@link #level} is defaulted to Level.FINE. See
      * {@link Generic_Environment#Generic_Environment(File,Level)}.
      *
-     * @param d The directory that will be set as the data directory.
+     * @param d The Generic_Defaults.
      * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(File d) throws IOException {
+    public Generic_Environment(Generic_Defaults d) throws IOException {
         this(d, DEFAULT_LEVEL);
     }
 
@@ -108,11 +99,11 @@ public class Generic_Environment {
      * Creates a new instance. {@link #range} is defaulted to 100. See
      * {@link Generic_Environment#Generic_Environment(File,Level,int)}.
      *
-     * @param d The directory that will be set as the data directory.
+     * @param d The Generic_Defaults.
      * @param l What {@link #level} is set to.
      * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(File d, Level l) throws IOException {
+    public Generic_Environment(Generic_Defaults d, Level l) throws IOException {
         this(d, l, DEFAULT_RANGE);
     }
 
@@ -121,12 +112,12 @@ public class Generic_Environment {
      * {@code new Generic_Files(new Generic_Strings(d)}. See
      * {@link #Generic_Environment(File,Level,int)}.
      *
-     * @param d The directory that will be set as the data directory.
+     * @param d The Generic_Defaults.
      * @param l What {@link #level} is set to.
      * @param r What {@link #range} is set to.
      * @throws java.io.IOException If a log file was not initialised.
      */
-    public Generic_Environment(File d, Level l, int r) throws IOException {
+    public Generic_Environment(Generic_Defaults d, Level l, int r) throws IOException {
         this(new Generic_Files(d), l, r);
     }
 
@@ -208,9 +199,9 @@ public class Generic_Environment {
             logNamesInUse.add(s);
         }
         int logID = logs.size();
-        File d = getLogDir(s);
-        PrintWriter pw = io.getPrintWriter(new File(d, s + e), false);
-        logs.put(logID, pw);
+        Path d = getLogDir(s);
+        logs.put(logID, io.getPrintWriter(Paths.get(d.toString(), s + e),
+                false));
         log("LoggingLevel = " + level.getName(), true);
         return logID;
     }
@@ -224,9 +215,9 @@ public class Generic_Environment {
      * a new archive leaf is set up in this for use.
      * @throws java.io.IOException If a log file was not initialised.
      */
-    protected File getLogDir(String s) throws IOException {
-        File dir = new File(files.getLogDir(), s);
-        if (Files.exists(dir.toPath())) {
+    protected Path getLogDir(String s) throws IOException {
+        Path dir = Paths.get(files.getLogDir().toString(), s);
+        if (Files.exists(dir)) {
 //            File[] files0 = dir.listFiles();
 //            if (files0.length == 0) {
 //                dir = Generic_IO.initialiseArchive(dir, range);
@@ -240,7 +231,7 @@ public class Generic_Environment {
         } else {
             dir = io.initialiseArchive(dir, range, false);
         }
-        dir.mkdirs();
+        Files.createDirectories(dir);
         return dir;
     }
 
