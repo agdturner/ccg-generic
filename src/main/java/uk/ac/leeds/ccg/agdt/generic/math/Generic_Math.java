@@ -73,7 +73,7 @@ public class Generic_Math {
 
     /**
      * Used for testing. If values are greater than this then storing them as
-     * Float values is dubious. The tString() conversion is necessary otherwise
+     * Float values is dubious. The toString() conversion is necessary otherwise
      * the number is too large.
      */
     public static final BigDecimal FLOAT_MAXVALUE = new BigDecimal(
@@ -81,6 +81,12 @@ public class Generic_Math {
     //public static final BigDecimal FLOAT_MAXVALUE = new BigDecimal(
     //        Float.toString(Float.MAX_VALUE));
 
+    /**
+     * Used for testing. If values are greater than this then they cannot be stored as
+     * Shorts.
+     */
+    public static final BigInteger SHORT_MAXVALUE = new BigInteger(
+            Short.toString(Short.MAX_VALUE));
     /**
      * Used for testing. If values are less than this then storing them as Float
      * values is dubious.

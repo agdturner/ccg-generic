@@ -38,7 +38,7 @@ public class Generic_Files implements Serializable {
     protected final Generic_Defaults defaults;
     
     /**
-     * The base level directory. Ser from {@link #defaults}.
+     * The base level directory. Set from {@link #defaults}.
      */
     protected Path dir;
 
@@ -68,42 +68,21 @@ public class Generic_Files implements Serializable {
      */
     public Generic_Files(Generic_Defaults d) throws IOException {
         defaults = d;
-        initDir(d.getDataDir());
+        initDir(d.getDir());
     }
-
+    
     /**
-     * @return
-     * {@code new File(Generic_Defaults.getDataDir(), Generic_Strings.s_generic)}
+     * @param d What {@link #dir} is set to. 
+     * @throws java.io.IOException If encountered.
      */
-    public Path getDefaultGenericDir() {
-        return Paths.get(defaults.getDataDir().toString(), Generic_Strings.s_generic);
-    }
-
-    /**
-     * @return Default directory.
-     */
-    public Path getDefaultDir() {
-        return Paths.get(dir.toString(), Generic_Strings.s_generic);
-    }
-
-    /**
-     * For initialising {@link #dir} to {@code d} and reporting whether the
-     * directory exists already or was successfully created. If it was not
-     * successfully created this should throw an IOException.
-     *
-     * @param d
-     * @throws java.io.IOException If {@link dir} cannot be set to {@code d}.
-     */
-    private void initDir(Path d) throws IOException {
+    public final void initDir(Path d) throws IOException {
         dir = d;
-        String m = "The directory " + d;
-        if (Files.exists(d)) {
-            System.out.println("Warning: " + m + " already exists in "
-                    + this.getClass().getName() + ".initDir(File). Generally "
-                    + "this is fine, but data in " + getGeneratedDir() + " and "
-                    + getOutputDir() + " may be overwritten or modified.");
+        String m = "The directory " + dir.toString();
+        if (Files.exists(dir)) {
+            System.out.println("Warning: " + m + " already exists. Files "
+                    + "therein may be overwritten or modified.");
         } else {
-            Files.createDirectories(d);
+            Files.createDirectories(dir);
             System.out.println(m + " was successfully created.");
         }
     }
@@ -117,7 +96,7 @@ public class Generic_Files implements Serializable {
      * @throws java.io.IOException If {@link dir} cannot be set to {@code d}.
      */
     public final void setDir(Path d) throws IOException {
-        initDir(d);
+        dir = d;
         inputDir = null;
         generatedDir = null;
         outputDir = null;

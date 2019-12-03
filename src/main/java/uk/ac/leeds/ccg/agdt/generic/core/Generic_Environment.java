@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.agdt.generic.core;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,16 +25,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
+//import uk.ac.leeds.ccg.agdt.generic.io.Generic_Archive;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_IO;
 
 /**
- * A class for constructing a generic environment object. Normally there is only
- * one such object in a running program. It is to provide access to other
- * objects that are commonly used. The idea is that there only need by the one
- * copy of such objects saving memory, time and confusion.
+ * Typically there is one instance of this for each runtime which is shared
+ * across many objects to provide common access to variables other object 
+ * instances for convenience and memory management.
  *
  * @author Andy Turner
  * @version 1.0.0
@@ -201,7 +202,7 @@ public class Generic_Environment {
         int logID = logs.size();
         Path d = getLogDir(s);
         logs.put(logID, io.getPrintWriter(Paths.get(d.toString(), s + e),
-                false));
+                true));
         log("LoggingLevel = " + level.getName(), true);
         return logID;
     }
@@ -218,15 +219,16 @@ public class Generic_Environment {
     protected Path getLogDir(String s) throws IOException {
         Path dir = Paths.get(files.getLogDir().toString(), s);
         if (Files.exists(dir)) {
-//            File[] files0 = dir.listFiles();
-//            if (files0.length == 0) {
-//                dir = Generic_IO.initialiseArchive(dir, range);
-//            }
-//            if (files0.length == 1) {
-//                if (files0[0].getName().contains(Generic_Strings.symbol_underscore)) {
-//                    dir = files0[0];
-//                }
-//            }
+            List<Path> l = io.getList(dir);
+            if (l.isEmpty()) {
+//                dir = io.initialiseArchive(dir, range, false);
+            }
+            if (l.size() == 1) {
+                Path p = l.get(0);
+                if (p.getFileName().toString().contains(Generic_Strings.symbol_underscore)) {
+                    dir = p;
+                }
+            }
             dir = io.addToArchive(dir, range);
         } else {
             dir = io.initialiseArchive(dir, range, false);

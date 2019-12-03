@@ -30,7 +30,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-//import java.io.File;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -50,16 +50,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Object;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.execution.Generic_Execution;
 
 //import java.nio.file.S
@@ -80,63 +78,46 @@ public class Generic_IO extends Generic_Object {
      */
     public Generic_IO(Generic_Environment e) {
         super(e);
-        archiveSeparator = Generic_Strings.symbol_underscore;
     }
 
-    public String archiveSeparator;
-
-    public String getArchiveSeparator() {
-        return archiveSeparator;
+    /**
+     * If dir is a directory this recursively goes through the contents and
+     * creates an ArrayList of the paths of all files to return.
+     *
+     * @param dir The path to traverse.
+     * @return An ArrayList of the paths of all files in dir and any
+     * subdirectories.
+     * @throws IOException If dir is not a directory and if otherwise
+     * encountered.
+     */
+    public static List<Path> getFiles(Path dir) throws IOException {
+        if (Files.isDirectory(dir)) {
+            List<Path> r = new ArrayList<>();
+            addFiles(dir, r);
+            return r;
+        } else {
+            throw new IOException("Path " + dir.toString() + " is not a directory");
+        }
     }
 
     /**
      * Recursively traverses a directory creating a set of File paths of files
      * (i.e.not directories).
      *
-     * @param dir Path.
-     * @return TreeSet.
+     * @param dir The path to add files to l from.
+     * @param l The list to add to.
      * @throws java.io.IOException If encountered.
      */
-    public TreeSet<String> recursiveFileList(Path dir) throws IOException {
-        TreeSet<String> r = new TreeSet<>();
-        if (Files.isDirectory(dir)) {
-            List<Path> l = getList(dir);
-            for (int i = 0; i < l.size(); i++) {
-                r.addAll(recursiveFileList(l.get(i)));
-            }
-            return r;
-        } else {
-            r.add(dir.toString());
-            return r;
-        }
-    }
-
-    /**
-     * Recursively traverses a path creating a set of paths of files
-     * (i.e.not directories) up to the specified depth.
-     *
-     * @param p Path
-     * @param depth The depth beyond which directories are not traversed.
-     * @return TreeSet
-     * @throws java.io.IOException If encountered.
-     */
-    public TreeSet<String> recursiveFileList(Path p, int depth) 
-            throws IOException {
-        TreeSet<String> r = new TreeSet<>();
-        if (depth != 0) {
-            if (Files.isDirectory(p)) {
-                List<Path> l = getList(p);
-                for (int i = 0; i < l.size(); i++) {
-                    r.addAll(recursiveFileList(l.get(i), depth - 1));
+    protected static void addFiles(Path dir, List<Path> l) throws IOException {
+        try (DirectoryStream<Path> s = Files.newDirectoryStream(dir)) {
+            for (Path p : s) {
+                if (Files.isDirectory(p)) {
+                    addFiles(p, l);
+                } else {
+                    l.add(p);
                 }
-                return r;
-            } else {
-                r.add(p.toString());
-                return r;
             }
         }
-        r.add(p.toString());
-        return r;
     }
 
     /**
@@ -173,8 +154,8 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Writes Object o to a file at Path p and logs the name of the Object written and
-     * the path to stdout.
+     * Writes Object o to a file at Path p and logs the name of the Object
+     * written and the path.
      *
      * @param o Object to be written.
      * @param p The Path of the file to write to.
@@ -190,7 +171,7 @@ public class Generic_IO extends Generic_Object {
      * @param f A Path of a file to be copied.
      * @param d The Path of a directory to copy to.
      */
-    private void copyFile(Path f, Path d) throws IOException {
+    protected void copyFile(Path f, Path d) throws IOException {
         copyFile(f, d, f.getFileName().toString());
     }
 
@@ -224,7 +205,7 @@ public class Generic_IO extends Generic_Object {
              */
             int bufferSize = 2048;
             long length = Files.size(f);
-            long nArrayReads =  length / bufferSize;
+            long nArrayReads = length / bufferSize;
             long nSingleReads = length - (nArrayReads * bufferSize);
             byte[] b = new byte[bufferSize];
             for (int i = 0; i < nArrayReads; i++) {
@@ -237,7 +218,7 @@ public class Generic_IO extends Generic_Object {
             bos.flush();
         }
     }
-    
+
     /**
      * @param f File.
      * @return BufferedInputStream
@@ -304,7 +285,8 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * For getting a {@link BufferedOutputStream} to write to a file at {@code f}.
+     * For getting a {@link BufferedOutputStream} to write to a file at
+     * {@code f}.
      *
      * @param f The {@link Path} of the file to be written.
      * @return A {@link BufferedOutputStream} for writing to {@code f}.
@@ -327,7 +309,7 @@ public class Generic_IO extends Generic_Object {
      * @throws java.io.IOException If one is encountered and not otherwise
      * handled.
      */
-    public BufferedWriter getBufferedWriter(Path f, boolean append) 
+    public BufferedWriter getBufferedWriter(Path f, boolean append)
             throws IOException {
         return new BufferedWriter(getPrintWriter(f, append));
     }
@@ -335,8 +317,7 @@ public class Generic_IO extends Generic_Object {
     /**
      * @param f The {@link Path} for a file to be written.
      * @return An {@link ObjectInputStream} for reading from a file at {@code f}
-     * @throws java.io.IOException If encountered and not otherwise
-     * handled.
+     * @throws java.io.IOException If encountered and not otherwise handled.
      */
     public ObjectInputStream getObjectInputStream(Path f) throws IOException {
         return new ObjectInputStream(getBufferedInputStream(f));
@@ -350,46 +331,47 @@ public class Generic_IO extends Generic_Object {
     public ObjectOutputStream getObjectOutputStream(Path f) throws IOException {
         return new ObjectOutputStream(getBufferedOutputStream(f));
     }
-    
-    public class CopyDir extends SimpleFileVisitor<Path> {
-        private final Generic_IO io;
-    private final Path sourceDir;
-    private final Path targetDir;
- 
-    public CopyDir(Generic_IO io, Path sourceDir, Path targetDir) {
-        this.io = io;
-        this.sourceDir = sourceDir;
-        this.targetDir = targetDir;
-    }
- 
-    @Override
-    public FileVisitResult visitFile(Path file,            BasicFileAttributes attributes) { 
-        try {
-            Path targetFile = targetDir.resolve(sourceDir.relativize(file));
-            Files.copy(file, targetFile);
-        } catch (IOException ex) {
-            System.err.println(ex);
-        } 
-        return FileVisitResult.CONTINUE;
-    }
- 
-    @Override
-    public FileVisitResult preVisitDirectory(Path dir,
-            BasicFileAttributes attributes) {
-        try {
-            Path newDir = targetDir.resolve(sourceDir.relativize(dir));
-            Files.createDirectory(newDir);
-        } catch (IOException ex) {
-            System.err.println(ex);
+
+    /**
+     * A class for recursively copying a directory.
+     */
+    private class CopyDir extends SimpleFileVisitor<Path> {
+
+        private final Path sourceDir;
+        private final Path targetDir;
+
+        public CopyDir(Generic_IO io, Path sourceDir, Path targetDir) {
+            this.sourceDir = sourceDir;
+            this.targetDir = targetDir;
         }
- 
-        return FileVisitResult.CONTINUE;
+
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
+            try {
+                Path targetFile = targetDir.resolve(sourceDir.relativize(file));
+                Files.copy(file, targetFile);
+            } catch (IOException ex) {
+                System.err.println(ex);
+            }
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult preVisitDirectory(Path dir,
+                BasicFileAttributes attributes) {
+            try {
+                Path newDir = targetDir.resolve(sourceDir.relativize(dir));
+                Files.createDirectory(newDir);
+            } catch (IOException ex) {
+                System.err.println(ex);
+            }
+            return FileVisitResult.CONTINUE;
+        }
+
     }
- 
-}
-    
+
     private void copyDirectory(Path dirToCopy, Path dirToCopyTo) throws IOException {
-                Files.walkFileTree(dirToCopy, new CopyDir(this, dirToCopy, dirToCopyTo));
+        Files.walkFileTree(dirToCopy, new CopyDir(this, dirToCopy, dirToCopyTo));
     }
 
     /**
@@ -412,39 +394,48 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Attempts to delete file from the file system.This does not block other
- reads or writes to the files system while it is executing and it will
- only succeed in deleting empty directories.
+     * Delete all files and directories in a directory. The code is not ideal as
+     * Paths are converted to Files and Files are old hat, but it works.
      *
-     * @param p The {@link Path} to a file or directory to be deleted.
-     * @return long[] r where: r[0] is the number of directories
-     * deleted; r[1] is the number of files deleted.
+     * @param d The directory containing everything to delete.
+     * @param report If true then deletions are reported to std.out.
      * @throws java.io.IOException If encountered.
      */
-    public long[] delete(Path p) throws IOException {
-        long[] r = new long[2];
-        r[0] = 0L;
-        r[1] = 0L;
-        if (Files.isDirectory(p)) {
-            // Delete all the files it contains
-            List<Path> l = getList(p);
-            for (Path p2 : l) {
-                long[] deleted = delete(p2);
-                r[0] += deleted[0];
-                r[1] += deleted[1];
-            }
-            // Delete the directory itself
-            if (Files.deleteIfExists(p)) {
-                r[0]++;
-            } else {
-                System.out.println("Not deleted " + p + " in "
-                        + "Generic_IO.delete(Path)!");
+    public void delete(Path d, boolean report) throws IOException {
+        /**
+         * This commented out code provided organised the deletion differently:
+         * first creating a list and then iterating over that. It will encounter
+         * a runtime exception if the file system is changed after the list is
+         * generated, so the streams approach is preferred.
+         */
+//        List<Path> l = Files.walk(d).sorted(Comparator.reverseOrder())
+//                .collect(Collectors.toList());
+//        for (Path p : l) {
+//            Files.deleteIfExists(p);
+//        }         
+        if (report) {
+            try (Stream<Path> walk = Files.walk(d)) {
+                walk.sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .peek(System.out::println) // Report deletions to std.out.
+                        .forEach(File::delete);
             }
         } else {
-            Files.deleteIfExists(p);
-            r[1]++;
+            try (Stream<Path> walk = Files.walk(d)) {
+                walk.sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+            }
         }
-        return r;
+        /**
+         * N.B. It would also be possible to follow all soft links and delete
+         * what is in these paths too using: Files.walk(rootPath,
+         * FileVisitOption.FOLLOW_LINKS), but this is more dangerous than it is
+         * useful, so a decision has been taken not to provide such a convenient 
+         * API for users to do this, though one could easily write the method if 
+         * required and indeed provide it if others decided this would be good 
+         * functionality to have here!
+         */
     }
 
     /**
@@ -508,10 +499,11 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Write s to a file at Path p using the default charset UTF-8. 
+     * Write s to a file at Path p using the default charset UTF-8.
+     *
      * @param p
      * @param s
-     * @throws IOException 
+     * @throws IOException
      */
     public void write(Path p, String s) throws IOException {
         // Convert the string to a  byte array.
@@ -677,7 +669,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set.
      */
-    public void setStreamTokenizerSyntax1(            StreamTokenizer st) {
+    public void setStreamTokenizerSyntax1(StreamTokenizer st) {
         st.resetSyntax();
         // st.parseNumbers();
         st.wordChars(',', ',');
@@ -725,7 +717,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax2(            StreamTokenizer st) {
+    public void setStreamTokenizerSyntax2(StreamTokenizer st) {
         st.resetSyntax();
         st.wordChars('"', '"');
         setStreamTokenizerSyntaxNumbersAsWords1(st);
@@ -760,7 +752,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax3(            StreamTokenizer st) {
+    public void setStreamTokenizerSyntax3(StreamTokenizer st) {
         st.resetSyntax();
         // st.parseNumbers();
         st.wordChars(',', ',');
@@ -798,7 +790,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax4(            StreamTokenizer st) {
+    public void setStreamTokenizerSyntax4(StreamTokenizer st) {
         st.resetSyntax();
         st.wordChars(',', ',');
         st.wordChars('"', '"');
@@ -834,7 +826,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax5(            StreamTokenizer st) {
+    public void setStreamTokenizerSyntax5(StreamTokenizer st) {
         st.resetSyntax();
         // st.parseNumbers();
         st.wordChars(',', ',');
@@ -880,7 +872,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax6(            StreamTokenizer st) {
+    public void setStreamTokenizerSyntax6(StreamTokenizer st) {
         setStreamTokenizerSyntax5(st);
         st.wordChars('&', '&');
         st.wordChars('(', '(');
@@ -923,386 +915,10 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax7(            StreamTokenizer st) {
+    public void setStreamTokenizerSyntax7(StreamTokenizer st) {
         setStreamTokenizerSyntax6(st);
         st.wordChars('<', '<');
         st.wordChars('>', '>');
-    }
-
-    /**
-     * @return File directory in which object with a_ID is (to be) stored within
-     * dir.
-     * @param dir File directory.
-     * @param id The ID of the Object to be stored.
-     * @param n The maximum number of objects to be stored.
-     * @param range The number of objects stored per directory.
-     */
-    public Path getObjectDir(Path dir, long id, long n, long range) {
-        long diff = range;
-        while (n / (double) diff > 1) {
-            //while (max_ID / diff > 1) {
-            diff *= range;
-        }
-        long min = 0;
-        PathLong minDir = getObjectDir(id, min, diff, dir);
-        diff /= range;
-        while (diff > 1L) {
-            minDir = getObjectDir(id, minDir.l, diff, minDir.p);
-            diff /= range;
-        }
-        return minDir.p;
-    }
-
-    /**
-     * @param id The ID of the Object to be stored.
-     * @param min long
-     * @param diff long
-     * @param p Parent directory.
-     * @return Object[]
-     */
-    private PathLong getObjectDir(long id, long min, long diff, Path p) {
-        PathLong r;
-        long mint = min;
-        long maxt = min + diff - 1;
-        Path dir = null;
-        boolean found = false;
-        while (!found) {
-            if (id >= mint && id <= maxt) {
-                found = true;
-                String dirname = "" + mint + archiveSeparator + maxt;
-                dir = Paths.get(p.toString(), dirname);
-            } else {
-                mint += diff;
-                maxt += diff;
-            }
-        }
-        r = new PathLong(dir, mint);
-        return r;
-
-    }
-
-    private class PathLong {
-
-        Path p;
-        long l;
-
-        PathLong(Path p, long l) {
-            this.p = p;
-            this.l = l;
-        }
-    }
-
-    /**
-     * Initialises a directory in directory and returns result.
-     *
-     * @param dir File directory which is the base of this archive.
-     * @param range For specifying the number of leafs in a directory and the
-     * number of directories in any directory.
-     * @param exists This is a declaration that the user knows whether or not
-     * the archive already exists. If exist == true, then the archive is
-     * expected to exist, if it does not, then an {@link IOException} is thrown.
-     * However if it does already exist, it's form is tested using range. If the
-     * form is fine, then the highest archive leaf is returned otherwise an
-     * {@link IOException} is thrown.
-     * @return File that is the highest archive leaf for a newly created
-     * archive, or the highest archive leaf for an existing archive.
-     * @throws java.io.IOException If exist == true, then the archive is
-     * expected to exist and have the correct form, if it does not, then an
-     * {@link IOException} is thrown.
-     */
-    public Path initialiseArchive(Path dir, long range, boolean exists)
-            throws IOException {
-        if (exists) {
-            // Check it is an archive with the correct range.
-            if (!Files.exists(dir)) {
-                throw new IOException("Attempting to initialise an Archive "
-                        + "that is supposed to exists in directory "
-                        + dir + ", but such a directory does not exist.");
-            }
-            return testArchiveIntegrity(dir);
-        } else {
-            if (Files.exists(dir)) {
-                if (Files.list(dir).count() > 0) {
-                    throw new IOException("Attempting to initialise an "
-                            + "Archive in a non-empty directory.");
-                }
-            }
-            return initialiseArchive(dir, range);
-        }
-    }
-
-    /**
-     *
-     * @param dir The base of the archive to test.
-     * @return The archive highest leaf obtained from
-     * {@link #getArchiveHighestLeafFile(java.nio.file.Path)}
-     * @throws java.io.IOException If the archive lacks integrity.
-     */
-    public Path testArchiveIntegrity(Path dir) throws IOException {
-        if (Files.list(dir).count() != 1) {
-            throw new IOException("Directory " + dir + " contains more than "
-                    + "one base level directory, so the archive does not have "
-                    + "integrity.");
-        }
-        // File dir1 = dir0[0];
-        boolean allPathsOK;
-        try (Stream<Path> paths = Files.walk(dir)) {
-            //paths.forEach(System.out::println);
-            //paths.forEach(path -> testPathSystem.out.println(path));
-//            paths.forEach(path -> {
-//                testPath(path);
-//            });
-            allPathsOK = paths.allMatch(path -> testPath(path));
-        } catch (IOException e) {
-            throw e;
-        }
-        if (!allPathsOK) {
-            throw new IOException("Some paths are not OK in "
-                    + this.getClass().getName() + ".testArchiveIntegrity(File)");
-        }
-        Path hlf = getArchiveHighestLeafFile(dir);
-        env.log("Archive at " + dir + " has integrity with a HighestLeaf File " + hlf);
-        return hlf;
-    }
-
-    private boolean testPath(Path path) {
-        String fn = path.getFileName().toString();
-        if (fn.contains(archiveSeparator)) {
-            //System.out.println(path);
-            return true;
-        } else {
-            try {
-                Long.valueOf(fn);
-                //System.out.println(path);
-                return true;
-            } catch (NumberFormatException e) {
-                System.out.println(fn);
-                System.out.println("Integrity broken?");
-                return false;
-            }
-        }
-    }
-
-    /**
-     * Initialises a directory in directory and returns result.
-     *
-     * @param dir File directory.
-     * @param range long
-     * @return File
-     */
-    private Path initialiseArchive(Path dir, long range) throws IOException {
-        Path r;
-        String start = "0";
-        long end = range - 1;
-        r = Paths.get(dir.toString(), start + archiveSeparator + end, start);
-        Files.createDirectories(r);
-        return r;
-    }
-
-    /**
-     * Initialises an Archive directory structure. The structure of the archive
-     * is given by the range.
-     *
-     * @param dir File directory.
-     * @param range long
-     * @param n The maximum number of objects to be stored.
-     * @throws IOException If attempting to initialise the archive in a
-     * non-empty directory.
-     */
-    public void initialiseArchive(Path dir, long range, long n)
-            throws IOException {
-        initialiseArchive(dir, range, false);
-        for (long l = 0L; l < n; l++) {
-            addToArchive(dir, range);
-        }
-    }
-
-    /**
-     * Initialises an Archive directory structure and returns a TreeMap of the
-     * Files in the Archive with numerical keys from 0 to maxID. The structure
-     * of the archive is given by the range.
-     *
-     * @param dir File directory.
-     * @param range long
-     * @param n The maximum number of objects to be stored.
-     * @return TreeMap
-     * @throws IOException If attempting to initialise the archive in a
-     * non-empty directory.
-     */
-    public TreeMap<Long, Path> initialiseArchiveAndReturnFileMap(
-            Path dir, long range, long n) throws IOException {
-        initialiseArchive(dir, range, n);
-        return getArchiveLeafFilesMap(dir, 0L, n);
-    }
-
-    /**
-     *
-     * @param dir File directory.
-     * @return long
-     * @throws java.io.IOException If encountered.
-     */
-    public long getArchiveHighestLeaf(Path dir) throws IOException {
-        long r;
-        List<Path> l = getList(dir);
-        if (l.isEmpty()) {
-            return -1L;
-        } else {
-            if (l.size() == 1) {
-                Path p0 = l.get(0);
-                if (p0.getFileName().toString().contains(archiveSeparator)) {
-                    l = getList(p0);
-                }
-            }
-            TreeMap<Long, Path> fs = getNumericallyOrderedFiles(l);
-            Path lf = fs.lastEntry().getValue();
-            String fn = lf.getFileName().toString();
-            if (fn.contains(archiveSeparator)) {
-                return getArchiveHighestLeaf(lf);
-            } else {
-                r = Long.valueOf(fn);
-            }
-        }
-        return r;
-    }
-
-    /**
-     *
-     * @param dir File
-     * @return long
-     * @throws java.io.IOException If Encountered.
-     */
-    public long getArchiveRange(Path dir) throws IOException {
-        Path highestLeaf_File = getArchiveHighestLeafFile(dir);
-        String[] split = highestLeaf_File.getParent().getFileName().toString()
-                .split(archiveSeparator);
-        long min = Long.valueOf(split[0]);
-        long max = Long.valueOf(split[1]);
-        return max - min + 1;
-    }
-
-    /**
-     * For returning all the leaf file elements in a branch of an archive as a
-     * HashSet&lt;File&gt;.An archive has directories such as ./0_99 which
- store leaves such as ./0_99/0 and ./0_99/10. The archive may have
- considerable depth such that an archive leaf is stored for example in
- ./0_999999/0_9999/0_99/0. The leaves are the directories at the end of
- the tree branches that contain directories that do not have an underscore
- in the filename
-     *
-     * @param dir File directory.
-     * @return a HashSet&lt;File&gt; containing all files in the directory. The
-     * directory is regarded as a directory that possibly contains other
-     * directories in a branching tree with paths that are expected to end
-     * eventually in one or more files. All such files are returned in the
-     * result. The result is null if the directory is empty.
-     * @throws java.io.IOException If encountered.
-     */
-    public HashSet<Path> getArchiveLeafFilesSet(Path dir) throws IOException {
-        HashSet<Path> r = new HashSet<>();
-        List<Path> topLevelArchiveFiles = getList(dir);
-        for (Path topLevelArchiveFile : topLevelArchiveFiles) {
-            r.addAll(getArchiveLeafFilesSet0(topLevelArchiveFile));
-        }
-        return r;
-    }
-
-    /**
-     *
-     * @param f File.
-     * @return HashSet
-     */
-    private HashSet<Path> getArchiveLeafFilesSet0(Path f) throws IOException {
-        HashSet<Path> r = new HashSet<>();
-        if (f.getFileName().toString().contains(archiveSeparator)) {
-            List<Path> l = getList(f);
-            for (Path file : l) {
-                r.addAll(getArchiveLeafFilesSet0(file));
-            }
-        } else {
-            r.add(f);
-        }
-        return r;
-    }
-
-    /**
-     * Potentially slow and could be sped up by going through the file tree
-     * branch by branch.
-     *
-     * @param dir Path to a directory..
-     * @return TreeMap
-     * @throws java.io.IOException
-     */
-    public TreeMap<Long, Path> getArchiveLeafFilesMap(Path dir) 
-            throws IOException {
-        TreeMap<Long, Path> r = new TreeMap<>();
-        List<Path> topLevelArchiveFiles = getList(dir);
-        for (Path f : topLevelArchiveFiles) {
-            r.putAll(getArchiveLeafFilesMap0(f));
-        }
-        return r;
-    }
-
-    /**
-     *
-     * @param file File
-     * @return TreeMap
-     */
-    private TreeMap<Long, Path> getArchiveLeafFilesMap0(Path file) 
-            throws IOException {
-        TreeMap<Long, Path> r = new TreeMap<>();
-        if (file.getFileName().toString().contains(archiveSeparator)) {
-            List<Path> files = getList(file);
-            for (Path f : files) {
-                r.putAll(getArchiveLeafFilesMap0(f));
-            }
-        } else {
-            r.put(Long.valueOf(file.getFileName().toString()), file);
-        }
-        return r;
-    }
-
-    /**
-     *
-     * @param dir File.
-     * @param minID long
-     * @param maxID long
-     * @return TreeMap
-     * @throws java.io.IOException If encountered.
-     */
-    public TreeMap<Long, Path> getArchiveLeafFilesMap(Path dir,
-            long minID, long maxID) throws IOException {
-        TreeMap<Long, Path> r = new TreeMap<>();
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
-            for (Path p : stream) {
-                r.putAll(getArchiveLeafFilesMap0(p, minID, maxID));
-            }
-        }
-        return r;
-    }
-
-    /**
-     *
-     * @param file
-     * @param minID
-     * @param maxID
-     * @return TreeMap
-     */
-    private TreeMap<Long, Path> getArchiveLeafFilesMap0(
-            Path file, long minID, long maxID) throws IOException {
-        TreeMap<Long, Path> r = new TreeMap<>();
-        if (file.getFileName().toString().contains(archiveSeparator)) {
-            try (DirectoryStream<Path> stream = Files.newDirectoryStream(file)) {
-                for (Path p : stream) {
-                    r.putAll(getArchiveLeafFilesMap0(p, minID, maxID));
-                }
-            }
-        } else {
-            long id = Long.valueOf(file.getFileName().toString());
-            if (id >= minID && id <= maxID) {
-                r.put(Long.valueOf(file.getFileName().toString()), file);
-            }
-        }
-        return r;
     }
 
     /**
@@ -1310,292 +926,32 @@ public class Generic_IO extends Generic_Object {
      * @return A list of files and directories in dir.
      * @throws IOException If encountered.
      */
-    public List<Path> getList(Path dir) throws IOException {
+    public static List<Path> getList(Path dir) throws IOException {
         return Files.list(dir).collect(Collectors.toList());
     }
 
     /**
-     *
      * @param dir File.
-     * @return The highest numbered File
-     * @throws java.io.IOException If encountered.
+     * @param f File.
+     * @return The name of the file or directory in dir in the path of f.
      */
-    public Path getArchiveHighestLeafFile(Path dir) throws IOException {
-        Path r;
-        List<Path> l = getList(dir);
-        if (l.isEmpty()) {
-            return null;
-        } else {
-            TreeMap<Long, Path> ofiles = getNumericallyOrderedFiles2(l);
-            Path f = ofiles.lastEntry().getValue();
-            if (f.getFileName().toString().contains(archiveSeparator)) {
-                return getArchiveHighestLeafFile(f);
-            } else {
-                r = f;
-            }
+    public String getFilename(Path dir, Path f) {
+        int beginIndex = dir.normalize().toString().length() + 1;
+        String fileSeparator = System.getProperty("file.separator");
+        /*
+         * A feature in Java means splitting strings with "\" does not work as
+         * might be expected and the regexp needs changing to "\\\\"
+         */
+        String regexp = "\\";
+        //System.out.println("regexp " + regexp);
+        if (fileSeparator.equals(regexp)) {
+            fileSeparator = "\\\\";
         }
-        return r;
-    }
-
-    /**
-     * Expands the base of an Archive.
-     *
-     * @param dir The base directory File of the Archive to grow.
-     * @param range The maximum number of directories in any directory.
-     * @return File the new top of the archive directory.
-     * @throws java.io.IOException Iff an IOException was encountered.
-     */
-    public Path growArchiveBase(Path dir, long range) throws IOException {
-        List<Path> l = getList(dir);
-        TreeMap<Long, Path> ofiles = getNumericallyOrderedFiles2(l);
-        String dirName0 = ofiles.firstEntry().getValue().getFileName().toString();
-        String[] split0 = dirName0.split(archiveSeparator);
-        //long start0 = new Long(split0[0]).longValue();
-        long end0 = Long.valueOf(split0[1]);
-        long newRange = range * (end0 + 1L);
-        // Create new top directory and move in existing files
-        Path newTop0 = Paths.get(dir.toString(),
-                "" + 0 + archiveSeparator + (newRange - 1L));
-        Path newTop = Paths.get(newTop0.toString());
-        Files.createDirectory(newTop0);
-        for (int i = 0; i < l.size(); i++) {
-            Path p = l.get(i);
-            Path newPath = Paths.get(newTop.toString(), p.getFileName().toString());
-            Files.move(p, newPath);
-        }
-        // Create new lower directories for next ID;
-        Long next_ID = getArchiveHighestLeaf(dir);
-        next_ID++;
-        Path newHighestLeafDir = Paths.get(
-                getObjectDir(newTop, next_ID, next_ID, range).toString(),
-                "" + next_ID);
-        Files.createDirectories(newHighestLeafDir);
-        return newTop0;
-    }
-
-    /**
-     *
-     * @param dir The base directory File of the Archive to grow.
-     * @param range The maximum number of directories in any directory.
-     * @param next_ID The next_ID of the file that is added in the newly grown
-     * archive.
-     * @return The new file which is the top of the archive directory.
-     * @throws java.io.IOException If encountered.
-     */
-    public Path growArchiveBase(Path dir, long range, long next_ID)
-            throws IOException {
-        List<Path> l = getList(dir);
-        TreeMap<Long, Path> ofiles = getNumericallyOrderedFiles2(l);
-        Path file0 = ofiles.firstEntry().getValue();
-        String[] split0 = file0.getFileName().toString().split(archiveSeparator);
-        //long start0 = new Long(split0[0]).longValue();
-        long end0 = Long.valueOf(split0[1]);
-        long newRange = range * (end0 + 1L);
-        // Create new top directory and move in existing files
-        Path newTop0 = Paths.get(dir.toString(),
-                "" + 0 + archiveSeparator + (newRange - 1L));
-        Path newTop = Paths.get(newTop0.toString());
-        Files.createDirectories(newTop0);
-        for (int i = 0; i < l.size(); i++) {
-            Path p = l.get(i);
-            Path newPath = Paths.get(newTop.toString(),
-                    p.getFileName().toString());
-            Files.move(p, newPath);
-        }
-        Path newHighestLeaf_Directory = Paths.get(
-                getObjectDir(newTop, next_ID, next_ID, range).toString(),
-                "" + next_ID);
-        Files.createDirectories(newHighestLeaf_Directory);
-        return newTop0;
-    }
-
-    /**
-     *
-     * @param dir The base directory File of the Archive to grow.
-     * @param range The maximum number of directories in any directory.
-     * @return The added directory path.
-     * @throws java.io.IOException If there is an IOException.
-     */
-    public Path addToArchive(Path dir, long range) throws IOException {
-        Long next_ID = getArchiveHighestLeaf(dir);
-        next_ID++;
-        Path newHighestLeafDir = Paths.get(
-                getObjectDir(dir, next_ID, next_ID + 1, range).toString(),
-                "" + next_ID);
-        growArchiveBaseIfNecessary(dir, range, newHighestLeafDir);
-        return newHighestLeafDir;
-    }
-
-    protected void growArchiveBaseIfNecessary(Path dir, long range,
-            Path newHighestLeafDir) throws IOException {
-        String[] split = newHighestLeafDir.getFileName().toString()
-                .split(archiveSeparator);
-        long startnew = Long.valueOf(split[0]);
-        long endnew = Long.valueOf(split[1]);
-        long rangenew = endnew - startnew;
-        split = Files.list(dir).findAny().toString().split(archiveSeparator);
-        long startold = Long.parseLong(split[0]);
-        long endold = Long.parseLong(split[1]);
-        long rangeold = endold - startold;
-        if (rangenew > rangeold) {
-            growArchiveBase(dir, range);
-        }
-        Files.createDirectories(newHighestLeafDir);
-    }
-
-    /**
-     *
-     * @param dir The base directory File of the Archive to grow.
-     * @param range The maximum number of directories in any directory.
-     * @param next_ID The next_ID of the file that is added in the newly grown
-     * archive.
-     * @return File
-     * @throws java.io.IOException Iff an IOException was encountered.
-     */
-    public Path addToArchive(Path dir, long range, long next_ID) throws IOException {
-        Path newHighestLeafDir = Paths.get(
-                getObjectDir(dir, next_ID, next_ID + 1, range).toString(),
-                "" + next_ID);
-        growArchiveBaseIfNecessary(dir, range, newHighestLeafDir);
-        return newHighestLeafDir;
-    }
-
-    /**
-     * @param dir The directory in which the file should exist.
-     * @param filename The name of the File which should exist.
-     * @return The File with filename in directory or throws
-     * FileNotFoundException if directory or the result does not exist.
-     * @throws java.io.FileNotFoundException If dir does not exist or file with
-     * filename in dir does not exist.
-     */
-    public Path getFileThatExists(Path dir, String filename)
-            throws FileNotFoundException {
-        String method = "getFile(File,String)";
-        if (!Files.exists(dir)) {
-            throw new FileNotFoundException(
-                    "Directory " + dir + " does not exist in "
-                    + Generic_IO.class
-                            .getName() + "." + method + ".");
-        }
-        Path r = null;
-        if (filename != null) {
-            r = Paths.get(dir.toString(), filename);
-            if (!Files.exists(r)) {
-                throw new FileNotFoundException(
-                        "File " + r + " does not exist in "
-                        + Generic_IO.class
-                                .getName() + "." + method + ".");
-            }
-        }
-        return r;
-    }
-
-//    /**
-//     * @param dir File.
-//     * @param f File.
-//     * @return The name of the file or directory in dir in the path of f.
-//     */
-//    public String getFilename(Path dir, Path f) {
-//        int beginIndex = dir.toAbsolutePath().toString().length() + 1;
-//        String fileSeparator = System.getProperty("file.separator");
-//        /*
-//         * A feature in Java means splitting strings with "\" does not work as
-//         * might be expected and the regexp needs changing to "\\\\"
-//         */
-//        String regexp = "\\";
-//        //System.out.println("regexp " + regexp);
-//        if (fileSeparator.equals(regexp)) {
-//            fileSeparator = "\\\\";
-//        }
-//        //System.out.println("fileSeparator " + fileSeparator);
-//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getAbsolutePath().substring(beginIndex)).split(System.getProperty("file.separator"))[0];
-//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("\\")[0];
-//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("/")[0];
-//        return (f.toString().substring(beginIndex)).split(fileSeparator)[0];
-//    }
-    /**
-     * @param ps The files are expected to be from an archive or to be
-     * numerically ordered. These are specially names. Either they have a name
-     * that can be resolved as a long. Or they have a name containing a
-     * {@link Generic_Strings#symbol_underscore} with components that can be
-     * resolved as long (e.g. 0_99, 100_199).
-     * @return TreeMap
-     */
-    public TreeMap<Long, Path> getNumericallyOrderedFiles(List<Path> ps) {
-        TreeMap<Long, Path> r = new TreeMap<>();
-        ps.forEach((p) -> {
-            String filename = p.getFileName().toString();
-            long l;
-            if (filename.contains(Generic_Strings.symbol_underscore)) {
-                String[] split = filename.split(Generic_Strings.symbol_underscore);
-                l = Long.valueOf(split[split.length - 1]);
-            } else {
-                l = Long.valueOf(filename);
-            }
-            r.put(l, p);
-        });
-        return r;
-    }
-
-    /**
-     * If needed to order also by a number after the underscore then a new
-     * method is needed.
-     *
-     * @param files File[]
-     * @return TreeMap
-     */
-    public TreeMap<Long, Path> getNumericallyOrderedFiles2(List<Path> files) {
-        TreeMap<Long, Path> r = new TreeMap<>();
-        files.forEach((file) -> {
-            String name = file.getFileName().toString();
-            if (name.contains(archiveSeparator)) {
-                String[] split = name.split(archiveSeparator);
-                if (split.length <= 2) {
-                    long start;
-                    try {
-                        start = Long.parseLong(split[0]);
-                        if (split.length == 2) {
-                            Long.parseLong(split[1]);
-                        }
-                        r.put(start, file);
-                    } catch (NumberFormatException ex) {
-                        // Ignore
-                    }
-                }
-            } else {
-                try {
-                    r.put(Long.valueOf(name), file);
-                } catch (NumberFormatException ex) {
-                    // Ignore
-                }
-            }
-        });
-        return r;
-    }
-
-    /**
-     * This calculates and returns a Map of files with keys where the first
-     * represents the numerically ordered
-     *
-     * @param dir File.
-     * @return HashMap
-     * @throws java.io.IOException If encountered.
-     */
-    public HashMap<Long, String> getNumericallyOrderedFiles(Path dir)
-            throws IOException {
-        HashMap<Long, String> r = new HashMap<>();
-        List<Path> l = getList(dir);
-        for (int i = 0; i < l.size(); i++) {
-            String name = l.get(i).getFileName().toString();
-            long k;
-            if (name.contains(archiveSeparator)) {
-                k = Long.parseLong(name.split(archiveSeparator)[1]);
-            } else {
-                k = Long.valueOf(name);
-            }
-            r.put(k, name);
-        }
-        return r;
+        //System.out.println("fileSeparator " + fileSeparator);
+        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getAbsolutePath().substring(beginIndex)).split(System.getProperty("file.separator"))[0];
+        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("\\")[0];
+        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("/")[0];
+        return (f.toString().substring(beginIndex)).split(fileSeparator)[0];
     }
 
     /**
@@ -1728,4 +1084,5 @@ public class Generic_IO extends Generic_Object {
         }
         return r;
     }
+
 }

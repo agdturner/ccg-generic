@@ -17,12 +17,14 @@ package uk.ac.leeds.ccg.agdt.generic.core;
 
 import java.io.IOException;
 import java.io.Serializable;
+//import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 
 /**
- * To be generally extended by other classes in this library so each is
- * serializable and has a transient reference to a {@link Generic_Environment}
- * instance for memory management should that be necessary.
+ * To be generally extended by other classes in this library. It is
+ * Serializable and has a transient reference to a {@link Generic_Environment}
+ * instance for memory management.
  *
  * @author Andy Turner
  * @version 1.0.0
@@ -31,6 +33,8 @@ public abstract class Generic_Object implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //private static final Logger logger = LogManager.getLogger(Generic_Object.class);
+    
     protected transient Generic_Environment env;
 
     /**
