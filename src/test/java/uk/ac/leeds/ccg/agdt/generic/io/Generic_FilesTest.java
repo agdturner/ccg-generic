@@ -45,9 +45,11 @@ public class Generic_FilesTest {
     @BeforeAll
     public static void setUpClass() {
         try {
-            Generic_Files files = new Generic_Files(new Generic_Defaults());
-            files.setDir(files.getDefaultGenericDir());
-            env = new Generic_Environment(files);
+            env = new Generic_Environment(new Generic_Files(
+                    new Generic_Defaults(Paths.get(
+                            System.getProperty("user.home"), 
+                            Generic_Strings.s_data,
+                            Generic_Strings.s_generic))));
         } catch (IOException ex) {
             Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -59,12 +61,6 @@ public class Generic_FilesTest {
 
     @BeforeEach
     public void setUp() {
-        try {
-            logID = env.initLog(this.getClass().getSimpleName());
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-            env.log(ex.getMessage());
-        }
     }
 
     @AfterEach
@@ -121,7 +117,7 @@ public class Generic_FilesTest {
 //            env.log(ex.getMessage());
 //        }
 //    }
-//
+
 //    /**
 //     * Test of getInputDir method, of class Generic_Files.
 //     */
