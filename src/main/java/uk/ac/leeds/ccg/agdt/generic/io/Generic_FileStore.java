@@ -16,22 +16,16 @@
 package uk.ac.leeds.ccg.agdt.generic.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Stream;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
 
@@ -59,18 +53,18 @@ import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
  *
  * {@code
  * Level
- * 0        -           1           -           2
+ * 0        - 1           - 2
  *
- * 0        -           0_9         -           0_99
+ * 0        - 0_9         - 0_99
  * }
  *
- * For range = 10 and n = 1000 the tree would be more like the following:
+ * For range = 10 and n = 100001 the tree can be represented as follows:
  *
  * {@code
  * Level
- * 0        -           1           -           2           -           3
+ * 0      - 1             - 2             - 3             - 4             -5            -6
  *
- * 0        -           0_9         -           0_99        -           0_999
+ * 0      - 0_9           - 0_99          - 0_999         - 0_9999        - 0_99999     - 0_999999
  * 1
  * 2
  * 3
@@ -80,22 +74,35 @@ import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
  * 7
  * 8
  * 9
- * 10       -           10_19
+ * 10     - 10_19
  * 11
  * 12
  * ...
  * 19
- * 20       -           20_29
- * 21
- * 22
+ * 20     - 20_29
  * ...
  * ...
- * 99       -           90_99
- * 100      -           100_109         -       100_199
+ * 99     - 90_99
+ * 100    - 100_109       - 100_199
  * ...
  * ...
- * 999      -           990_999         -       900_999
- * 1000     -           1000_1009       -       1000_1099   -       1000_1999
+ * ...
+ * 999    - 990_999       - 900_999
+ * 1000   - 1000_1009     - 1000_1099     - 1000_1999
+ * ...
+ * ...
+ * ...
+ * ...
+ * 9999   - 9990_9999     - 9900_9999     - 9000_9999     - 0_10000
+ * 10000  - 10000_10009   - 10000_10099   - 10000_10999   - 10000_19999   - 0_99999
+ * ...
+ * ...
+ * ...
+ * ...
+ * ...
+ * 99999  - 99990_99999   - 99900_99999   - 99000_99999   - 90000_99999
+ * 100000 - 100000_100009 - 100000_100099 - 100000_100999 - 100000_109999 - 100000_199999
+ * 100001
  * }
  *
  * File stores are used for logging and may be used to store other outputs from
@@ -134,7 +141,7 @@ public class Generic_FileStore {
      * Separates the smallest and largest numbers for the identifiers stored in
      * any directory at level > 0.
      */
-    private static final String SEP = Generic_Strings.symbol_underscore;
+    protected static final String SEP = Generic_Strings.symbol_underscore;
 
     /**
      * For storing the base directory path of the archive.
@@ -207,14 +214,28 @@ public class Generic_FileStore {
     protected long nextID;
 
     /**
-     * Initialises an archive at Path p called name with 3 levels allowing to
+     * Initialises a file store at Path p called name with 3 levels allowing to
+     * store 100 elements in each directory.
+     *
+     * @param p The path to where the archive will be initialised.
+     * @param name The name the archive will be given.
+     * @throws IOException If encountered.
+     */
+    public Generic_FileStore(Path p, String name) 
+            throws IOException, Exception {
+        this(p, name, (short) 100);
+    }
+
+    /**
+     * Initialises a file store at Path p called name with 3 levels allowing to
      * store range number of elements in each directory.
      *
      * @param p The path to where the archive will be initialised.
      * @param name The name the archive will be given.
      * @param range The parameter set for archive controlling the maximum number
      * of directories allowed at each level.
-     * @throws IOException IF encountered.
+     * @throws IOException If encountered.
+     * @throws Exception If range is less than 0.
      */
     public Generic_FileStore(Path p, String name, short range)
             throws IOException, Exception {
@@ -245,6 +266,74 @@ public class Generic_FileStore {
         dirCounts = new ArrayList<>();
         dirCounts.add(1);
         dirCounts.add(1);
+    }
+
+    /**
+     * Initialises a file store at Path p for an existing file store.
+     *
+     * @param p The path of the existing file store.
+     * @throws IOException If encountered.
+     * @throws Exception If the existing file store is problematic.
+     */
+    public Generic_FileStore(Path p) throws IOException, Exception {
+        name = p.getFileName().toString();
+        List<Path> l = Generic_IO.getList(p);
+        if (l.size() != 1) {
+            throw new Exception("Path " + p.toString() + " does not appear to "
+                    + "be a file store as it does not contain one element.");
+        }
+        baseDir = l.get(1);
+        if (!Files.isDirectory(baseDir)) {
+            throw new Exception("Path " + p.toString() + " does not appear to "
+                    + "be a file store as it does not contain one element that "
+                    + "is a directory.");
+        }
+        String fn = l.get(1).getFileName().toString();
+        if (!fn.contains(SEP)) {
+            throw new Exception("Path " + p.toString() + " does not appear to "
+                    + "be a file store as the directory it contains does not "
+                    + "have " + SEP + " in it's filename.");
+        }
+        String[] split = fn.split(SEP);
+        if (!split[0].equalsIgnoreCase("0")) {
+            throw new Exception("Path " + p.toString() + " does not appear to "
+                    + "be a file store as the name of the directory it contains"
+                    + " does not start with \"0\".");
+        }
+        if (split.length != 2) {
+            throw new Exception("Path " + p.toString() + " does not appear to "
+                    + "be a file store as the name of the directory it contains"
+                    + " more than one \"" + SEP + "\" in the filename.");
+        }
+        try {
+            rangeL = Long.getLong(split[1]) + 1;
+        } catch (NumberFormatException ex) {
+            throw new Exception("Path " + p.toString() + " does not appear to "
+                    + "be a file store as the name of the directory it contains"
+                    + " does not end with a String that can be converted into a "
+                    + "Long.");
+        }
+        if (rangeL < 0 || rangeL > Short.MAX_VALUE) {
+            throw new Exception("Path " + p.toString() + " does not appear to "
+                    + "be a file store as the name of the directory it contains"
+                    + " does not end with a String that can be converted into a "
+                    + "Long and which has a value greater than 0 and less than "
+                    + "Short.MAX_VALUE.");
+        }
+        rangeBI = BigInteger.valueOf(rangeL);
+        testIntegrity();
+        initLevelsAndNextID();
+        getRanges();
+        initLPs();
+
+//        BigInteger rBI;
+//        ranges.add(rangeBI.longValueExact());
+//        rBI = rangeBI.multiply(rangeBI);
+//        ranges.add(rBI.longValueExact());
+//        long u = 0L;
+//        l = rBI.subtract(BigInteger.ONE).longValueExact();
+        nextRange = BigInteger.valueOf(ranges.get(ranges.size() - 1)).multiply(rangeBI).longValueExact();
+        dirCounts = getDirCounts(nextID - 1L, rangeL);
     }
 
     public static void main(String[] args) {
@@ -327,10 +416,22 @@ public class Generic_FileStore {
     }
 
     /**
+     * For initialising levels and nextID.
+     *
+     * @throws java.io.IOException If there encountered in
+     * {@link #getHighestDir()}.
+     */
+    protected final void initLevelsAndNextID() throws IOException {
+        Path p = getHighestDir();
+        nextID = Long.getLong(p.getFileName().toString()) + 1;
+        levels = p.getNameCount() - baseDir.getNameCount();
+    }
+
+    /**
      * @return A copy of the current number of levels in the directory tree for
      * this archive.
      */
-    public long getLevels() {
+    public final long getLevels() {
         return levels;
     }
 
@@ -430,16 +531,16 @@ public class Generic_FileStore {
      * Gets the dir indexes for the directories at each level in the current
      * storage of the element identified by id.
      *
+     * This may result in a runtime exception if n is too big for the range. If
+     * this is the case then maybe try to specify a bigger range or look to
+     * implementing something that can handle larger numbers of elements as
+     * suggested in the class comment documentation.
+     *
      * @param id The identifier of the element to get the dirCounts for.
      * @return The dir counts at each level for the current storage of the
      * element identified by id.
-     *
-     * @throws java.lang.Exception If n is too big for the range. If this is the
-     * case then maybe try to specify a bigger range or look to implementing
-     * something that can handle larger numbers of elements as suggested in the
-     * class comment documentation.
      */
-    protected final ArrayList<Integer> getDirIndexes(long id) throws Exception {
+    protected final ArrayList<Integer> getDirIndexes(long id) {
         int li = levels;
         return getDirIndexes(id, li, ranges);
     }
@@ -454,9 +555,8 @@ public class Generic_FileStore {
      * wanted.
      * @return The current path of the directory for storing the element
      * identified by id.
-     * @throws java.lang.Exception If encountered.
      */
-    protected Path getPath(long id) throws Exception {
+    protected Path getPath(long id) {
         return getPath(id, 0);
     }
 
@@ -471,9 +571,8 @@ public class Generic_FileStore {
      * @param lvl
      * @return The current path of the directory for storing the element
      * identified by id.
-     * @throws java.lang.Exception If encountered.
      */
-    protected Path getPath(long id, int lvl) throws Exception {
+    protected Path getPath(long id, int lvl) {
         Path[] paths = new Path[levels - 1];
         ArrayList<Integer> dirIndexes = getDirIndexes(id);
         Path p = lps[levels - 2];
@@ -496,7 +595,7 @@ public class Generic_FileStore {
      * deeper. As the directory grows wider the appropriate paths in lps want
      * updating.
      */
-    protected void initLPs() {
+    protected final void initLPs() {
         lps = new Path[levels - 1];
         long l = 0L;
         long range = ranges.get(levels - 2);
@@ -564,22 +663,74 @@ public class Generic_FileStore {
     }
 
     /**
-     * Simple inner class to help with archive management.
+     * Tests the integrity of the file store from its base directory.
+     *
+     * @return true if the integrity seems fine.
+     * @throws java.io.IOException If the file store lacks integrity.
      */
-    private class PathLong {
-
-        Path p;
-        long l;
-
-        PathLong(Path p, long l) {
-            this.p = p;
-            this.l = l;
+    public final boolean testIntegrity() throws IOException {
+        try (Stream<Path> paths = Files.walk(baseDir)) {
+            boolean ok;
+            try {
+                ok = paths.allMatch(path -> testPath(path));
+            } catch (NumberFormatException e) {
+                throw new IOException("Some paths are not OK as they contain "
+                        + "leaves file names that cannot be converted to a "
+                        + "Long.");
+            }
+            if (!ok) {
+                throw new IOException("Some paths are not OK as they are not "
+                        + "leaf files and are not not directories.");
+            }
         }
+        return true;
+    }
 
-        @Override
-        public String toString() {
-            return "p=" + p.toString() + ", l=" + Long.toString(l);
+    protected final boolean testPath(Path p) {
+        String fn = p.getFileName().toString();
+        if (fn.contains(SEP)) {
+            return Files.isDirectory(p);
+        } else {
+            if (Files.isDirectory(p)) {
+                Long.valueOf(fn);
+                return true;
+            }
+            return true;
         }
+    }
+
+    public Path getHighestLeaf() throws IOException {
+        return getPath(nextID - 1L);
+    }
+
+    protected Path getHighestDir() throws IOException {
+        Path p = getHighestDir0(baseDir);
+        Path p2 = getHighestDir0(p);
+        while (p.compareTo(p2) == 0) {
+            p2 = getHighestDir0(p2);
+        }
+        return p;
+    }
+
+    /**
+     *
+     * @param p
+     * @return
+     * @throws IOException
+     */
+    protected Path getHighestDir0(Path p) throws IOException {
+        List<Path> l = Generic_IO.getList(p);
+        TreeMap<Long, Path> m = new TreeMap<>();
+        l.forEach((p2) -> {
+            String fn = p2.getFileName().toString();
+            if (fn.contains(SEP)) {
+                m.put(Long.valueOf(fn.split(SEP)[1]), p2);
+            }
+        });
+        if (m.isEmpty()) {
+            return p;
+        }
+        return m.lastEntry().getValue();
     }
 
 }

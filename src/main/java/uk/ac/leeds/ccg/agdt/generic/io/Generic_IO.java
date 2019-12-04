@@ -30,7 +30,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -53,19 +52,15 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Object;
 import uk.ac.leeds.ccg.agdt.generic.execution.Generic_Execution;
 
-//import java.nio.file.S
-//TODO http://java.sun.com/docs/books/tutorial/essential/io/legacy.html#mapping
-// http://java.sun.com/docs/books/tutorial/essential/io/fileio.html
 /**
- * Class of methods for helping with reading and writing (primarily) to/from
- * file.
+ * Contains convenient methods for primarily helping to read from and write to a
+ * file system.
  */
 public class Generic_IO extends Generic_Object {
 
@@ -82,7 +77,8 @@ public class Generic_IO extends Generic_Object {
 
     /**
      * If dir is a directory this recursively goes through the contents and
-     * creates an ArrayList of the paths of all files to return.
+     * creates an ArrayList of the paths of all files (not directories) to
+     * return.
      *
      * @param dir The path to traverse.
      * @return An ArrayList of the paths of all files in dir and any
@@ -102,7 +98,7 @@ public class Generic_IO extends Generic_Object {
 
     /**
      * Recursively traverses a directory creating a set of File paths of files
-     * (i.e.not directories).
+     * (i.e. not directories).
      *
      * @param dir The path to add files to l from.
      * @param l The list to add to.
@@ -121,14 +117,14 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Writes Object o to File f.
+     * Writes Object o to a file at f.
      *
      * @param o Object to be written.
      * @param f File to write to.
      * @throws IOException If encountered.
      */
     public void writeObject(Object o, Path f) throws IOException {
-        Files.createDirectories(f.getParent());
+        //Files.createDirectories(f.getParent()); // Try to avoid this as it slows things down.
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 Files.newOutputStream(f, WRITE))) {
             oos.writeUnshared(o);
@@ -138,7 +134,7 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Read Object from a file at p.
+     * Read an Object from a file at p.
      *
      * @param p Path to a file be read from.
      * @return Object read from the file at p.
@@ -154,8 +150,8 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Writes Object o to a file at Path p and logs the name of the Object
-     * written and the path.
+     * Writes Object o to a file at p and logs the name of the Object written
+     * and the path.
      *
      * @param o Object to be written.
      * @param p The Path of the file to write to.
@@ -168,24 +164,32 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
+     * Copies a file from f to d.
+     *
      * @param f A Path of a file to be copied.
-     * @param d The Path of a directory to copy to.
+     * @param d The Path of a directory to copy the file into.
+     * @throws java.io.IOException If encountered.
      */
     protected void copyFile(Path f, Path d) throws IOException {
         copyFile(f, d, f.getFileName().toString());
     }
 
     /**
+     * Copies a file from f to d renaming it to fn in the process. If there is
+     * no directory at d then this is created.
+     *
+     * This might be improved using Files.copy(f, target, REPLACE_EXISTING) and
+     * similar...
+     *
      * @param f A Path of a file to be copied.
      * @param d The Path of a directory to copy to.
      * @param fn The name for the file that will be created in d.
-     * @throws java.io.IOException IF IOException is encountered.
+     * @throws java.io.IOException If encountered.
      */
     public void copyFile(Path f, Path d, String fn)
             throws IOException {
         if (!Files.exists(f)) {
-            throw new IOException("File " + f + " does not exist in "
-                    + this.getClass().getName() + ".copyFile(File,File,String)");
+            throw new IOException("Path " + f + " is not to a file.");
         }
         if (!Files.exists(d)) {
             Files.createDirectories(d);
@@ -394,48 +398,39 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
-     * Delete all files and directories in a directory. The code is not ideal as
-     * Paths are converted to Files and Files are old hat, but it works.
+     * Delete all files and directories in a directory.
      *
      * @param d The directory containing everything to delete.
-     * @param report If true then deletions are reported to std.out.
-     * @throws java.io.IOException If encountered.
+     * @param log If true then deletions are logged.
+     * @throws java.io.IOException If encountered and not logged.
      */
-    public void delete(Path d, boolean report) throws IOException {
-        /**
-         * This commented out code provided organised the deletion differently:
-         * first creating a list and then iterating over that. It will encounter
-         * a runtime exception if the file system is changed after the list is
-         * generated, so the streams approach is preferred.
-         */
-//        List<Path> l = Files.walk(d).sorted(Comparator.reverseOrder())
-//                .collect(Collectors.toList());
-//        for (Path p : l) {
-//            Files.deleteIfExists(p);
-//        }         
-        if (report) {
+    public void delete(Path d, boolean log) throws IOException {
+        if (log) {
             try (Stream<Path> walk = Files.walk(d)) {
                 walk.sorted(Comparator.reverseOrder())
-                        .map(Path::toFile)
                         .peek(System.out::println) // Report deletions to std.out.
-                        .forEach(File::delete);
+                        .forEach(p -> {
+                            try {
+                                Files.delete(p);
+                            } catch (IOException ex) {
+                                ex.printStackTrace(System.err);
+                                env.log(ex.getMessage());
+                            }
+                        });
             }
         } else {
             try (Stream<Path> walk = Files.walk(d)) {
                 walk.sorted(Comparator.reverseOrder())
-                        .map(Path::toFile)
-                        .forEach(File::delete);
+                        .forEach(p -> {
+                            try {
+                                Files.delete(p);
+                            } catch (IOException ex) {
+                                ex.printStackTrace(System.err);
+                                env.log(ex.getMessage());
+                            }
+                        });
             }
         }
-        /**
-         * N.B. It would also be possible to follow all soft links and delete
-         * what is in these paths too using: Files.walk(rootPath,
-         * FileVisitOption.FOLLOW_LINKS), but this is more dangerous than it is
-         * useful, so a decision has been taken not to provide such a convenient 
-         * API for users to do this, though one could easily write the method if 
-         * required and indeed provide it if others decided this would be good 
-         * functionality to have here!
-         */
     }
 
     /**

@@ -25,16 +25,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
-//import uk.ac.leeds.ccg.agdt.generic.io.Generic_Archive;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.agdt.generic.io.Generic_FileStore;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_IO;
 
 /**
  * Typically there is one instance of this for each runtime which is shared
- * across many objects to provide common access to variables other object 
+ * across many objects to provide common access to variables other object
  * instances for convenience and memory management.
  *
  * @author Andy Turner
@@ -90,9 +89,11 @@ public class Generic_Environment {
      * {@link Generic_Environment#Generic_Environment(File,Level)}.
      *
      * @param d The Generic_Defaults.
-     * @throws java.io.IOException If a log file was not initialised.
+     * @throws java.io.IOException If encountered.
+     * @throws Exception If there is a another problem setting up the file
+     * store.
      */
-    public Generic_Environment(Generic_Defaults d) throws IOException {
+    public Generic_Environment(Generic_Defaults d) throws IOException, Exception {
         this(d, DEFAULT_LEVEL);
     }
 
@@ -102,9 +103,12 @@ public class Generic_Environment {
      *
      * @param d The Generic_Defaults.
      * @param l What {@link #level} is set to.
-     * @throws java.io.IOException If a log file was not initialised.
+     * @throws java.io.IOException If encountered.
+     * @throws Exception If there is a another problem setting up the file
+     * store.
      */
-    public Generic_Environment(Generic_Defaults d, Level l) throws IOException {
+    public Generic_Environment(Generic_Defaults d, Level l) 
+            throws IOException, Exception {
         this(d, l, DEFAULT_RANGE);
     }
 
@@ -116,9 +120,12 @@ public class Generic_Environment {
      * @param d The Generic_Defaults.
      * @param l What {@link #level} is set to.
      * @param r What {@link #range} is set to.
-     * @throws java.io.IOException If a log file was not initialised.
+     * @throws java.io.IOException If encountered.
+     * @throws Exception If there is a another problem setting up the file
+     * store.
      */
-    public Generic_Environment(Generic_Defaults d, Level l, int r) throws IOException {
+    public Generic_Environment(Generic_Defaults d, Level l, int r) 
+            throws IOException, Exception {
         this(new Generic_Files(d), l, r);
     }
 
@@ -129,9 +136,11 @@ public class Generic_Environment {
      * log.
      *
      * @param f What {@link #files} is set to.
-     * @throws java.io.IOException If a log file was not initialised.
+     * @throws java.io.IOException If encountered.
+     * @throws Exception If there is a another problem setting up the file
+     * store.
      */
-    public Generic_Environment(Generic_Files f) throws IOException {
+    public Generic_Environment(Generic_Files f) throws IOException, Exception {
         this(f, DEFAULT_LEVEL, DEFAULT_RANGE);
     }
 
@@ -143,9 +152,12 @@ public class Generic_Environment {
      *
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
-     * @throws java.io.IOException If a log file was not initialised.
+     * @throws java.io.IOException If encountered.
+     * @throws Exception If there is a another problem setting up the file
+     * store.
      */
-    public Generic_Environment(Generic_Files f, Level l) throws IOException {
+    public Generic_Environment(Generic_Files f, Level l) 
+            throws IOException, Exception {
         this(f, l, DEFAULT_RANGE);
     }
 
@@ -160,9 +172,12 @@ public class Generic_Environment {
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
      * @param r What {@link #range} is set to.
-     * @throws java.io.IOException If a log file was not initialised.
+     * @throws java.io.IOException If encountered.
+     * @throws Exception If there is a another problem setting up the file
+     * store.
      */
-    public Generic_Environment(Generic_Files f, Level l, int r) throws IOException {
+    public Generic_Environment(Generic_Files f, Level l, int r) 
+            throws IOException, Exception {
         files = f;
         io = new Generic_IO(this);
         level = l;
@@ -180,7 +195,7 @@ public class Generic_Environment {
      * @return The ID of the log initialised.
      * @throws java.io.IOException If a log file was not initialised.
      */
-    public final int initLog(String s) throws IOException {
+    public final int initLog(String s) throws IOException, Exception {
         return initLog(s, "_log.txt");
     }
 
@@ -190,9 +205,11 @@ public class Generic_Environment {
      * @param s The name of the log.
      * @param e The file extension.
      * @return The ID of the log initialised.
-     * @throws java.io.IOException If a log file was not initialised.
+     * @throws java.io.IOException If encountered.
+     * @throws Exception If there is a another problem setting up the file
+     * store.
      */
-    public final int initLog(String s, String e) throws IOException {
+    public final int initLog(String s, String e) throws IOException, Exception {
         if (logNamesInUse.contains(s)) {
             log("Warning log with name " + s + " is already in use. Another "
                     + "is being set up!", 0, true);
@@ -214,26 +231,20 @@ public class Generic_Environment {
      * @return A new directory for a log. If this is the first log with this
      * name, a new archive is set up. Otherwise an existing archive is used and
      * a new archive leaf is set up in this for use.
-     * @throws java.io.IOException If a log file was not initialised.
+     * @throws java.io.IOException If encountered.
+     * @throws Exception If there is a another problem setting up the file
+     * store.
      */
-    protected Path getLogDir(String s) throws IOException {
+    protected Path getLogDir(String s) throws IOException, Exception {
         Path dir = Paths.get(files.getLogDir().toString(), s);
         if (Files.exists(dir)) {
-            List<Path> l = io.getList(dir);
-            if (l.isEmpty()) {
-//                dir = io.initialiseArchive(dir, range, false);
-            }
-            if (l.size() == 1) {
-                Path p = l.get(0);
-                if (p.getFileName().toString().contains(Generic_Strings.symbol_underscore)) {
-                    dir = p;
-                }
-            }
-            dir = io.addToArchive(dir, range);
+            Generic_FileStore fs = new Generic_FileStore(dir);
+            fs.addToArchive();
+            return fs.getHighestLeaf();
         } else {
-            dir = io.initialiseArchive(dir, range, false);
+            Generic_FileStore fs = new Generic_FileStore(dir, s);
+            dir = fs.getHighestLeaf();
         }
-        Files.createDirectories(dir);
         return dir;
     }
 
