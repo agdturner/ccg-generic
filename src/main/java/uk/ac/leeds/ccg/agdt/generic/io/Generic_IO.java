@@ -923,7 +923,9 @@ public class Generic_IO extends Generic_Object {
      * @throws IOException If encountered.
      */
     public static List<Path> getList(Path dir) throws IOException {
-        return Files.list(dir).collect(Collectors.toList());
+        try (Stream<Path> s = Files.list(dir)) {
+            return s.collect(Collectors.toList());
+        }
     }
 
     /**

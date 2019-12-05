@@ -15,10 +15,7 @@
  */
 package uk.ac.leeds.ccg.agdt.generic.core;
 
-import java.io.IOException;
 import java.io.Serializable;
-//import org.apache.logging.log4j.Logger;
-//import org.apache.logging.log4j.LogManager;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 
 /**
@@ -33,8 +30,6 @@ public abstract class Generic_Object implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //private static final Logger logger = LogManager.getLogger(Generic_Object.class);
-    
     protected transient Generic_Environment env;
 
     /**
@@ -50,10 +45,10 @@ public abstract class Generic_Object implements Serializable {
      * Initialise if necessary and return {@link #env}.
      *
      * @return {@link #env} initialised if necessary.
-     * @throws java.io.IOException If env is null and when initialising it a log
+     * @throws java.lang.Exception If env is null and when initialising it a log
      * file was not initialised.
      */
-    public Generic_Environment getEnv() throws IOException {
+    public Generic_Environment getEnv() throws Exception {
         if (env == null) {
             env = new Generic_Environment(new Generic_Defaults());
         }

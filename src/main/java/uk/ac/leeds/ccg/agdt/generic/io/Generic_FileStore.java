@@ -174,16 +174,16 @@ public class Generic_FileStore {
     protected long nextRange;
 
     /**
-     * Stores the number of levels in the archive. Initially this is 3 and
-     * increases by 1 each time the archive grows deeper. The maximum number of
-     * elements that can be stored in 3 levels is range * range. With each
-     * subsequent level this number is increased by a factor of range. With n
-     * levels and range r {@code BigDecimal.valueOf(r).pow(n-1).longValueExact}
-     * elements can be stored. So, with range = 100 and 3 levels some 10
-     * thousand elements can be stored. With range = 100 and 7 level some a
-     * million million elements can be stored. To calculate how many levels will
-     * be needed for a given number of elements n and a range r use
-     * {@link #getLevels(long, long)}.
+     * Stores the number of levels in the file store. For a new store, initially
+     * this is 3 and increases by 1 each time the archive grows deeper. The
+     * maximum number of elements that can be stored in 3 levels is range *
+     * range. With each subsequent level this number is increased by a factor of
+     * range. With n levels and range r
+     * {@code BigDecimal.valueOf(r).pow(n-1).longValueExact} elements can be
+     * stored. So, with range = 100 and 3 levels some 10 thousand elements can
+     * be stored. With range = 100 and 7 level some a million million elements
+     * can be stored. To calculate how many levels will be needed for a given
+     * number of elements n and a range r use {@link #getLevels(long, long)}.
      */
     protected int levels;
 
@@ -207,12 +207,6 @@ public class Generic_FileStore {
      */
     protected Path[] lps;
 
-    /**
-     * The lower interval IDs for the directories at each level for the
-     * {@link #nextID} (and {@link #lps}). This grows with {@link #levels} as
-     * the archive grows.
-     */
-//    protected ArrayList<Long> lIDs;
     /**
      * Stores the nextID. Initially set to 0.
      */
@@ -340,9 +334,12 @@ public class Generic_FileStore {
         rangeBI = BigInteger.valueOf(rangeL);
         testIntegrity();
         initLevelsAndNextID();
-        ranges = getRanges(nextID - 1, rangeL);
-        dirCounts = getDirCounts(nextID - 1L, rangeL);
+        ranges = getRanges(nextID, rangeL);
+        // Set dirCounts for lps
+        dirCounts = getDirCounts(nextID - 1, rangeL);
         initLPs();
+        // DirCounts is
+        dirCounts = getDirCounts(nextID, rangeL);
 //        BigInteger rBI;
 //        ranges.add(rangeBI.longValueExact());
 //        rBI = rangeBI.multiply(rangeBI);
@@ -350,6 +347,33 @@ public class Generic_FileStore {
 //        long u = 0L;
 //        l = rBI.subtract(BigInteger.ONE).longValueExact();
         nextRange = BigInteger.valueOf(ranges.get(ranges.size() - 1)).multiply(rangeBI).longValueExact();
+    }
+
+    /**
+     * @return A string description of this.
+     */
+    @Override
+    public String toString() {
+        String r = "File store(baseDir=" + baseDir + ", root=" + root
+                + ", name=" + name + ", range=" + rangeBI.toString()
+                + ", nextRange=" + nextRange + ", levels=" + levels
+                + ", ranges=(length=" + ranges.size()
+                + ", ranges[0]=" + ranges.get(0);
+        for (int i = 0; i < ranges.size(); i++) {
+            r += ", ranges[" + i + "]=" + ranges.get(i);
+        }
+        r += "), dirCounts(length=" + dirCounts.size()
+                + ", dirCounts[0]=" + dirCounts.get(0);
+        for (int i = 0; i < dirCounts.size(); i++) {
+            r += ", dirCounts[" + i + "]=" + dirCounts.get(i);
+        }
+        r += "), lps(length=" + lps.length
+                + ", lps[0]=" + lps[0];
+        for (int i = 0; i < lps.length; i++) {
+            r += ", lps[" + i + "]=" + lps[i];
+        }
+        r += "), nextID=" + nextID + ")";
+        return r;
     }
 
     /**
@@ -372,7 +396,7 @@ public class Generic_FileStore {
      * total number of elements to store.
      */
     public static long getLevels(long n, long range) {
-        long levels = 2;
+        long levels = 3;
         long l = n;
         while (l / range >= range) {
             l = l / range;
