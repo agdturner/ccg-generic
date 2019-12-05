@@ -45,11 +45,11 @@ public class Generic_Time extends Generic_Date {
         this(t.env, t.LDT);
     }
 
-    public Generic_Time(Generic_Date d) throws IOException {
+    public Generic_Time(Generic_Date d) throws Exception {
         this(d.getEnv(), LocalDateTime.of(d.LD, LocalTime.of(0, 0)));
     }
 
-    public Generic_Time(Generic_Date d, LocalTime t) throws IOException {
+    public Generic_Time(Generic_Date d, LocalTime t) throws Exception {
         this(d.getEnv(), LocalDateTime.of(d.LD, t));
     }
 
