@@ -52,7 +52,7 @@ public class Generic_IOTest {
                             Generic_Strings.s_data,
                             Generic_Strings.s_generic)));
             env = new Generic_Environment(files);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
     }
@@ -65,7 +65,7 @@ public class Generic_IOTest {
     public void setUp() {
         try {
             logID = env.initLog(this.getClass().getSimpleName());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
     }

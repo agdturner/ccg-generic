@@ -50,7 +50,7 @@ public class Generic_FilesTest {
                             System.getProperty("user.home"), 
                             Generic_Strings.s_data,
                             Generic_Strings.s_generic))));
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

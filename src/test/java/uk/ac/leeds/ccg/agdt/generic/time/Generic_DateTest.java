@@ -57,7 +57,7 @@ public class Generic_DateTest {
             Generic_Files files = new Generic_Files(new Generic_Defaults());
             env = new Generic_Environment(files);
             logID = env.initLog(this.getClass().getSimpleName());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
