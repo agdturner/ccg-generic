@@ -15,15 +15,20 @@
  */
 package uk.ac.leeds.ccg.agdt.generic.io;
 
+import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,17 +40,16 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
-  * To test all the functionality of Generic_Archive.
- * 
+ * To test all the functionality of Generic_Archive.
+ *
  * @author Andy Turner
  * @version 1.0.0
-
+ *
  */
 public class Generic_FileStoreTest {
 
     //Generic_Environment env;
     //int logID;
-
     public Generic_FileStoreTest() {
     }
 
@@ -59,13 +63,6 @@ public class Generic_FileStoreTest {
 
     @BeforeEach
     public void setUp() {
-//        try {
-//            Generic_Files files = new Generic_Files(new Generic_Defaults());
-//            env = new Generic_Environment(files);
-//            logID = env.initLog(this.getClass().getSimpleName());
-//        } catch (IOException ex) {
-//            Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
 
     @AfterEach
@@ -73,323 +70,340 @@ public class Generic_FileStoreTest {
     }
 
 //    /**
-//     * Test of initialiseArchive method, of class Generic_IO.
+//     * Test of initNextRange method, of class Generic_FileStore.
 //     */
 //    @Test
-//    public void testInitialiseArchive_File_long() {
-//        try {
-//            env.log("initialiseArchive", logID);
-//            //System.out.println("initialiseArchive");
-//            Path dir = Paths.get(env.files.getGeneratedDir().toString(),
-//                    "testArchive");
-//            long range = 10L;
-//            Path expResult;
-//            if (Files.exists(dir)) {
-//                expResult = env.io.getArchiveHighestLeafFile(dir);
-//                /**
-//                 * Let us assume that dir is an archive directory. So the
-//                 * archive already exists and an attempt to initialise an
-//                 * archive using exists = false should result in an IOException.
-//                 */
-//                Assertions.assertThrows(IOException.class, () -> {
-//                    env.io.initialiseArchive(dir, range, false);
-//                });
-//            } else {
-//                /**
-//                 * If the archive does not already exist then initialise it.
-//                 */
-//                env.io.initialiseArchive(dir, range, false);
-//                expResult = env.io.getArchiveHighestLeafFile(dir);
-//            }
-//            /**
-//             * So the archive should exist now and if we try to initialise with
-//             * exists = false then we expect an IOException. This is included
-//             * here for completeness.
-//             */
-//            Assertions.assertThrows(IOException.class, () -> {
-//                Path result = env.io.initialiseArchive(dir, range, false);
-//            });
-//            /**
-//             * Test initialising an existing archive.
-//             */
-//            Path result = env.io.initialiseArchive(dir, range, true);
-//            Assertions.assertEquals(result, expResult);
-//            /**
-//             * Add some new leaf files to the archive and test again.
-//             */
-//            for (int i = 0; i < range; i++) {
-//                for (int j = 0; j < range; j++) {
-//                    for (int k = 0; k < range; k++) {
-//                        for (int l = 0; l < range; l++) {
-//                            env.io.addToArchive(dir, range);
-//                        }
-//                    }
-//                    //env.io.testArchiveIntegrity(dir);
+//    public void testInitNextRange() {
+//        System.out.println("initNextRange");
+//        Generic_FileStore instance = null;
+//        instance.initNextRange();
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getLevels method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetLevels_long_long() {
+//        System.out.println("getLevels");
+//        long n = 0L;
+//        long range = 0L;
+//        long expResult = 0L;
+//        long result = Generic_FileStore.getLevels(n, range);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getLevels method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetLevels_long() {
+//        System.out.println("getLevels");
+//        long n = 0L;
+//        Generic_FileStore instance = null;
+//        long expResult = 0L;
+//        long result = instance.getLevels(n);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of initLevelsAndNextID method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testInitLevelsAndNextID() throws Exception {
+//        System.out.println("initLevelsAndNextID");
+//        Generic_FileStore instance = null;
+//        instance.initLevelsAndNextID();
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getLevels method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetLevels_0args() {
+//        System.out.println("getLevels");
+//        Generic_FileStore instance = null;
+//        long expResult = 0L;
+//        long result = instance.getLevels();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getRanges method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetRanges_0args() {
+//        System.out.println("getRanges");
+//        Generic_FileStore instance = null;
+//        ArrayList<Long> expResult = null;
+//        ArrayList<Long> result = instance.getRanges();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getRanges method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetRanges_long_long() throws Exception {
+//        System.out.println("getRanges");
+//        long n = 0L;
+//        long range = 0L;
+//        ArrayList<Long> expResult = null;
+//        ArrayList<Long> result = Generic_FileStore.getRanges(n, range);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getDirCounts method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetDirCounts() throws Exception {
+//        System.out.println("getDirCounts");
+//        long n = 0L;
+//        long range = 0L;
+//        ArrayList<Integer> expResult = null;
+//        ArrayList<Integer> result = Generic_FileStore.getDirCounts(n, range);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getDirIndexes method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetDirIndexes_3args() {
+//        System.out.println("getDirIndexes");
+//        long id = 0L;
+//        int levels = 0;
+//        ArrayList<Long> ranges = null;
+//        ArrayList<Integer> expResult = null;
+//        ArrayList<Integer> result = Generic_FileStore.getDirIndexes(id, levels, ranges);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getDirIndexes method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetDirIndexes_long() {
+//        System.out.println("getDirIndexes");
+//        long id = 0L;
+//        Generic_FileStore instance = null;
+//        ArrayList<Integer> expResult = null;
+//        ArrayList<Integer> result = instance.getDirIndexes(id);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getPath method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetPath_long() {
+//        System.out.println("getPath");
+//        long id = 0L;
+//        Generic_FileStore instance = null;
+//        Path expResult = null;
+//        Path result = instance.getPath(id);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getPath method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetPath_long_int() {
+//        System.out.println("getPath");
+//        long id = 0L;
+//        int lvl = 0;
+//        Generic_FileStore instance = null;
+//        Path expResult = null;
+//        Path result = instance.getPath(id, lvl);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getName method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testGetName() {
+//        System.out.println("getName");
+//        long l = 0L;
+//        long u = 0L;
+//        Generic_FileStore instance = null;
+//        String expResult = "";
+//        String result = instance.getName(l, u);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of initLPs method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testInitLPs() {
+//        System.out.println("initLPs");
+//        Generic_FileStore instance = null;
+//        instance.initLPs();
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//    /**
+//     * Test of addToArchive method, of class Generic_FileStore.
+//     */
+//    @Test
+//    public void testAddDir() throws Exception {
+//        System.out.println("addDir");
+//        Path p = Paths.get(System.getProperty("user.home"),
+//                Generic_Strings.s_data,
+//                Generic_Strings.s_generic);
+//        String name = "test";
+//        //if (false) {
+//        if (true) {
+//            // Delete old test archive if it exists.
+//            Path d = Paths.get(p.toString(), name);
+//            if (Files.exists(d)) {
+//                try (Stream<Path> walk = Files.walk(d)) {
+//                    walk.sorted(Comparator.reverseOrder())
+//                            .map(Path::toFile)
+//                            //.peek(System.out::println)
+//                            .forEach(File::delete);
 //                }
-//                env.io.testArchiveIntegrity(dir);
 //            }
-//            expResult = env.io.getArchiveHighestLeafFile(dir);
-//            result = env.io.initialiseArchive(dir, range, true);
-//            Assertions.assertEquals(result, expResult);
-//        } catch (IOException ex) {
-//            ex.printStackTrace(System.err);
-//            env.log(ex.getMessage());
+//        }
+//        // Create new archive.
+//        short range = 10;
+//        Generic_FileStore a = new Generic_FileStore(p, name, range);
+//
+//        for (long l = 0; l < a.rangeBI.pow(3).add(BigInteger.ONE).longValueExact(); l++) {
+//            //for (long l = 0; l < 11; l++) {
+//            a.addDir();
 //        }
 //    }
 
     /**
-     * Test of testArchiveIntegrity method, of class Generic_Archive.
+     * Test of addToArchive method, of class Generic_FileStore.
      */
     @Test
-    public void testTestArchiveIntegrity() throws Exception {
-        try {
-        System.out.println("testArchiveIntegrity");
-        Path dir = Paths.get(System.getProperty("user.home"), 
-                Generic_Strings.s_data, Generic_Strings.s_generic, 
-                Generic_Strings.s_generated, "test");
-        Path p = Files.createDirectories(dir);
-        //Generic_Archive instance = new Generic_Archive(dir, 2, 3);
-        //boolean result = instance.isArchiveOK(dir);
-        //assertTrue(result);
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
+    public void testAddDir2() throws Exception {
+        System.out.println("addDir");
+        Path p = Paths.get(System.getProperty("user.home"),
+                Generic_Strings.s_data,
+                Generic_Strings.s_generic);
+        String name = "test2";
+        if (true) {
+            if (Files.exists(p)) {
+                Generic_IO.delete(p, false);
+            }
         }
+        // Create new archive.
+        short range = 10;
+        Generic_FileStore a = new Generic_FileStore(p, name, range);
+
+        for (long l = 0; l < a.rangeBI.pow(3).add(BigInteger.ONE).longValueExact(); l++) {
+            //for (long l = 0; l < 11; l++) {
+            a.addDir();
+        }
+        
+        p = Paths.get(p.toString(), name);
+        Generic_FileStore b = new Generic_FileStore(p);
+        b.addDir();
+        
+
     }
 
 //    /**
-//     * Test of getArchiveHighestLeaf method, of class Generic_Archive.
+//     * Test of testIntegrity method, of class Generic_FileStore.
 //     */
 //    @Test
-//    public void testGetArchiveHighestLeaf() throws Exception {
-//        System.out.println("getArchiveHighestLeaf");
-//        Path dir = null;
-//        Generic_Archive instance = null;
-//        long expResult = 0L;
-//        long result = instance.getArchiveHighestLeaf(dir);
+//    public void testTestIntegrity() throws Exception {
+//        System.out.println("testIntegrity");
+//        Generic_FileStore instance = null;
+//        boolean expResult = false;
+//        boolean result = instance.testIntegrity();
 //        assertEquals(expResult, result);
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
 //    /**
-//     * Test of getArchiveRange method, of class Generic_Archive.
+//     * Test of testPath method, of class Generic_FileStore.
 //     */
 //    @Test
-//    public void testGetArchiveRange() throws Exception {
-//        System.out.println("getArchiveRange");
-//        Path dir = null;
-//        Generic_Archive instance = null;
-//        long expResult = 0L;
-//        long result = instance.getArchiveRange(dir);
+//    public void testTestPath() {
+//        System.out.println("testPath");
+//        Path p = null;
+//        Generic_FileStore instance = null;
+//        boolean expResult = false;
+//        boolean result = instance.testPath(p);
 //        assertEquals(expResult, result);
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
 //    /**
-//     * Test of getArchiveLeafFilesMap method, of class Generic_Archive.
+//     * Test of getHighestLeaf method, of class Generic_FileStore.
 //     */
 //    @Test
-//    public void testGetArchiveLeafFilesMap_Path() throws Exception {
-//        System.out.println("getArchiveLeafFilesMap");
-//        Path dir = null;
-//        Generic_Archive instance = null;
-//        TreeMap<Long, Path> expResult = null;
-//        TreeMap<Long, Path> result = instance.getArchiveLeafFilesMap(dir);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getArchiveLeafFilesMap method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testGetArchiveLeafFilesMap_3args() throws Exception {
-//        System.out.println("getArchiveLeafFilesMap");
-//        Path dir = null;
-//        long minID = 0L;
-//        long maxID = 0L;
-//        Generic_Archive instance = null;
-//        TreeMap<Long, Path> expResult = null;
-//        TreeMap<Long, Path> result = instance.getArchiveLeafFilesMap(dir, minID, maxID);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getArchiveHighestLeafFile method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testGetArchiveHighestLeafFile() throws Exception {
-//        System.out.println("getArchiveHighestLeafFile");
-//        Path dir = null;
-//        Generic_Archive instance = null;
+//    public void testGetHighestLeaf() throws Exception {
+//        System.out.println("getHighestLeaf");
+//        Generic_FileStore instance = null;
 //        Path expResult = null;
-//        Path result = instance.getArchiveHighestLeafFile(dir);
+//        Path result = instance.getHighestLeaf();
 //        assertEquals(expResult, result);
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
 //    /**
-//     * Test of growArchiveBase method, of class Generic_Archive.
+//     * Test of getHighestDir method, of class Generic_FileStore.
 //     */
 //    @Test
-//    public void testGrowArchiveBase_Path_long() throws Exception {
-//        System.out.println("growArchiveBase");
-//        Path dir = null;
-//        long range = 0L;
-//        Generic_Archive instance = null;
+//    public void testGetHighestDir() throws Exception {
+//        System.out.println("getHighestDir");
+//        Generic_FileStore instance = null;
 //        Path expResult = null;
-//        Path result = instance.growArchiveBase(dir, range);
+//        Path result = instance.getHighestDir();
 //        assertEquals(expResult, result);
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
 //    /**
-//     * Test of growArchiveBase method, of class Generic_Archive.
+//     * Test of getHighestDir0 method, of class Generic_FileStore.
 //     */
 //    @Test
-//    public void testGrowArchiveBase_3args() throws Exception {
-//        System.out.println("growArchiveBase");
-//        Path dir = null;
-//        long range = 0L;
-//        long next_ID = 0L;
-//        Generic_Archive instance = null;
+//    public void testGetHighestDir0() throws Exception {
+//        System.out.println("getHighestDir0");
+//        Path p = null;
+//        Generic_FileStore instance = null;
 //        Path expResult = null;
-//        Path result = instance.growArchiveBase(dir, range, next_ID);
+//        Path result = instance.getHighestDir0(p);
 //        assertEquals(expResult, result);
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-//
-//    /**
-//     * Test of addToArchive method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testAddToArchive_Path_long() throws Exception {
-//        System.out.println("addToArchive");
-//        Path dir = null;
-//        long range = 0L;
-//        Generic_Archive instance = null;
-//        Path expResult = null;
-//        Path result = instance.addToArchive(dir, range);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of growArchiveBaseIfNecessary method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testGrowArchiveBaseIfNecessary() throws Exception {
-//        System.out.println("growArchiveBaseIfNecessary");
-//        Path dir = null;
-//        long range = 0L;
-//        Path newHighestLeafDir = null;
-//        Generic_Archive instance = null;
-//        instance.growArchiveBaseIfNecessary(dir, range, newHighestLeafDir);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of addToArchive method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testAddToArchive_3args() throws Exception {
-//        System.out.println("addToArchive");
-//        Path dir = null;
-//        long range = 0L;
-//        long next_ID = 0L;
-//        Generic_Archive instance = null;
-//        Path expResult = null;
-//        Path result = instance.addToArchive(dir, range, next_ID);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getFileThatExists method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testGetFileThatExists() throws Exception {
-//        System.out.println("getFileThatExists");
-//        Path dir = null;
-//        String filename = "";
-//        Generic_Archive instance = null;
-//        Path expResult = null;
-//        Path result = instance.getFileThatExists(dir, filename);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getNumericallyOrderedFiles method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testGetNumericallyOrderedFiles_List() {
-//        System.out.println("getNumericallyOrderedFiles");
-//        List<Path> ps = null;
-//        Generic_Archive instance = null;
-//        TreeMap<Long, Path> expResult = null;
-//        TreeMap<Long, Path> result = instance.getNumericallyOrderedFiles(ps);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getNumericallyOrderedFiles2 method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testGetNumericallyOrderedFiles2() {
-//        System.out.println("getNumericallyOrderedFiles2");
-//        List<Path> files = null;
-//        Generic_Archive instance = null;
-//        TreeMap<Long, Path> expResult = null;
-//        TreeMap<Long, Path> result = instance.getNumericallyOrderedFiles2(files);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getNumericallyOrderedFiles method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testGetNumericallyOrderedFiles_Path() throws Exception {
-//        System.out.println("getNumericallyOrderedFiles");
-//        Path dir = null;
-//        Generic_Archive instance = null;
-//        HashMap<Long, String> expResult = null;
-//        HashMap<Long, String> result = instance.getNumericallyOrderedFiles(dir);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getObjectDir method, of class Generic_Archive.
-//     */
-//    @Test
-//    public void testGetObjectDir() {
-//        System.out.println("getObjectDir");
-//        Path dir = null;
-//        long id = 0L;
-//        long n = 0L;
-//        long range = 0L;
-//        Generic_Archive instance = null;
-//        Path expResult = null;
-//        Path result = instance.getObjectDir(dir, id, n, range);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+
 }
