@@ -52,6 +52,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
@@ -123,7 +125,7 @@ public class Generic_IO extends Generic_Object {
      * @param f File to write to.
      * @throws IOException If encountered.
      */
-    public void writeObject(Object o, Path f) throws IOException {
+    public static void writeObject(Object o, Path f) throws IOException {
         //Files.createDirectories(f.getParent()); // Try to avoid this as it slows things down.
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 Files.newOutputStream(f, WRITE))) {
@@ -139,9 +141,10 @@ public class Generic_IO extends Generic_Object {
      * @param p Path to a file be read from.
      * @return Object read from the file at p.
      * @throws java.io.IOException If encountered.
-     * @throws java.lang.ClassNotFoundException
+     * @throws java.lang.ClassNotFoundException If for some reason the Object
+     * cannot otherwise be deserialized.
      */
-    public Object readObject(Path p) throws IOException,
+    public static Object readObject(Path p) throws IOException,
             ClassNotFoundException {
         try (ObjectInputStream ois = new ObjectInputStream(
                 Files.newInputStream(p, READ))) {
@@ -404,17 +407,16 @@ public class Generic_IO extends Generic_Object {
      * @param log If true then deletions are logged.
      * @throws java.io.IOException If encountered and not logged.
      */
-    public void delete(Path d, boolean log) throws IOException {
+    public static void delete(Path d, boolean log) throws IOException {
         if (log) {
             try (Stream<Path> walk = Files.walk(d)) {
                 walk.sorted(Comparator.reverseOrder())
-                        .peek(System.out::println) // Report deletions to std.out.
+                        .peek(System.out::println) // Log deletions to std.out.
                         .forEach(p -> {
                             try {
-                                Files.delete(p);
+                                Files.deleteIfExists(p);
                             } catch (IOException ex) {
-                                ex.printStackTrace(System.err);
-                                env.log(ex.getMessage());
+                                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         });
             }
@@ -423,10 +425,9 @@ public class Generic_IO extends Generic_Object {
                 walk.sorted(Comparator.reverseOrder())
                         .forEach(p -> {
                             try {
-                                Files.delete(p);
+                                Files.deleteIfExists(p);
                             } catch (IOException ex) {
-                                ex.printStackTrace(System.err);
-                                env.log(ex.getMessage());
+                                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         });
             }

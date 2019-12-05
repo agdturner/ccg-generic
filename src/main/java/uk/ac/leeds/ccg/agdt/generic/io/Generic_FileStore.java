@@ -15,16 +15,15 @@
  */
 package uk.ac.leeds.ccg.agdt.generic.io;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
@@ -144,9 +143,15 @@ public class Generic_FileStore {
     protected static final String SEP = Generic_Strings.symbol_underscore;
 
     /**
-     * For storing the base directory path of the archive.
+     * For storing the base directory path of the file store.
      */
     protected final Path baseDir;
+
+    /**
+     * For storing the root directory path of the file store. This should be a
+     * directory in baseDir which is otherwise empty.
+     */
+    protected Path root;
 
     /**
      * The name of the archive. Used to initialise baseDir.
@@ -193,7 +198,7 @@ public class Generic_FileStore {
      * grows with {@link #levels} as the archive grows and is modified as new
      * directories are added at each level.
      */
-    protected ArrayList<Integer> dirCounts;
+    protected ArrayList<Long> dirCounts;
 
     /**
      * For storing the paths to the directories (at each level greater than
@@ -221,7 +226,7 @@ public class Generic_FileStore {
      * @param name The name the archive will be given.
      * @throws IOException If encountered.
      */
-    public Generic_FileStore(Path p, String name) 
+    public Generic_FileStore(Path p, String name)
             throws IOException, Exception {
         this(p, name, (short) 100);
     }
@@ -264,8 +269,9 @@ public class Generic_FileStore {
         lps[0] = Paths.get(lps[1].toString(), getName(u, l));
         Files.createDirectories(Paths.get(lps[0].toString(), "0"));
         dirCounts = new ArrayList<>();
-        dirCounts.add(1);
-        dirCounts.add(1);
+        dirCounts.add(1L);
+        dirCounts.add(1L);
+        root = lps[lps.length - 1];
     }
 
     /**
@@ -277,18 +283,19 @@ public class Generic_FileStore {
      */
     public Generic_FileStore(Path p) throws IOException, Exception {
         name = p.getFileName().toString();
-        List<Path> l = Generic_IO.getList(p);
-        if (l.size() != 1) {
-            throw new Exception("Path " + p.toString() + " does not appear to "
-                    + "be a file store as it does not contain one element.");
-        }
-        baseDir = l.get(1);
+        baseDir = p;
         if (!Files.isDirectory(baseDir)) {
             throw new Exception("Path " + p.toString() + " does not appear to "
                     + "be a file store as it does not contain one element that "
                     + "is a directory.");
         }
-        String fn = l.get(1).getFileName().toString();
+        List<Path> l = Generic_IO.getList(p);
+        if (l.size() != 1) {
+            throw new Exception("Path " + p.toString() + " does not appear to "
+                    + "be a file store as it does not contain one element.");
+        }
+        root = l.get(0);
+        String fn = root.getFileName().toString();
         if (!fn.contains(SEP)) {
             throw new Exception("Path " + p.toString() + " does not appear to "
                     + "be a file store as the directory it contains does not "
@@ -301,31 +308,41 @@ public class Generic_FileStore {
                     + " does not start with \"0\".");
         }
         if (split.length != 2) {
-            throw new Exception("Path " + p.toString() + " does not appear to "
-                    + "be a file store as the name of the directory it contains"
-                    + " more than one \"" + SEP + "\" in the filename.");
+            throw new Exception("Path " + p.toString() + " contains more than "
+                    + "one \"" + SEP + "\" in the filename.");
         }
         try {
-            rangeL = Long.getLong(split[1]) + 1;
+            long r;
+            r = Long.valueOf(split[1]) + 1L;
+            Path p2 = Generic_IO.getList(root).get(0);
+            fn = p2.getFileName().toString();
+            if (!fn.contains(SEP)) {
+                throw new Exception("Path " + p2.toString() + " does not have "
+                        + SEP + " in it's filename.");
+            }
+            split = fn.split(SEP);
+            if (split.length != 2) {
+                throw new Exception("Path " + p2.toString() + " contains more "
+                        + "than one \"" + SEP + "\" in the filename.");
+            }
+            long r2 = Long.valueOf(split[1]) - Long.valueOf(split[0]) + 1;
+            if (r % r2 != 0) {
+                throw new Exception("Invalid range difference for file store.");
+            }
+            rangeL = r / r2;
         } catch (NumberFormatException ex) {
-            throw new Exception("Path " + p.toString() + " does not appear to "
-                    + "be a file store as the name of the directory it contains"
-                    + " does not end with a String that can be converted into a "
-                    + "Long.");
+            ex.printStackTrace(System.err);
+            throw new Exception(ex.getMessage() + " setting rangeL.");
         }
         if (rangeL < 0 || rangeL > Short.MAX_VALUE) {
-            throw new Exception("Path " + p.toString() + " does not appear to "
-                    + "be a file store as the name of the directory it contains"
-                    + " does not end with a String that can be converted into a "
-                    + "Long and which has a value greater than 0 and less than "
-                    + "Short.MAX_VALUE.");
+            throw new Exception("range < 0 or > Short.MAX_VALUE.");
         }
         rangeBI = BigInteger.valueOf(rangeL);
         testIntegrity();
         initLevelsAndNextID();
-        getRanges();
+        ranges = getRanges(nextID - 1, rangeL);
+        dirCounts = getDirCounts(nextID - 1L, rangeL);
         initLPs();
-
 //        BigInteger rBI;
 //        ranges.add(rangeBI.longValueExact());
 //        rBI = rangeBI.multiply(rangeBI);
@@ -333,42 +350,6 @@ public class Generic_FileStore {
 //        long u = 0L;
 //        l = rBI.subtract(BigInteger.ONE).longValueExact();
         nextRange = BigInteger.valueOf(ranges.get(ranges.size() - 1)).multiply(rangeBI).longValueExact();
-        dirCounts = getDirCounts(nextID - 1L, rangeL);
-    }
-
-    public static void main(String[] args) {
-        try {
-            Path p = Paths.get(System.getProperty("user.home"),
-                    Generic_Strings.s_data,
-                    Generic_Strings.s_generic);
-            String name = "test1";
-            if (true) {
-                //if (false) {
-                // Delete old test archive if it exists.
-                Path d = Paths.get(p.toString(), name);
-                if (Files.exists(d)) {
-                    try (Stream<Path> walk = Files.walk(d)) {
-                        walk.sorted(Comparator.reverseOrder())
-                                .map(Path::toFile)
-                                //.peek(System.out::println)
-                                .forEach(File::delete);
-                    }
-                }
-            }
-            // Create new archive.
-            short range = 10;
-            Generic_FileStore a = new Generic_FileStore(p, name, range);
-            a.run();
-        } catch (Exception ex) {
-            ex.printStackTrace(System.err);
-        }
-    }
-
-    public void run() throws IOException {
-        for (long l = 0; l < rangeBI.pow(3).add(BigInteger.ONE).longValueExact(); l++) {
-            //for (long l = 0; l < 11; l++) {
-            addToArchive();
-        }
     }
 
     /**
@@ -391,7 +372,7 @@ public class Generic_FileStore {
      * total number of elements to store.
      */
     public static long getLevels(long n, long range) {
-        long levels = 1;
+        long levels = 2;
         long l = n;
         while (l / range >= range) {
             l = l / range;
@@ -422,8 +403,8 @@ public class Generic_FileStore {
      * {@link #getHighestDir()}.
      */
     protected final void initLevelsAndNextID() throws IOException {
-        Path p = getHighestDir();
-        nextID = Long.getLong(p.getFileName().toString()) + 1;
+        Path p = findHighestLeaf();
+        nextID = Long.valueOf(p.getFileName().toString());
         levels = p.getNameCount() - baseDir.getNameCount();
     }
 
@@ -470,7 +451,7 @@ public class Generic_FileStore {
             throw new Exception("n too big for the range");
         }
         ArrayList<Long> r = new ArrayList<>();
-        for (int l = 0; l < lvls; l++) {
+        for (int l = 1; l < lvls; l++) {
             r.add(BigInteger.valueOf(range).pow(l).longValueExact());
         }
         return r;
@@ -490,8 +471,9 @@ public class Generic_FileStore {
      * something that can handle larger numbers of elements as suggested in the
      * class comment documentation.
      */
-    public static final ArrayList<Integer> getDirCounts(long n, long range)
+    public static final ArrayList<Long> getDirCounts(long n, long range)
             throws Exception {
+        ArrayList<Long> dirCounts = new ArrayList<>();
         long lvls = getLevels(n, range);
         ArrayList<Long> rngs = getRanges(n, range);
         /**
@@ -499,7 +481,11 @@ public class Generic_FileStore {
          * Exception if lvls is greater than Integer.MAX_VALUE
          */
         int li = (int) lvls;
-        return getDirIndexes(n, li, rngs);
+        ArrayList<Integer> dirIndexes = getDirIndexes(n, li, rngs);
+        for (int i = 0; i < dirIndexes.size(); i++) {
+            dirCounts.add((long) dirIndexes.get(i) + 1L);
+        }
+        return dirCounts;
     }
 
     /**
@@ -516,12 +502,14 @@ public class Generic_FileStore {
             ArrayList<Long> ranges) {
         ArrayList<Integer> r = new ArrayList<>();
         for (int lvl = levels - 2; lvl >= 0; lvl--) {
+            long id2 = id;
+            long range = ranges.get(lvl);
             int c = 0;
-            while (id > 0) {
-                id -= ranges.get(lvl);
+            id2 -= range;
+            while (id2 > 0) {
+                id2 -= range;
                 c++;
             }
-            id += ranges.get(lvl);
             r.add(0, c);
         }
         return r;
@@ -597,33 +585,64 @@ public class Generic_FileStore {
      */
     protected final void initLPs() {
         lps = new Path[levels - 1];
-        long l = 0L;
-        long range = ranges.get(levels - 2);
-        long u = range - 1;
-        lps[levels - 2] = Paths.get(baseDir.toString(), getName(l, u));
-        for (int lvl = levels - 3; lvl >= 0; lvl--) {
-            range = ranges.get(lvl);
-            l = range * (long) dirCounts.get(lvl);
-            u = l + range - 1L;
+        int lvl = levels - 2;
+        lps[lvl] = Paths.get(root.toString());
+        for (lvl = levels - 3; lvl >= 0; lvl--) {
+            long range = ranges.get(lvl);
+            long l = range * dirCounts.get(lvl);
+            long u = l + range - 1L;
             lps[lvl] = Paths.get(lps[lvl + 1].toString(), getName(l, u));
         }
     }
 
-    public void addToArchive() throws IOException {
+    /**
+     * Serializes and writes o to
+     * {@code Paths.get(getHighestLeaf().toString(), name)};
+     *
+     * @param o The Object to be serialised and written out.
+     * @throws IOException If encountered.
+     */
+    public void add(Object o) throws IOException {
+        Path p = Paths.get(getHighestLeaf().toString(), name);
+        Generic_IO.writeObject(o, p);
+    }
+
+    /**
+     * Deserializes an Object from file at
+     * {@code Paths.get(getPath(id).toString(), name)}.
+     *
+     * @param id The identifier for the Object to be deserialized.
+     * @return The deserialized Object.
+     * @throws IOException If encountered.
+     * @throws java.lang.ClassNotFoundException If for some reason the Object
+     * cannot otherwise be deserialized.
+     */
+    public Object get(long id) throws IOException, ClassNotFoundException {
+        Path p = Paths.get(getPath(id).toString(), name);
+        return Generic_IO.readObject(p);
+    }
+
+    /**
+     * Adds a new directory to the file store for storing item identified by
+     * {@link #nextID}.
+     *
+     * @throws IOException
+     */
+    public void addDir() throws IOException {
         nextID++;
         if (nextID % rangeL == 0) {
             // Grow
             if (nextID == ranges.get(levels - 2)) {
                 // Grow deeper.
                 ranges.add(nextRange);
-                Path target = Paths.get(baseDir.toString(), getName(0L, nextRange - 1));
+                root = Paths.get(baseDir.toString(), getName(0L, nextRange - 1));
                 initNextRange();
-                Files.createDirectory(target);
-                System.out.println(target.toString());
-                target = Paths.get(target.toString(),
+                Files.createDirectory(root);
+                System.out.println(root.toString());
+                Path target = Paths.get(root.toString(),
                         lps[lps.length - 1].getFileName().toString());
                 Files.move(lps[lps.length - 1], target);
-                dirCounts.add(1);
+                dirCounts.add(1L);
                 levels++;
                 initLPs();
             }
@@ -638,9 +657,9 @@ public class Generic_FileStore {
                     Path p = Paths.get(lps[lvl + 1].toString(), getName(l, u));
                     Files.createDirectory(p);
                     System.out.println(p.toString());
-                    int c = dirCounts.get(lvl);
+                    long c = dirCounts.get(lvl);
                     dirCounts.remove(lvl);
-                    dirCounts.add(lvl, c + 1);
+                    dirCounts.add(lvl, c + 1L);
                     lps[lvl] = p;
                     // Create other new directories up to level 0
                     for (int lvl2 = lvl - 1; lvl2 >= 0; lvl2--) {
@@ -648,9 +667,9 @@ public class Generic_FileStore {
                         p = Paths.get(lps[lvl2 + 1].toString(), getName(l, u));
                         Files.createDirectory(p);
                         System.out.println(p.toString());
-                        int c2 = dirCounts.get(lvl2);
+                        long c2 = dirCounts.get(lvl2);
                         dirCounts.remove(lvl2);
-                        dirCounts.add(lvl2, c2 + 1);
+                        dirCounts.add(lvl2, c2 + 1L);
                         lps[lvl2] = p;
                     }
                     break;
@@ -669,7 +688,7 @@ public class Generic_FileStore {
      * @throws java.io.IOException If the file store lacks integrity.
      */
     public final boolean testIntegrity() throws IOException {
-        try (Stream<Path> paths = Files.walk(baseDir)) {
+        try (Stream<Path> paths = Files.walk(root)) {
             boolean ok;
             try {
                 ok = paths.allMatch(path -> testPath(path));
@@ -699,14 +718,37 @@ public class Generic_FileStore {
         }
     }
 
+    /**
+     * @return The highest leaf directory for an initialised file store.
+     * @throws IOException If encountered.
+     */
     public Path getHighestLeaf() throws IOException {
         return getPath(nextID - 1L);
+    }
+
+    /**
+     * @return The highest leaf directory for an non-initialised file store.
+     * @throws IOException If encountered.
+     */
+    protected final Path findHighestLeaf() throws IOException {
+        Path hd = getHighestDir();
+        List<Path> l = Generic_IO.getList(hd);
+        if (l.size() == 1) {
+            return l.get(0);
+        } else {
+            TreeMap<Long, Path> s = new TreeMap<>();
+            l.forEach((p) -> {
+                s.put(Long.valueOf(p.getFileName().toString()), p);
+            });
+            return s.lastEntry().getValue();
+        }
     }
 
     protected Path getHighestDir() throws IOException {
         Path p = getHighestDir0(baseDir);
         Path p2 = getHighestDir0(p);
-        while (p.compareTo(p2) == 0) {
+        while (p.compareTo(p2) != 0) {
+            p = p2;
             p2 = getHighestDir0(p2);
         }
         return p;

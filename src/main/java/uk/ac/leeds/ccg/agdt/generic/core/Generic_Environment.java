@@ -239,7 +239,7 @@ public class Generic_Environment {
         Path dir = Paths.get(files.getLogDir().toString(), s);
         if (Files.exists(dir)) {
             Generic_FileStore fs = new Generic_FileStore(dir);
-            fs.addToArchive();
+            fs.addDir();
             return fs.getHighestLeaf();
         } else {
             Generic_FileStore fs = new Generic_FileStore(dir, s);
