@@ -29,30 +29,39 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
 
 /**
- * For storing data/files on disk. An file store is a form of data base where
- * each element is given a unique numerical index and is stored in a file at a
- * location given by the index known as a leaf file. Leaf files are found at
- * level 0 of the file store. The 1st element in the file store is indexed by
- * 0L, the 2nd element in the data base is indexed by 1L, the 3rd element in the
- * data base is indexed by 2L, and so on... A file store is comprised of a base
- * directory in which there are subdirectories at each level. Each subdirectory
- * may contain a further level of subdirectories, and so on down to level 0...
- * How many subdirectory levels there are and how many leaf directories are at
- * level 0 is determined by the range and the number of elements being stored in
- * the archive. Subdirectories are given standardised names such that it is easy
- * to find and infer the location of leaf directories at the end of the
- * directory tree at level 0.
+ * For storing files on disk in file store - a form of data base where each file
+ * is stored in a leaf directory. Leaf directories are found at level 0 of the
+ * file store. The 1st leaf directory has the name 0, the 2nd leaf directory has
+ * the name 1, the nth leaf directory has the name n where n is a positive
+ * integer . A file store is comprised of a base directory in which there is a
+ * root directory. The root directory indicates how many files are stored in the
+ * file store using a range given in the directory name. The minimum of the
+ * range is 0 and the maximum is a positive integer number. These two numbers
+ * are separated with by {@link #SEP} e.g. "0_99". The root directory will
+ * contain one or more subdirectories named in a similar style to the root
+ * directory e.g. "0_9". The maximum number will be less than or equal to that
+ * of the root directory. By comparing the range of numbers in the names of
+ * directories in the root directory with the range of numbers in the names of
+ * and subdirectory in the root directory it is possible to discern the range
+ * for the file store. The range is a parameter that can be set when
+ * initialising a file store. It controls how many subdirectories there can be
+ * at each level, and ultimately this controls how many levels of directories
+ * there are in the file store which is all dependent on the number of files
+ * stored in the file store.
+ *
+ * Files are to be stored in the leaf directories at level 0. The directories
+ * are given standardised names such that it is easy to find and infer the
+ * location of leaf directories.
  *
  * If range was set to 10, there would be at most 10 subdirectories in each
- * level (beyond level 0) of the archive. Storing Long.MAX_VALUE of elements in
- * such a archive requires x levels.
+ * level of the archive.
  *
- * Archives start with 3 levels and dynamically grow to store more elements. For
- * range = 10 the initial tree can be represented as follows:
+ * File stores are initialised with 3 levels and dynamically grow to store more
+ * files. For range = 10 the initial tree can be represented as follows:
  *
  * {@code
  * Level
- * 0        - 1           - 2
+ * 2        - 1           - root
  *
  * 0        - 0_9         - 0_99
  * }
@@ -61,9 +70,9 @@ import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
  *
  * {@code
  * Level
- * 0      - 1             - 2             - 3             - 4             -5            -6
+ * 6      - 5             - 4             - 3             - 2             - 1               - root
  *
- * 0      - 0_9           - 0_99          - 0_999         - 0_9999        - 0_99999     - 0_999999
+ * 0      - 0_9           - 0_99          - 0_999         - 0_9999        - 0_99999        - 0_999999
  * 1
  * 2
  * 3
@@ -92,8 +101,8 @@ import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
  * ...
  * ...
  * ...
- * 9999   - 9990_9999     - 9900_9999     - 9000_9999     - 0_10000
- * 10000  - 10000_10009   - 10000_10099   - 10000_10999   - 10000_19999   - 0_99999
+ * 9999   - 9990_9999     - 9900_9999     - 9000_9999
+ * 10000  - 10000_10009   - 10000_10099   - 10000_10999   - 10000_19999
  * ...
  * ...
  * ...
@@ -105,28 +114,31 @@ import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
  * }
  *
  * File stores are used for logging and may be used to store other outputs from
- * different runs of a program. They can also be used to cache data to help with
- * memory management.
+ * different runs of a program. They can also be used to organise caches of data
+ * from a running program to help with memory management.
  *
- * The limits with this implementation are that at most Long.MAX_VALUE of
- * elements can be stored in an archive. In cases where this is insufficient,
- * there is scope for developing some new code to handle more elements in a
- * similar way. This idea along with other related develop ideas are outlined
- * below:
+ * Although such a file store can store many files, there are limits depending
+ * on the range value set. The theoretical limit is close to Long.MAX_VALUE /
+ * range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a
+ * bigger restriction is the size of the storage element that holds the
+ * directories and files indexed by the file store.
+ *
+ * There is scope for developing something very similar that can store many more
+ * files in the same way. This idea along with other related develop ideas are
+ * outlined below:
  * <ul>
  * <li>Refactor or develop additional code in order to store more than
- * Long.MAX_VALUE number of elements where the identifiers of these elements are
+ * Long.MAX_VALUE number of files where the identifiers of these files are
  * represented as {@link BigInteger} numbers. This might leverage some other
  * libraries which depend on the Generic library which contains this class - in
  * particular - Math - which provides utility for BigInteger and BigDecimal
  * arithmetic which might be useful in such a development. If the product of
  * this development were a new class, then this class could potentially be
- * stored in the Generic library if dependencies are appropriately versioned and
- * care was taken not to create cyclical dependencies (a form of recursive
- * enrichment). Or the result could reside elsewhere. Where best to put any new
- * class will be considered further in due course.</li>
- * <li>Add a constructor to create a new Archive from an existing one
- * potentially with a different range.</li>
+ * stored in the Generic library although this might result in a cyclical
+ * dependency albeit one using different versions (a form of recursive
+ * enrichment). It might though be simpler to release this new class in another
+ * library.</li>
+ * <li>Add functionality for changing the range of a Generic_FileStore.</li>
  * </ul>
  *
  * @author Andy Turner
@@ -175,35 +187,41 @@ public class Generic_FileStore {
 
     /**
      * Stores the number of levels in the file store. For a new store, initially
-     * this is 3 and increases by 1 each time the archive grows deeper. The
-     * maximum number of elements that can be stored in 3 levels is range *
-     * range. With each subsequent level this number is increased by a factor of
-     * range. With n levels and range r
-     * {@code BigDecimal.valueOf(r).pow(n-1).longValueExact} elements can be
-     * stored. So, with range = 100 and 3 levels some 10 thousand elements can
-     * be stored. With range = 100 and 7 level some a million million elements
-     * can be stored. To calculate how many levels will be needed for a given
-     * number of elements n and a range r use {@link #getLevels(long, long)}.
+     * this is 2 and increases by 1 each time the archive grows deeper. The
+     * maximum number of files that can be stored in 2 levels is range * range.
+     * With each subsequent level this number is increased by a factor of range.
+     * With n levels and range r
+     * {@code BigDecimal.valueOf(r).pow(n).longValueExact} files can be stored.
+     * So, with range = 100 and 3 levels some 10 thousand files can be stored.
+     * With range = 100 and 7 level some a million million files can be stored.
+     * To calculate how many levels will be needed for a given number of files n
+     * and a range r use {@link #getLevels(long, long)}.
      */
     protected int levels;
 
     /**
      * For storing the range for each level greater than 0. This grows with
-     * {@link #levels} as the archive grows.
+     * {@link #levels} as the archive grows. ranges[levels - 1] is rangeL, ranges[levels -2] is
+     * rangeL * rangeL, etc...
      */
     protected ArrayList<Long> ranges;
 
     /**
      * For storing the number of directories at each level greater than 0. This
      * grows with {@link #levels} as the archive grows and is modified as new
-     * directories are added at each level.
+     * directories are added at each level. dirCounts[0] is a count of the
+     * number of directories at Level 1; dirCounts[1] is a count of the number
+     * of directories at level 2; etc...
      */
     protected ArrayList<Long> dirCounts;
 
     /**
      * For storing the paths to the directories (at each level greater than
      * zero) in which nextID is to be stored. This grows with {@link #levels} as
-     * the archive grows.
+     * the archive grows. If the file store grows wider it also must be
+     * modified. lps[0] is the full path to the Level 0 directory; lps[1] is the
+     * path to the parent directory of lps[0]; lps[2] is the path to the parent
+     * directory of lps[1]; etc...
      */
     protected Path[] lps;
 
@@ -214,7 +232,7 @@ public class Generic_FileStore {
 
     /**
      * Initialises a file store at Path p called name with 3 levels allowing to
-     * store 100 elements in each directory.
+     * store 100 files in each directory.
      *
      * @param p The path to where the archive will be initialised.
      * @param name The name the archive will be given.
@@ -227,7 +245,7 @@ public class Generic_FileStore {
 
     /**
      * Initialises a file store at Path p called name with 3 levels allowing to
-     * store range number of elements in each directory.
+     * store range number of files in each directory.
      *
      * @param p The path to where the archive will be initialised.
      * @param name The name the archive will be given.
@@ -245,7 +263,7 @@ public class Generic_FileStore {
         this.name = name;
         rangeL = range;
         rangeBI = BigInteger.valueOf(range);
-        levels = 3;
+        levels = 2;
         nextID = 0;
         lps = new Path[2];
         long l;
@@ -254,7 +272,7 @@ public class Generic_FileStore {
         BigInteger rBI;
         ranges.add(rangeBI.longValueExact());
         rBI = rangeBI.multiply(rangeBI);
-        ranges.add(rBI.longValueExact());
+        ranges.add(0, rBI.longValueExact());
         long u = 0L;
         l = rBI.subtract(BigInteger.ONE).longValueExact();
         nextRange = rBI.multiply(rangeBI).longValueExact();
@@ -335,22 +353,13 @@ public class Generic_FileStore {
         testIntegrity();
         initLevelsAndNextID();
         ranges = getRanges(nextID, rangeL);
-        // Set dirCounts for lps
-        dirCounts = getDirCounts(nextID - 1, rangeL);
         initLPs();
-        // DirCounts is
         dirCounts = getDirCounts(nextID, rangeL);
-//        BigInteger rBI;
-//        ranges.add(rangeBI.longValueExact());
-//        rBI = rangeBI.multiply(rangeBI);
-//        ranges.add(rBI.longValueExact());
-//        long u = 0L;
-//        l = rBI.subtract(BigInteger.ONE).longValueExact();
         nextRange = BigInteger.valueOf(ranges.get(ranges.size() - 1)).multiply(rangeBI).longValueExact();
     }
 
     /**
-     * @return A string description of this.
+     * @return A String description of this.
      */
     @Override
     public String toString() {
@@ -380,23 +389,23 @@ public class Generic_FileStore {
      * Initialises nextRange.
      */
     protected final void initNextRange() {
-        nextRange = BigInteger.valueOf(ranges.get(levels - 1)).multiply(rangeBI)
+        nextRange = BigInteger.valueOf(ranges.get(levels)).multiply(rangeBI)
                 .longValueExact();
     }
 
     /**
-     * Calculates and returns the number of levels needed for an archive with
-     * range of r and n total number of elements to store. If the result is
-     * larger than {@link Generic_Math#SHORT_MAXVALUE} then this is probably too
-     * deep - maybe try with a larger range...
+     * Calculates and returns the number of levels needed for a file store with
+     * range of r and n total number of files to store. If the result is larger
+     * than {@link Generic_Math#SHORT_MAXVALUE} then this is probably too deep -
+     * maybe try with a larger range...
      *
-     * @param n the number of elements
+     * @param n the number of files
      * @param range the range of the archive
      * @return the number of levels needed for an archive with range of r and n
-     * total number of elements to store.
+     * total number of files to store.
      */
-    public static long getLevels(long n, long range) {
-        long levels = 3;
+    public static int getLevels(long n, long range) {
+        int levels = 2;
         long l = n;
         while (l / range >= range) {
             l = l / range;
@@ -409,14 +418,14 @@ public class Generic_FileStore {
      * {@link #levels} is for storing the number of levels in the archive. This
      * is kept up to date as the archive grows. This method is a convenience
      * method for users that want to know how many levels will be needed once
-     * the number of elements stored reaches n. This effectively calls
+     * the number of files stored reaches n. This effectively calls
      * {@link #getLevels(long, long)} defaulting range to rangeL.
      *
-     * @param n The number of elements.
+     * @param n The number of files.
      * @return The number of levels needed for this archive to store n total
-     * number of elements.
+     * number of files.
      */
-    public long getLevels(long n) {
+    public int getLevels(long n) {
         return getLevels(n, rangeL);
     }
 
@@ -433,49 +442,40 @@ public class Generic_FileStore {
     }
 
     /**
-     * @return A copy of the current number of levels in the directory tree for
-     * this archive.
+     * @return {@link #levels}.
      */
     public final long getLevels() {
         return levels;
     }
 
     /**
-     * Updates if necessary and returns the ranges at each level.
-     *
-     * @return {@link ranges} updated if levels has increased since it was last
-     * updated.
+     * @return {@link ranges} updated.
      */
     protected final ArrayList<Long> getRanges() {
-        if (ranges == null) {
-            ranges = new ArrayList<>();
-        }
-        ranges.add(nextRange);
-        initNextRange();
         return ranges;
     }
 
     /**
-     * Calculates and returns the ranges given the number of elements to be
-     * stored and the range.
+     * Calculates and returns the ranges given the number of files to be stored
+     * and the range.
      *
-     * @param n The number of elements to be stored.
+     * @param n The number of files to be stored.
      * @param range The range.
      * @return {@link ranges} updated if levels has increased since it was last
      * updated.
      * @throws java.lang.Exception If n is too big for the range. If this is the
      * case then maybe try to specify a bigger range or look to implementing
-     * something that can handle larger numbers of elements as suggested in the
+     * something that can handle larger numbers of files as suggested in the
      * class comment documentation.
      */
     public static final ArrayList<Long> getRanges(long n, long range)
             throws Exception {
-        long lvls = getLevels(n, range);
+        int lvls = getLevels(n, range);
         if (lvls > Integer.MAX_VALUE) {
             throw new Exception("n too big for the range");
         }
         ArrayList<Long> r = new ArrayList<>();
-        for (int l = 1; l < lvls; l++) {
+        for (int l = 0; l < lvls; l++) {
             r.add(BigInteger.valueOf(range).pow(l).longValueExact());
         }
         return r;
@@ -483,16 +483,17 @@ public class Generic_FileStore {
 
     /**
      * Calculates the number of directories needed at each level to store n
-     * elements with range r. This first calculates the number of levels and the
+     * files with range r. This first calculates the number of levels and the
      * ranges for each level.
      *
-     * @param n The number of elements to store.
+     * @param n The number of files to store.
      * @param range The range.
-     * @return The number of directories needed at each level to store n
-     * elements with range r.
+     * @return The number of directories needed at each level to store n files
+     * with range range. The first element is the list is the number of
+     * directories in the root directory.
      * @throws java.lang.Exception If n is too big for the range. If this is the
      * case then maybe try to specify a bigger range or look to implementing
-     * something that can handle larger numbers of elements as suggested in the
+     * something that can handle larger numbers of files as suggested in the
      * class comment documentation.
      */
     public static final ArrayList<Long> getDirCounts(long n, long range)
@@ -525,7 +526,7 @@ public class Generic_FileStore {
     protected static ArrayList<Integer> getDirIndexes(long id, int levels,
             ArrayList<Long> ranges) {
         ArrayList<Integer> r = new ArrayList<>();
-        for (int lvl = levels - 2; lvl >= 0; lvl--) {
+        for (int lvl = levels - 1; lvl >= 0; lvl++) {
             long id2 = id;
             long range = ranges.get(lvl);
             int c = 0;
@@ -545,7 +546,7 @@ public class Generic_FileStore {
      *
      * This may result in a runtime exception if n is too big for the range. If
      * this is the case then maybe try to specify a bigger range or look to
-     * implementing something that can handle larger numbers of elements as
+     * implementing something that can handle larger numbers of files as
      * suggested in the class comment documentation.
      *
      * @param id The identifier of the element to get the dirCounts for.
@@ -560,8 +561,8 @@ public class Generic_FileStore {
     /**
      * Calculates and returns the current path of the directory for storing the
      * element identified by id. For efficiency, this does not check if id is
-     * less than or equal to {@link #nextID}, but it should and if not then what
-     * is returned might not be useful.
+     * less than or equal to {@link #nextID}, but it should be and if not then
+     * what is returned might not be useful.
      *
      * @param id The identifier of the element for which the current path is
      * wanted.
@@ -569,32 +570,18 @@ public class Generic_FileStore {
      * identified by id.
      */
     protected Path getPath(long id) {
-        return getPath(id, 0);
-    }
-
-    /**
-     * Calculates and returns the current path of the directory at level lvl for
-     * storing the element identified by id.For efficiency, this does not check
-     * if id is less than or equal to {@link #nextID}, but it should and if not
-     * then what is returned might not be useful.
-     *
-     * @param id The identifier of the element for which the current path is
-     * wanted.
-     * @param lvl
-     * @return The current path of the directory for storing the element
-     * identified by id.
-     */
-    protected Path getPath(long id, int lvl) {
         Path[] paths = new Path[levels - 1];
-        ArrayList<Integer> dirIndexes = getDirIndexes(id);
-        Path p = lps[levels - 2];
-        for (int lv = levels - 2; lv < lvl; lv--) {
-            long range = ranges.get(lv);
-            long l = (long) dirIndexes.get(lv) * range;
-            long u = l + range - 1;
-            paths[lv] = Paths.get(p.toString(), getName(u, l));
-            p = paths[lv];
+        //ArrayList<Integer> dirIndexes = getDirIndexes(id);
+        //Path p = lps[levels - 1];
+        Path p = root;
+        for (int lvl = levels - 2; lvl >= 0; lvl--) {
+            long range = ranges.get(lvl);
+            long l = range * (dirCounts.get(lvl) - 1L);
+            long u = l + range - 1L;
+            paths[lvl] = Paths.get(p.toString(), getName(l, u));
+            p = paths[lvl];
         }
+        p = Paths.get(p.toString(), Long.toString(id));
         return p;
     }
 
@@ -611,9 +598,10 @@ public class Generic_FileStore {
         lps = new Path[levels - 1];
         int lvl = levels - 2;
         lps[lvl] = Paths.get(root.toString());
+        ArrayList<Integer> dirIndexes = getDirIndexes(nextID, levels, ranges);
         for (lvl = levels - 3; lvl >= 0; lvl--) {
             long range = ranges.get(lvl);
-            long l = range * dirCounts.get(lvl);
+            long l = range * dirIndexes.get(lvl);
             long u = l + range - 1L;
             lps[lvl] = Paths.get(lps[lvl + 1].toString(), getName(l, u));
         }
@@ -656,7 +644,7 @@ public class Generic_FileStore {
         nextID++;
         if (nextID % rangeL == 0) {
             // Grow
-            if (nextID == ranges.get(levels - 2)) {
+            if (nextID == ranges.get(levels - 1)) {
                 // Grow deeper.
                 ranges.add(nextRange);
                 root = Paths.get(baseDir.toString(), getName(0L, nextRange - 1));
@@ -666,12 +654,13 @@ public class Generic_FileStore {
                 Path target = Paths.get(root.toString(),
                         lps[lps.length - 1].getFileName().toString());
                 Files.move(lps[lps.length - 1], target);
-                dirCounts.add(1L);
+                dirCounts.add(0, 1L);
                 levels++;
+
                 initLPs();
             }
             // Add width as needed.
-            for (int lvl = levels - 2; lvl >= 0; lvl--) {
+            for (int lvl = levels - 1; lvl >= 0; lvl--) {
                 long range = ranges.get(lvl);
                 long dirCount = dirCounts.get(lvl);
                 if (nextID % (range * dirCount) == 0) {
@@ -729,15 +718,23 @@ public class Generic_FileStore {
         return true;
     }
 
+    /**
+     * @param p The path to test.
+     * @return true if p is not a directory or if there is a directory at p and
+     * the filename contains {@link #SEP} or can be readily converted to a Long.
+     * @throws NumberFormatException if p is a directory, does not contain
+     * {@link SEP} and cannot be readily converted to a Long.
+     */
     protected final boolean testPath(Path p) {
         String fn = p.getFileName().toString();
-        if (fn.contains(SEP)) {
-            return Files.isDirectory(p);
-        } else {
-            if (Files.isDirectory(p)) {
+        if (Files.isDirectory(p)) {
+            if (fn.contains(SEP)) {
+                return true;
+            } else {
                 Long.valueOf(fn);
                 return true;
             }
+        } else {
             return true;
         }
     }
@@ -747,7 +744,7 @@ public class Generic_FileStore {
      * @throws IOException If encountered.
      */
     public Path getHighestLeaf() throws IOException {
-        return getPath(nextID - 1L);
+        return getPath(nextID);
     }
 
     /**

@@ -242,7 +242,7 @@ public class Generic_Environment {
             fs.addDir();
             return fs.getHighestLeaf();
         } else {
-            Generic_FileStore fs = new Generic_FileStore(dir, s);
+            Generic_FileStore fs = new Generic_FileStore(files.getLogDir(), s);
             dir = fs.getHighestLeaf();
         }
         return dir;
