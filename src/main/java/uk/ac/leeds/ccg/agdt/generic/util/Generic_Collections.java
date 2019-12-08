@@ -298,7 +298,7 @@ public class Generic_Collections {
     }
 
     /**
-     * Add {@code v] to the value of {@code l} at position {@code p}.
+     * Add {@code v} to the value of {@code l} at position {@code p}.
      *
      * @param <N> The Number to add.
      * @param l The list to add to.

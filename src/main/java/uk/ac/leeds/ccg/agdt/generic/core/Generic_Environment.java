@@ -86,7 +86,7 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. {@link #level} is defaulted to Level.FINE. See
-     * {@link Generic_Environment#Generic_Environment(File,Level)}.
+     * {@link #Generic_Environment(uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults, java.util.logging.Level)}.
      *
      * @param d The Generic_Defaults.
      * @throws java.io.IOException If encountered.
@@ -99,7 +99,7 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. {@link #range} is defaulted to 100. See
-     * {@link Generic_Environment#Generic_Environment(File,Level,int)}.
+     * {@link #Generic_Environment(uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults, java.util.logging.Level, int)}.
      *
      * @param d The Generic_Defaults.
      * @param l What {@link #level} is set to.
@@ -107,7 +107,7 @@ public class Generic_Environment {
      * @throws Exception If there is a another problem setting up the file
      * store.
      */
-    public Generic_Environment(Generic_Defaults d, Level l) 
+    public Generic_Environment(Generic_Defaults d, Level l)
             throws IOException, Exception {
         this(d, l, DEFAULT_RANGE);
     }
@@ -115,8 +115,8 @@ public class Generic_Environment {
     /**
      * Creates a new instance. {@link #files} is set using
      * {@code new Generic_Files(new Generic_Strings(d)}. See
-     * {@link #Generic_Environment(File,Level,int)}.
-     *
+     * {@link #Generic_Environment(uk.ac.leeds.ccg.agdt.generic.io.Generic_Files, java.util.logging.Level, int)}.
+     * 
      * @param d The Generic_Defaults.
      * @param l What {@link #level} is set to.
      * @param r What {@link #range} is set to.
@@ -124,16 +124,16 @@ public class Generic_Environment {
      * @throws Exception If there is a another problem setting up the file
      * store.
      */
-    public Generic_Environment(Generic_Defaults d, Level l, int r) 
+    public Generic_Environment(Generic_Defaults d, Level l, int r)
             throws IOException, Exception {
         this(new Generic_Files(d), l, r);
     }
 
     /**
      * Creates a new instance. {@link #level} is defaulted to Level.FINE.
-     * {@link #range} is defaulted to 100. {@link #initLog(String)} or
-     * {@link #initLog(String,String)} still needs to be called to set up the
-     * log.
+     * {@link #range} is defaulted to 100. See
+     * {@link #Generic_Environment(uk.ac.leeds.ccg.agdt.generic.io.Generic_Files, java.util.logging.Level, int)}
+     * .
      *
      * @param f What {@link #files} is set to.
      * @throws java.io.IOException If encountered.
@@ -146,9 +146,8 @@ public class Generic_Environment {
 
     /**
      * Creates a new instance. {@link #range} is defaulted to 100. See
-     * {@link Generic_Environment#Generic_Environment(Generic_Files,Level,int)}.
-     * {@link #initLog(String)} or {@link #initLog(String,String)} still needs
-     * to be called to set up the log.
+     * {@link #Generic_Environment(uk.ac.leeds.ccg.agdt.generic.io.Generic_Files, java.util.logging.Level, int)}
+     * .
      *
      * @param f What {@link #files} is set to.
      * @param l What {@link #level} is set to.
@@ -156,7 +155,7 @@ public class Generic_Environment {
      * @throws Exception If there is a another problem setting up the file
      * store.
      */
-    public Generic_Environment(Generic_Files f, Level l) 
+    public Generic_Environment(Generic_Files f, Level l)
             throws IOException, Exception {
         this(f, l, DEFAULT_RANGE);
     }
@@ -176,7 +175,7 @@ public class Generic_Environment {
      * @throws Exception If there is a another problem setting up the file
      * store.
      */
-    public Generic_Environment(Generic_Files f, Level l, int r) 
+    public Generic_Environment(Generic_Files f, Level l, int r)
             throws IOException, Exception {
         files = f;
         io = new Generic_IO(this);

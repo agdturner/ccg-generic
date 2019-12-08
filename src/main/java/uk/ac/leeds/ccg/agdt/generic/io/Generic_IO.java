@@ -30,10 +30,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -58,7 +55,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Object;
-import uk.ac.leeds.ccg.agdt.generic.execution.Generic_Execution;
 
 /**
  * Contains convenient methods for primarily helping to read from and write to a
@@ -234,76 +230,76 @@ public class Generic_IO extends Generic_Object {
      * created, or cannot be opened for any other reason.
      */
     public BufferedInputStream getBufferedInputStream(Path f)
-            throws FileNotFoundException {
-        return new BufferedInputStream(getFileInputStream(f));
+            throws FileNotFoundException, IOException {
+        return new BufferedInputStream(Files.newInputStream(f, READ));
     }
 
-    /**
-     * @param f File.
-     * @return FileInputStream
-     * @throws java.io.FileNotFoundException If the file exists but is a
-     * directory rather than a regular file, does not exist but cannot be
-     * created, or cannot be opened for any other reason.
-     */
-    public FileInputStream getFileInputStream(Path f) throws FileNotFoundException {
-        FileInputStream r = null;
-        try {
-            r = new FileInputStream(f.toString());
-        } catch (FileNotFoundException ex) {
-            if (Files.exists(f)) {
-                long wait = 2000L;
-                fileWait(wait, f);
-                return getFileInputStream(f, wait);
-            } else {
-                throw ex;
-            }
-        }
-        return r;
-    }
-
-    protected void fileWait(long wait, Object o) {
-        env.log("Maybe there are too many open files... "
-                + "waiting for " + wait + " milliseconds...");
-        Generic_Execution.waitSychronized(env, o, wait);
-    }
-
-    /**
-     * @param f File.
-     * @param wait Time in milliseconds to wait before trying to open the
-     * FileInputStream again if it failed the first time (this may happen if
-     * waiting for a file to be written).
-     * @return FileInputStream
-     * @throws java.io.FileNotFoundException If the file exists but is a
-     * directory rather than a regular file, does not exist but cannot be
-     * created, or cannot be opened for any other reason.
-     */
-    public FileInputStream getFileInputStream(Path f, long wait)
-            throws FileNotFoundException {
-        try {
-            return new FileInputStream(f.toString());
-        } catch (FileNotFoundException ex) {
-            if (Files.exists(f)) {
-                fileWait(wait, f);
-                return getFileInputStream(f, wait * 2L);
-            } else {
-                throw ex;
-            }
-        }
-    }
-
+//    /**
+//     * @param f File.
+//     * @return FileInputStream
+//     * @throws java.io.FileNotFoundException If the file exists but is a
+//     * directory rather than a regular file, does not exist but cannot be
+//     * created, or cannot be opened for any other reason.
+//     */
+//    public FileInputStream getFileInputStream(Path f) throws FileNotFoundException {
+//        FileInputStream r = null;
+//        try {
+//            r = new FileInputStream(f.toFile());
+//        } catch (FileNotFoundException ex) {
+//            if (Files.exists(f)) {
+//                long wait = 2000L;
+//                fileWait(wait, f);
+//                return getFileInputStream(f, wait);
+//            } else {
+//                throw ex;
+//            }
+//        }
+//        return r;
+//    }
+//
+//    protected void fileWait(long wait, Object o) {
+//        env.log("Maybe there are too many open files... "
+//                + "waiting for " + wait + " milliseconds...");
+//        Generic_Execution.waitSychronized(env, o, wait);
+//    }
+//
+//    /**
+//     * @param f File.
+//     * @param wait Time in milliseconds to wait before trying to open the
+//     * FileInputStream again if it failed the first time (this may happen if
+//     * waiting for a file to be written).
+//     * @return FileInputStream
+//     * @throws java.io.FileNotFoundException If the file exists but is a
+//     * directory rather than a regular file, does not exist but cannot be
+//     * created, or cannot be opened for any other reason.
+//     */
+//    public FileInputStream getFileInputStream(Path f, long wait)
+//            throws FileNotFoundException {
+//        new FileInputStream();
+//        try {
+//            return new FileInputStream(f.toFile());
+//        } catch (FileNotFoundException ex) {
+//            if (Files.exists(f)) {
+//                fileWait(wait, f);
+//                return getFileInputStream(f, wait * 2L);
+//            } else {
+//                throw ex;
+//            }
+//        }
+//    }
     /**
      * For getting a {@link BufferedOutputStream} to write to a file at
      * {@code f}.
      *
      * @param f The {@link Path} of the file to be written.
      * @return A {@link BufferedOutputStream} for writing to {@code f}.
-     * @throws java.io.FileNotFoundException If the file exists but is a
-     * directory rather than a regular file, does not exist but cannot be
-     * created, or cannot be opened for any other reason.
+     * @throws java.io.IOException If the file exists but is a directory rather
+     * than a regular file, does not exist but cannot be created, or cannot be
+     * opened for any other reason.
      */
     public BufferedOutputStream getBufferedOutputStream(Path f)
-            throws FileNotFoundException {
-        return new BufferedOutputStream(new FileOutputStream(f.toString()));
+            throws IOException {
+        return new BufferedOutputStream(Files.newOutputStream(f, WRITE));
     }
 
     /**
@@ -442,8 +438,8 @@ public class Generic_IO extends Generic_Object {
      * created, or cannot be opened for any other reason.
      */
     public BufferedReader getBufferedReader(Path f)
-            throws FileNotFoundException {
-        return new BufferedReader(new InputStreamReader(getFileInputStream(f)));
+            throws FileNotFoundException, IOException {
+        return getBufferedReader(f, "UTF-8");
     }
 
     /**
@@ -453,14 +449,12 @@ public class Generic_IO extends Generic_Object {
      * @return BufferedReader
      * @throws java.io.UnsupportedEncodingException If InputStreamReader cannot
      * be constructed from charsetName.
-     * @throws java.io.FileNotFoundException If the file exists but is a
-     * directory rather than a regular file, does not exist but cannot be
-     * created, or cannot be opened for any other reason.
+     * @throws java.io.IOException If encountered.
      */
     public BufferedReader getBufferedReader(Path f, String charsetName)
-            throws UnsupportedEncodingException, FileNotFoundException {
-        return new BufferedReader(new InputStreamReader(getFileInputStream(f),
-                charsetName));
+            throws UnsupportedEncodingException, IOException {
+        return new BufferedReader(new InputStreamReader(
+                Files.newInputStream(f, READ), charsetName));
     }
 
     /**
@@ -488,18 +482,18 @@ public class Generic_IO extends Generic_Object {
      * cannot be opened for any other reason.
      */
     public BufferedReader closeAndGetBufferedReader(BufferedReader br, Path f)
-            throws FileNotFoundException {
+            throws FileNotFoundException, IOException {
         closeBufferedReader(br);
         br = getBufferedReader(f);
         return br;
     }
 
     /**
-     * Write s to a file at Path p using the default charset UTF-8.
+     * Write {@code s} to a file at {@code p}.
      *
-     * @param p
-     * @param s
-     * @throws IOException
+     * @param p The path to the file to write to.
+     * @param s The String to write.
+     * @throws IOException If encountered.
      */
     public void write(Path p, String s) throws IOException {
         // Convert the string to a  byte array.
@@ -519,97 +513,101 @@ public class Generic_IO extends Generic_Object {
      * regular file, does not exist but cannot be created, or cannot be opened
      * for any other reason.
      */
-    public PrintWriter getPrintWriter(Path f, boolean append)
+    public PrintWriter getPrintWriter(Path f, boolean append) 
             throws IOException {
-        try {
-            return new PrintWriter(new BufferedWriter(
-                    new FileWriter(f.toString(), append)));
-        } catch (FileNotFoundException ex) {
-            if (Files.exists(f)) {
-                long wait = 2000L;
-                fileWait(wait, f);
-                return getPrintWriter(f, append, wait);
-            } else {
-                throw ex;
-            }
+        if (append) {
+            return new PrintWriter(Files.newBufferedWriter(f, WRITE, CREATE,
+                    APPEND));
+        } else {
+            return new PrintWriter(Files.newBufferedWriter(f, WRITE, CREATE));
         }
+//        try {
+//            return new PrintWriter(new BufferedWriter(f, append));
+//        } catch (FileNotFoundException ex) {
+//            if (Files.exists(f)) {
+//                long wait = 2000L;
+//                fileWait(wait, f);
+//                return getPrintWriter(f, append, wait);
+//            } else {
+//                throw ex;
+//            }
+//        }
     }
 
-    /**
-     * @param f The File to write to.
-     * @param append If true an existing file will be appended otherwise it will
-     * be overwritten.
-     * @param wait Time in milliseconds to wait before trying to open the
-     * FileInputStream again if it failed the first time (this may happen if
-     * waiting for a file to be written).
-     * @return PrintWriter
-     * @throws IOException If the file exists but is a directory rather than a
-     * regular file, does not exist but cannot be created, or cannot be opened
-     * for any other reason.
-     */
-    public PrintWriter getPrintWriter(Path f, boolean append, long wait)
-            throws IOException {
-        try {
-            return new PrintWriter(new BufferedWriter(new FileWriter(
-                    f.toString(), append)));
-        } catch (FileNotFoundException ex) {
-            if (Files.exists(f)) {
-                fileWait(wait, f);
-                return getPrintWriter(f, append, wait * 2L);
-            } else {
-                throw ex;
-            }
-        }
-    }
-
-    /**
-     *
-     * @param depth int
-     * @return String
-     */
-    public String getRelativeFilePath(int depth) {
-        String r = "";
-        for (int i = 0; i < depth; i++) {
-            r += "../";
-        }
-        return r;
-    }
-
-    /**
-     * @param depth int.
-     * @param f File.
-     * @return f.getPath() appended with depth number of "../"
-     */
-    public String getRelativeFilePath(int depth, Path f) {
-        return getRelativeFilePath(depth, f.toString());
-    }
-
-    /**
-     * @param depth int.
-     * @param path String.
-     * @return path appended with depth number of "../"
-     */
-    public String getRelativeFilePath(int depth, String path) {
-        String r = path;
-        for (int i = 0; i < depth; i++) {
-            r += "../";
-        }
-        return r;
-    }
-
-    /**
-     * Skips to the next token of StreamTokenizer.TT_EOL type in st.nextToken().
-     *
-     * @param st StreamTokenizer
-     * @throws java.io.IOException If IOException encountered.
-     */
-    public void skipline(StreamTokenizer st) throws IOException {
-        int token = st.nextToken();
-        while (token != StreamTokenizer.TT_EOL) {
-            token = st.nextToken();
-        }
-    }
-
+//    /**
+//     * @param f The File to write to.
+//     * @param append If true an existing file will be appended otherwise it will
+//     * be overwritten.
+//     * @param wait Time in milliseconds to wait before trying to open the
+//     * FileInputStream again if it failed the first time (this may happen if
+//     * waiting for a file to be written).
+//     * @return PrintWriter
+//     * @throws IOException If the file exists but is a directory rather than a
+//     * regular file, does not exist but cannot be created, or cannot be opened
+//     * for any other reason.
+//     */
+//    public PrintWriter getPrintWriter(Path f, boolean append, long wait)
+//            throws IOException {
+//        try {
+//            return new PrintWriter(new BufferedWriter(new FileWriter(
+//                    f.toFile(), append)));
+//        } catch (FileNotFoundException ex) {
+//            if (Files.exists(f)) {
+//                fileWait(wait, f);
+//                return getPrintWriter(f, append, wait * 2L);
+//            } else {
+//                throw ex;
+//            }
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param depth int
+//     * @return String
+//     */
+//    public String getRelativeFilePath(int depth) {
+//        String r = "";
+//        for (int i = 0; i < depth; i++) {
+//            r += "../";
+//        }
+//        return r;
+//    }
+//
+//    /**
+//     * @param depth int.
+//     * @param f File.
+//     * @return f.getPath() appended with depth number of "../"
+//     */
+//    public String getRelativeFilePath(int depth, Path f) {
+//        return getRelativeFilePath(depth, f.toString());
+//    }
+//
+//    /**
+//     * @param depth int.
+//     * @param path String.
+//     * @return path appended with depth number of "../"
+//     */
+//    public String getRelativeFilePath(int depth, String path) {
+//        String r = path;
+//        for (int i = 0; i < depth; i++) {
+//            r += "../";
+//        }
+//        return r;
+//    }
+//
+//    /**
+//     * Skips to the next token of StreamTokenizer.TT_EOL type in st.nextToken().
+//     *
+//     * @param st StreamTokenizer
+//     * @throws java.io.IOException If IOException encountered.
+//     */
+//    public void skipline(StreamTokenizer st) throws IOException {
+//        int token = st.nextToken();
+//        while (token != StreamTokenizer.TT_EOL) {
+//            token = st.nextToken();
+//        }
+//    }
     /**
      * Sets the syntax of st as follows:
      * <pre>{@code
@@ -928,30 +926,29 @@ public class Generic_IO extends Generic_Object {
         }
     }
 
-    /**
-     * @param dir File.
-     * @param f File.
-     * @return The name of the file or directory in dir in the path of f.
-     */
-    public String getFilename(Path dir, Path f) {
-        int beginIndex = dir.normalize().toString().length() + 1;
-        String fileSeparator = System.getProperty("file.separator");
-        /*
-         * A feature in Java means splitting strings with "\" does not work as
-         * might be expected and the regexp needs changing to "\\\\"
-         */
-        String regexp = "\\";
-        //System.out.println("regexp " + regexp);
-        if (fileSeparator.equals(regexp)) {
-            fileSeparator = "\\\\";
-        }
-        //System.out.println("fileSeparator " + fileSeparator);
-        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getAbsolutePath().substring(beginIndex)).split(System.getProperty("file.separator"))[0];
-        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("\\")[0];
-        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("/")[0];
-        return (f.toString().substring(beginIndex)).split(fileSeparator)[0];
-    }
-
+//    /**
+//     * @param dir File.
+//     * @param f File.
+//     * @return The name of the file or directory in dir in the path of f.
+//     */
+//    public String getFilename(Path dir, Path f) {
+//        int beginIndex = dir.normalize().toString().length() + 1;
+//        String fileSeparator = System.getProperty("file.separator");
+//        /*
+//         * A feature in Java means splitting strings with "\" does not work as
+//         * might be expected and the regexp needs changing to "\\\\"
+//         */
+//        String regexp = "\\";
+//        //System.out.println("regexp " + regexp);
+//        if (fileSeparator.equals(regexp)) {
+//            fileSeparator = "\\\\";
+//        }
+//        //System.out.println("fileSeparator " + fileSeparator);
+//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getAbsolutePath().substring(beginIndex)).split(System.getProperty("file.separator"))[0];
+//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("\\")[0];
+//        //String newTopOfArchiveDirectoryName = (objectDirectoryFile.getPath().substring(beginIndex)).split("/")[0];
+//        return (f.toString().substring(beginIndex)).split(fileSeparator)[0];
+//    }
     /**
      * Method to calculate the length of the file path.
      *
@@ -964,31 +961,30 @@ public class Generic_IO extends Generic_Object {
         return s.length();
     }
 
-    /**
-     *
-     * @param f File.
-     * @param dir File.
-     * @return int
-     * @throws java.io.IOException If encountered.
-     */
-    public int getFilePathLength(Path f, Path dir) throws IOException {
-        int fl = getFilePathLength(f);
-        int dl = getFilePathLength(dir);
-        return fl - dl;
-    }
-
+//    /**
+//     *
+//     * @param f File.
+//     * @param dir File.
+//     * @return int
+//     * @throws java.io.IOException If encountered.
+//     */
+//    public int getFilePathLength(Path f, Path dir) throws IOException {
+//        int fl = getFilePathLength(f);
+//        int dl = getFilePathLength(dir);
+//        return fl - dl;
+//    }
     /**
      * Returns a newly created file in directory returned by
      * {@link Generic_Files#getGeneratedDir()}.
      *
-     * @return A {@link File} for a newly created file in directory returned by
+     * @return A path for a newly created file in directory returned by
      * {@link Generic_Files#getGeneratedDir()}.
      * @throws java.io.IOException If directory returned by
      * {@link Generic_Files#getGeneratedDir()} is not a directory (but this
      * should not happen).
      */
     public Path createNewFile() throws IOException {
-        return createNewFile(env.files.getGeneratedDir());
+        return createNewFile(env.files.getGeneratedDir().getPath());
     }
 
     /**

@@ -150,8 +150,8 @@ public class Generic_FileStore implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Separates the smallest and largest numbers for the identifiers stored in
-     * any directory at level > 0.
+     * Separates the smaller and larger numbers for the range of identifiers
+     * stored in any directory.
      */
     protected static final String SEP = Generic_Strings.symbol_underscore;
 
@@ -250,7 +250,7 @@ public class Generic_FileStore implements Serializable {
 
     /**
      * Initialises a file store at {@code p} called {@code name} with 3 levels
-     * allowing to store {@link range} number of files in each directory.
+     * allowing to store {@code range} number of files in each directory.
      *
      * @param p The path to where the file store will be initialised.
      * @param name The directory file name for the {@link #baseDir} of the file
@@ -282,10 +282,10 @@ public class Generic_FileStore implements Serializable {
         long u = 0L;
         l = rBI.subtract(BigInteger.ONE).longValueExact();
         nextRange = rBI.multiply(rangeBI).longValueExact();
-        lps[0] = new Generic_Path(Paths.get(baseDir.toString(), getName(u, l)));
+        lps[0] = new Generic_Path(Paths.get(baseDir.s, getName(u, l)));
         l = rangeBI.subtract(BigInteger.ONE).longValueExact();
-        lps[1] = new Generic_Path(Paths.get(lps[0].toString(), getName(u, l)));
-        Files.createDirectories(Paths.get(lps[1].toString(), "0"));
+        lps[1] = new Generic_Path(Paths.get(lps[0].s, getName(u, l)));
+        Files.createDirectories(Paths.get(lps[1].s, "0"));
         dirCounts = new ArrayList<>();
         dirCounts.add(1L);
         dirCounts.add(1L);
@@ -302,7 +302,7 @@ public class Generic_FileStore implements Serializable {
     public Generic_FileStore(Path p) throws IOException, Exception {
         name = p.getFileName().toString();
         baseDir = new Generic_Path(p);
-        if (!Files.isDirectory(baseDir)) {
+        if (!Files.isDirectory(baseDir.getPath())) {
             throw new Exception("Path " + p.toString() + " does not appear to "
                     + "be a file store as it does not contain one element that "
                     + "is a directory.");
@@ -332,7 +332,7 @@ public class Generic_FileStore implements Serializable {
         try {
             long r;
             r = Long.valueOf(split[1]) + 1L;
-            Path p2 = Generic_IO.getList(root).get(0);
+            Path p2 = Generic_IO.getList(root.getPath()).get(0);
             fn = p2.getFileName().toString();
             if (!fn.contains(SEP)) {
                 throw new Exception("Path " + p2.toString() + " does not have "
@@ -369,7 +369,7 @@ public class Generic_FileStore implements Serializable {
      */
     @Override
     public String toString() {
-        String r = "File store(baseDir=" + baseDir + ", root=" + root
+        String r = "File store(baseDir=" + baseDir.s + ", root=" + root.s
                 + ", name=" + name + ", range=" + rangeBI.toString()
                 + ", nextRange=" + nextRange + ", levels=" + levels
                 + ", ranges=(length=" + ranges.size()
@@ -383,9 +383,9 @@ public class Generic_FileStore implements Serializable {
             r += ", dirCounts[" + i + "]=" + dirCounts.get(i);
         }
         r += "), lps(length=" + lps.length
-                + ", lps[0]=" + lps[0];
+                + ", lps[0]=" + lps[0].s;
         for (int i = 0; i < lps.length; i++) {
-            r += ", lps[" + i + "]=" + lps[i];
+            r += ", lps[" + i + "]=" + lps[i].s;
         }
         r += "), nextID=" + nextID + ")";
         return r;
@@ -468,8 +468,8 @@ public class Generic_FileStore implements Serializable {
 
     /**
      * Calculates and returns the ranges given the number of files to be stored
-     * and the range. ranges[levels - 1] is
-     * range, ranges[levels -2] is range * range, etc...
+     * and the range. ranges[levels - 1] is range, ranges[levels -2] is range *
+     * range, etc...
      *
      * @param n The number of files to be stored.
      * @param range The range.
@@ -607,13 +607,13 @@ public class Generic_FileStore implements Serializable {
      */
     protected final void initLPs() {
         lps = new Generic_Path[levels];
-        lps[0] = new Generic_Path(Paths.get(root.toString()));
+        lps[0] = root;
         ArrayList<Integer> dirIndexes = getDirIndexes(nextID, levels, ranges);
         for (int lvl = 1; lvl < levels; lvl++) {
             long range = ranges.get(lvl);
             long l = range * dirIndexes.get(lvl);
             long u = l + range - 1L;
-            lps[lvl] = new Generic_Path(Paths.get(lps[lvl - 1].toString(), getName(l, u)));
+            lps[lvl] = new Generic_Path(Paths.get(lps[lvl - 1].s, getName(l, u)));
         }
     }
 
@@ -648,7 +648,7 @@ public class Generic_FileStore implements Serializable {
      * Adds a new directory to the file store for storing item identified by
      * {@link #nextID}.
      *
-     * @throws IOException
+     * @throws IOException If encountered.
      */
     public void addDir() throws IOException {
         nextID++;
@@ -657,13 +657,13 @@ public class Generic_FileStore implements Serializable {
             if (nextID == ranges.get(0)) {
                 // Grow deeper.
                 ranges.add(0, nextRange);
-                root = new Generic_Path(Paths.get(baseDir.toString(), getName(0L, nextRange - 1)));
+                root = new Generic_Path(Paths.get(baseDir.s, getName(0L, nextRange - 1)));
                 initNextRange();
-                Files.createDirectory(root);
+                Files.createDirectory(root.getPath());
                 //System.out.println(root.toString());
-                Path target = Paths.get(root.toString(),
+                Path target = Paths.get(root.s,
                         lps[0].getFileName().toString());
-                Files.move(lps[0], target);
+                Files.move(lps[0].getPath(), target);
                 dirCounts.add(0, 1L);
                 levels++;
                 lps = new Generic_Path[levels];
@@ -676,7 +676,7 @@ public class Generic_FileStore implements Serializable {
                 long l = dirCount * range;
                 for (int lvl = 1; lvl < levels; lvl++) {
                     long u = l + ranges.get(lvl) - 1;
-                    Path p = Paths.get(lps[lvl - 1].toString(), getName(l, u));
+                    Path p = Paths.get(lps[lvl - 1].s, getName(l, u));
                     Files.createDirectory(p);
                     //System.out.println(p.toString());
                     Generic_Collections.addToList(dirCounts, lvl, 1L);
@@ -691,7 +691,7 @@ public class Generic_FileStore implements Serializable {
                         long dirCount = dirCounts.get(lvl);
                         long l = dirCount * range;
                         long u = l + range - 1;
-                        Path p = Paths.get(lps[lvl - 1].toString(), getName(l, u));
+                        Path p = Paths.get(lps[lvl - 1].s, getName(l, u));
                         Files.createDirectory(p);
                         //System.out.println(p.toString());
                         Generic_Collections.addToList(dirCounts, lvl, 1L);
@@ -699,7 +699,7 @@ public class Generic_FileStore implements Serializable {
                         // Add other new directories up to the new highest leaf
                         for (int lvl2 = lvl + 1; lvl2 < levels; lvl2++) {
                             u = l + ranges.get(lvl2) - 1;
-                            p = Paths.get(lps[lvl2 - 1].toString(), getName(l, u));
+                            p = Paths.get(lps[lvl2 - 1].s, getName(l, u));
                             Files.createDirectory(p);
                             //System.out.println(p.toString());
                             Generic_Collections.addToList(dirCounts, lvl2, 1L);
@@ -711,7 +711,8 @@ public class Generic_FileStore implements Serializable {
             }
         }
         // Add to the currentDir
-        Path p = Files.createDirectory(Paths.get(lps[levels - 1].toString(), Long.toString(nextID)));
+        Path p = Files.createDirectory(
+                Paths.get(lps[levels - 1].s, Long.toString(nextID)));
         //System.out.println(p.toString());
     }
 
@@ -722,7 +723,7 @@ public class Generic_FileStore implements Serializable {
      * @throws java.io.IOException If the file store lacks integrity.
      */
     public final boolean testIntegrity() throws IOException {
-        try (Stream<Path> paths = Files.walk(root)) {
+        try (Stream<Path> paths = Files.walk(root.getPath())) {
             boolean ok;
             try {
                 ok = paths.allMatch(path -> testPath(path));
@@ -786,8 +787,12 @@ public class Generic_FileStore implements Serializable {
         }
     }
 
+    /**
+     * @return The path to the highest leaf directory.
+     * @throws IOException If encountered.
+     */
     protected Path getHighestDir() throws IOException {
-        Path p = getHighestDir0(baseDir);
+        Path p = getHighestDir0(baseDir.getPath());
         Path p2 = getHighestDir0(p);
         while (p.compareTo(p2) != 0) {
             p = p2;
@@ -797,10 +802,9 @@ public class Generic_FileStore implements Serializable {
     }
 
     /**
-     *
-     * @param p
-     * @return
-     * @throws IOException
+     * @param p The directory to find the highest directory in.
+     * @return The path to the highest directory in the directory at {@code p}.
+     * @throws IOException If encountered.
      */
     protected Path getHighestDir0(Path p) throws IOException {
         List<Path> l = Generic_IO.getList(p);

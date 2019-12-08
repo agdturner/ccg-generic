@@ -25,27 +25,35 @@ import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.Objects;
 
 /**
- *
+ * Serializable class for a {@link Path}.
+ * 
  * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_Path implements Serializable, Path {
 
-    private transient Path p;
+    private static final long serialVersionUID = 1L;
 
-    private final String s;
+    protected final String s;
 
     Generic_Path(Path p) {
-        this.p = p;
         s = p.toString();
     }
 
-    private Path getPath() {
-        if (p == null) {
-            p = new Paths.get(s);
-        }
-        return p;
+    Generic_Path(Generic_Path p) {
+        s = p.s;
+    }
+
+    public Path getPath() {
+        return Paths.get(s);
+    }
+    
+    @Override
+    public String toString() {
+        return s;
     }
 
     @Override
@@ -114,7 +122,8 @@ public class Generic_Path implements Serializable, Path {
     }
 
     @Override
-    public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events, WatchEvent.Modifier... modifiers) throws IOException {
+    public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events, 
+            WatchEvent.Modifier... modifiers) throws IOException {
         return getPath().register(watcher, events, modifiers);
     }
 
@@ -136,5 +145,27 @@ public class Generic_Path implements Serializable, Path {
     @Override
     public Path resolve(Path other) {
        return getPath().resolve(other);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o != null) {
+            if (o instanceof Generic_Path) {
+                Generic_Path p = (Generic_Path) o;
+                if (this.hashCode() == p.hashCode()) {
+                    if (this.getPath().normalize().equals(p.getPath().normalize())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.s);
+        return hash;
     }
 }
