@@ -32,7 +32,7 @@ public class Generic_Defaults implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    protected final Path dir;
+    protected final Generic_Path dir;
     
     /**
      * Defaults dir to the users home directory.
@@ -46,7 +46,7 @@ public class Generic_Defaults implements Serializable {
      * @param dir Duplicated to initialise {@link #dir}. 
      */
     public Generic_Defaults(Path dir) {
-        this.dir = Paths.get(dir.toString());
+        this.dir = new Generic_Path(Paths.get(dir.toString()));
     }
     
     /**

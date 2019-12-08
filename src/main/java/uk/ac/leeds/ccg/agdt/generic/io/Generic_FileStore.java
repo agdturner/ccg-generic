@@ -16,6 +16,7 @@
 package uk.ac.leeds.ccg.agdt.generic.io;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -144,7 +145,7 @@ import uk.ac.leeds.ccg.agdt.generic.util.Generic_Collections;
  * @author Andy Turner
  * @version 1.0.0
  */
-public class Generic_FileStore {
+public class Generic_FileStore implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -157,13 +158,13 @@ public class Generic_FileStore {
     /**
      * For storing the base directory path of the file store.
      */
-    protected final Path baseDir;
+    protected final Generic_Path baseDir;
 
     /**
      * For storing the root directory path of the file store. This should be a
      * directory in baseDir which is otherwise empty.
      */
-    protected Path root;
+    protected Generic_Path root;
 
     /**
      * The name of the file store. Used to initialise baseDir.
@@ -226,7 +227,7 @@ public class Generic_FileStore {
      * path to the directory containing the current highest leaf directory; or,
      * it is another subdirectory in lps[levels - 1] that contains it; etc...
      */
-    protected Path[] lps;
+    protected Generic_Path[] lps;
 
     /**
      * Stores the nextID. Initially set to 0.
@@ -264,13 +265,13 @@ public class Generic_FileStore {
         if (range < 0) {
             throw new Exception("Range cannot be < 0.");
         }
-        baseDir = Paths.get(p.toString(), name);
+        baseDir = new Generic_Path(Paths.get(p.toString(), name));
         this.name = name;
         rangeL = range;
         rangeBI = BigInteger.valueOf(range);
         levels = 2;
         nextID = 0;
-        lps = new Path[2];
+        lps = new Generic_Path[2];
         long l;
         //String fn;
         ranges = new ArrayList<>();
@@ -281,9 +282,9 @@ public class Generic_FileStore {
         long u = 0L;
         l = rBI.subtract(BigInteger.ONE).longValueExact();
         nextRange = rBI.multiply(rangeBI).longValueExact();
-        lps[0] = Paths.get(baseDir.toString(), getName(u, l));
+        lps[0] = new Generic_Path(Paths.get(baseDir.toString(), getName(u, l)));
         l = rangeBI.subtract(BigInteger.ONE).longValueExact();
-        lps[1] = Paths.get(lps[0].toString(), getName(u, l));
+        lps[1] = new Generic_Path(Paths.get(lps[0].toString(), getName(u, l)));
         Files.createDirectories(Paths.get(lps[1].toString(), "0"));
         dirCounts = new ArrayList<>();
         dirCounts.add(1L);
@@ -300,7 +301,7 @@ public class Generic_FileStore {
      */
     public Generic_FileStore(Path p) throws IOException, Exception {
         name = p.getFileName().toString();
-        baseDir = p;
+        baseDir = new Generic_Path(p);
         if (!Files.isDirectory(baseDir)) {
             throw new Exception("Path " + p.toString() + " does not appear to "
                     + "be a file store as it does not contain one element that "
@@ -311,7 +312,7 @@ public class Generic_FileStore {
             throw new Exception("Path " + p.toString() + " does not appear to "
                     + "be a file store as it does not contain one element.");
         }
-        root = l.get(0);
+        root = new Generic_Path(l.get(0));
         String fn = root.getFileName().toString();
         if (!fn.contains(SEP)) {
             throw new Exception("Path " + p.toString() + " does not appear to "
@@ -605,14 +606,14 @@ public class Generic_FileStore {
      * updating.
      */
     protected final void initLPs() {
-        lps = new Path[levels];
-        lps[0] = Paths.get(root.toString());
+        lps = new Generic_Path[levels];
+        lps[0] = new Generic_Path(Paths.get(root.toString()));
         ArrayList<Integer> dirIndexes = getDirIndexes(nextID, levels, ranges);
         for (int lvl = 1; lvl < levels; lvl++) {
             long range = ranges.get(lvl);
             long l = range * dirIndexes.get(lvl);
             long u = l + range - 1L;
-            lps[lvl] = Paths.get(lps[lvl - 1].toString(), getName(l, u));
+            lps[lvl] = new Generic_Path(Paths.get(lps[lvl - 1].toString(), getName(l, u)));
         }
     }
 
@@ -656,7 +657,7 @@ public class Generic_FileStore {
             if (nextID == ranges.get(0)) {
                 // Grow deeper.
                 ranges.add(0, nextRange);
-                root = Paths.get(baseDir.toString(), getName(0L, nextRange - 1));
+                root = new Generic_Path(Paths.get(baseDir.toString(), getName(0L, nextRange - 1)));
                 initNextRange();
                 Files.createDirectory(root);
                 //System.out.println(root.toString());
@@ -665,7 +666,7 @@ public class Generic_FileStore {
                 Files.move(lps[0], target);
                 dirCounts.add(0, 1L);
                 levels++;
-                lps = new Path[levels];
+                lps = new Generic_Path[levels];
                 lps[0] = root;
                 // Add width.
                 int level = levels - 2;
@@ -679,7 +680,7 @@ public class Generic_FileStore {
                     Files.createDirectory(p);
                     //System.out.println(p.toString());
                     Generic_Collections.addToList(dirCounts, lvl, 1L);
-                    lps[lvl] = p;
+                    lps[lvl] = new Generic_Path(p);
                 }
             } else {
                 // Add width as needed.
@@ -694,7 +695,7 @@ public class Generic_FileStore {
                         Files.createDirectory(p);
                         //System.out.println(p.toString());
                         Generic_Collections.addToList(dirCounts, lvl, 1L);
-                        lps[lvl] = p;
+                        lps[lvl] = new Generic_Path(p);
                         // Add other new directories up to the new highest leaf
                         for (int lvl2 = lvl + 1; lvl2 < levels; lvl2++) {
                             u = l + ranges.get(lvl2) - 1;
@@ -702,7 +703,7 @@ public class Generic_FileStore {
                             Files.createDirectory(p);
                             //System.out.println(p.toString());
                             Generic_Collections.addToList(dirCounts, lvl2, 1L);
-                            lps[lvl2] = p;
+                            lps[lvl2] = new Generic_Path(p);
                         }
                         break;
                     }
