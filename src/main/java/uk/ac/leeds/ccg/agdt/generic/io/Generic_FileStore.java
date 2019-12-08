@@ -27,6 +27,7 @@ import java.util.TreeSet;
 import java.util.stream.Stream;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
+import uk.ac.leeds.ccg.agdt.generic.util.Generic_Collections;
 
 /**
  * For storing files on disk in file store - a form of data base where each file
@@ -54,7 +55,7 @@ import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
  * location of leaf directories.
  *
  * If range was set to 10, there would be at most 10 subdirectories in each
- * level of the archive.
+ * level of the file store.
  *
  * File stores are initialised with 3 levels and dynamically grow to store more
  * files. For range = 10 the initial tree can be represented as follows:
@@ -166,7 +167,7 @@ public class Generic_FileStore {
     protected Path root;
 
     /**
-     * The name of the archive. Used to initialise baseDir.
+     * The name of the file store. Used to initialise baseDir.
      */
     protected final String name;
 
@@ -187,7 +188,7 @@ public class Generic_FileStore {
 
     /**
      * Stores the number of levels in the file store. For a new store, initially
-     * this is 2 and increases by 1 each time the archive grows deeper. The
+     * this is 2 and increases by 1 each time the file store grows deeper. The
      * maximum number of files that can be stored in 2 levels is range * range.
      * With each subsequent level this number is increased by a factor of range.
      * With n levels and range r
@@ -200,28 +201,31 @@ public class Generic_FileStore {
     protected int levels;
 
     /**
-     * For storing the range for each level greater than 0. This grows with
-     * {@link #levels} as the archive grows. ranges[levels - 1] is rangeL, ranges[levels -2] is
-     * rangeL * rangeL, etc...
+     * For storing the range for each level above the root level. This grows
+     * with {@link #levels} as the file store grows. ranges[levels - 1] is
+     * rangeL, ranges[levels -2] is rangeL * rangeL, etc...
      */
     protected ArrayList<Long> ranges;
 
     /**
-     * For storing the number of directories at each level greater than 0. This
-     * grows with {@link #levels} as the archive grows and is modified as new
-     * directories are added at each level. dirCounts[0] is a count of the
-     * number of directories at Level 1; dirCounts[1] is a count of the number
-     * of directories at level 2; etc...
+     * For storing the number of directories at each level from the root level
+     * up to the level before the leaf level. This grows with {@link #levels} as
+     * the file store grows and is modified as new directories are added at each
+     * level. dirCounts[0] is a count of the number of directories at the
+     * rootLevel which is always 1; dirCounts[1] is a count of the number of
+     * directories at level 1; etc...
      */
     protected ArrayList<Long> dirCounts;
 
     /**
-     * For storing the paths to the directories (at each level greater than
-     * zero) in which nextID is to be stored. This grows with {@link #levels} as
-     * the archive grows. If the file store grows wider it also must be
-     * modified. lps[0] is the full path to the Level 0 directory; lps[1] is the
-     * path to the parent directory of lps[0]; lps[2] is the path to the parent
-     * directory of lps[1]; etc...
+     * For storing the paths to the directories (at each level including the
+     * root level) in which nextID is to be stored. This grows with
+     * {@link #levels} as the file store grows. If the file store grows wider it
+     * also must be modified. lps[levels - 1] is the absolute path to the root
+     * directory; lps[levels - 2] is the path to the directory in lps[levels -1]
+     * of the current highest leaf; each other lps[levels -2] is either: the
+     * path to the directory containing the current highest leaf directory; or,
+     * it is another subdirectory in lps[levels - 1] that contains it; etc...
      */
     protected Path[] lps;
 
@@ -231,11 +235,12 @@ public class Generic_FileStore {
     protected long nextID;
 
     /**
-     * Initialises a file store at Path p called name with 3 levels allowing to
-     * store 100 files in each directory.
+     * Initialises a file store at {@code p} called {@code name} with 3 levels
+     * allowing to store 100 files in each directory.
      *
-     * @param p The path to where the archive will be initialised.
-     * @param name The name the archive will be given.
+     * @param p The path to where the file store will be initialised.
+     * @param name The directory file name for the {@link #baseDir} of the file
+     * store.
      * @throws IOException If encountered.
      */
     public Generic_FileStore(Path p, String name)
@@ -244,13 +249,14 @@ public class Generic_FileStore {
     }
 
     /**
-     * Initialises a file store at Path p called name with 3 levels allowing to
-     * store range number of files in each directory.
+     * Initialises a file store at {@code p} called {@code name} with 3 levels
+     * allowing to store {@link range} number of files in each directory.
      *
-     * @param p The path to where the archive will be initialised.
-     * @param name The name the archive will be given.
-     * @param range The parameter set for archive controlling the maximum number
-     * of directories allowed at each level.
+     * @param p The path to where the file store will be initialised.
+     * @param name The directory file name for the {@link #baseDir} of the file
+     * store.
+     * @param range The maximum number of directories in each level of the file
+     * store.
      * @throws IOException If encountered.
      * @throws Exception If range is less than 0.
      */
@@ -270,26 +276,26 @@ public class Generic_FileStore {
         //String fn;
         ranges = new ArrayList<>();
         BigInteger rBI;
-        ranges.add(rangeBI.longValueExact());
+        ranges.add(0, rangeBI.longValueExact());
         rBI = rangeBI.multiply(rangeBI);
         ranges.add(0, rBI.longValueExact());
         long u = 0L;
         l = rBI.subtract(BigInteger.ONE).longValueExact();
         nextRange = rBI.multiply(rangeBI).longValueExact();
-        lps[1] = Paths.get(baseDir.toString(), getName(u, l));
+        lps[0] = Paths.get(baseDir.toString(), getName(u, l));
         l = rangeBI.subtract(BigInteger.ONE).longValueExact();
-        lps[0] = Paths.get(lps[1].toString(), getName(u, l));
-        Files.createDirectories(Paths.get(lps[0].toString(), "0"));
+        lps[1] = Paths.get(lps[0].toString(), getName(u, l));
+        Files.createDirectories(Paths.get(lps[1].toString(), "0"));
         dirCounts = new ArrayList<>();
         dirCounts.add(1L);
         dirCounts.add(1L);
-        root = lps[lps.length - 1];
+        root = lps[0];
     }
 
     /**
-     * Initialises a file store at Path p for an existing file store.
+     * Initialises a file store at {@code p} for an existing file store.
      *
-     * @param p The path of the existing file store.
+     * @param p The path of the existing file store base directory.
      * @throws IOException If encountered.
      * @throws Exception If the existing file store is problematic.
      */
@@ -355,7 +361,7 @@ public class Generic_FileStore {
         ranges = getRanges(nextID, rangeL);
         initLPs();
         dirCounts = getDirCounts(nextID, rangeL);
-        nextRange = BigInteger.valueOf(ranges.get(ranges.size() - 1)).multiply(rangeBI).longValueExact();
+        initNextRange();
     }
 
     /**
@@ -386,43 +392,48 @@ public class Generic_FileStore {
     }
 
     /**
-     * Initialises nextRange.
+     * Initialises {@link #nextRange}.
      */
     protected final void initNextRange() {
-        nextRange = BigInteger.valueOf(ranges.get(levels)).multiply(rangeBI)
-                .longValueExact();
+        nextRange = BigInteger.valueOf(ranges.get(0)).multiply(rangeBI).longValueExact();
     }
 
     /**
      * Calculates and returns the number of levels needed for a file store with
-     * range of r and n total number of files to store. If the result is larger
-     * than {@link Generic_Math#SHORT_MAXVALUE} then this is probably too deep -
-     * maybe try with a larger range...
+     * range of {@code range} and {@code n} total number of files to store. If
+     * the result is larger than {@link Generic_Math#SHORT_MAXVALUE} then this
+     * would be too deep. In such a case then it may still be possible to store
+     * all the files but only if {@code range} is increased.
      *
      * @param n the number of files
-     * @param range the range of the archive
-     * @return the number of levels needed for an archive with range of r and n
-     * total number of files to store.
+     * @param range the range of the file store
+     * @return the number of levels needed for an file store with range of r and
+     * n total number of files to store.
      */
     public static int getLevels(long n, long range) {
-        int levels = 2;
-        long l = n;
-        while (l / range >= range) {
-            l = l / range;
-            levels++;
+        int r = 0;
+        if (n % range != 0) {
+            r += 1;
         }
-        return levels;
+        while (n >= range) {
+            n = n / range;
+            r++;
+        }
+        if (r < 2) {
+            r = 2;
+        }
+        return r;
     }
 
     /**
-     * {@link #levels} is for storing the number of levels in the archive. This
-     * is kept up to date as the archive grows. This method is a convenience
-     * method for users that want to know how many levels will be needed once
-     * the number of files stored reaches n. This effectively calls
+     * {@link #levels} is for storing the number of levels in the file store.
+     * This is kept up to date as the file store grows. This method is a
+     * convenience method for users that want to know how many levels will be
+     * needed once the number of files stored reaches n. This effectively calls
      * {@link #getLevels(long, long)} defaulting range to rangeL.
      *
      * @param n The number of files.
-     * @return The number of levels needed for this archive to store n total
+     * @return The number of levels needed for this file store to store n total
      * number of files.
      */
     public int getLevels(long n) {
@@ -438,7 +449,7 @@ public class Generic_FileStore {
     protected final void initLevelsAndNextID() throws IOException {
         Path p = findHighestLeaf();
         nextID = Long.valueOf(p.getFileName().toString());
-        levels = p.getNameCount() - baseDir.getNameCount();
+        levels = p.getNameCount() - baseDir.getNameCount() - 1;
     }
 
     /**
@@ -457,7 +468,8 @@ public class Generic_FileStore {
 
     /**
      * Calculates and returns the ranges given the number of files to be stored
-     * and the range.
+     * and the range. ranges[levels - 1] is
+     * range, ranges[levels -2] is range * range, etc...
      *
      * @param n The number of files to be stored.
      * @param range The range.
@@ -476,7 +488,7 @@ public class Generic_FileStore {
         }
         ArrayList<Long> r = new ArrayList<>();
         for (int l = 0; l < lvls; l++) {
-            r.add(BigInteger.valueOf(range).pow(l).longValueExact());
+            r.add(0, BigInteger.valueOf(range).pow(l + 1).longValueExact());
         }
         return r;
     }
@@ -526,7 +538,7 @@ public class Generic_FileStore {
     protected static ArrayList<Integer> getDirIndexes(long id, int levels,
             ArrayList<Long> ranges) {
         ArrayList<Integer> r = new ArrayList<>();
-        for (int lvl = levels - 1; lvl >= 0; lvl++) {
+        for (int lvl = levels - 1; lvl >= 0; lvl--) {
             long id2 = id;
             long range = ranges.get(lvl);
             int c = 0;
@@ -595,15 +607,14 @@ public class Generic_FileStore {
      * updating.
      */
     protected final void initLPs() {
-        lps = new Path[levels - 1];
-        int lvl = levels - 2;
-        lps[lvl] = Paths.get(root.toString());
+        lps = new Path[levels];
+        lps[0] = Paths.get(root.toString());
         ArrayList<Integer> dirIndexes = getDirIndexes(nextID, levels, ranges);
-        for (lvl = levels - 3; lvl >= 0; lvl--) {
+        for (int lvl = 1; lvl < levels; lvl++) {
             long range = ranges.get(lvl);
             long l = range * dirIndexes.get(lvl);
             long u = l + range - 1L;
-            lps[lvl] = Paths.get(lps[lvl + 1].toString(), getName(l, u));
+            lps[lvl] = Paths.get(lps[lvl - 1].toString(), getName(l, u));
         }
     }
 
@@ -644,54 +655,65 @@ public class Generic_FileStore {
         nextID++;
         if (nextID % rangeL == 0) {
             // Grow
-            if (nextID == ranges.get(levels - 1)) {
+            if (nextID == ranges.get(0)) {
                 // Grow deeper.
-                ranges.add(nextRange);
+                ranges.add(0, nextRange);
                 root = Paths.get(baseDir.toString(), getName(0L, nextRange - 1));
                 initNextRange();
                 Files.createDirectory(root);
-                System.out.println(root.toString());
+                //System.out.println(root.toString());
                 Path target = Paths.get(root.toString(),
-                        lps[lps.length - 1].getFileName().toString());
-                Files.move(lps[lps.length - 1], target);
+                        lps[0].getFileName().toString());
+                Files.move(lps[0], target);
                 dirCounts.add(0, 1L);
                 levels++;
-
-                initLPs();
-            }
-            // Add width as needed.
-            for (int lvl = levels - 1; lvl >= 0; lvl--) {
-                long range = ranges.get(lvl);
-                long dirCount = dirCounts.get(lvl);
-                if (nextID % (range * dirCount) == 0) {
-                    // Create a new directory
-                    long l = dirCount * range;
-                    long u = l + range - 1;
-                    Path p = Paths.get(lps[lvl + 1].toString(), getName(l, u));
+                lps = new Path[levels];
+                lps[0] = root;
+                // Add width.
+                int level = levels - 2;
+                long range = ranges.get(level);
+                long dirCount = dirCounts.get(level);
+                // Add directories up to the new highest leaf
+                long l = dirCount * range;
+                for (int lvl = 1; lvl < levels; lvl++) {
+                    long u = l + ranges.get(lvl) - 1;
+                    Path p = Paths.get(lps[lvl - 1].toString(), getName(l, u));
                     Files.createDirectory(p);
-                    System.out.println(p.toString());
-                    long c = dirCounts.get(lvl);
-                    dirCounts.remove(lvl);
-                    dirCounts.add(lvl, c + 1L);
+                    //System.out.println(p.toString());
+                    Generic_Collections.addToList(dirCounts, lvl, 1L);
                     lps[lvl] = p;
-                    // Create other new directories up to level 0
-                    for (int lvl2 = lvl - 1; lvl2 >= 0; lvl2--) {
-                        u = l + ranges.get(lvl2) - 1;
-                        p = Paths.get(lps[lvl2 + 1].toString(), getName(l, u));
+                }
+            } else {
+                // Add width as needed.
+                for (int lvl = 1; lvl < levels; lvl++) {
+                    long range = ranges.get(lvl);
+                    if (nextID % range == 0) {
+                        // Add a new directory.
+                        long dirCount = dirCounts.get(lvl);
+                        long l = dirCount * range;
+                        long u = l + range - 1;
+                        Path p = Paths.get(lps[lvl - 1].toString(), getName(l, u));
                         Files.createDirectory(p);
-                        System.out.println(p.toString());
-                        long c2 = dirCounts.get(lvl2);
-                        dirCounts.remove(lvl2);
-                        dirCounts.add(lvl2, c2 + 1L);
-                        lps[lvl2] = p;
+                        //System.out.println(p.toString());
+                        Generic_Collections.addToList(dirCounts, lvl, 1L);
+                        lps[lvl] = p;
+                        // Add other new directories up to the new highest leaf
+                        for (int lvl2 = lvl + 1; lvl2 < levels; lvl2++) {
+                            u = l + ranges.get(lvl2) - 1;
+                            p = Paths.get(lps[lvl2 - 1].toString(), getName(l, u));
+                            Files.createDirectory(p);
+                            //System.out.println(p.toString());
+                            Generic_Collections.addToList(dirCounts, lvl2, 1L);
+                            lps[lvl2] = p;
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
         // Add to the currentDir
-        Path p = Files.createDirectory(Paths.get(lps[0].toString(), Long.toString(nextID)));
-        System.out.println(p.toString());
+        Path p = Files.createDirectory(Paths.get(lps[levels - 1].toString(), Long.toString(nextID)));
+        //System.out.println(p.toString());
     }
 
     /**
@@ -707,7 +729,7 @@ public class Generic_FileStore {
                 ok = paths.allMatch(path -> testPath(path));
             } catch (NumberFormatException e) {
                 throw new IOException("Some paths are not OK as they contain "
-                        + "leaves file names that cannot be converted to a "
+                        + "leaf file names that cannot be converted to a "
                         + "Long.");
             }
             if (!ok) {

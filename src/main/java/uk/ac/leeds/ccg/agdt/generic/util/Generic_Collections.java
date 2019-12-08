@@ -44,7 +44,7 @@ public class Generic_Collections {
 
     /**
      * Create and return a HashSet of keys that map to the value v.
-     * 
+     *
      * @param <K> The type of keys in m.
      * @param <V> The type of values in m.
      * @param m The map for which the keys that map to v are returned.
@@ -295,6 +295,21 @@ public class Generic_Collections {
         } else {
             m.put(k, Generic_Math.add(m.get(k), i));
         }
+    }
+
+    /**
+     * Add {@code v] to the value of {@code l} at position {@code p}.
+     *
+     * @param <N> The Number to add.
+     * @param l The list to add to.
+     * @param pos The position in the list to add to.
+     * @param v The value to add to the existing value in {@code l} at position 
+     * {@code p}.
+     */
+    public static <N extends Number> void addToList(List<N> l, int pos, N v) {
+        N v0 = l.get(pos);
+        l.remove(pos);
+        l.add(pos, Generic_Math.add(v, v0));
     }
 
     /**
