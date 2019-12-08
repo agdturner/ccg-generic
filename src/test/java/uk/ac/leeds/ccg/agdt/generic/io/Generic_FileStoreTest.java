@@ -15,6 +15,7 @@
  */
 package uk.ac.leeds.ccg.agdt.generic.io;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,61 +60,62 @@ public class Generic_FileStoreTest {
     public void tearDown() {
     }
 
-//    /**
-//     * Test creating a new file store adding to it and creating another file store 
-//     * based on the existing directory and adding to that.
-//     */
-//    @Test
-//    public void testFileStore1() {
-//        try {
-//            System.out.println("testFileStore1");
-//            // Set the path.
-//            Path p = Paths.get(System.getProperty("user.home"),
-//                    Generic_Strings.s_data,
-//                    Generic_Strings.s_generic);
-//            // Set the name for the file store which should be unique and not used 
-//            // by any other tests which are executed in parallel.
-//            String name = "test2";
-//            Path p2 = Paths.get(p.toString(), name);
-//            // Delete any existing file store.
-//            if (true) {
-//                if (Files.exists(p2)) {
-//                    Generic_IO.delete(p2, false);
-//                }
-//            }
-//            // Load a new file store.
-//            short range = 10;
-//            Generic_FileStore a = new Generic_FileStore(p, name, range);
-//            // Add 1001 directories.
-//            for (long l = 0; l < 1001; l++) {
-//                a.addDir();
-//            }
-//            // Details of data store
-//            System.out.println(a.toString());
-//            // Reload the existing file store.
-//            a = new Generic_FileStore(p2);
-//            // Details of data store
-//            System.out.println(a.toString());
-//            /**
-//             * If there are two file stores with the same baseDir then if one of
-//             * them changes the file store structure the other will have nextID,
-//             * lps, ranges and dirCounts that are inconsistent with what is
-//             * actually stored in the file system.
-//             */
-//            // Add another 1001 directories.
-//            for (long l = 0; l < 1001; l++) {
-//                a.addDir();
-//            }
-//            // Delete the file store.
-//            if (true) {
-//                if (Files.exists(p2)) {
-//                    Generic_IO.delete(p2, false);
-//                }
-//            }
+    /**
+     * Test creating a new file store adding to it and creating another file store 
+     * based on the existing directory and adding to that.
+     */
+    @Test
+    public void testFileStore1() throws IOException, Exception {
+        //try {
+            System.out.println("testFileStore1");
+            // Set the path.
+            Path p = Paths.get(System.getProperty("user.home"),
+                    Generic_Strings.s_data,
+                    Generic_Strings.s_generic);
+            // Set the name for the file store which should be unique and not used 
+            // by any other tests which are executed in parallel.
+            String name = "test2";
+            Path p2 = Paths.get(p.toString(), name);
+            // Delete any existing file store.
+            if (true) {
+                if (Files.exists(p2)) {
+                    Generic_IO.delete(p2, false);
+                }
+            }
+            // Load a new file store.
+            short range = 10;
+            Generic_FileStore a = new Generic_FileStore(p, name, range);
+            // Add 1001 directories.
+            for (long l = 0; l < 1001; l++) {
+                a.addDir();
+            }
+            // Details of data store
+            System.out.println(a.toString());
+            // Reload the existing file store.
+            a = new Generic_FileStore(p2);
+            // Details of data store
+            System.out.println(a.toString());
+            /**
+             * If there are two file stores with the same baseDir then if one of
+             * them changes the file store structure the other will have nextID,
+             * lps, ranges and dirCounts that are inconsistent with what is
+             * actually stored in the file system.
+             */
+            // Add another 1001 directories.
+            for (long l = 0; l < 1001; l++) {
+                a.addDir();
+            }
+            // Delete the file store.
+            if (true) {
+                if (Files.exists(p2)) {
+                    Generic_IO.delete(p2, false);
+                }
+            }
 //        } catch (Exception ex) {
 //            ex.printStackTrace(System.err);
+//            Assertions.assertTrue(false);
 //        }
-//    }
+    }
     /**
      * Test of getLevels method, of class Generic_FileStore.
      */
@@ -158,14 +160,7 @@ public class Generic_FileStoreTest {
         // Test 6
         n = 12345678910L;
         range = 34L;
-        expResult = 0;
-        if (n % range != 0) {
-            expResult += 1;
-        }
-        while (n > 0) {
-            n = n/range;
-            expResult ++;
-        }
+        expResult = 7;
         result = Generic_FileStore.getLevels(n, range);
         Assertions.assertEquals(expResult, result);
     }
@@ -179,10 +174,10 @@ public class Generic_FileStoreTest {
         long n = 1001L;
         long range = 10L;
         ArrayList<Long> expResult = new ArrayList<>();
-        expResult.add(1L);
-        expResult.add(10L);
-        expResult.add(100L);
+        expResult.add(10000L);
         expResult.add(1000L);
+        expResult.add(100L);
+        expResult.add(10L);
         ArrayList<Long> result;
         try {
             result = Generic_FileStore.getRanges(n, range);
@@ -194,11 +189,11 @@ public class Generic_FileStoreTest {
         n = 10001L;
         range = 10L;
         expResult = new ArrayList<>();
-        expResult.add(1L);
-        expResult.add(10L);
-        expResult.add(100L);
-        expResult.add(1000L);
+        expResult.add(100000L);
         expResult.add(10000L);
+        expResult.add(1000L);
+        expResult.add(100L);
+        expResult.add(10L);
         result = Generic_FileStore.getRanges(n, range);
         Assertions.assertArrayEquals(expResult.toArray(), result.toArray());
     }
@@ -214,6 +209,7 @@ public class Generic_FileStoreTest {
         int levels = Generic_FileStore.getLevels(id, range);;
         ArrayList<Long> ranges = Generic_FileStore.getRanges(id, range);
         ArrayList<Integer> expResult  = new ArrayList<>();
+        expResult.add(0);
         expResult.add(1);
         expResult.add(10);
         expResult.add(100);

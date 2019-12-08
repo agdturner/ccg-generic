@@ -83,12 +83,7 @@ public class Generic_IOTest {
             env.log("writeObject", logID);
             String prefix = "Generic_Files";
             String suffix = Generic_Strings.symbol_dot + Generic_Strings.s_dat;
-            Path f = null;
-            try {
-                f = getTestFile(prefix, suffix);
-            } catch (IOException ex) {
-                Logger.getLogger(Generic_IOTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Path f = getTestFile(prefix, suffix);
             env.log("Test file for env.files " + f);
             Generic_IO instance = env.io;
             instance.writeObject(env.files, f);
