@@ -17,7 +17,6 @@ package uk.ac.leeds.ccg.agdt.generic.io;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,13 +30,14 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
- *
- * @author geoagdt
+ * Tests for {@link Generic_Files} class.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_FilesTest {
 
     static Generic_Environment env;
-    int logID;
 
     public Generic_FilesTest() {
     }
@@ -47,7 +47,7 @@ public class Generic_FilesTest {
         try {
             env = new Generic_Environment(new Generic_Files(
                     new Generic_Defaults(Paths.get(
-                            System.getProperty("user.home"), 
+                            System.getProperty("user.home"),
                             Generic_Strings.s_data,
                             Generic_Strings.s_generic))));
         } catch (Exception ex) {
@@ -73,121 +73,33 @@ public class Generic_FilesTest {
     @Test
     public void testSetDir() {
         try {
-            env.log("setDir", logID);
+            env.log("setDir");
             //System.out.println("setDir");
-            Path d = Paths.get(env.files.getGeneratedDir().toString(), "test");
+            Generic_Path d = new Generic_Path(
+                    Paths.get(env.files.getGeneratedDir().s, "test"));
             Generic_Files instance = new Generic_Files(new Generic_Defaults(d));
             //instance.setDir(d);
-            Path dir = instance.getDir();
+            Generic_Path dir = instance.getDir();
             Assertions.assertEquals(d, dir);
-            Assertions.assertTrue(Files.exists(d));
-            Path genD = Paths.get(dir.toString(), Generic_Strings.s_generated);
+            Assertions.assertTrue(Files.exists(d.getPath()));
+            Generic_Path genD = new Generic_Path(Paths.get(dir.s,
+                    Generic_Strings.s_generated));
             d = instance.getGeneratedDir();
             Assertions.assertEquals(genD, d);
-            Assertions.assertTrue(Files.exists(genD));
-            Path inputD = Paths.get(dir.toString(), Generic_Strings.s_input);
+            Assertions.assertTrue(Files.exists(genD.getPath()));
+            Generic_Path inputD = new Generic_Path(Paths.get(dir.s,
+                    Generic_Strings.s_input));
             d = instance.getInputDir();
             Assertions.assertEquals(inputD, d);
-            Assertions.assertTrue(Files.exists(inputD));
-            Path outputD = Paths.get(dir.toString(), Generic_Strings.s_output);
+            Assertions.assertTrue(Files.exists(inputD.getPath()));
+            Generic_Path outputD = new Generic_Path(Paths.get(dir.s,
+                    Generic_Strings.s_output));
             d = instance.getOutputDir();
             Assertions.assertEquals(outputD, d);
-            Assertions.assertTrue(Files.exists(outputD));
+            Assertions.assertTrue(Files.exists(outputD.getPath()));
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
             env.log(ex.getMessage());
         }
     }
-
-//    /**
-//     * Test of getDir method, of class Generic_Files.
-//     */
-//    @Test
-//    public void testGetDir() {
-//        try {
-//            env.log("getDir", logID);
-//            //System.out.println("getDir");
-//            Generic_Files files = new Generic_Files(new Generic_Defaults(
-//                    env.files.getDir()));
-//            Path expResult = files.getDefaultDir();
-//            Path result = files.getDir();
-//            Assertions.assertEquals(expResult, result);
-//        } catch (IOException ex) {
-//            ex.printStackTrace(System.err);
-//            env.log(ex.getMessage());
-//        }
-//    }
-
-//    /**
-//     * Test of getInputDir method, of class Generic_Files.
-//     */
-//    @Test
-//    public void testGetInputDir() {
-//        try {
-//            env.log("getInputDir", logID);
-//            //System.out.println("getInputDir");
-//            Path expResult = Paths.get(env.files.getDefaultDir().toString(),
-//                    Generic_Strings.s_input);
-//            Path result = env.files.getInputDir();
-//            Assertions.assertEquals(expResult, result);
-//        } catch (IOException ex) {
-//            ex.printStackTrace(System.err);
-//            env.log(ex.getMessage());
-//        }
-//    }
-//
-//    /**
-//     * Test of getGeneratedDir method, of class Generic_Files.
-//     */
-//    @Test
-//    public void testGetGeneratedDir() {
-//        try {
-//            env.log("getGeneratedDir", logID);
-//            //System.out.println("getGeneratedDir");
-//            Path expResult = Paths.get(env.files.getDefaultDir().toString(),
-//                    Generic_Strings.s_generated);
-//            Path result = env.files.getGeneratedDir();
-//            Assertions.assertEquals(expResult, result);
-//        } catch (IOException ex) {
-//            ex.printStackTrace(System.err);
-//            env.log(ex.getMessage());
-//        }
-//
-//    }
-//
-//    /**
-//     * Test of getOutputDir method, of class Generic_Files.
-//     */
-//    @Test
-//    public void testGetOutputDir() {
-//        try {
-//            env.log("getOutputDir", logID);
-//            //System.out.println("getOutputDir");
-//            Path expResult = Paths.get(env.files.getDefaultDir().toString(),
-//                    Generic_Strings.s_output);
-//            Path result = env.files.getOutputDir();
-//            Assertions.assertEquals(expResult, result);
-//        } catch (IOException ex) {
-//            ex.printStackTrace(System.err);
-//            env.log(ex.getMessage());
-//        }
-//    }
-//
-//    /**
-//     * Test of getLogDir method, of class Generic_Files.
-//     */
-//    @Test
-//    public void testGetLogDir() {
-//        try {
-//            env.log("getLogDir", logID);
-//            //System.out.println("getLogDir");
-//            Path expResult = Paths.get(env.files.getDefaultDir().toString(),
-//                    Generic_Strings.s_output, Generic_Strings.s_log);
-//            Path result = env.files.getLogDir();
-//            Assertions.assertEquals(expResult, result);
-//        } catch (IOException ex) {
-//            ex.printStackTrace(System.err);
-//            env.log(ex.getMessage());
-//        }
-//    }
 }

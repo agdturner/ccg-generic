@@ -23,13 +23,15 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+//import static org.junit.jupiter.api.Assertions.*;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
 
 /**
- *
- * @author geoagdt
+ * Tests for {@link Generic_Environment} class.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_EnvironmentTest {
 

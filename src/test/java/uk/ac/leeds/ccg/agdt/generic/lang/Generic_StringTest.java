@@ -27,8 +27,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Nested;
 
 /**
- *
- * @author geoagdt
+ * Tests for {@link Generic_String} class.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_StringTest {
 

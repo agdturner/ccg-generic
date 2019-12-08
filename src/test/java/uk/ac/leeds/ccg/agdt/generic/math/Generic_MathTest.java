@@ -16,7 +16,6 @@
 package uk.ac.leeds.ccg.agdt.generic.math;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -26,8 +25,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- *
- * @author geoagdt
+ * Tests for the {@link Generic_Math} class.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_MathTest {
 

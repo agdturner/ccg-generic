@@ -15,8 +15,7 @@
  */
 package uk.ac.leeds.ccg.agdt.generic.util;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -28,18 +27,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
-import uk.ac.leeds.ccg.agdt.generic.time.Generic_DateTest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_FilesTest;
 
 
 /**
- * Generic Collections Tests.
+ * Tests for {@link Generic_Collections} class.
  *
  * @author Andy Turner
  * @version 1.0.0
@@ -47,7 +46,6 @@ import uk.ac.leeds.ccg.agdt.generic.io.Generic_FilesTest;
 public class Generic_CollectionsTest {
 
     Generic_Environment env;
-    int logID;
 
     public Generic_CollectionsTest() {
     }
@@ -63,9 +61,11 @@ public class Generic_CollectionsTest {
     @BeforeEach
     public void setUp() {
         try {
-            Generic_Files files = new Generic_Files(new Generic_Defaults());
-            env = new Generic_Environment(files);
-            logID = env.initLog(this.getClass().getSimpleName());
+            env = new Generic_Environment(new Generic_Files(
+                    new Generic_Defaults(Paths.get(
+                            System.getProperty("user.home"),
+                            Generic_Strings.s_data,
+                            Generic_Strings.s_generic))));
         } catch (Exception ex) {
             Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }

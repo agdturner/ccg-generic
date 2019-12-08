@@ -16,7 +16,7 @@
 
 package uk.ac.leeds.ccg.agdt.generic.time;
 
-import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -26,18 +26,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.agdt.generic.io.Generic_FilesTest;
 
 /**
- *
- * @author geoagdt
+ * Tests for {@link Generic_Date} class.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Generic_DateTest {
 
     Generic_Environment env;
-    int logID;
 
     public Generic_DateTest() {
         //super();
@@ -54,9 +56,11 @@ public class Generic_DateTest {
     @BeforeEach
     public void setUp() {
         try {
-            Generic_Files files = new Generic_Files(new Generic_Defaults());
-            env = new Generic_Environment(files);
-            logID = env.initLog(this.getClass().getSimpleName());
+            env = new Generic_Environment(new Generic_Files(
+                    new Generic_Defaults(Paths.get(
+                            System.getProperty("user.home"),
+                            Generic_Strings.s_data,
+                            Generic_Strings.s_generic))));
         } catch (Exception ex) {
             Logger.getLogger(Generic_FilesTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -71,7 +75,7 @@ public class Generic_DateTest {
      */
     @Test
     public void testAddDays() {
-        env.log("addDays", logID);
+        env.log("addDays");
         //System.out.println("addDays");
         int year;
         int month;
@@ -120,7 +124,7 @@ public class Generic_DateTest {
      */
     @Test
     public void testIsSameDay() {
-        env.log("isSameDay", logID);
+        env.log("isSameDay");
         //System.out.println("isSameDay");
         Generic_Date t;
         Generic_Date instance;
@@ -138,7 +142,7 @@ public class Generic_DateTest {
      */
     @Test
     public void testGetDD() {
-        env.log("getDD", logID);
+        env.log("getDD");
         //System.out.println("getDD");
         Generic_Date t;
         String expResult;
@@ -156,7 +160,7 @@ public class Generic_DateTest {
      */
     @Test
     public void testGetYYYYMMDD_0args() {
-        env.log("getYYYYMMDD", logID);
+        env.log("getYYYYMMDD");
         //System.out.println("getYYYYMMDD");
         Generic_Date instance = new Generic_Date(env, 2017, 1, 9);
         env.log(instance.toString());
@@ -170,7 +174,7 @@ public class Generic_DateTest {
      */
     @Test
     public void testGetYYYYMMDD_String() {
-        env.log("getYYYYMMDD", logID);
+        env.log("getYYYYMMDD");
         //System.out.println("getYYYYMMDD");
         String dateComponentDelimitter = "_";
         Generic_Date instance = new Generic_Date(env, 2017, 1, 9);

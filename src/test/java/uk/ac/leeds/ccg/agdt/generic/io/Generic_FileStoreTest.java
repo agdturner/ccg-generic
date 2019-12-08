@@ -20,8 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -31,11 +29,10 @@ import org.junit.jupiter.api.Test;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
- * To test all the functionality of Generic_Archive.
- *
+ * Tests for {@link Generic_FileStore} class.
+ * 
  * @author Andy Turner
  * @version 1.0.0
- *
  */
 public class Generic_FileStoreTest {
 

@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,11 +29,12 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 
 /**
- * To test all the functionality of Generic_IO.
- *
+ * Tests for {@link Generic_IO} class.
+ * 
  * @author Andy Turner
  * @version 1.0.0
  */
+
 public class Generic_IOTest {
 
     static Generic_Environment env;
@@ -98,11 +97,11 @@ public class Generic_IOTest {
     }
 
     public Path getNewTestFile(String prefix, String suffix) throws IOException {
-        return Paths.get(env.files.getGeneratedDir().toString(), prefix + suffix);
+        return Paths.get(env.files.getGeneratedDir().s, prefix + suffix);
     }
 
     public Path getTestFile(String prefix, String suffix) throws IOException {
-        return env.io.createNewFile(env.files.getGeneratedDir(), prefix, suffix);
+        return env.io.createNewFile(env.files.getGeneratedDir().getPath(), prefix, suffix);
     }
 
     /**
@@ -129,11 +128,11 @@ public class Generic_IOTest {
     public void testCreateNewFile() {
         env.log("createNewFile", logID);
         try {
-            Path dir = env.files.getGeneratedDir();
+            Generic_Path dir = env.files.getGeneratedDir();
             String prefix = "test";
             String suffix = ".dat";
             Generic_IO instance = env.io;
-            Path f = instance.createNewFile(dir, prefix, suffix);
+            Path f = instance.createNewFile(dir.getPath(), prefix, suffix);
             Assertions.assertTrue(Files.exists(f));
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
