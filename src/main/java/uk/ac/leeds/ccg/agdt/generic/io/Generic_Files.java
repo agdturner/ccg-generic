@@ -35,7 +35,7 @@ public class Generic_Files implements Serializable {
     /**
      * The Generic defaults.
      */
-    protected final Generic_Defaults defaults;
+    protected transient final Generic_Defaults defaults;
     
     /**
      * The base level directory. Set from {@link #defaults}.

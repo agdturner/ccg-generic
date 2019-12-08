@@ -17,6 +17,7 @@
 package uk.ac.leeds.ccg.agdt.generic.io;
 
 //import java.io.File;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
@@ -27,7 +28,9 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
  * @author Andy Turner
  * @version 1.0.0
  */
-public class Generic_Defaults {
+public class Generic_Defaults implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     
     protected final Path dir;
     

@@ -23,7 +23,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.stream.Stream;
 import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
@@ -583,12 +582,11 @@ public class Generic_FileStore {
      */
     protected Path getPath(long id) {
         Path[] paths = new Path[levels - 1];
-        //ArrayList<Integer> dirIndexes = getDirIndexes(id);
-        //Path p = lps[levels - 1];
+        ArrayList<Integer> dirIndexes = getDirIndexes(id);
         Path p = root;
         for (int lvl = levels - 2; lvl >= 0; lvl--) {
-            long range = ranges.get(lvl);
-            long l = range * (dirCounts.get(lvl) - 1L);
+            long range = ranges.get(lvl + 1);
+            long l = range * dirIndexes.get(lvl);
             long u = l + range - 1L;
             paths[lvl] = Paths.get(p.toString(), getName(l, u));
             p = paths[lvl];
