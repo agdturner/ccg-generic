@@ -1,21 +1,22 @@
-# Generic
+# agdt-java-generic
 
 https://github.com/agdturner/agdt-java-generic
 
 A Java library with generally useful classes and methods.
 
 Highlights:
-1. Generic_Archive
-https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/io/Generic_Archive.java
-A class of methods for storing data on disk in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
+1. Generic_FileStore
+https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/io/Generic_FileStore.java
+A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
 2. memory
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/memory
-A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to files and this tends to make use of a Generic_Archive for organising those files.
+A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to files using a Generic_FileStore instance for organising those files.
 
 This code has been abstracted from numerous other libraries which now depend on this.
 
 ## Status, Current Version and platform requirements
-Version 1.0.0 is in the process of being released. Ahead of this release the code is being reviewed and documentation improved.
+Version 1.0.0 is available from Maven Central via:
+https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.0.0
 Developed and tested on Java 11.
 
 ## Development Roadmap
@@ -23,9 +24,10 @@ Developed and tested on Java 11.
 - For bug fixes of 1.0 as required.
 - These are to be released on a best effort basis.
 ### Version 1.1.0
-- Standardise logging - Currently no logging framework is used, but it would probably be good to use one. This development is being considered.
-### Version 1.2.0
-- Potentially add other features. This development is being considered. If it gets underway then some details will be posted here.
+- Developments being considered:
+-- Standardise logging - Currently no logging framework is used, but it would probably be good to use one.
+-- Updated and more comprehensive unit test suite.
+-- Additional features requested. Details will be updated here in due course.
 
 ## Dependencies
 Please see the pom.xml for details.
@@ -69,19 +71,69 @@ Generic utility class for process execution handling.
 
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/io
 
-#### Generic_Archive
-A class of methods for storing data in archives on disk. An archive is a form of data base where each element is given a unique long numerical index and is stored in a file at a location given by the index known as a leaf file. The 1st element in the data base is indexed by 0L, the 2nd element in the data base is indexed by 1L, the 3rd element in the data base is indexed by 2L, and so on... An archive is comprised of a base directory (baseDir) in which there are subdirectories. Each subdirectory may contain a further layer of subdirectories and again each of these may also contain further subdirectories, and so on... How many subdirectories there are and how many leaf files are stored in the top level directories is determined by a single parameter (n). Subdirectories are given standardised names such that it is easy to find and infer the location of leafFiles.
+#### Generic Defaults
+A class for holding IO defaults.
 
-If n was set to 10, there would be at most 10 subdirectories in baseDir and any subdirectories, and at most 10 leaf files in any subdirectory.
+#### Generic_FileStore
+For storing files on disk in file store - a form of data base where each file is stored in a leaf directory. Leaf directories are found at level 0 of the file store. The 1st leaf directory has the name 0, the 2nd leaf directory has the name 1, the nth leaf directory has the name n where n is a positive integer . A file store is comprised of a base directory in which there is a root directory. The root directory indicates how many files are stored in the file store using a range given in the directory name. The minimum of the range is 0 and the maximum is a positive integer number. These two numbers are separated with by {@link #SEP} e.g. "0_99". The root directory will contain one or more subdirectories named in a similar style to the root directory e.g. "0_9". The maximum number will be less than or equal to that of the root directory. By comparing the range of numbers in the names of directories in the root directory with the range of numbers in the names of and subdirectory in the root directory it is possible to discern the range for the file store. The range is a parameter that can be set when initialising a file store. It controls how many subdirectories there can be at each level, and ultimately this controls how many levels of directories there are in the file store which is all dependent on the number of files stored in the file store.
 
-Archives may dynamically grow to store more elements.
+Files are to be stored in the leaf directories. Each directory is given a standardised name such that it is easy to find and infer the path to the leaf directories.
 
-Archives can be used to cache data and this can free up fast access memory for data processing.
+If range was set to 10, there would be at most 10 subdirectories in each level of the file store.
 
-They can also be used to store output from different runs of a program.
+File stores are initialised with 3 levels and dynamically grow to store more files. For range = 10 the initial tree can be represented as follows:
+Level
+2        - 1           - root
 
-#### Generic_Defaults
-A class for storing defaults used in IO.
+0        - 0_9         - 0_99
+
+For range = 10 and n = 100001 the tree can be represented as follows:
+Level
+6      - 5             - 4             - 3             - 2             - 1               - root
+
+0      - 0_9           - 0_99          - 0_999         - 0_9999        - 0_99999        - 0_999999
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10     - 10_19
+11
+12
+...
+19
+20     - 20_29
+...
+...
+99     - 90_99
+100    - 100_109       - 100_199
+...
+...
+...
+999    - 990_999       - 900_999
+1000   - 1000_1009     - 1000_1099     - 1000_1999
+...
+...
+...
+...
+9999   - 9990_9999     - 9900_9999     - 9000_9999
+10000  - 10000_10009   - 10000_10099   - 10000_10999   - 10000_19999
+...
+...
+...
+...
+...
+99999  - 99990_99999   - 99900_99999   - 99000_99999   - 90000_99999
+100000 - 100000_100009 - 100000_100099 - 100000_100999 - 100000_109999 - 100000_199999
+100001
+
+File stores are used for logging and may be used to store other outputs from different runs of a program. They can also be used to organise caches of data from a running program to help with memory management.
+
+Although such a file store can store many files, there are limits depending on the range value set. The theoretical limit is close to Long.MAX_VALUE / range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger restriction is the size of the storage element that holds the directories and files indexed by the file store.
 
 #### Generic_Files
 A class for helping to organise data Files.
@@ -151,7 +203,7 @@ https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/l
 Contains methods for processing and manipulating collections including Lists, Arrays, Sets and Maps.
 
 #### Generic_Time
-This pre-dates java.time and was used in programs that ticked through time acting effectively like a stop-watch type clock. It also holds methods to help with processing dates and aggregating data by time periods (e.g. hours, months).
+This pre-dates java.time and was used in programs that ticked through time acting effectively like a stop-watch type clock. It holds methods to help with processing dates and aggregating data by time periods (e.g. hours, months).
 - Not to be confused with uk.ac.leeds.ccg.agdt.generic.time.Generic_Time
 
 
@@ -160,4 +212,4 @@ This pre-dates java.time and was used in programs that ticked through time actin
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/visualisation
 
 #### Generic_Visualisation
-Contains generic visualisation methods.
+A class with methods for visualisation that will work in headless environments.
