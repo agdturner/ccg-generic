@@ -1,4 +1,4 @@
-# Generic
+# agdt-java-generic
 
 https://github.com/agdturner/agdt-java-generic
 
