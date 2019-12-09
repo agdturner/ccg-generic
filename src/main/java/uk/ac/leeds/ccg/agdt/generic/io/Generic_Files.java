@@ -26,7 +26,7 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
  * Generic Files, for
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class Generic_Files implements Serializable {
 
@@ -35,7 +35,7 @@ public class Generic_Files implements Serializable {
     /**
      * The Generic defaults.
      */
-    protected transient final Generic_Defaults defaults;
+    public transient final Generic_Defaults defaults;
 
     /**
      * The base level directory. Set from {@link #defaults}.

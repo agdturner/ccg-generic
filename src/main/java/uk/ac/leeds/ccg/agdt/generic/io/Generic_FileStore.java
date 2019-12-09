@@ -50,9 +50,9 @@ import uk.ac.leeds.ccg.agdt.generic.util.Generic_Collections;
  * there are in the file store which is all dependent on the number of files
  * stored in the file store.
  *
- * Files are to be stored in the leaf directories at level 0. The directories
- * are given standardised names such that it is easy to find and infer the
- * location of leaf directories.
+ * Files are to be stored in the leaf directories. Each directory is given a
+ * standardised name such that it is easy to find and infer the path to the leaf
+ * directories.
  *
  * If range was set to 10, there would be at most 10 subdirectories in each
  * level of the file store.
