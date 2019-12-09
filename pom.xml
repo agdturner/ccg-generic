@@ -18,9 +18,8 @@
     </scm>
     <licenses>
         <license>
-            <name>Apache License 2.0</name>
-            <url>https://github.com/agdturner/agdt-java-generic/LICENSE.txt</url>
-            <distribution>repo</distribution>
+            <name>APACHE LICENSE, VERSION 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
     <organization>
