@@ -15,32 +15,36 @@ A package that helps avoid and deal with OutOfMemoryErrors. The avoidance genera
 This code has been abstracted from numerous other libraries which now depend on this.
 
 ## Status, Current Version and platform requirements
-Version 1.0.0 is available from Maven Central via:
-https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.0.0
+Version 1.0.2 is available from Maven Central via:
+https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.0.2
 Developed and tested on Java 11.
 
 ## Development Roadmap
 ### Version 1.0.x
-- For bug fixes of 1.0 as required.
+- For bug fixes.
 - These are to be released on a best effort basis.
-### Version 1.1.0
-- Developments being considered:
--- Standardise logging - Currently no logging framework is used, but it would probably be good to use one.
--- Updated and more comprehensive unit test suite.
--- Additional features requested. Details will be updated here in due course.
+### Version 1.1.x
+- Work being considered:
+-- Use Log4J to standardise logging.
+-- Remove redundant code.
+-- Extend unit test coverage and detail.
+-- Add requested features and other methods abstracted from other libraries. Details will be updated here in due course.
 
 ## Dependencies
-Please see the pom.xml for details.
-There are no third party dependencies.
-JUnit 5 is used for unit testing.
+Please see the pom.xml or maven central for details.
+Currently there are no third party dependencies except for unit testing.
 
 ## Contributions
-Please raise issues and submit feature requests in the usual way.
-Contributions to developing this code are to be acknowledged as appropriate.
+Please raise issues in the usual way.
+Please liaise with the developer about contributing to development.
 
 ## LICENCE
 Please see the standard Apache 2.0 open source LICENCE.
 
+## Acknowledgements and feedback
+Thanks to the University of Leeds and numerous research grants for supporting the development of this code and the developer over many years.
+
+If you find this code useful, please let the developer know and refer to the resources used in the usual ways. 
 
 ## Package details
 
