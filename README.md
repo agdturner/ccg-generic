@@ -86,12 +86,14 @@ Files are to be stored in the leaf directories. Each directory is given a standa
 If range was set to 10, there would be at most 10 subdirectories in each level of the file store.
 
 File stores are initialised with 3 levels and dynamically grow to store more files. For range = 10 the initial tree can be represented as follows:
+```
 Level
 2        - 1           - root
 
 0        - 0_9         - 0_99
-
+```
 For range = 10 and n = 100001 the tree can be represented as follows:
+```
 Level
 6      - 5             - 4             - 3             - 2             - 1               - root
 
@@ -134,6 +136,7 @@ Level
 99999  - 99990_99999   - 99900_99999   - 99000_99999   - 90000_99999
 100000 - 100000_100009 - 100000_100099 - 100000_100999 - 100000_109999 - 100000_199999
 100001
+```
 
 File stores are used for logging and may be used to store other outputs from different runs of a program. They can also be used to organise caches of data from a running program to help with memory management.
 
