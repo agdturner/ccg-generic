@@ -15,41 +15,38 @@ A package that helps avoid and deal with OutOfMemoryErrors. The avoidance genera
 This code has been abstracted from numerous other libraries which now depend on this.
 
 ## Status, Current Version and platform requirements
-Version 1.0.2 is available from Maven Central via:
-https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.0.2
-Developed and tested on Java 11.
+Version 1.0.2 is developed and tested on Java 11, but may compile on earlier versions of Java. It is available from Maven Central via:
+- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.0.2
 
 ## Development Roadmap
 ### Version 1.0.x
 - For bug fixes.
 - These are to be released on a best effort basis.
 ### Version 1.1.x
-- Work being considered:
--- Use Log4J to standardise logging.
--- Remove redundant code.
--- Extend unit test coverage and detail.
--- Add requested features and other methods abstracted from other libraries. Details will be updated here in due course.
+Work being considered:
+- Use Log4J to standardise logging.
+- Remove redundant code.
+- Extend unit test coverage and detail.
+- Add requested features and other methods abstracted from other libraries. Details will be updated here in due course.
 
 ## Dependencies
-Please see the pom.xml or maven central for details.
-Currently there are no third party dependencies except for unit testing.
+- Please see the pom.xml or maven central for details.
+- Currently there are no third party dependencies except for unit testing.
 
 ## Contributions
-Please raise issues in the usual way.
-Please liaise with the developer about contributing to development.
+- Please raise issues in the usual way.
+- Please liaise with the developer about contributing to development.
 
 ## LICENCE
-Please see the standard Apache 2.0 open source LICENCE.
+- APACHE LICENSE, VERSION 2.0: https://www.apache.org/licenses/LICENSE-2.0
 
 ## Acknowledgements and feedback
-Thanks to the University of Leeds and numerous research grants for supporting the development of this code and the developer over many years.
-
-If you find this code useful, please let the developer know and refer to the resources used in the usual ways. 
+- Thanks to the University of Leeds and numerous research grants for supporting the development of this code and the developer over many years.
+- If you find this code useful, please let the developer know and refer to the resources used in the usual ways. 
 
 ## Package details
 
 ### 1. core
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/core
 
 #### Generic_Environment
@@ -64,7 +61,6 @@ A class that holds commonly used Strings.
 
 
 ### 2. execution
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/execution
 
 #### Generic_Execution
