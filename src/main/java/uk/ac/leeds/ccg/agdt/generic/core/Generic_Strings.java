@@ -61,6 +61,8 @@ public class Generic_Strings {
     public static final String s_b = "b";
     public static final String s_BigDecimal = "BigDecimal";
     public static final String s_BigInteger = "BigInteger";
+    public static final String s_Boolean = "Boolean";
+    public static final String s_boolean = "boolean";
     public static final String s_Byte = "Byte";
     public static final String s_byte = "byte";
     public static final String s_C = "C";

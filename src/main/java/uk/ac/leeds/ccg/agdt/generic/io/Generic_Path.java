@@ -39,11 +39,11 @@ public class Generic_Path implements Serializable, Path {
 
     protected final String s;
 
-    Generic_Path(Path p) {
+    public Generic_Path(Path p) {
         s = p.toString();
     }
 
-    Generic_Path(Generic_Path p) {
+    public Generic_Path(Generic_Path p) {
         s = p.s;
     }
 
