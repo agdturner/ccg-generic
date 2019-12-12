@@ -229,7 +229,7 @@ public class Generic_IO extends Generic_Object {
      * directory rather than a regular file, does not exist but cannot be
      * created, or cannot be opened for any other reason.
      */
-    public BufferedInputStream getBufferedInputStream(Path f)
+    public static BufferedInputStream getBufferedInputStream(Path f)
             throws FileNotFoundException, IOException {
         return new BufferedInputStream(Files.newInputStream(f, READ));
     }
@@ -297,7 +297,7 @@ public class Generic_IO extends Generic_Object {
      * than a regular file, does not exist but cannot be created, or cannot be
      * opened for any other reason.
      */
-    public BufferedOutputStream getBufferedOutputStream(Path f)
+    public static BufferedOutputStream getBufferedOutputStream(Path f)
             throws IOException {
         return new BufferedOutputStream(Files.newOutputStream(f, WRITE));
     }
@@ -312,7 +312,7 @@ public class Generic_IO extends Generic_Object {
      * @throws java.io.IOException If one is encountered and not otherwise
      * handled.
      */
-    public BufferedWriter getBufferedWriter(Path f, boolean append)
+    public static BufferedWriter getBufferedWriter(Path f, boolean append)
             throws IOException {
         return new BufferedWriter(getPrintWriter(f, append));
     }
@@ -322,7 +322,7 @@ public class Generic_IO extends Generic_Object {
      * @return An {@link ObjectInputStream} for reading from a file at {@code f}
      * @throws java.io.IOException If encountered and not otherwise handled.
      */
-    public ObjectInputStream getObjectInputStream(Path f) throws IOException {
+    public static ObjectInputStream getObjectInputStream(Path f) throws IOException {
         return new ObjectInputStream(getBufferedInputStream(f));
     }
 
@@ -331,7 +331,7 @@ public class Generic_IO extends Generic_Object {
      * @return An {@link ObjectOutputStream} for writing to a file at {@code f}.
      * @throws java.io.IOException If encountered and not handled.
      */
-    public ObjectOutputStream getObjectOutputStream(Path f) throws IOException {
+    public static ObjectOutputStream getObjectOutputStream(Path f) throws IOException {
         return new ObjectOutputStream(getBufferedOutputStream(f));
     }
 
@@ -437,7 +437,7 @@ public class Generic_IO extends Generic_Object {
      * directory rather than a regular file, does not exist but cannot be
      * created, or cannot be opened for any other reason.
      */
-    public BufferedReader getBufferedReader(Path f)
+    public static BufferedReader getBufferedReader(Path f)
             throws FileNotFoundException, IOException {
         return getBufferedReader(f, "UTF-8");
     }
@@ -451,7 +451,7 @@ public class Generic_IO extends Generic_Object {
      * be constructed from charsetName.
      * @throws java.io.IOException If encountered.
      */
-    public BufferedReader getBufferedReader(Path f, String charsetName)
+    public static BufferedReader getBufferedReader(Path f, String charsetName)
             throws UnsupportedEncodingException, IOException {
         return new BufferedReader(new InputStreamReader(
                 Files.newInputStream(f, READ), charsetName));
@@ -481,9 +481,9 @@ public class Generic_IO extends Generic_Object {
      * rather than a regular file, does not exist but cannot be created, or
      * cannot be opened for any other reason.
      */
-    public BufferedReader closeAndGetBufferedReader(BufferedReader br, Path f)
+    public static BufferedReader closeAndGetBufferedReader(BufferedReader br, Path f)
             throws FileNotFoundException, IOException {
-        closeBufferedReader(br);
+        br.close();
         br = getBufferedReader(f);
         return br;
     }
@@ -495,7 +495,7 @@ public class Generic_IO extends Generic_Object {
      * @param s The String to write.
      * @throws IOException If encountered.
      */
-    public void write(Path p, String s) throws IOException {
+    public static void write(Path p, String s) throws IOException {
         // Convert the string to a  byte array.
         byte data[] = s.getBytes();
         try (OutputStream out = new BufferedOutputStream(
@@ -513,7 +513,7 @@ public class Generic_IO extends Generic_Object {
      * regular file, does not exist but cannot be created, or cannot be opened
      * for any other reason.
      */
-    public PrintWriter getPrintWriter(Path f, boolean append) 
+    public static PrintWriter getPrintWriter(Path f, boolean append)
             throws IOException {
         if (append) {
             return new PrintWriter(Files.newBufferedWriter(f, WRITE, CREATE,
@@ -627,7 +627,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> that has syntax set.
      */
-    public void setStreamTokenizerSyntaxNumbersAsWords1(
+    public static void setStreamTokenizerSyntaxNumbersAsWords1(
             StreamTokenizer st) {
         // st.wordChars( '0', '9' );
         st.wordChars('0', '0');
@@ -663,7 +663,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set.
      */
-    public void setStreamTokenizerSyntax1(StreamTokenizer st) {
+    public static void setStreamTokenizerSyntax1(StreamTokenizer st) {
         st.resetSyntax();
         // st.parseNumbers();
         st.wordChars(',', ',');
@@ -686,7 +686,7 @@ public class Generic_IO extends Generic_Object {
     /**
      * @param st The StreamTokenizer to modify.
      */
-    private void setWhitespaceAsWords(StreamTokenizer st) {
+    private static void setWhitespaceAsWords(StreamTokenizer st) {
         st.wordChars('\t', '\t');
         st.wordChars(' ', ' ');
     }
@@ -711,7 +711,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax2(StreamTokenizer st) {
+    public static void setStreamTokenizerSyntax2(StreamTokenizer st) {
         st.resetSyntax();
         st.wordChars('"', '"');
         setStreamTokenizerSyntaxNumbersAsWords1(st);
@@ -746,7 +746,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax3(StreamTokenizer st) {
+    public static void setStreamTokenizerSyntax3(StreamTokenizer st) {
         st.resetSyntax();
         // st.parseNumbers();
         st.wordChars(',', ',');
@@ -784,7 +784,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax4(StreamTokenizer st) {
+    public static void setStreamTokenizerSyntax4(StreamTokenizer st) {
         st.resetSyntax();
         st.wordChars(',', ',');
         st.wordChars('"', '"');
@@ -820,7 +820,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax5(StreamTokenizer st) {
+    public static void setStreamTokenizerSyntax5(StreamTokenizer st) {
         st.resetSyntax();
         // st.parseNumbers();
         st.wordChars(',', ',');
@@ -866,7 +866,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax6(StreamTokenizer st) {
+    public static void setStreamTokenizerSyntax6(StreamTokenizer st) {
         setStreamTokenizerSyntax5(st);
         st.wordChars('&', '&');
         st.wordChars('(', '(');
@@ -909,7 +909,7 @@ public class Generic_IO extends Generic_Object {
      *
      * @param st <code>StreamTokenizer</code> thats syntax is set
      */
-    public void setStreamTokenizerSyntax7(StreamTokenizer st) {
+    public static void setStreamTokenizerSyntax7(StreamTokenizer st) {
         setStreamTokenizerSyntax6(st);
         st.wordChars('<', '<');
         st.wordChars('>', '>');
