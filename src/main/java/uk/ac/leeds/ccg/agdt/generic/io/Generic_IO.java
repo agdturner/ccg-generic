@@ -994,7 +994,7 @@ public class Generic_IO extends Generic_Object {
      * @return The File created.
      * @throws java.io.IOException If dir exists and is not a directory.
      */
-    public Path createNewFile(Path dir) throws IOException {
+    public static Path createNewFile(Path dir) throws IOException {
         return createNewFile(dir, "", "");
     }
 
@@ -1011,7 +1011,7 @@ public class Generic_IO extends Generic_Object {
      * is 0, the number then increases by 1 each try.
      * @throws java.io.IOException If dir exists and is not a directory.
      */
-    public Path createNewFile(Path dir, String prefix, String suffix)
+    public static Path createNewFile(Path dir, String prefix, String suffix)
             throws IOException {
         if (Files.exists(dir)) {
             if (!Files.isDirectory(dir)) {
@@ -1033,7 +1033,7 @@ public class Generic_IO extends Generic_Object {
                 r = getNewFile(dir, prefix, suffix);
             } while (!Files.exists(Files.createFile(r)));
         } catch (IOException ioe0) {
-            String methodName = this.getClass().getName()
+            String methodName = Generic_IO.class.getName()
                     + ".createNewFile(Path,String,String)";
             if (r != null) {
                 System.out.println("Path " + r.toString() + " in " + methodName);
@@ -1058,7 +1058,7 @@ public class Generic_IO extends Generic_Object {
      * @param suffix The last part of the filename.
      * @return A File for a file which is thought not to exist.
      */
-    private Path getNewFile(Path dir, String prefix, String suffix) {
+    private static Path getNewFile(Path dir, String prefix, String suffix) {
         Path r;
         if (prefix.isEmpty() && suffix.isEmpty()) {
             long n = 0;
