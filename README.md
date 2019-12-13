@@ -19,12 +19,14 @@ Version 1.0.2 is developed and tested on Java 11, but may compile on earlier ver
 
 ## Development Roadmap
 ### Version 1.0.x
-- For bug fixes which will be released on a best effort basis.
-### Version 1.1.x
+- For bug fixes.
+- These will be released on a best effort basis until a subsequent release is made.
+### Version 1.1.0
 Work being considered:
-- Identify code to deprecate.
+- Deprecatation of methods that are superseeded or no longer useful.
 - Extend unit test coverage and detail.
 - This list may be updated in due course...
+A SNAPSOT version of this will be made available in due course...
 
 ## Dependencies
 - Please see the pom.xml or maven central for details.
