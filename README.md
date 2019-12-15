@@ -15,19 +15,18 @@ A package that helps avoid and deal with OutOfMemoryErrors. The avoidance genera
 This code has been abstracted from numerous other libraries which now depend on this.
 
 ## Status, Current Version and platform requirements
-Version 1.0.2 is developed and tested on Java 11, but may compile on earlier versions of Java. It is available from Maven Central via:
-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.0.2
+Version 1.0.2 is developed and tested on Java 11, but may compile on earlier versions of Java. It is available from Maven Central via: https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.0.2
 
 ## Development Roadmap
 ### Version 1.0.x
 - For bug fixes.
-- These are to be released on a best effort basis.
-### Version 1.1.x
+- These will be released on a best effort basis until a subsequent release is made.
+### Version 1.1.0
 Work being considered:
-- Use Log4J to standardise logging.
-- Remove redundant code.
+- Deprecatation of methods that are superseeded or no longer useful.
 - Extend unit test coverage and detail.
-- Add requested features and other methods abstracted from other libraries. Details will be updated here in due course.
+- This list may be updated in due course...
+A SNAPSOT version of this will be made available in due course...
 
 ## Dependencies
 - Please see the pom.xml or maven central for details.
