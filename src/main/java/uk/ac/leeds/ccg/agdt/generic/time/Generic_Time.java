@@ -16,7 +16,6 @@
 
 package uk.ac.leeds.ccg.agdt.generic.time;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,6 +33,8 @@ import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
  * @version 1.0.0
  */
 public class Generic_Time extends Generic_Date {
+
+    private static final long serialVersionUID = 1L;
 
     public LocalDateTime LDT;
 
