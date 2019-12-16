@@ -226,7 +226,7 @@ public class Generic_FileStore implements Serializable {
      * of the current highest leaf; each other lps[n] is either: the
      * path to the directory containing the current highest leaf directory; or,
      * it is another subdirectory in lps[n - 1] that contains it; etc... 
-     * lps[levels - 1] is the Highest Leaf Directory.
+     * lps[levels - 1] is the parent of the Highest Leaf Directory.
      */
     protected Generic_Path[] lps;
 
@@ -572,11 +572,12 @@ public class Generic_FileStore implements Serializable {
     }
 
     /**
-     * @return a copy of {@link #lps}[levels - 1] this is the current highest leaf
+     * @return a copy of {@link #lps}[levels] this is the current highest leaf
      * directory of the file store.
      */
     public Generic_Path getPathNext() {
-        return new Generic_Path(lps[levels - 1]);
+        return new Generic_Path(Paths.get(lps[levels - 1].toString(),
+                Long.toString(nextID)));
     }
 
     /**

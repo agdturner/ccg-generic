@@ -124,7 +124,7 @@ public class Generic_IO extends Generic_Object {
     public static void writeObject(Object o, Path f) throws IOException {
         //Files.createDirectories(f.getParent()); // Try to avoid this as it slows things down.
         try (ObjectOutputStream oos = new ObjectOutputStream(
-                Files.newOutputStream(f, WRITE))) {
+                Files.newOutputStream(f, CREATE))) {
             oos.writeUnshared(o);
             oos.flush();
             oos.reset();
