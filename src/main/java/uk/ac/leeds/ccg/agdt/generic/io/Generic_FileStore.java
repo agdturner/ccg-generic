@@ -221,11 +221,12 @@ public class Generic_FileStore implements Serializable {
      * For storing the paths to the directories (at each level including the
      * root level) in which nextID is to be stored. This grows with
      * {@link #levels} as the file store grows. If the file store grows wider it
-     * also must be modified. lps[levels - 1] is the absolute path to the root
-     * directory; lps[levels - 2] is the path to the directory in lps[levels -1]
-     * of the current highest leaf; each other lps[levels -2] is either: the
+     * also must be modified. lps[0] is the absolute path to the root
+     * directory; lps[1] is the path to the directory in lps[0]
+     * of the current highest leaf; each other lps[n] is either: the
      * path to the directory containing the current highest leaf directory; or,
-     * it is another subdirectory in lps[levels - 1] that contains it; etc...
+     * it is another subdirectory in lps[n - 1] that contains it; etc... 
+     * lps[levels - 1] is the Highest Leaf Directory.
      */
     protected Generic_Path[] lps;
 
@@ -571,14 +572,12 @@ public class Generic_FileStore implements Serializable {
     }
 
     /**
-     * @return a copy of {@link #lps}[0] this is the current highest leaf
+     * @return a copy of {@link #lps}[levels - 1] this is the current highest leaf
      * directory of the file store.
      */
     public Generic_Path getPathNext() {
-        return new Generic_Path(lps[0]);
+        return new Generic_Path(lps[levels - 1]);
     }
-    
-    
 
     /**
      * Calculates and returns the current path of the directory for storing the
@@ -604,6 +603,27 @@ public class Generic_FileStore implements Serializable {
         }
         p = Paths.get(p.toString(), Long.toString(id));
         return p;
+    }
+
+    /**
+     * @param baseDir The baseDir of a file store for which the nextID is
+     * returned.
+     * @return The nextID of the file store with a baseDirectory baseDir.
+     * @throws Exception If encountered
+     */
+    public static Long getNextID(Generic_Path baseDir) throws Exception {
+        if (baseDir == null) {
+            return null;
+        }
+        return new Generic_FileStore(baseDir.getPath()).nextID;
+    }
+
+    /**
+     * @return The nextID of the file store with a baseDirectory baseDir.
+     * @throws Exception If encountered
+     */
+    public long getNextID() throws Exception {
+        return nextID;
     }
 
     protected final String getName(long l, long u) {
