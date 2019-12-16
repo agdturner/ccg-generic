@@ -167,7 +167,7 @@ public abstract class Generic_MemoryManager
      * @return true if there is enough memory to continue and false otherwise.
      */
     @Override
-    public abstract boolean checkAndMaybeFreeMemory() throws IOException;
+    public abstract boolean checkAndMaybeFreeMemory() throws IOException, Exception;
 
     /**
      * For initialising and returning {@link #MemoryTest}.
