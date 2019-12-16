@@ -217,7 +217,7 @@ public class Generic_Environment {
         }
         int logID = logs.size();
         Path d = getLogDir(s);
-        logs.put(logID, io.getPrintWriter(Paths.get(d.toString(), s + e),
+        logs.put(logID, Generic_IO.getPrintWriter(Paths.get(d.toString(), s + e),
                 true));
         log("LoggingLevel = " + level.getName(), true);
         return logID;
@@ -234,7 +234,7 @@ public class Generic_Environment {
      * @throws Exception If there is a another problem setting up the file
      * store.
      */
-    protected Path getLogDir(String s) throws IOException, Exception {
+    public Path getLogDir(String s) throws IOException, Exception {
         Path dir = Paths.get(files.getLogDir().toString(), s);
         if (Files.exists(dir)) {
             Generic_FileStore fs = new Generic_FileStore(dir);

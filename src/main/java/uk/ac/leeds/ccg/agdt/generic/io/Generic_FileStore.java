@@ -571,6 +571,16 @@ public class Generic_FileStore implements Serializable {
     }
 
     /**
+     * @return a copy of {@link #lps}[0] this is the current highest leaf
+     * directory of the file store.
+     */
+    public Generic_Path getPathNext() {
+        return new Generic_Path(lps[0]);
+    }
+    
+    
+
+    /**
      * Calculates and returns the current path of the directory for storing the
      * element identified by id. For efficiency, this does not check if id is
      * less than or equal to {@link #nextID}, but it should be and if not then
@@ -581,7 +591,7 @@ public class Generic_FileStore implements Serializable {
      * @return The current path of the directory for storing the element
      * identified by id.
      */
-    protected Path getPath(long id) {
+    public Path getPath(long id) {
         Path[] paths = new Path[levels - 1];
         ArrayList<Integer> dirIndexes = getDirIndexes(id);
         Path p = root;
@@ -770,7 +780,7 @@ public class Generic_FileStore implements Serializable {
     }
 
     /**
-     * @return The highest leaf directory for an non-initialised file store.
+     * @return The highest leaf directory for a non-initialised file store.
      * @throws IOException If encountered.
      */
     protected final Path findHighestLeaf() throws IOException {

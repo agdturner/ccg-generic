@@ -33,7 +33,7 @@ public interface Generic_Memory {
      * @throws java.io.IOException if there is a problem swapping data to a 
      * cache.
      */
-    boolean checkAndMaybeFreeMemory() throws IOException;
+    boolean checkAndMaybeFreeMemory() throws IOException, Exception;
 
     /**
      * For a method that will initialise a MemoryReserve.

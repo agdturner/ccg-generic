@@ -82,7 +82,7 @@ public abstract class Generic_MemoryManager
      * @return an indication if some data was cached.
      * @throws java.io.IOException IFF encountered.
      */
-    public abstract boolean cacheDataAny() throws IOException;
+    public abstract boolean cacheDataAny() throws IOException, Exception;
 
     /**
      * A method which will try to swap any data.
@@ -92,7 +92,7 @@ public abstract class Generic_MemoryManager
      * @return an indication if some data was swapped.
      * @throws java.io.IOException IFF encountered.
      */
-    public abstract boolean cacheDataAny(boolean hoome) throws IOException;
+    public abstract boolean cacheDataAny(boolean hoome) throws IOException, Exception;
     
     /**
      * This may initialise {@link #MemoryTest}.
