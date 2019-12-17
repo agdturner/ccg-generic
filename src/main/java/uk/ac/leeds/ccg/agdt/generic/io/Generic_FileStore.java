@@ -620,7 +620,7 @@ public class Generic_FileStore implements Serializable {
     }
 
     /**
-     * @return The nextID of the file store with a baseDirectory baseDir.
+     * @return The nextID of the file store with a base directory baseDir.
      * @throws Exception If encountered
      */
     public long getNextID() throws Exception {
@@ -747,6 +747,13 @@ public class Generic_FileStore implements Serializable {
         //System.out.println(p.toString());
     }
 
+    /**
+     * @return a copy of {@link #baseDir}. 
+     */
+    public Generic_Path getBaseDir() {
+        return new Generic_Path(baseDir);
+    }
+    
     /**
      * Tests the integrity of the file store from its base directory.
      *
