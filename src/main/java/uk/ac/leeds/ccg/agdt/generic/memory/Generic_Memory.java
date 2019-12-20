@@ -17,6 +17,7 @@
 package uk.ac.leeds.ccg.agdt.generic.memory;
 
 import java.io.IOException;
+import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
 
 /**
  * An interface for handling issues related to computer memory.
@@ -37,6 +38,7 @@ public interface Generic_Memory {
 
     /**
      * For a method that will initialise a MemoryReserve.
+     * @param e Generic_Environment For logging.
      */
-    void initMemoryReserve();
+    void initMemoryReserve(Generic_Environment e);
 }
