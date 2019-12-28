@@ -83,7 +83,7 @@ public abstract class Generic_MemoryManager implements Generic_Memory, Serializa
      * @return an indication if some data was cached.
      * @throws java.io.IOException IFF encountered.
      */
-    public abstract boolean cacheDataAny() throws IOException, Exception;
+    public abstract boolean swapSomeData() throws IOException, Exception;
 
     /**
      * A method which will try to swap any data.
@@ -93,7 +93,7 @@ public abstract class Generic_MemoryManager implements Generic_Memory, Serializa
      * @return an indication if some data was swapped.
      * @throws java.io.IOException IFF encountered.
      */
-    public abstract boolean cacheDataAny(boolean hoome) throws IOException, Exception;
+    public abstract boolean swapSomeData(boolean hoome) throws IOException, Exception;
 
     /**
      * This may initialise {@link #MemoryTest}.
