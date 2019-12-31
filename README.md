@@ -6,22 +6,24 @@ A Java library with generally useful classes and methods.
 
 Highlights:
 1. Generic_FileStore
-https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/io/Generic_FileStore.java
+https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java
 A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
 2. memory
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/memory
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory
 A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to files using a Generic_FileStore instance for organising those files.
 
 This code has been abstracted from numerous other libraries which now depend on this.
 
 ## Status, Current Version and platform requirements
-Version 1.0.2 is developed and tested on Java 11, but may compile on earlier versions of Java. It is available from Maven Central via: https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.0.2
+Version 1.1.0 is developed and tested on Java 11, but may compile on earlier versions of Java. It is available from Maven Central via: https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.1.0
 
 ## Development Roadmap
 ### Version 1.0.x
+- No longer supported.
+### Version 1.1.x
 - For bug fixes.
 - These will be released on a best effort basis until a subsequent release is made.
-### Version 1.1.0
+### Version 1.2.x
 Work being considered:
 - Deprecatation of methods that are superseeded or no longer useful.
 - Extend unit test coverage and detail.
@@ -46,7 +48,7 @@ A SNAPSOT version of this will be made available in due course...
 ## Package details
 
 ### 1. core
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/andyt/generic/core
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core
 
 #### Generic_Environment
 A generic environment class for those things that most objects might want to access.
@@ -60,7 +62,7 @@ A class that holds commonly used Strings.
 
 
 ### 2. execution
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/execution
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/execution
 
 #### Generic_Execution
 Generic utility class for process execution handling.
@@ -68,7 +70,7 @@ Generic utility class for process execution handling.
 
 ### 3. io
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/io
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/io
 
 #### Generic Defaults
 A class for holding IO defaults.
@@ -151,7 +153,7 @@ Also for reading from files, writing to files and copying and moving files.
 
 ### 4. lang
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/lang
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/lang
 
 #### Generic_String
 Utility methods for String transformations.
@@ -159,7 +161,7 @@ Utility methods for String transformations.
 
 ### 5. math
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/math
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/math
 
 #### Generic_Math
 Contains methods for adding two Numbers and testing if Numbers can be stored as other types of Number if not exactly, then within a specific error bound.
@@ -167,7 +169,7 @@ Contains methods for adding two Numbers and testing if Numbers can be stored as 
 
 ### 6. memory
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/memory
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory
 
 #### Generic_MemoryManager
 A class to be extended for memory management involving caching data from the fast access memory to files and then clearing this from the fast access memory. Most methods handle OutOfMemoryErrors should they be encountered, but generally the aim is to avoid these by testing for available memory and caching data prior to running very low on memory.
@@ -181,7 +183,7 @@ A class with methods that help in testing the availablity and usage of fast acce
 
 ### 7. time
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/time
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/time
 
 #### Generic_Date
 Holds a reference to a LocalDate and provides methods to compare and process dates.
@@ -199,7 +201,7 @@ Holds a reference to a YearMonth and provides methods to compare and process yea
 
 ### 8. util
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/util
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/util
 
 #### Generic_Collections
 Contains methods for processing and manipulating collections including Lists, Arrays, Sets and Maps.
@@ -211,7 +213,7 @@ This pre-dates java.time and was used in programs that ticked through time actin
 
 ### 9. visualisation
 
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/agdt/generic/visualisation
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/visualisation
 
 #### Generic_Visualisation
 A class with methods for visualisation that will work in headless environments.
