@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.agdt.generic.io;
+package uk.ac.leeds.ccg.generic.io;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Stream;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
-import uk.ac.leeds.ccg.agdt.generic.math.Generic_Math;
-import uk.ac.leeds.ccg.agdt.generic.util.Generic_Collections;
+import uk.ac.leeds.ccg.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.generic.math.Generic_Math;
+import uk.ac.leeds.ccg.generic.util.Generic_Collections;
 
 /**
  * For storing files on disk in file store - a form of data base where each file

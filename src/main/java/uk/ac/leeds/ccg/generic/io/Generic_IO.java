@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.agdt.generic.io;
+package uk.ac.leeds.ccg.generic.io;
 
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -53,8 +53,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Object;
+import uk.ac.leeds.ccg.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.generic.core.Generic_Object;
 
 /**
  * Contains convenient methods for primarily helping to read from and write to a

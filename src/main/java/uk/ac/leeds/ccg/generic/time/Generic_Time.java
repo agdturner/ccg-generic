@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package uk.ac.leeds.ccg.agdt.generic.time;
+package uk.ac.leeds.ccg.generic.time;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.generic.core.Generic_Strings;
 
 /**
  * Holds a reference to a LocalDateTime and provides methods to compare and
  * process times. It should not be confused with the identically named
- * {@link uk.ac.leeds.ccg.agdt.generic.util.Generic_Time} class.
+ * {@link uk.ac.leeds.ccg.generic.util.Generic_Time} class.
  *
  * @author Andy Turner
  * @version 1.0.0

@@ -14,31 +14,39 @@
  * limitations under the License.
  */
 
-package uk.ac.leeds.ccg.agdt.generic.memory;
+package uk.ac.leeds.ccg.generic.time;
 
-import java.io.IOException;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
+import java.time.LocalDate;
 
 /**
- * An interface for handling issues related to computer memory.
+ * Used for representing a single continuous date period using two
+ * {@link java.time.LocalDate} instances - {@link #start} and {@link #end}.
  *
  * @author Andy Turner
  * @version 1.0.0
  */
-public interface Generic_Memory {
+public class Generic_LocalDateRange {
+
+    private final LocalDate start;
+    private final LocalDate end;
+
+    public Generic_LocalDateRange(LocalDate start, LocalDate end) {
+        this.start = start;
+        this.end = end;
+    }
 
     /**
-     * For a method that will try to ensure there is enough memory to continue.
-     *
-     * @return true iff the checks was successful.
-     * @throws java.io.IOException if there is a problem swapping data to a 
-     * cache.
+     * @return the start
      */
-    boolean checkAndMaybeFreeMemory() throws IOException, Exception;
+    public LocalDate getStart() {
+        return start;
+    }
 
     /**
-     * For a method that will initialise a MemoryReserve.
-     * @param e Generic_Environment For logging.
+     * @return the end
      */
-    void initMemoryReserve(Generic_Environment e);
+    public LocalDate getEnd() {
+        return end;
+    }
+
 }

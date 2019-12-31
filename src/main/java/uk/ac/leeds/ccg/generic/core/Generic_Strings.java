@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.ac.leeds.ccg.agdt.generic.core;
+package uk.ac.leeds.ccg.generic.core;
 
 /**
  * A class that holds commonly used Strings.

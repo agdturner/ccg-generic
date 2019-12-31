@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.agdt.generic.core;
+package uk.ac.leeds.ccg.generic.core;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,10 +25,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
-import uk.ac.leeds.ccg.agdt.generic.io.Generic_Defaults;
-import uk.ac.leeds.ccg.agdt.generic.io.Generic_FileStore;
-import uk.ac.leeds.ccg.agdt.generic.io.Generic_Files;
-import uk.ac.leeds.ccg.agdt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.generic.io.Generic_FileStore;
+import uk.ac.leeds.ccg.generic.io.Generic_Files;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 
 /**
  * Typically there is one instance of this for each runtime which is shared

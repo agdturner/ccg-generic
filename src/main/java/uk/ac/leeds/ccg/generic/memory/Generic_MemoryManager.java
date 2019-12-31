@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.agdt.generic.memory;
+package uk.ac.leeds.ccg.generic.memory;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
-import uk.ac.leeds.ccg.agdt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.generic.core.Generic_Environment;
 
 /**
  * A class to be extended for memory management involving the controlled
