@@ -17,6 +17,7 @@ This code has been abstracted from numerous other libraries which now depend on 
 ## Status, Current Version and platform requirements
 Version 1.1.0 is developed and tested on Java 11 using Maven. It is available from Maven Central via: https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.1.0
 
+To use with Maven add the following dependency to pom.xml:
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
@@ -25,6 +26,8 @@ Version 1.1.0 is developed and tested on Java 11 using Maven. It is available fr
     <version>1.1.0</version>
 </dependency>
 ```
+This library depends only on Java, here is a link to the jar:
+https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.1.0/agdt-java-generic-1.1.0.jar
 
 ## Development Roadmap
 ### Version 1.0.x
