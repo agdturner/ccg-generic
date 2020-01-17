@@ -15,8 +15,6 @@
  */
 package uk.ac.leeds.ccg.generic.io;
 
-import uk.ac.leeds.ccg.generic.io.Generic_FileStore;
-import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
