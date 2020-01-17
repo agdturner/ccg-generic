@@ -366,6 +366,25 @@ public class Generic_FileStore implements Serializable {
     }
 
     /**
+     * 
+     * @param dir The FileStore directory.
+     * @return The file store at {@code dir} creating it first if it does not 
+     * exist.
+     * @throws Exception If encountered.
+     */
+    public static Generic_FileStore getFileStore(Path dir) throws Exception {
+        Generic_FileStore fs;
+        if (Files.exists(dir)) {
+            fs = new Generic_FileStore(dir);
+        } else {
+            fs = new Generic_FileStore(dir.getParent(), 
+                    dir.getFileName().toString());
+        }
+        return fs;
+    }
+    
+    
+    /**
      * @return A String description of this.
      */
     @Override
