@@ -20,8 +20,8 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -50,9 +50,9 @@ public class Generic_Visualisation extends Generic_Object {
      * @return BufferedImage
      * @throws java.io.IOException If encountered.
      */
-    public BufferedImage loadImage(File f) throws IOException {
+    public BufferedImage loadImage(Path f) throws IOException {
         try {
-            return ImageIO.read(f);
+            return ImageIO.read(f.toFile());
         } catch (IIOException ex) {
             /**
              * This can happen because of too many open files. Try waiting for 2
@@ -71,13 +71,13 @@ public class Generic_Visualisation extends Generic_Object {
      * @param format String
      * @param f File
      */
-    public void saveImage(BufferedImage bi, String format, File f) {
+    public void saveImage(BufferedImage bi, String format, Path f) {
         String m = this.getClass().getName() 
                 + ".saveImage(BufferedImage,String,File) to " + f;
         env.logStartTag(m);
         if (bi != null) {
             try {
-                ImageIO.write(bi, format, f);
+                ImageIO.write(bi, format, f.toFile());
             } catch (IOException ex) {
                 /**
                  * This can happen because of too many open files. Try waiting
@@ -94,7 +94,7 @@ public class Generic_Visualisation extends Generic_Object {
     }
 
     /**
-     * Saves image bi to File f in format after a timeInMilliseconds delay which
+     * Saves image bi to Path f in format after a timeInMilliseconds delay which
      * is hopefully long enough for all the graphics to be drawn.
      *
      * @param es ExecutorService
@@ -106,7 +106,7 @@ public class Generic_Visualisation extends Generic_Object {
      * @return Future
      */
     public Future saveImage(ExecutorService es, Object o, BufferedImage bi,
-            long timeInMilliseconds, String format, File f) {
+            long timeInMilliseconds, String format, Path f) {
         if (es == null) {
             es = Executors.newSingleThreadExecutor();
         }
@@ -122,13 +122,13 @@ public class Generic_Visualisation extends Generic_Object {
         BufferedImage bi;
         long timeInMilliseconds;
         String format;
-        File f;
+        Path f;
 
         public ImageSaver() {
         }
 
         public ImageSaver(Generic_Visualisation v, Object o, BufferedImage bi,
-                long timeInMilliseconds, String format, File f) {
+                long timeInMilliseconds, String format, Path f) {
             this.v = v;
             this.o = o;
             this.bi = bi;
