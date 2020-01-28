@@ -169,7 +169,7 @@ public class Generic_IO extends Generic_Object {
      * @param d The Path of a directory to copy the file into.
      * @throws java.io.IOException If encountered.
      */
-    protected void copyFile(Path f, Path d) throws IOException {
+    protected static void copyFile(Path f, Path d) throws IOException {
         copyFile(f, d, f.getFileName().toString());
     }
 
@@ -185,8 +185,8 @@ public class Generic_IO extends Generic_Object {
      * @param fn The name for the file that will be created in d.
      * @throws java.io.IOException If encountered.
      */
-    public void copyFile(Path f, Path d, String fn)
-            throws IOException {
+    public static void copyFile(Path f, Path d,
+            String fn) throws IOException {
         if (!Files.exists(f)) {
             throw new IOException("Path " + f + " is not to a file.");
         }
@@ -194,10 +194,7 @@ public class Generic_IO extends Generic_Object {
             Files.createDirectories(d);
         }
         Path p = Paths.get(d.toString(), fn);
-        if (Files.exists(p)) {
-            env.log("Overwriting File " + p + " in "
-                    + this.getClass().getName() + ".copyFile(File,File,String)");
-        } else {
+        if (!Files.exists(p)) {
             Files.createFile(p);
         }
         try (BufferedInputStream bis = getBufferedInputStream(f);
@@ -338,12 +335,12 @@ public class Generic_IO extends Generic_Object {
     /**
      * A class for recursively copying a directory.
      */
-    private class CopyDir extends SimpleFileVisitor<Path> {
+    private static class CopyDir extends SimpleFileVisitor<Path> {
 
         private final Path sourceDir;
         private final Path targetDir;
 
-        public CopyDir(Generic_IO io, Path sourceDir, Path targetDir) {
+        public CopyDir(Path sourceDir, Path targetDir) {
             this.sourceDir = sourceDir;
             this.targetDir = targetDir;
         }
@@ -373,8 +370,9 @@ public class Generic_IO extends Generic_Object {
 
     }
 
-    private void copyDirectory(Path dirToCopy, Path dirToCopyTo) throws IOException {
-        Files.walkFileTree(dirToCopy, new CopyDir(this, dirToCopy, dirToCopyTo));
+    private static void copyDirectory(Path dirToCopy, Path dirToCopyTo) 
+            throws IOException {
+        Files.walkFileTree(dirToCopy, new CopyDir(dirToCopy, dirToCopyTo));
     }
 
     /**
@@ -382,12 +380,11 @@ public class Generic_IO extends Generic_Object {
      * @param dirToCopyTo Directory.
      * @throws java.io.IOException If IOException encountered.
      */
-    public void copy(Path fileOrDirToCopy, Path dirToCopyTo) throws IOException {
+    public static void copy(Path fileOrDirToCopy, Path dirToCopyTo) throws IOException {
         Files.createDirectories(dirToCopyTo);
         if (!Files.isDirectory(dirToCopyTo)) {
             throw new IOException("Expecting File " + dirToCopyTo
-                    + "To be a directory in "
-                    + this.getClass().getName() + ".copy(File,File)");
+                    + "To be a directory in Generic_IO.copy(File,File)");
         }
         if (Files.isRegularFile(fileOrDirToCopy)) {
             copyFile(fileOrDirToCopy, dirToCopyTo);

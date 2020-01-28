@@ -303,7 +303,7 @@ public class Generic_Collections {
      * @param <N> The Number to add.
      * @param l The list to add to.
      * @param pos The position in the list to add to.
-     * @param v The value to add to the existing value in {@code l} at position 
+     * @param v The value to add to the existing value in {@code l} at position
      * {@code p}.
      */
     public static <N extends Number> void addToList(List<N> l, int pos, N v) {
@@ -547,24 +547,29 @@ public class Generic_Collections {
     }
 
     /**
-     * For all values in set1 we count how many values are in set0, and deduce
-     * how many are not. Also we check how many values that are in set0 that are
-     * not in set1.
+     * Count: all values in {@code s0} and {@code s1}; values in {@code s1} that
+     * are not in {@code s0}; and values in {@code s0} that are not in
+     * {@code s1}.
      *
-     * @param s0 HashSet
-     * @param s1 HashSet
-     * @return long[3] result {@code
-     * result[0] = Count of how many values are in both set 0 and set 1;
-     * result[1] = Count of how many values are in set 1, but not in set 0;
-     * result[2] = Count of how many values are in set 0, but not in set 1;
-     * }
+     * @param <T> The type.
+     * @param s0 Set
+     * @param s1 Set
+     * @return long[3] r where:
+     * <ul>
+     * <li>r[0] = Count of how many values are in both {@code s0} and
+     * {@code s1}</li>
+     * <li>r[1] = Count of how many values are in {@code s1}, but not in
+     * {@code s0}</li>
+     * <li>r[2] = Count of how many values are in {@code s0}, but not in
+     * {@code s1}</li>
+     * </ul>
      */
-    public static long[] getCounts(HashSet s0, HashSet s1) {
+    public static <T> long[] getCounts(Set<T> s0, Set<T> s1) {
         long[] r = new long[3];
         r[0] = 0;
         r[1] = 0;
         r[2] = 0;
-        Iterator ite = s1.iterator();
+        Iterator<T> ite = s1.iterator();
         while (ite.hasNext()) {
             if (s0.contains(ite.next())) {
                 r[0]++;
@@ -912,5 +917,45 @@ public class Generic_Collections {
      */
     public static boolean containsValue(Collection<BigDecimal> c, BigDecimal b) {
         return c.stream().parallel().anyMatch(v -> v.equals(b));
+    }
+
+    /**
+     * Calculates and returns the sum of the sizes of all the sets in {@code m}
+     * as an int.
+     *
+     * @param <K> Keys
+     * @param <T> Types
+     * @param m Map
+     * @return The sum of the sizes of all the sets in {@code m}.
+     */
+    public static <K, T> int getCountInt(Map<K, Set<T>> m) {
+        int r = 0;
+        Iterator<Set<T>> ite = m.values().iterator();
+        while (ite.hasNext()) {
+            r += ite.next().size();
+        }
+        return r;
+    }
+
+    /**
+     * Return the first key in the map which contains the set with {@code t} in.
+     *
+     * @param <K> The key type.
+     * @param <T> The value type.
+     * @param map The map.
+     * @param t The value to find the key for.
+     * @return The first key found.
+     */
+    public static <K, T> K getKey(Map<K, Set<T>> map, T t) {
+        Set<Map.Entry<K, Set<T>>> mapEntrySet = map.entrySet();
+        Iterator<Map.Entry<K, Set<T>>> ite = mapEntrySet.iterator();
+        while (ite.hasNext()) {
+            Map.Entry<K, Set<T>> entry = ite.next();
+            K k = entry.getKey();
+            if (entry.getValue().contains(t)) {
+                return k;
+            }
+        }
+        return null;
     }
 }
