@@ -48,7 +48,6 @@ public class Generic_Execution extends Generic_Object {
      * {@link #shutdownExecutorService(java.util.concurrent.ExecutorService,
      * java.util.concurrent.Future, java.lang.Object, long, long)}.
      *
-     * @param <V> The type of Futures.
      * @param es ExecutorService.
      * @param futures Set of Futures.
      * @param o Object.
@@ -57,15 +56,14 @@ public class Generic_Execution extends Generic_Object {
      * @see #shutdownExecutorService(java.util.concurrent.ExecutorService,
      * java.util.concurrent.Future, java.lang.Object, long, long)}
      */
-    public <V> void shutdownExecutorService(ExecutorService es,
-            HashSet<Future<V>> futures, Object o) {
+    public void shutdownExecutorService(ExecutorService es,
+            HashSet<Future> futures, Object o) {
         long delay = 1000;
         long maxWait = 10;
         shutdownExecutorService(es, futures, o, delay, maxWait);
     }
 
     /**
-     * @param <V> Type for Futures.
      * @param es ExecutorService
      * @param futures Set of Futures
      * @param o Object
@@ -74,15 +72,15 @@ public class Generic_Execution extends Generic_Object {
      * @param maxWait Number of minutes to block shutdown after all futures
      * returned
      */
-    public <V> void shutdownExecutorService(ExecutorService es,
-            HashSet<Future<V>> futures, Object o, long delay, long maxWait) {
+    public void shutdownExecutorService(ExecutorService es,
+            HashSet<Future> futures, Object o, long delay, long maxWait) {
         // What is still left to do from futures?
-        Iterator<Future<V>> ite = futures.iterator();
+        Iterator<Future> ite = futures.iterator();
         env.log("There are " + futures.size() + " jobs to check.");
         int doneJobsCounter = 0;
         int notDoneJobsCounter = 0;
         while (ite.hasNext()) {
-            Future<V> f = ite.next();
+            Future f = ite.next();
             if (f.isDone()) {
                 doneJobsCounter++;
             } else {
@@ -94,7 +92,7 @@ public class Generic_Execution extends Generic_Object {
         ite = futures.iterator();
         long counter = 0;
         while (ite.hasNext()) {
-            Future<V> future = ite.next();
+            Future future = ite.next();
             while (!future.isDone()) {
                 counter = checkFuture(o, counter, delay);
             }
@@ -106,13 +104,12 @@ public class Generic_Execution extends Generic_Object {
     /**
      * Default delay 1000 and maxWait 10.
      *
-     * @param <V> Type for Futures.
      * @param es ExecutorService
      * @param future Future
      * @param o Object
      */
-    public <V> void shutdownExecutorService(ExecutorService es,
-            Future<V> future, Object o) {
+    public void shutdownExecutorService(ExecutorService es,
+            Future future, Object o) {
         long delay = 1000;
         long maxWait = 10;
         shutdownExecutorService(es, future, o, delay, maxWait);
@@ -154,8 +151,6 @@ public class Generic_Execution extends Generic_Object {
     }
 
     /**
-     *
-     * @param <V> The type for Futures.
      * @param es ExecutorService
      * @param future Future
      * @param o Object
@@ -163,8 +158,8 @@ public class Generic_Execution extends Generic_Object {
      * Future is returned.
      * @param maxWait Maximum time to wait before shutting down.
      */
-    public <V> void shutdownExecutorService(ExecutorService es,
-            Future<V> future, Object o, long delay, long maxWait) {
+    public void shutdownExecutorService(ExecutorService es,
+            Future future, Object o, long delay, long maxWait) {
         long counter = 0;
         while (!future.isDone()) {
             counter = checkFuture(o, counter, delay);
