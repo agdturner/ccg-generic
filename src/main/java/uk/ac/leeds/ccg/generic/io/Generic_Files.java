@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 import uk.ac.leeds.ccg.generic.core.Generic_Strings;
 
 /**
- * Generic Files, for
+ * Generic Files
  *
  * @author Andy Turner
  * @version 1.0.1
