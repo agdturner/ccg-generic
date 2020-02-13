@@ -276,24 +276,25 @@ public class Generic_Collections {
     }
 
     /**
-     * Adds to a mapped number. If m does not already contain the key k then i
-     * is mapped to k. Otherwise the value for k is obtained from m and i is
-     * added to it using
-     * {@link Generic_Math#add(java.lang.Number, java.lang.Number)}. This may
-     * result in infinite values being added to m or ArithmeticExceptions being
-     * thrown all depending on the result of any additions as calculated via
+     * Adds to a mapped number.If m does not already contain the key k then i is
+     * mapped to k. Otherwise the value for k is obtained from m and i is added
+     * to it using {@link Generic_Math#add(java.lang.Number, java.lang.Number)}.
+     * This may result in infinite values being added to m or
+     * ArithmeticExceptions being thrown all depending on the result of any
+     * additions as calculated via
      * {@link Generic_Math#add(java.lang.Number, java.lang.Number)}.
      *
      * @param <K> Key
+     * @param <V> Number
      * @param m The map that is to be added to.
      * @param k The key which value is added to or initialised.
-     * @param i The amount to be added to the map.
+     * @param v The amount to be added to the map.
      */
-    public static <K> void addToMap(Map<K, Number> m, K k, Number i) {
+    public static <K, V extends Number> void addToMap(Map<K, V> m, K k, V v) {
         if (!m.containsKey(k)) {
-            m.put(k, i);
+            m.put(k, v);
         } else {
-            m.put(k, Generic_Math.add(m.get(k), i));
+            m.put(k, Generic_Math.add(m.get(k), v));
         }
     }
 

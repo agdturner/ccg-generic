@@ -426,6 +426,18 @@ public class Generic_IO extends Generic_Object {
             }
         }
     }
+    
+    /**
+     * @param p The Generic_Path of a file.
+     * @return BufferedReader
+     * @throws java.io.FileNotFoundException If the file exists but is a
+     * directory rather than a regular file, does not exist but cannot be
+     * created, or cannot be opened for any other reason.
+     */
+    public static BufferedReader getBufferedReader(Generic_Path p)
+            throws FileNotFoundException, IOException {
+        return getBufferedReader(p.getPath());
+    }
 
     /**
      * @param f The Path of a file.
