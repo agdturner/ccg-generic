@@ -466,36 +466,40 @@ public class Generic_IO extends Generic_Object {
                 Files.newInputStream(f, READ), charsetName));
     }
 
-    /**
-     * Closes BufferedReader br.
-     *
-     * @param br BufferedReader
-     */
-    public void closeBufferedReader(BufferedReader br) {
-        try {
-            br.close();
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-            env.log(ex.getMessage());
-        }
-    }
-
-    /**
-     * Closes BufferedReader br and returns a new BufferedReader to read f.
-     *
-     * @param br BufferedReader
-     * @param f File
-     * @return new BufferedReader to read f.
-     * @throws FileNotFoundException If the file exists but is a directory
-     * rather than a regular file, does not exist but cannot be created, or
-     * cannot be opened for any other reason.
-     */
-    public static BufferedReader closeAndGetBufferedReader(BufferedReader br, Path f)
-            throws FileNotFoundException, IOException {
-        br.close();
-        br = getBufferedReader(f);
-        return br;
-    }
+//    /**
+//     * Deprecated as should use try with resource.
+//     * Closes BufferedReader br.
+//     *
+//     * @param br BufferedReader
+//     */
+//    @Deprecated
+//    public void closeBufferedReader(BufferedReader br) {
+//        try {
+//            br.close();
+//        } catch (IOException ex) {
+//            ex.printStackTrace(System.err);
+//            env.log(ex.getMessage());
+//        }
+//    }
+//
+//    /**
+//     * Deprecated as should use try with resource.
+//     * Closes BufferedReader br and returns a new BufferedReader to read f.
+//     *
+//     * @param br BufferedReader
+//     * @param f File
+//     * @return new BufferedReader to read f.
+//     * @throws FileNotFoundException If the file exists but is a directory
+//     * rather than a regular file, does not exist but cannot be created, or
+//     * cannot be opened for any other reason.
+//     */
+//    @Deprecated
+//    public static BufferedReader closeAndGetBufferedReader(BufferedReader br, Path f)
+//            throws FileNotFoundException, IOException {
+//        br.close();
+//        br = getBufferedReader(f);
+//        return br;
+//    }
 
     /**
      * Write {@code s} to a file at {@code p}.
