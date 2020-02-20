@@ -563,7 +563,7 @@ public class Generic_FileStore implements Serializable {
             long range = ranges.get(lvl);
             int c = 0;
             id2 -= range;
-            while (id2 > 0) {
+            while (id2 >= 0) {
                 id2 -= range;
                 c++;
             }
@@ -616,7 +616,8 @@ public class Generic_FileStore implements Serializable {
         Path p = root;
         for (int lvl = levels - 2; lvl >= 0; lvl--) {
             long range = ranges.get(lvl + 1);
-            long l = range * dirIndexes.get(lvl);
+            long l = range * dirIndexes.get(lvl + 1);
+            //long l = range * dirIndexes.get(lvl);
             long u = l + range - 1L;
             paths[lvl] = Paths.get(p.toString(), getName(l, u));
             p = paths[lvl];
