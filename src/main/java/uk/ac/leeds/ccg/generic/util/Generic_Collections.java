@@ -290,7 +290,7 @@ public class Generic_Collections {
      * @param k The key which value is added to or initialised.
      * @param v The amount to be added to the map.
      */
-    public static <K, V extends Number> void addToMap(Map<K, V> m, K k, V v) {
+    public static <K, V extends Number> void addToCount(Map<K, V> m, K k, V v) {
         if (!m.containsKey(k)) {
             m.put(k, v);
         } else {
@@ -363,7 +363,9 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      * @return The resulting value in m mapped by k.
+     * @deprecated Use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
+    @Deprecated
     public static <K> Integer addToMapInteger(Map<K, Integer> m, K k,
             Integer v) {
         Integer v0 = m.get(k);
@@ -393,7 +395,7 @@ public class Generic_Collections {
      * @param u The map to updated by adding to the values from uf.
      * @param uf The map to update u from by adding values.
      */
-    public static <K, V1 extends Number, V2 extends Number> void addToMap(
+    public static <K, V1 extends Number, V2 extends Number> void addToCount2(
             Map<K, V1> u, Map<K, V2> uf) {
         if (uf != null) {
             uf.entrySet().forEach((entry) -> {
@@ -412,6 +414,10 @@ public class Generic_Collections {
         }
     }
 
+    /**
+     * @deprecated Use {@link #addToCount(java.util.Map, java.util.Map)}
+     */
+    @Deprecated
     public static <K> void addToMapInteger(Map<K, Integer> mapToAddTo,
             Map<K, Integer> mapToAdd) {
         if (mapToAdd != null) {
@@ -446,7 +452,9 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      * @return The resulting value in m mapped by k.
+     * @deprecated Use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
+    @Deprecated
     public static <K> long addToMapLong(Map<K, Long> m, K k, Long v) {
         long r;
         Long v0 = m.get(k);
@@ -510,7 +518,9 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      * @return The resulting value in m mapped by k.
+     * @deprecated use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
+    @Deprecated
     public static <K> BigInteger addToMapBigInteger(Map<K, BigInteger> m,
             K k, BigInteger v) {
         BigInteger v0 = m.get(k);
@@ -533,7 +543,9 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      * @return The resulting value in m mapped by k.
+     * @deprecated use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
+    @Deprecated
     public static <K> BigDecimal addToMapBigDecimal(Map<K, BigDecimal> m,
             K k, BigDecimal v) {
         BigDecimal v0 = m.get(k);
@@ -724,6 +736,10 @@ public class Generic_Collections {
         return r;
     }
 
+    /**
+     * @deprecated Use {@link #addToCount(java.util.Map, java.util.Map)}
+     */
+    @Deprecated
     public static <K> void addToMapLong(Map<K, Long> mapToAddTo,
             Map<K, Long> mapToAdd) {
         Iterator<K> ite = mapToAdd.keySet().iterator();
@@ -738,20 +754,24 @@ public class Generic_Collections {
         }
     }
 
-    public static <K> void addToMapBigDecimal(Map<K, BigDecimal> mapToAddTo,
-            Map<K, BigDecimal> mapToAdd) {
-        Iterator<K> ite = mapToAdd.keySet().iterator();
+    public static <K, V extends Number> void addToCount(Map<K, V> u,
+            Map<K, V> uf) {
+        Iterator<K> ite = uf.keySet().iterator();
         while (ite.hasNext()) {
             K k = ite.next();
-            BigDecimal v = mapToAdd.get(k);
-            if (mapToAddTo.containsKey(k)) {
-                mapToAddTo.put(k, v.add(mapToAddTo.get(k)));
+            V v = uf.get(k);
+            if (u.containsKey(k)) {
+                u.put(k, Generic_Math.add(v, u.get(k)));
             } else {
-                mapToAddTo.put(k, v);
+                u.put(k, v);
             }
         }
     }
 
+    /**
+     * @deprecated Use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
+     */
+    @Deprecated
     public static <K> void addToMapBigInteger(Map<K, BigInteger> mapToAddTo,
             Map<K, BigInteger> mapToAdd) {
         Iterator<K> ite = mapToAdd.keySet().iterator();

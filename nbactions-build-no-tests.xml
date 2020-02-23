@@ -35,7 +35,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xmx6000m -XX:-UseGCOverheadLimit -classpath %classpath uk.ac.leeds.ccg.andyt.generic.math.primes.Generic_PrimeNumbers</exec.args>
+                <exec.args>-Xmx6000m -XX:-UseGCOverheadLimit -classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -49,7 +49,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Xmx6000m -XX:-UseGCOverheadLimit -classpath %classpath uk.ac.leeds.ccg.andyt.generic.math.primes.Generic_PrimeNumbers</exec.args>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -Xmx6000m -XX:-UseGCOverheadLimit -classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -64,7 +64,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xmx6000m -XX:-UseGCOverheadLimit -classpath %classpath uk.ac.leeds.ccg.andyt.generic.math.primes.Generic_PrimeNumbers</exec.args>
+                <exec.args>-Xmx6000m -XX:-UseGCOverheadLimit -classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

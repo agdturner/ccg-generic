@@ -15,7 +15,6 @@
  */
 package uk.ac.leeds.ccg.generic.util;
 
-import uk.ac.leeds.ccg.generic.util.Generic_Collections;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
