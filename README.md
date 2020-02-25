@@ -2,49 +2,41 @@
 
 https://github.com/agdturner/agdt-java-generic
 
-A Java library with generally useful classes and methods.
+A Java library with generic utility.
 
-Highlights:
+## Highlights
 1. Generic_FileStore
 https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java
 A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
 2. memory
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory
-A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to files using a Generic_FileStore instance for organising those files.
+A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
 
-This code has been abstracted from numerous other libraries which now depend on this.
-
-## Status, Current Version and platform requirements
-Version 1.1.0 is developed and tested on Java 11 using Maven. It is available from Maven Central via: https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic/1.1.0
-
-To use with Maven add the following dependency to pom.xml:
+## Current Version
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.1.0</version>
+    <version>1.2</version>
 </dependency>
 ```
-This library depends only on Java, here is a link to the jar:
-https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.1.0/agdt-java-generic-1.1.0.jar
+A JAR is available:
+https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.2/agdt-java-generic-1.2.jar
 
 ## Development Roadmap
-### Version 1.0.x
-- No longer supported.
-### Version 1.1.x
+### Version 1.2.x
 - For bug fixes.
 - These will be released on a best effort basis until a subsequent release is made.
-### Version 1.2.x
+### Version 1.3
 Work being considered:
 - Deprecatation of methods that are superseeded or no longer useful.
 - Extend unit test coverage and detail.
-- This list may be updated in due course...
-A SNAPSOT version of this will be made available in due course...
 
 ## Dependencies
-- Please see the pom.xml or maven central for details.
-- Currently there are no third party dependencies except for unit testing.
+- Please see the POM (https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) or https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic for details.
+- There are no third party dependencies.
+- There are third party dependencies for testing.
 
 ## Contributions
 - Please raise issues in the usual way.
