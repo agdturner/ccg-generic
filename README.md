@@ -25,13 +25,9 @@ A JAR is available:
 https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.2/agdt-java-generic-1.2.jar
 
 ## Development Roadmap
-### Version 1.2.x
-- For bug fixes.
-- These will be released on a best effort basis until a subsequent release is made.
 ### Version 1.3
-Work being considered:
-- Deprecatation of methods that are superseeded or no longer useful.
-- Extend unit test coverage and detail.
+- There are no feature requests or issues reported as yet.
+- There is no target release date.
 
 ## Dependencies
 - Please see the POM (https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) or https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic for details.
@@ -39,8 +35,8 @@ Work being considered:
 - There are third party dependencies for testing.
 
 ## Contributions
-- Please raise issues in the usual way.
-- Please liaise with the developer about contributing to development.
+- Please report issues in the usual way.
+- Please liaise with the developer with regards feature requests and about contributing to development.
 
 ## LICENCE
 - APACHE LICENSE, VERSION 2.0: https://www.apache.org/licenses/LICENSE-2.0
