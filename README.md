@@ -13,6 +13,7 @@ https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/l
 A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
 
 ## Current Version
+Developed and tested on Java 11 using Maven.
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
