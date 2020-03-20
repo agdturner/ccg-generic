@@ -16,7 +16,6 @@
 
 package uk.ac.leeds.ccg.generic.time;
 
-import uk.ac.leeds.ccg.generic.time.Generic_Date;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -15,7 +15,6 @@
  */
 package uk.ac.leeds.ccg.generic.lang;
 
-import uk.ac.leeds.ccg.generic.lang.Generic_String;
 import java.util.HashSet;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;

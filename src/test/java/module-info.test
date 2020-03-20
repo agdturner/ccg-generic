@@ -1,0 +1,53 @@
+module uk.leeds.ccg.generic {
+    /*
+    // test dependencies
+    requires org.junit.jupiter.api;
+    requires org.junit.jupiter.params;
+    opens module uk.ac.leeds.ccg.generic {
+        exports uk.ac.leeds.ccg.generic;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.core {
+        exports uk.ac.leeds.ccg.generic.core;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.execution {
+        exports uk.ac.leeds.ccg.generic.execution;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.io {
+        exports uk.ac.leeds.ccg.generic.io;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.lang {
+        exports uk.ac.leeds.ccg.generic.lang;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.math {
+        exports uk.ac.leeds.ccg.generic.math;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.memory {
+        exports uk.ac.leeds.ccg.generic.memory;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.time {
+        exports uk.ac.leeds.ccg.generic.time;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.util {
+        exports uk.ac.leeds.ccg.generic.util;
+        requires org.junit.jupiter.api;
+    }
+    opens module uk.ac.leeds.ccg.generic.visualisation {
+        exports uk.ac.leeds.ccg.generic.visualisation;
+        requires org.junit.jupiter.api;
+    }
+    */
+    //--add-reads
+    //        uk.ac.leeds.ccg.generic=org.junit.jupiter.api
+    //        uk.ac.leeds.ccg.generic.util=org.junit.jupiter.api
+    //--add-opens
+    //        uk.ac.leeds.ccg.generic/uk.ac.leeds.ccg.generic=org.junit.platform.commons
+    //        uk.ac.leeds.ccg.generic.util/uk.ac.leeds.ccg.generic.util=org.junit.platform.commons
+}
