@@ -1,5 +1,4 @@
-module uk.leeds.ccg.generic {
-    /*
+module uk.ac.leeds.ccg.generic {
     // test dependencies
     requires org.junit.jupiter.api;
     requires org.junit.jupiter.params;
@@ -43,11 +42,10 @@ module uk.leeds.ccg.generic {
         exports uk.ac.leeds.ccg.generic.visualisation;
         requires org.junit.jupiter.api;
     }
-    */
-    //--add-reads
-    //        uk.ac.leeds.ccg.generic=org.junit.jupiter.api
-    //        uk.ac.leeds.ccg.generic.util=org.junit.jupiter.api
-    //--add-opens
-    //        uk.ac.leeds.ccg.generic/uk.ac.leeds.ccg.generic=org.junit.platform.commons
-    //        uk.ac.leeds.ccg.generic.util/uk.ac.leeds.ccg.generic.util=org.junit.platform.commons
+    --add-reads
+            uk.ac.leeds.ccg.generic=org.junit.jupiter.api
+            uk.ac.leeds.ccg.generic.util=org.junit.jupiter.api
+    --add-opens
+            uk.ac.leeds.ccg.generic/uk.ac.leeds.ccg.generic=org.junit.platform.commons
+            uk.ac.leeds.ccg.generic.util/uk.ac.leeds.ccg.generic.util=org.junit.platform.commons
 }

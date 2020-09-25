@@ -46,13 +46,13 @@ public abstract class Generic_MemoryManager implements Generic_Memory, Serializa
      * A default controlling the amount of memory that is reserved and cleared
      * for handling OutOfMemoryErrors should they be encountered.
      */
-    public static final int Default_Memory_Threshold = 6000000;//4000000;
+    protected static final int Default_Memory_Threshold = 6000000;//4000000;
 
     /**
      * Stores the amount of memory that is reserved and cleared for handling
      * OutOfMemoryErrors should they be encountered.
      */
-    public long Memory_Threshold;
+    protected long Memory_Threshold;
 
     /**
      * For use when OutOfMemory handling is definitely not wanted. It is thought
@@ -165,11 +165,12 @@ public abstract class Generic_MemoryManager implements Generic_Memory, Serializa
 
     /**
      * For ensuring robustness in handling OutOfMemoryError and to try to
-     * prevent them being thrown. If this method returns false then it may be
+     * prevent them being thrown.If this method returns false then it may be
      * best to write all data to persistent memory and restart the JVM with a
      * increased heap size before attempting to continue.
      *
      * @return true if there is enough memory to continue and false otherwise.
+     * @throws java.lang.Exception
      */
     @Override
     public abstract boolean checkAndMaybeFreeMemory() throws IOException,
