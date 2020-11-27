@@ -15,8 +15,14 @@
     <description>A Java library with generally useful classes and methods.</description>
     <scm>
         <url>git@github.com:agdturner/agdt-java-generic.git</url>
+        <!--
         <connection>scm:git:git@github.com:agdturner/agdt-java-generic.git</connection>
+        -->
+        <connection>scm:git:ssh://git@github.com/agdturner/agdt-java-generic.git</connection>
+        <!--
         <developerConnection>scm:git:git@github.com:agdturner/agdt-java-generic</developerConnection>
+        -->
+        <developerConnection>scm:git:ssh://git@github.com/agdturner/agdt-java-generic</developerConnection>
       <tag>agdt-java-generic-1.3</tag>
   </scm>
     <licenses>
