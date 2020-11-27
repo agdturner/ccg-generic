@@ -14,7 +14,7 @@
     <url>https://github.com/agdturner/agdt-java-generic</url>
     <description>A Java library with generally useful classes and methods.</description>
     <scm>
-        <tag>agdt-java-generic-1.3</tag>
+        <tag>agdt-java-generic-1.3-SNAPSHOT</tag>
         <url>git@github.com:agdturner/agdt-java-generic.git</url>
         <!--
         <connection>scm:git:git@github.com:agdturner/agdt-java-generic.git</connection>
