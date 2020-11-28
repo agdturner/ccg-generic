@@ -4,9 +4,9 @@
 
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.4</version>
-    <!--
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6</version>
+    <!-- Next dev version
+    <version>1.7-SNAPSHOT</version>
     -->
     <packaging>jar</packaging>
 
@@ -247,6 +247,12 @@
         <repository>
             <id>internal</id>
             <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+        -->
+        <!--
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
         </repository>
         -->
     </distributionManagement>
