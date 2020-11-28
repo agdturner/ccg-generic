@@ -4,9 +4,9 @@
 
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4</version>
     <!--
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     -->
     <packaging>jar</packaging>
 
