@@ -6,7 +6,7 @@
     <artifactId>agdt-java-generic</artifactId>
     <version>1.7</version>
     <!-- Next (dev) version
-    <version>1.6-SNAPSHOT</version>
+    <version>1.8-SNAPSHOT</version>
     -->
     <packaging>jar</packaging>
 
@@ -249,11 +249,9 @@
             <url>file://${project.build.directory}/mvn-repo</url>
         </repository>
         -->
-        <!--
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
-        -->
     </distributionManagement>
 </project>
