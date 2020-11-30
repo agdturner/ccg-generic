@@ -16,11 +16,15 @@
     <scm>
         <tag>HEAD</tag>
         <!--
-        <tag>agdt-java-generic-1.7.1</tag>
+        <tag>agdt-java-generic-1.7</tag>
         -->
         <url>git@github.com:agdturner/agdt-java-generic.git</url>
+        <connection>scm:git:ssh://git@github.com/agdturner/agdt-java-generic.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:agdturner/agdt-java-generic</developerConnection>
+        <!--
         <connection>scm:git:git@github.com:agdturner/agdt-java-generic.git</connection>
         <developerConnection>scm:git:git@github.com:agdturner/agdt-java-generic</developerConnection>
+        -->
     </scm>
     <licenses>
         <license>
