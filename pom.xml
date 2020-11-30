@@ -4,7 +4,7 @@
 
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7</version>
     <!-- Next (dev) version
     <version>1.8-SNAPSHOT</version>
     -->
@@ -14,7 +14,7 @@
     <url>https://github.com/agdturner/agdt-java-generic</url>
     <description>A Java library with generally useful classes and methods.</description>
     <scm>
-        <tag>HEAD</tag>
+        <tag>agdt-java-generic-1.7</tag>
         <!--
         <tag>agdt-java-generic-1.7.1</tag>
         -->
