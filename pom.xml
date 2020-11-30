@@ -4,7 +4,7 @@
 
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.7.2</version>
+    <version>1.7.1</version>
     <!-- Next (dev) version
     <version>1.8-SNAPSHOT</version>
     -->
