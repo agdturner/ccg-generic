@@ -5,7 +5,7 @@ https://github.com/agdturner/agdt-java-generic
 A Java library with generic utility.
 
 ## Latest Versions
-Developed and tested on Java 11.
+Developed and tested on Java 14.
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
