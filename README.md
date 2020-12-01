@@ -4,6 +4,19 @@ https://github.com/agdturner/agdt-java-generic
 
 A Java library with generic utility.
 
+## Latest Versions
+Developed and tested on Java 11.
+```
+<!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
+<dependency>
+    <groupId>io.github.agdturner</groupId>
+    <artifactId>agdt-java-generic</artifactId>
+    <version>1.7</version>
+</dependency>
+```
+A JAR is available:
+https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7/agdt-java-generic-1.7.jar
+
 ## Highlights
 1. Generic_FileStore
 https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java
@@ -12,21 +25,8 @@ A class for storing files in a tree of directories in a well organised and exten
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory
 A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
 
-## Current Version
-Developed and tested on Java 11 using Maven.
-```
-<!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
-<dependency>
-    <groupId>io.github.agdturner</groupId>
-    <artifactId>agdt-java-generic</artifactId>
-    <version>1.2</version>
-</dependency>
-```
-A JAR is available:
-https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.2/agdt-java-generic-1.2.jar
-
 ## Development Roadmap
-### Version 1.3
+### Version 1.8
 - There are no feature requests or issues reported as yet.
 - There is no target release date.
 
