@@ -170,7 +170,8 @@ public abstract class Generic_MemoryManager implements Generic_Memory, Serializa
      * increased heap size before attempting to continue.
      *
      * @return true if there is enough memory to continue and false otherwise.
-     * @throws java.lang.Exception
+     * @throws java.lang.Exception This may occur.
+     * @throws java.io.IOException This may occur.
      */
     @Override
     public abstract boolean checkAndMaybeFreeMemory() throws IOException,

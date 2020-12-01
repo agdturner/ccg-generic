@@ -415,6 +415,9 @@ public class Generic_Collections {
     }
 
     /**
+     * @param <K> The key type.
+     * @param mapToAddTo The map to add to.
+     * @param mapToAdd The mappings to add.
      * @deprecated Use {@link #addToCount(java.util.Map, java.util.Map)}
      */
     @Deprecated
@@ -737,6 +740,9 @@ public class Generic_Collections {
     }
 
     /**
+     * @param <K> The key type.
+     * @param mapToAddTo The map to add to.
+     * @param mapToAdd The mappings to add.
      * @deprecated Use {@link #addToCount(java.util.Map, java.util.Map)}
      */
     @Deprecated
@@ -769,6 +775,9 @@ public class Generic_Collections {
     }
 
     /**
+     * @param <K> The key type.
+     * @param mapToAddTo The map to add to.
+     * @param mapToAdd The mappings to add.
      * @deprecated Use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
     @Deprecated
