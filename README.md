@@ -1,6 +1,4 @@
-# agdt-java-generic
-
-https://github.com/agdturner/agdt-java-generic
+# [agdt-java-generic](https://github.com/agdturner/agdt-java-generic)
 
 A Java library with generic utility.
 
