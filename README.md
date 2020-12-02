@@ -45,14 +45,14 @@ A package that helps avoid and deal with OutOfMemoryErrors. The avoidance genera
 
 ### 1. [core](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core)
 
-#### [Generic_Environment](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Environment.java)
+* [Generic_Environment](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Environment.java)
 A generic environment class for those things that most objects might want to access.
 
-#### [Generic_Object](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Object.java)
+* [Generic_Object](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Object.java)
 A serializable class that holds a transient reference to a Generic_Environment instance (env).
 - By extending this class any object holds a reference to env.
 
-#### [Generic_Strings](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Strings.java)
+* [Generic_Strings](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Strings.java)
 A class that holds commonly used Strings.
 
 
