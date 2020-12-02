@@ -5,8 +5,7 @@ A Java library with generic utility.
 ## Highlights
 1. [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
 A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
-2. memory
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory
+2. [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
 A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
 
 ## Latest Version
@@ -25,7 +24,7 @@ https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7/agdt-ja
 - Developed and tested on Java 14.
 - There are no third party dependencies.
 - There are third party dependencies for testing.
-- Please see the POM (https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) or https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic for details.
+- Please see the [POM](https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) for details.
 
 ## Development Roadmap
 ### Version 1.8
@@ -36,19 +35,18 @@ https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7/agdt-ja
 - Please report issues in the usual way.
 - Please liaise with the developer with regards feature requests and about contributing to development.
 
-## LICENCE
-- APACHE LICENSE, VERSION 2.0: https://www.apache.org/licenses/LICENSE-2.0
+## LICENSE
+- [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## Acknowledgements and feedback
-- Thanks to the University of Leeds and numerous research grants for supporting the development of this code and the developer over many years.
+- Thanks to the [University of Leeds](http://www.leeds.ac.uk) and numerous research grants for supporting the development of this code and the developer over many years.
 - If you find this code useful, please let the developer know and refer to the resources used in the usual ways. 
 
 ## Package details
 
-### 1. core
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core
+### 1. [core](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core)
 
-#### Generic_Environment
+#### [Generic_Environment](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Environment.java)
 A generic environment class for those things that most objects might want to access.
 
 #### Generic_Object
