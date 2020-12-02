@@ -42,7 +42,7 @@ A package that helps avoid and deal with OutOfMemoryErrors. The avoidance genera
 
 ## Package details
 
-### 1. [core](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core)
+1. [core](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core)
 
 * [Generic_Environment](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Environment.java)
 A generic environment class for those things that most objects might want to access.
