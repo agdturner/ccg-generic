@@ -188,7 +188,7 @@ Contains methods for processing and manipulating collections including Lists, Ar
 
 #### [Generic_Time](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/util/Generic_Time.java)
 This pre-dates java.time and was used in programs that ticked through time acting effectively like a stop-watch type clock. It holds methods to help with processing dates and aggregating data by time periods (e.g. hours, months).
-- Not to be confused with uk.ac.leeds.ccg.agdt.generic.time.Generic_Time
+- Not to be confused with [uk.ac.leeds.ccg.generic.time.Generic_Time](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/time/Generic_Time.java)
 
 
 ### 9. [visualisation](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/visualisation)
