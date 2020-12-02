@@ -4,8 +4,14 @@ https://github.com/agdturner/agdt-java-generic
 
 A Java library with generic utility.
 
+## Highlights
+1. [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
+A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
+2. memory
+https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory
+A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
+
 ## Latest Version
-Developed and tested on Java 14.
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
@@ -18,17 +24,10 @@ A JAR is available:
 https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7/agdt-java-generic-1.7.jar
 
 ## Dependencies
-- Please see the POM (https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) or https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic for details.
+- Developed and tested on Java 14.
 - There are no third party dependencies.
 - There are third party dependencies for testing.
-
-## Highlights
-1. Generic_FileStore
-https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java
-A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
-2. memory
-https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory
-A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
+- Please see the POM (https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) or https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic for details.
 
 ## Development Roadmap
 ### Version 1.8
@@ -70,7 +69,6 @@ Generic utility class for process execution handling.
 
 
 ### 3. io
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/io
 
 #### Generic Defaults
@@ -153,7 +151,6 @@ Also for reading from files, writing to files and copying and moving files.
 
 
 ### 4. lang
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/lang
 
 #### Generic_String
@@ -161,7 +158,6 @@ Utility methods for String transformations.
 
 
 ### 5. math
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/math
 
 #### Generic_Math
@@ -169,7 +165,6 @@ Contains methods for adding two Numbers and testing if Numbers can be stored as 
 
 
 ### 6. memory
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory
 
 #### Generic_MemoryManager
@@ -183,7 +178,6 @@ A class with methods that help in testing the availablity and usage of fast acce
 
 
 ### 7. time
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/time
 
 #### Generic_Date
@@ -201,7 +195,6 @@ Holds a reference to a YearMonth and provides methods to compare and process yea
 
 
 ### 8. util
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/util
 
 #### Generic_Collections
@@ -213,7 +206,6 @@ This pre-dates java.time and was used in programs that ticked through time actin
 
 
 ### 9. visualisation
-
 https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/visualisation
 
 #### Generic_Visualisation
