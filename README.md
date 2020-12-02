@@ -50,7 +50,6 @@ A generic environment class for those things that most objects might want to acc
 
 * [Generic_Object](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Object.java)
 A serializable class that holds a transient reference to a Generic_Environment instance (env).
-- By extending this class any object holds a reference to env.
 
 * [Generic_Strings](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/core/Generic_Strings.java)
 A class that holds commonly used Strings.
@@ -58,7 +57,7 @@ A class that holds commonly used Strings.
 
 ### 2. [execution](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/execution)
 
-#### [Generic_Execution](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/execution/Generic_Execution.java)
+- [Generic_Execution](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/execution/Generic_Execution.java)
 Generic utility class for process execution handling.
 
 
