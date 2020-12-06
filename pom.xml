@@ -4,8 +4,8 @@
 
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.7</version>
-    <!-- Next (dev) version
+    <version>1.7.2</version>
+    <!--
     <version>1.8-SNAPSHOT</version>
     -->
     <packaging>jar</packaging>
@@ -14,17 +14,9 @@
     <url>https://github.com/agdturner/agdt-java-generic</url>
     <description>A Java library with generally useful classes and methods.</description>
     <scm>
-        <tag>agdt-java-generic-1.7</tag>
-        <!--
-        <tag>agdt-java-generic-1.7</tag>
-        -->
         <url>git@github.com:agdturner/agdt-java-generic.git</url>
         <connection>scm:git:git@github.com:agdturner/agdt-java-generic.git</connection>
         <developerConnection>scm:git:git@github.com:agdturner/agdt-java-generic</developerConnection>
-        <!--
-        <connection>scm:git:ssh://git@github.com/agdturner/agdt-java-generic.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:agdturner/agdt-java-generic</developerConnection>
-        -->
     </scm>
     <licenses>
         <license>
@@ -55,8 +47,10 @@
         <maven.compiler.target>11</maven.compiler.target>
         <!--
         <log4j.version>2.12.1</log4j.version>
-        -->
         <junit.version>5.5.2</junit.version>
+        <junit.version>[4.13.1,)</junit.version>
+        -->
+        <junit.version>[5.7.0,)</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
     </properties>
     
@@ -73,18 +67,22 @@
             <version>${log4j.version}</version>
         </dependency>
         -->
+        <!-- Temporarily added as it was not in Maven reactor
         <dependency>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
             <version>1.6.8</version>
             <scope>compile</scope>
         </dependency>
+        -->
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -97,12 +95,14 @@
             <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <!--
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <scope>test</scope>
-            <version>2.44.0</version>
+            <version>3.141.59</version>
         </dependency>
+        -->
         <dependency>
             <groupId>com.opera</groupId>
             <artifactId>operadriver</artifactId>
@@ -114,12 +114,6 @@
                     <artifactId>selenium-remote-driver</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-            <version>[4.13.1,)</version>
         </dependency>
     </dependencies>
     
