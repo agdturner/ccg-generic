@@ -8,16 +8,16 @@ A class for storing files in a tree of directories in a well organised and exten
 2. [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
 A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
 
-## Latest Version
+## Latest Versions
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.7</version>
+    <version>1.7.2</version>
 </dependency>
 ```
-[JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7/agdt-java-generic-1.7.jar)
+[JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7.2/agdt-java-generic-1.7.2.jar)
 
 ## Dependencies
 - Developed and tested on Java 14.
