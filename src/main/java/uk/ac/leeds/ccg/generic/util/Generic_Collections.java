@@ -162,13 +162,15 @@ public class Generic_Collections {
     public static <K> BigDecimal[] getMinMaxBigDecimal(Map<K, BigDecimal> m) {
         BigDecimal[] r = new BigDecimal[2];
         Iterator<BigDecimal> ite = m.values().iterator();
-        BigDecimal v = ite.next();
-        r[0] = v;
-        r[1] = v;
-        while (ite.hasNext()) {
-            v = ite.next();
-            r[0] = r[0].min(v);
-            r[1] = r[1].max(v);
+        if (ite.hasNext()) {
+            BigDecimal v = ite.next();
+            r[0] = v;
+            r[1] = v;
+            while (ite.hasNext()) {
+                v = ite.next();
+                r[0] = r[0].min(v);
+                r[1] = r[1].max(v);
+            }
         }
         return r;
     }
@@ -181,12 +183,14 @@ public class Generic_Collections {
     public static <K> int[] getMinMaxInteger(Map<K, Integer> m) {
         int[] r = new int[2];
         Iterator<Integer> ite = m.values().iterator();
-        int v = ite.next();
-        r[0] = v;
-        r[1] = v;
-        while (ite.hasNext()) {
-            r[0] = Math.min(r[0], v);
-            r[1] = Math.max(r[1], v);
+        if (ite.hasNext()) {
+            int v = ite.next();
+            r[0] = v;
+            r[1] = v;
+            while (ite.hasNext()) {
+                r[0] = Math.min(r[0], v);
+                r[1] = Math.max(r[1], v);
+            }
         }
         return r;
     }
@@ -363,7 +367,8 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      * @return The resulting value in m mapped by k.
-     * @deprecated Use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
+     * @deprecated Use
+     * {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
     @Deprecated
     public static <K> Integer addToMapInteger(Map<K, Integer> m, K k,
@@ -455,7 +460,8 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      * @return The resulting value in m mapped by k.
-     * @deprecated Use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
+     * @deprecated Use
+     * {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
     @Deprecated
     public static <K> long addToMapLong(Map<K, Long> m, K k, Long v) {
@@ -521,7 +527,8 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      * @return The resulting value in m mapped by k.
-     * @deprecated use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
+     * @deprecated use
+     * {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
     @Deprecated
     public static <K> BigInteger addToMapBigInteger(Map<K, BigInteger> m,
@@ -546,7 +553,8 @@ public class Generic_Collections {
      * @param k key
      * @param v value
      * @return The resulting value in m mapped by k.
-     * @deprecated use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
+     * @deprecated use
+     * {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
     @Deprecated
     public static <K> BigDecimal addToMapBigDecimal(Map<K, BigDecimal> m,
@@ -778,7 +786,8 @@ public class Generic_Collections {
      * @param <K> The key type.
      * @param mapToAddTo The map to add to.
      * @param mapToAdd The mappings to add.
-     * @deprecated Use {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
+     * @deprecated Use
+     * {@link #addToCount(java.util.Map, java.lang.Object, java.lang.Number)}
      */
     @Deprecated
     public static <K> void addToMapBigInteger(Map<K, BigInteger> mapToAddTo,
