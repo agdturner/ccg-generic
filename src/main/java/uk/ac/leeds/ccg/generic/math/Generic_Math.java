@@ -812,13 +812,21 @@ public class Generic_Math {
         return mc;
     }
 
+    /**
+     * Use x.precision() instead.
+     */
+    @Deprecated
     public static int getPrecision(BigDecimal x) {
         int ul = x.unscaledValue().toString().length();
         return ul + (int) Math.pow(10, ul) + x.scale();
     }
 
+    /**
+     * x.precision() + 2
+     */
     public static int getPrecisionSafe(BigDecimal x) {
-        return getPrecision(x) + 2;
+        return x.precision() + 2;
+        //return getPrecision(x) + 2;
     }
 
     /**
