@@ -9,6 +9,8 @@ A class for storing files in a tree of directories in a well organised and exten
 A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
 
 ## Latest Versions
+Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
+### Stable
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
@@ -19,26 +21,35 @@ A package that helps avoid and deal with OutOfMemoryErrors. The avoidance genera
 ```
 [JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7.3/agdt-java-generic-1.7.3.jar)
 
+### Unstable development
+```
+<!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
+<dependency>
+    <groupId>io.github.agdturner</groupId>
+    <artifactId>agdt-java-generic</artifactId>
+    <version>1.8-SNAPSHOT</version>
+</dependency>
+```
+
 ## Dependencies
 - Developed and tested on Java 15.
 - There are no third party dependencies.
 - There are third party dependencies for testing.
 - Please see the [POM](https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) for details.
 
-## Development Roadmap
+## Development roadmap
 - There are no feature requests or issues reported as yet.
-- There is no target release date.
+- There are no target release dates.
 
 ## Contributions
-- Please report issues.
-- Contributions welcome.
+- Welcome.
 
 ## LICENSE
 - [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## Acknowledgements
-- The [University of Leeds](http://www.leeds.ac.uk) and succession of externally funded research grants have supported the development of this library.
-
+- The [University of Leeds](http://www.leeds.ac.uk) and externally funded research grants have supported the development of this library.
+- Thank you Java developers that contribute to [openJDK](https://openjdk.java.net/) and develop other useful libraries.
 
 ## Package details
 
