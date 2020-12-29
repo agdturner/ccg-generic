@@ -2,8 +2,8 @@
 
 ## Description
 A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing functionality:
-- That helps in data procesing and storing and organising data in filesystems.
-- That has been found commonly useful and was not available in the latest [openJDK](https://openjdk.java.net/) at the time.
+- For storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system).
+- That has been found commonly useful and was not available in what was the latest [openJDK](https://openjdk.java.net/) at the time.
 
 ### Highlights
 1. [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
