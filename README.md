@@ -30,15 +30,20 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 <dependency>
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.7.4-SNAPSHOT</version>
 </dependency>
 ```
 [//]: # (Move to version history section if/when a new version and summary are added)
-[//]: # (New to 1.8-SNAPSHOT:)
+[//]: # (New to 1.7.4-SNAPSHOT:)
 
 ## Development plans/ideas
 - There are no feature requests or issues reported as yet.
-- Review some of the functionality to see if better alternatives are in [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/) and deprecate as appropriate.
+- Periodically review the code as [OpenJDK](https://openjdk.java.net/) develops and deprecate and use alternative approaches as appropriate.
+- Develop the library in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way by engaging in more code review activity.
+- [Contribute](https://openjdk.java.net/contribute/) to the development of the openJDK.
+
+## Development history
+- This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code from a number of academic research projects formed into this library. From version 1.7 an attempt is being made to provide a summary of changes for each version released on Maven Central.
 
 ## Contributions
 - Welcome.
@@ -137,7 +142,6 @@ Level
 File stores are used for logging and may be used to store other outputs from different runs of a program. They can also be used to organise caches of data from a running program to help with memory management.
 
 Although such a file store can store many files, there are limits depending on the range value set. The theoretical limit is close to Long.MAX_VALUE / range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger restriction is the size of the storage element that holds the directories and files indexed by the file store.
-
 
 #### [Generic_Files](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_Files.java)
 A class for helping to organise data Files.
