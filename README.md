@@ -1,12 +1,15 @@
 # [agdt-java-generic](https://github.com/agdturner/agdt-java-generic)
 
-A Java library with some generic utility.
+## Description
+A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing functionality:
+- For storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system).
+- That has been found commonly useful and was not available in what was the latest [openJDK](https://openjdk.java.net/) at the time.
 
-## Highlights
-1. [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
-A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
-2. [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
-A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
+### Highlights
+- [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
+A class that helps stores and retrieve files in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way. See [the section below on Generic_FileStore](#Generic_FileStore) for a more detailed description. 
+- [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
+A package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
 
 ## Latest Versions
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
@@ -21,25 +24,26 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 ```
 [JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7.3/agdt-java-generic-1.7.3.jar)
 
-### Unstable development
+### Development
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.7.4-SNAPSHOT</version>
 </dependency>
 ```
+[//]: # (Move to version history section if/when a new version and summary are added)
+[//]: # (New to 1.7.4-SNAPSHOT:)
 
-## Dependencies
-- Developed and tested on Java 15.
-- There are no third party dependencies.
-- There are third party dependencies for testing.
-- Please see the [POM](https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) for details.
+## Development plans/ideas
+- There are no known issues or feature requests.
+- There may be little point in extending or enhancing the functionality, but if there are things to do, then let them be done in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way.
+- As the [OpenJDK](https://openjdk.java.net/) develops some of the functionality may become redundant.
+- Consider if it is approriate to [contribute](https://openjdk.java.net/contribute/) any of this.
 
-## Development roadmap
-- There are no feature requests or issues reported as yet.
-- There are no target release dates.
+## Development history
+- This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code from a number of academic research projects formed into this library. From version 1.7 an attempt is being made to provide a summary of changes for each version released on Maven Central.
 
 ## Contributions
 - Welcome.
@@ -49,7 +53,6 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 
 ## Acknowledgements
 - The [University of Leeds](http://www.leeds.ac.uk) and externally funded research grants have supported the development of this library.
-- Thank you Java developers that contribute to [openJDK](https://openjdk.java.net/) and develop other useful libraries.
 
 ## Package details
 
