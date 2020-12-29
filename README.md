@@ -1,8 +1,11 @@
 # [agdt-java-generic](https://github.com/agdturner/agdt-java-generic)
 
-A Java library with some generic utility.
+## Description
+A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing functionality:
+- That helps in data procesing and storing and organising data in filesystems.
+- That has been found commonly useful and was not available in the latest [openJDK](https://openjdk.java.net/) at the time.
 
-## Highlights
+### Highlights
 1. [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
 A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
 2. [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
@@ -21,7 +24,7 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 ```
 [JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7.3/agdt-java-generic-1.7.3.jar)
 
-### Unstable development
+### Development
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
@@ -30,16 +33,12 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
     <version>1.8-SNAPSHOT</version>
 </dependency>
 ```
+[//]: # (Move to version history section if/when a new version and summary are added)
+[//]: # New to 1.8-SNAPSHOT:
 
-## Dependencies
-- Developed and tested on Java 15.
-- There are no third party dependencies.
-- There are third party dependencies for testing.
-- Please see the [POM](https://github.com/agdturner/agdt-java-generic/blob/master/pom.xml) for details.
-
-## Development roadmap
+## Development plans/ideas
 - There are no feature requests or issues reported as yet.
-- There are no target release dates.
+- Review some of the functionality to see if better alternatives are in [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/) and deprecate as appropriate.
 
 ## Contributions
 - Welcome.
@@ -49,7 +48,6 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 
 ## Acknowledgements
 - The [University of Leeds](http://www.leeds.ac.uk) and externally funded research grants have supported the development of this library.
-- Thank you Java developers that contribute to [openJDK](https://openjdk.java.net/) and develop other useful libraries.
 
 ## Package details
 
