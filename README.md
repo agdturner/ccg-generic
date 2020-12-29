@@ -7,9 +7,9 @@ A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java 
 
 ### Highlights
 1. [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
-A class for storing files in a tree of directories in a well organised and extendable way. Such archives can be used to cache data to help free up fast access memory for data processing. They can also be used to store output from different runs of a program.
+Stores and retrieves files in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way.
 2. [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
-A package that helps avoid and deal with OutOfMemoryErrors. The avoidance generally entails caching data from the fast access memory of a machine to disk using a Generic_FileStore instance for organising those files.
+A package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
 
 ## Latest Versions
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
