@@ -7,7 +7,7 @@ A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java 
 
 ### Highlights
 - [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
-A class that helps stores and retrieve files in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way. See [the section below on Generic_FileStore](#[Generic_FileStore]) for a more detailed description. 
+A class that helps stores and retrieve files in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way. See [the section below on Generic_FileStore](#Generic_FileStore) for a more detailed description. 
 - [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
 A package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
 
@@ -34,7 +34,7 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 </dependency>
 ```
 [//]: # (Move to version history section if/when a new version and summary are added)
-[//]: # New to 1.8-SNAPSHOT:
+[//]: # (New to 1.8-SNAPSHOT:)
 
 ## Development plans/ideas
 - There are no feature requests or issues reported as yet.
