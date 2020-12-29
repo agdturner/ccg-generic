@@ -37,10 +37,10 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 [//]: # (New to 1.7.4-SNAPSHOT:)
 
 ## Development plans/ideas
-- There are no feature requests or issues reported as yet.
-- Periodically review the code as [OpenJDK](https://openjdk.java.net/) develops and deprecate and use alternative approaches as appropriate.
-- Develop the library in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way by engaging in more code review activity.
-- [Contribute](https://openjdk.java.net/contribute/) to the development of the openJDK.
+- There are no known issues or feature requests.
+- There may be little point in extending or enhancing the functionality, but if there are things to do, then let them be done in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way.
+- As the [OpenJDK](https://openjdk.java.net/) develops some of the functionality may become redundant.
+- Consider if it is approriate to [contribute](https://openjdk.java.net/contribute/) any of this.
 
 ## Development history
 - This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code from a number of academic research projects formed into this library. From version 1.7 an attempt is being made to provide a summary of changes for each version released on Maven Central.
