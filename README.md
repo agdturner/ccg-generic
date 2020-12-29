@@ -138,6 +138,7 @@ File stores are used for logging and may be used to store other outputs from dif
 
 Although such a file store can store many files, there are limits depending on the range value set. The theoretical limit is close to Long.MAX_VALUE / range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger restriction is the size of the storage element that holds the directories and files indexed by the file store.
 
+<a name="Generic_Files"></a>
 #### [Generic_Files](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_Files.java)
 A class for helping to organise data Files.
 - It is usual that for data processing tasks there is a data directory (dataDir).
