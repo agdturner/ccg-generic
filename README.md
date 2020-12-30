@@ -1,15 +1,12 @@
 # [agdt-java-generic](https://github.com/agdturner/agdt-java-generic)
 
 ## Description
-A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing functionality:
-- For storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system).
-- That has been found commonly useful and was not available in what was the latest [openJDK](https://openjdk.java.net/) at the time.
+A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing:
+- [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java) - a class for storing and organising data in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way in a [file system](https://en.wikipedia.org/wiki/File_system). See [the section below on Generic_FileStore](#Generic_FileStore) for a more detailed description. 
+- [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory) - a package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
+- Functionality that has been found commonly useful and was not available in what was the latest [openJDK](https://openjdk.java.net/) at the time.
 
-### Highlights
-- [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
-A class that helps stores and retrieve files in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way. See [the section below on Generic_FileStore](#Generic_FileStore) for a more detailed description. 
-- [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
-A package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
+(See below for [Details](#Details).)
 
 ## Latest Versions
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
