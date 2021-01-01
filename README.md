@@ -8,9 +8,8 @@ A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java 
 
 (See below for [Details](#Details).)
 
-## Latest Versions
+## Latest Version
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
-### Stable
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
@@ -21,26 +20,16 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 ```
 [JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7.3/agdt-java-generic-1.7.3.jar)
 
-### Development
-```
-<!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
-<dependency>
-    <groupId>io.github.agdturner</groupId>
-    <artifactId>agdt-java-generic</artifactId>
-    <version>1.7.4-SNAPSHOT</version>
-</dependency>
-```
-[//]: # (Move to version history section if/when a new version and summary are added)
-[//]: # (New to 1.7.4-SNAPSHOT:)
-
 ## Development plans/ideas
 - There are no known issues or feature requests.
-- There may be little point in extending or enhancing the functionality, but if there are things to do, then let them be done in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way.
+- Develop in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way.
 - As the [OpenJDK](https://openjdk.java.net/) develops some of the functionality may become redundant.
-- Consider if it is approriate to [contribute](https://openjdk.java.net/contribute/) any of this.
+- Consider if it is appropriate to [contribute](https://openjdk.java.net/contribute/) any of this.
 
 ## Development history
-- This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code from a number of academic research projects formed into this library. From version 1.7 an attempt is being made to provide a summary of changes for each version released on Maven Central.
+The intention is to provide a summary of changes from Version 1.7.3 here.
+### Origin
+This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code generated from other academic research projects formed into this library.
 
 ## Contributions
 - Welcome.
