@@ -8,7 +8,7 @@ A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java 
 
 (See below for [Details](#Details).)
 
-## Latest Version
+## Latest versioned release
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
