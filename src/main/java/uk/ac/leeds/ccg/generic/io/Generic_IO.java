@@ -398,7 +398,8 @@ public class Generic_IO extends Generic_Object {
      *
      * @param d The directory containing everything to delete.
      * @param log If true then deletions are logged.
-     * @throws java.io.IOException If encountered and not logged.
+     * @throws java.io.IOException If encountered and not logged. This will be 
+     * thrown if d does not denote a path to an existing directory.
      */
     public static void delete(Path d, boolean log) throws IOException {
         if (log) {
@@ -406,24 +407,30 @@ public class Generic_IO extends Generic_Object {
                 walk.sorted(Comparator.reverseOrder())
                         .peek(System.out::println) // Log deletions to std.out.
                         .forEach(p -> {
-                            try {
-                                Files.deleteIfExists(p);
-                            } catch (IOException ex) {
-                                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            delete(p);
                         });
             }
         } else {
             try (Stream<Path> walk = Files.walk(d)) {
                 walk.sorted(Comparator.reverseOrder())
                         .forEach(p -> {
-                            try {
-                                Files.deleteIfExists(p);
-                            } catch (IOException ex) {
-                                Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            delete(p);
                         });
             }
+        }
+    }
+    
+    /**
+     * Delete file if it exists.
+     *
+     * @param p The path to the file to delete if it exists.
+     * @param log If true then deletions are logged.
+     */
+    public static void delete(Path p) {
+        try {
+            Files.deleteIfExists(p);
+        } catch (IOException ex) {
+            Logger.getLogger(Generic_IO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

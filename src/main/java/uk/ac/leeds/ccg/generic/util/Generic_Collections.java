@@ -253,6 +253,8 @@ public class Generic_Collections {
         s.add(v);
     }
 
+    
+    
     /**
      * If m contains the key k, then the key value pair (k2, v) are put in to
      * the value against k in m. If m does not contain the key k a new mapping
@@ -768,16 +770,28 @@ public class Generic_Collections {
         }
     }
 
-    public static <K, V extends Number> void addToCount(Map<K, V> u,
-            Map<K, V> uf) {
-        Iterator<K> ite = uf.keySet().iterator();
+    public static <K, V extends Number> void addToCount(Map<K, V> mapToAddTo,
+            Map<K, V> mapToAdd) {
+        Iterator<K> ite = mapToAdd.keySet().iterator();
         while (ite.hasNext()) {
             K k = ite.next();
-            V v = uf.get(k);
-            if (u.containsKey(k)) {
-                u.put(k, Generic_Math.add(v, u.get(k)));
+            V v = mapToAdd.get(k);
+            if (mapToAddTo.containsKey(k)) {
+                mapToAddTo.put(k, Generic_Math.add(v, mapToAddTo.get(k)));
             } else {
-                u.put(k, v);
+                mapToAddTo.put(k, v);
+            }
+        }
+    }
+    
+    public static <K0, K1, V extends Number> void addToCount1(
+            Map<K0, Map<K1, V>> mapToAddTo,
+            Map<K0, Map<K1, V>> mapToAdd) {
+        Iterator<K0> ite = mapToAdd.keySet().iterator();
+        while (ite.hasNext()) {
+            K0 ko = ite.next();
+            if (mapToAddTo.containsKey(ko)) {
+                addToCount(mapToAddTo.get(ko), mapToAdd.get(ko));
             }
         }
     }
