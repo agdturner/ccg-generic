@@ -1,19 +1,15 @@
 # [agdt-java-generic](https://github.com/agdturner/agdt-java-generic)
 
 ## Description
-A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing functionality:
-- For storing and organising data in a [file system](https://en.wikipedia.org/wiki/File_system).
-- That has been found commonly useful and was not available in what was the latest [openJDK](https://openjdk.java.net/) at the time.
+A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing:
+- [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java) - a class for storing and organising data in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way in a [file system](https://en.wikipedia.org/wiki/File_system). See [the section below on Generic_FileStore](#Generic_FileStore) for a more detailed description. 
+- [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory) - a package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
+- Functionality that has been found commonly useful and was not available in what was the latest [openJDK](https://openjdk.java.net/) at the time.
 
-### Highlights
-- [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
-A class that helps stores and retrieve files in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way. See [the section below on Generic_FileStore](#Generic_FileStore) for a more detailed description. 
-- [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory)
-A package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
+(See below for [Details](#Details).)
 
-## Latest Versions
+## Latest versioned release
 Developed and tested on [Java Development Kit, version 15](https://openjdk.java.net/projects/jdk/15/).
-### Stable
 ```
 <!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
 <dependency>
@@ -24,35 +20,22 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 ```
 [JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7.3/agdt-java-generic-1.7.3.jar)
 
-### Development
-```
-<!-- https://mvnrepository.com/artifact/io.github.agdturner/agdt-java-generic -->
-<dependency>
-    <groupId>io.github.agdturner</groupId>
-    <artifactId>agdt-java-generic</artifactId>
-    <version>1.7.4-SNAPSHOT</version>
-</dependency>
-```
-[//]: # (Move to version history section if/when a new version and summary are added)
-[//]: # (New to 1.7.4-SNAPSHOT:)
-
 ## Development plans/ideas
 - There are no known issues or feature requests.
-- There may be little point in extending or enhancing the functionality, but if there are things to do, then let them be done in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way.
+- Develop in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way.
 - As the [OpenJDK](https://openjdk.java.net/) develops some of the functionality may become redundant.
-- Consider if it is approriate to [contribute](https://openjdk.java.net/contribute/) any of this.
+- Consider if it is appropriate to [contribute](https://openjdk.java.net/contribute/) any of this.
 
 ## Development history
-- This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code from a number of academic research projects formed into this library. From version 1.7 an attempt is being made to provide a summary of changes for each version released on Maven Central.
+The intention is to provide a summary of changes from Version 1.7.3 here.
+### Origin
+This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code generated from other academic research projects formed into this library.
 
 ## Contributions
 - Welcome.
 
 ## LICENSE
 - [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0)
-
-## Acknowledgements
-- The [University of Leeds](http://www.leeds.ac.uk) and externally funded research grants have supported the development of this library.
 
 ## Package details
 
@@ -209,3 +192,15 @@ This pre-dates java.time and was used in programs that ticked through time actin
 
 #### [Generic_Visualisation](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/visualisation/Generic_Visualisation.java)
 A class with methods for visualisation that will work in headless environments.
+
+
+## Acknowledgements and thanks
+- The [University of Leeds](http://www.leeds.ac.uk) and externally funded research grants have supported the development of this library.
+- Thank you developers and maintainers of other useful Java libraries that provide inspiration.
+- Thank you developers and maintainers of [Apache Maven](https://maven.apache.org/), [Apache NetBeans](https://netbeans.apache.org/), and [git](https://git-scm.com/) which I use for developing code.
+- Thank you developers and maintainers of [GitHub](http://github.com) for supporting the development of this code and for providing a means of creating a community of users and  developers.
+- Thank you developers, maintainers and contributors of relevent content on:
+-- [Wikimedia](https://www.wikimedia.org/) projects, in particular the [English language Wikipedia](https://en.wikipedia.org/wiki/Main_Page)
+-- [StackExchange](https://stackexchange.com), in particular [StackOverflow](https://stackoverflow.com/).
+- Information that has helped me develop this library is cited in the source code.
+- Thank you to those that supported me personally and all who have made a positive contribution to society. Let us try to look after each other, look after this world, make space for wildlife, and engineer knowledge :)
