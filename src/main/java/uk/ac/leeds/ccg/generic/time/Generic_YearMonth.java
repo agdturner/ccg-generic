@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.generic.time;
 
 import java.time.YearMonth;
@@ -29,8 +28,9 @@ import uk.ac.leeds.ccg.generic.core.Generic_Strings;
  * @author Andy Turner
  * @version 1.0.0
  */
-public class Generic_YearMonth extends Generic_Object
-        implements Comparable<Generic_YearMonth> {
+public class Generic_YearMonth extends Generic_Object implements Comparable<Generic_YearMonth> {
+
+    private static final long serialVersionUID = 1L;
 
     public YearMonth YM;
 
@@ -64,21 +64,6 @@ public class Generic_YearMonth extends Generic_Object
         }
         int month = Integer.valueOf(s2);
         YM = YearMonth.of(year, month);
-    }
-
-    /**
-     * Returns true iff t is the same day as this.
-     *
-     * @param t Generic_YearMonth
-     * @return boolean
-     */
-    public boolean isSameDay(Generic_YearMonth t) {
-        if (YM.getMonthValue() == t.YM.getMonthValue()) {
-            if (YM.getYear() == t.YM.getYear()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -148,9 +133,12 @@ public class Generic_YearMonth extends Generic_Object
     }
 
     @Override
-    public int compareTo(Generic_YearMonth t) {
+    public int compareTo(Generic_YearMonth o) {
+        if (this instanceof Generic_Date && o instanceof Generic_Date) {
+            return ((Generic_Date) this).compareTo((Generic_Date) o);
+        }
         int y = YM.getYear();
-        int ty = t.YM.getYear();
+        int ty = o.YM.getYear();
         if (y > ty) {
             return 1;
         } else {
@@ -158,14 +146,21 @@ public class Generic_YearMonth extends Generic_Object
                 return -1;
             } else {
                 int m = YM.getMonthValue();
-                int tm = t.YM.getMonthValue();
+                int tm = o.YM.getMonthValue();
                 if (m > tm) {
                     return 1;
                 } else {
                     if (m < tm) {
                         return -1;
                     } else {
-                        return 0;
+                        // Hack due to generic confusion with compareTo
+                        if (o instanceof Generic_Date && this instanceof Generic_Date) {
+                            return Integer.compare(
+                                    ((Generic_Date) this).LD.getDayOfMonth(),
+                                    ((Generic_Date) o).LD.getDayOfMonth());
+                        } else {
+                            return 0;
+                        }
                     }
                 }
             }

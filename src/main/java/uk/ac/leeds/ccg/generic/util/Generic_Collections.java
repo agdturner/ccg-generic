@@ -92,12 +92,9 @@ public class Generic_Collections {
      * <li>r[2] = mins</li>
      * </ul>
      */
-    public static Object[] getIntervalCountsLabelsMins(BigDecimal min,
+    public static CountsLabelsMins getIntervalCountsLabelsMins(BigDecimal min,
             BigDecimal w, TreeMap<?, BigDecimal> map, MathContext mc) {
-        Object[] r = new Object[3];
-        TreeMap<Integer, Integer> counts = new TreeMap<>();
-        TreeMap<Integer, String> labels = new TreeMap<>();
-        TreeMap<Integer, BigDecimal> mins = new TreeMap<>();
+        CountsLabelsMins r = new CountsLabelsMins();
         Iterator<BigDecimal> ite = map.values().iterator();
         while (ite.hasNext()) {
             BigDecimal v = ite.next();
@@ -108,18 +105,31 @@ public class Generic_Collections {
                 interval = getInterval(min, w, v, mc);
             }
             //addToTreeMapIntegerInteger(counts, interval, 1);
-            addToMapInteger(counts, interval, 1);
-            if (!labels.containsKey(interval)) {
+            addToMapInteger(r.counts, interval, 1);
+            if (!r.labels.containsKey(interval)) {
                 BigDecimal imin = getIntervalMin(min, w, interval);
                 BigDecimal intervalMax = getIntervalMax(imin, w);
-                labels.put(interval, "" + imin + " - " + intervalMax);
-                mins.put(interval, imin);
+                r.labels.put(interval, "" + imin + " - " + intervalMax);
+                r.mins.put(interval, imin);
             }
         }
-        r[0] = counts;
-        r[1] = labels;
-        r[2] = mins;
         return r;
+    }
+
+    /**
+     * A POJO
+     */
+    public static class CountsLabelsMins {
+
+        public TreeMap<Integer, Integer> counts;
+        public TreeMap<Integer, String> labels;
+        public TreeMap<Integer, BigDecimal> mins;
+
+        public CountsLabelsMins() {
+            counts = new TreeMap<>();
+            labels = new TreeMap<>();
+            mins = new TreeMap<>();
+        }
     }
 
     /**
@@ -159,22 +169,58 @@ public class Generic_Collections {
      * @param m Map
      * @return BigDecimal[] with the minimum and maximum values in m.
      */
-    public static <K> BigDecimal[] getMinMaxBigDecimal(Map<K, BigDecimal> m) {
-        BigDecimal[] r = new BigDecimal[2];
-        Iterator<BigDecimal> ite = m.values().iterator();
+    public static <K, V extends Comparable<V>> ArrayList<V> getMinMax(Map<K, V> m) {
+        ArrayList<V> r = new ArrayList<>();
+        Iterator<V> ite = m.values().iterator();
         if (ite.hasNext()) {
-            BigDecimal v = ite.next();
-            r[0] = v;
-            r[1] = v;
+            V v = ite.next();
+            r.set(0, v);
+            r.set(1, v);
             while (ite.hasNext()) {
                 v = ite.next();
-                r[0] = r[0].min(v);
-                r[1] = r[1].max(v);
+                if (v.compareTo(r.get(0)) == -1) {
+                    r.set(0, v);
+                }
+                if (v.compareTo(r.get(1)) == 1) {
+                    r.set(1, v);
+                }
             }
         }
         return r;
     }
 
+    /**
+     * @param <K> A generic key.
+     * @param m Map
+     * @return BigDecimal[] with the minimum and maximum values in m.
+     */
+    public static <K> MinMaxBigDecimal getMinMaxBigDecimal(Map<K, BigDecimal> m) {
+        MinMaxBigDecimal r = new MinMaxBigDecimal();
+        Iterator<BigDecimal> ite = m.values().iterator();
+        if (ite.hasNext()) {
+            BigDecimal v = ite.next();
+            r.min = v;
+            r.max = v;
+            while (ite.hasNext()) {
+                v = ite.next();
+                r.min = r.min.min(v);
+                r.max = r.max.max(v);
+            }
+        }
+        return r;
+    }
+
+    /**
+     * POJO
+     */
+    public static class MinMaxBigDecimal {
+        public BigDecimal min;
+        public BigDecimal max;
+        
+        public MinMaxBigDecimal(){}
+    
+    }
+    
     /**
      * @param <K> A generic key.
      * @param m Map
@@ -253,8 +299,6 @@ public class Generic_Collections {
         s.add(v);
     }
 
-    
-    
     /**
      * If m contains the key k, then the key value pair (k2, v) are put in to
      * the value against k in m. If m does not contain the key k a new mapping
@@ -282,12 +326,12 @@ public class Generic_Collections {
     }
 
     /**
-     * Adds to a mapped number.If m does not already contain the key k then i is
-     * mapped to k. Otherwise the value for k is obtained from m and i is added
-     * to it using {@link Generic_Math#add(java.lang.Number, java.lang.Number)}.
-     * This may result in infinite values being added to m or
-     * ArithmeticExceptions being thrown all depending on the result of any
-     * additions as calculated via
+     * Adds to a mapped number. This would be better called addToValue. If m
+     * does not already contain the key k then i is mapped to k. Otherwise the
+     * value for k is obtained from m and i is added to it using
+     * {@link Generic_Math#add(java.lang.Number, java.lang.Number)}. This may
+     * result in infinite values being added to m or ArithmeticExceptions being
+     * thrown all depending on the result of any additions as calculated via
      * {@link Generic_Math#add(java.lang.Number, java.lang.Number)}.
      *
      * @param <K> Key
@@ -783,7 +827,7 @@ public class Generic_Collections {
             }
         }
     }
-    
+
     public static <K0, K1, V extends Number> void addToCount1(
             Map<K0, Map<K1, V>> mapToAddTo,
             Map<K0, Map<K1, V>> mapToAdd) {
@@ -938,27 +982,23 @@ public class Generic_Collections {
     }
 
     /**
-     * For getting the maximum value in a collection of BigDecimals.
+     * For getting the maximum in a collection.
      *
-     * @param c The collection of BigDecimals.
-     * @return the maximum value in {@code c}
+     * @param c The collection.
+     * @return The maximum in {@code c}
      */
-    public static BigDecimal getMax(Collection<BigDecimal> c) {
-        Optional<BigDecimal> o;
-        o = c.stream().parallel().max(BigDecimal::compareTo);
-        return o.get();
+    public static <V extends Comparable<V>> V getMax(Collection<V> c) {
+        return c.stream().parallel().max(V::compareTo).get();
     }
 
     /**
-     * For getting the maximum value in a collection of BigDecimals.
+     * For getting the minimum in a collection.
      *
-     * @param c The collection of BigDecimals.
-     * @return the maximum value in {@code c}
+     * @param c The collection.
+     * @return The minimum in {@code c}
      */
-    public static BigDecimal getMin(Collection<BigDecimal> c) {
-        Optional<BigDecimal> o;
-        o = c.stream().parallel().min(BigDecimal::compareTo);
-        return o.get();
+    public static <V extends Comparable<V>> V getMin(Collection<V> c) {
+        return c.stream().parallel().min(V::compareTo).get();
     }
 
     /**

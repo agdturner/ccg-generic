@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.generic.time;
 
 import java.time.LocalDate;
+import java.time.Month;
 //import java.time.Month;
 import java.time.YearMonth;
 import java.util.Objects;
@@ -28,6 +28,8 @@ import uk.ac.leeds.ccg.generic.core.Generic_Strings;
  * dates.
  */
 public class Generic_Date extends Generic_YearMonth {
+
+    private static final long serialVersionUID = 1L;
 
     public LocalDate LD;
 
@@ -45,7 +47,8 @@ public class Generic_Date extends Generic_YearMonth {
 
     public Generic_Date(Generic_Environment e, LocalDate d) {
         super(e, YearMonth.from(d));
-        LD = d;
+        LD = LocalDate.from(d);
+        //LD = LocalDate.of(d.getYear(), d.getMonthValue(), d.getDayOfMonth());
     }
 
     public Generic_Date(Generic_Environment e, int year, int month, int day) {
@@ -72,6 +75,26 @@ public class Generic_Date extends Generic_YearMonth {
 
     public void addDays(int days) {
         LD = LD.plusDays(days);
+    }
+
+    public void minusDays(int days) {
+        LD = LD.minusDays(days);
+    }
+
+    public void addMonths(int months) {
+        LD = LD.plusMonths(months);
+    }
+
+    public void minusMonths(int months) {
+        LD = LD.minusMonths(months);
+    }
+
+    public void addYears(int years) {
+        LD = LD.plusYears(years);
+    }
+
+    public void minusYears(int years) {
+        LD = LD.minusYears(years);
     }
 
     /**
@@ -187,11 +210,15 @@ public class Generic_Date extends Generic_YearMonth {
         return hash;
     }
 
-    public int compareTo(Generic_Date d) {
-        if (LD.isAfter(d.LD)) {
+    public int compareTo(Generic_Date o) {
+        if (this instanceof Generic_Time && o instanceof Generic_Time) {
+            return ((Generic_Time) this).compareTo((Generic_Time) o);
+        }
+
+        if (LD.isAfter(o.LD)) {
             return 1;
         } else {
-            if (LD.isBefore(d.LD)) {
+            if (LD.isBefore(o.LD)) {
                 return -1;
             } else {
                 return 0;
