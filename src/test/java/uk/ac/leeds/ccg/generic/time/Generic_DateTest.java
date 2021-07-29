@@ -183,5 +183,64 @@ public class Generic_DateTest {
         String result = instance.getYYYYMMDD(dateComponentDelimitter);
         Assertions.assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of getYYYYMMDD method, of class Generic_Date.
+     */
+    @Test
+    public void testCompareTo() {
+        env.log("compareTo");
+        //System.out.println("getYYYYMMDD");
+        Generic_Date d0;
+        Generic_Date d1;
+        int c;
+        // Test 1
+        d0 = new Generic_Date(env, 2017, 1, 9);
+        d1 = new Generic_Date(env, 2017, 1, 9);
+        c = d0.compareTo(d1);
+        Assertions.assertTrue(c == 0);
+        // Test 2
+        d0 = new Generic_Date(env, 2017, 1, 9);
+        d1 = new Generic_Date(env, 2017, 1, 10);
+        c = d0.compareTo(d1);
+        Assertions.assertTrue(c == -1);
+        // Test 3
+        d0 = new Generic_Date(env, 2017, 1, 9);
+        d1 = new Generic_Date(env, 2017, 1, 8);
+        c = d0.compareTo(d1);
+        Assertions.assertTrue(c == 1);
+        // Test 4
+        d0 = new Generic_Date(env, 2017, 1, 9);
+        d1 = new Generic_Date(env, 2017, 2, 7);
+        c = d0.compareTo(d1);
+        Assertions.assertTrue(c == -1);
+    }
+    
+    /**
+     * Test of getYYYYMMDD method, of class Generic_Date.
+     */
+    @Test
+    public void testEquals() {
+        env.log("equals");
+        //System.out.println("getYYYYMMDD");
+        Generic_Date d0;
+        Generic_Date d1;
+        boolean c;
+        // Test 1
+        d0 = new Generic_Date(env, 2017, 1, 9);
+        d1 = new Generic_Date(env, 2017, 1, 9);
+        c = d0.equals(d1);
+        Assertions.assertTrue(c);
+        // Test 2
+        d0 = new Generic_Date(env, 2017, 1, 9);
+        d1 = new Generic_Date(env, 2017, 1, 10);
+        c = d0.equals(d1);
+        Assertions.assertFalse(c);
+        // Test 3
+        d0 = new Generic_Date(env, 2017, 1, 9);
+        d1 = new Generic_Date(env, 2017, 1, 8);
+        c = d0.equals(d1);
+        Assertions.assertFalse(c);
+    }
 
 }

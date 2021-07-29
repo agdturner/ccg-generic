@@ -133,7 +133,7 @@ public class Generic_CollectionsTest {
 //        BigDecimal result = Generic_Collections.getMax(l);
 //        Assertions.assertEquals(expResult, result);
 //    }
-//
+
 //    /**
 //     * Test of getMax method, of class Generic_Collections.
 //     */
