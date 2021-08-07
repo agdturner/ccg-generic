@@ -24,7 +24,9 @@ import java.time.LocalDate;
  *
  * @author Andy Turner
  * @version 1.0.0
+ * @Deprecated 
  */
+@Deprecated //Use java.time.Period.
 public class Generic_LocalDateRange {
 
     private final LocalDate start;
@@ -48,5 +50,14 @@ public class Generic_LocalDateRange {
     public LocalDate getEnd() {
         return end;
     }
+    
+    /**
+     * 
+     * @return the number of days between start and end. 
+     */
+    public int getDays(){
+        return start.until(end).getDays();
+    }
 
+    
 }

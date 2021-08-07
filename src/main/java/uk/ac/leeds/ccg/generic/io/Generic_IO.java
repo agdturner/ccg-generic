@@ -132,6 +132,23 @@ public class Generic_IO extends Generic_Object {
     }
 
     /**
+     * Read an Object and check the Type.
+     *
+     * @param p Path to a file be read from.
+     * @return Object read from the file at p.
+     * @throws java.io.IOException If encountered.
+     * @throws java.lang.ClassNotFoundException If for some reason the Object
+     * cannot otherwise be deserialized.
+     */
+    public static <T> T readObject(Path p, T type) throws IOException,
+            ClassNotFoundException {
+        
+        return (T) readObject(p);
+    }
+
+    
+    
+    /**
      * Read an Object from a file at p.
      *
      * @param p Path to a file be read from.
@@ -935,6 +952,15 @@ public class Generic_IO extends Generic_Object {
         st.wordChars('>', '>');
     }
 
+    /**
+     * @param st <code>StreamTokenizer</code> that's syntax is set
+     */
+    public static void setStreamTokenizerSyntax8(StreamTokenizer st) {
+        setStreamTokenizerSyntax7(st);
+        st.wordChars('[', '[');
+        st.wordChars(']', ']');
+    }
+    
     /**
      * @param dir The directory to list.
      * @return A list of files and directories in dir.
