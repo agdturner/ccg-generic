@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.generic.util;
 
 import java.text.SimpleDateFormat;
@@ -27,14 +26,33 @@ import java.util.Calendar;
  * {@link uk.ac.leeds.ccg.generic.time.Generic_Time} class.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.1
  */
 public class Generic_Time {
 
+    /**
+     * Constant of the number of seconds in a minute.
+     */
     public static final int SecondsInMinute = 60;
+
+    /**
+     * Constant of the number of minutes in an hour.
+     */
     public static final int MinutesInHour = 60;
+
+    /**
+     * Constant of the number of seconds in an hour.
+     */
     public static final int SecondsInHour = SecondsInMinute * MinutesInHour;
+
+    /**
+     * Constant of the number of milliseconds in a second.
+     */
     public static final int MilliSecondsInSecond = 1000;
+
+    /**
+     * Constant of the number of milliseconds in an hour.
+     */
     public static final int MilliSecondsInHour = MilliSecondsInSecond * SecondsInHour;
 
     /**
@@ -46,21 +64,37 @@ public class Generic_Time {
      * The month represented by this time.
      */
     private int month;
-    
+
     /**
      * The year represented by this time.
      */
     private int year;
 
+    /**
+     * Create a new instance.
+     */
     public Generic_Time() {
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param day The day.
+     * @param month The month.
+     * @param year The year.
+     */
     public Generic_Time(int day, int month, int year) {
         this.day = day;
         this.month = month;
         this.year = year;
     }
 
+    /**
+     * For returning the difference in years between two times.
+     * @param t1 Later time.
+     * @param t0 Earlier time.
+     * @return A number representing the age in years.
+     */
     public static int getAgeInYears(Generic_Time t1, Generic_Time t0) {
         if (t1.month > t0.month) {
             return t1.year - t0.year;
@@ -77,10 +111,12 @@ public class Generic_Time {
         }
     }
 
+    /**
+     * {@code System.out.println(getTime(millis))}
+     * @param millis The millis to print.
+     */
     public static void printTime(long millis) {
-        String time;
-        time = getTime(millis);
-        System.out.println(time);
+        System.out.println(getTime(millis));
     }
 
     /**
@@ -93,7 +129,6 @@ public class Generic_Time {
      * minutes, seconds and milliseconds for millis.
      */
     public static String getTime(long millis) {
-
         int MilliSecondsInDay = 24 * MilliSecondsInHour;
         int MilliSecondsInMinute = 60000;
         long millis2 = millis;

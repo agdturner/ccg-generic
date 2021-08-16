@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package uk.ac.leeds.ccg.generic.time;
 
 import java.time.LocalDate;
@@ -30,35 +29,78 @@ import uk.ac.leeds.ccg.generic.core.Generic_Strings;
  * {@link uk.ac.leeds.ccg.generic.util.Generic_Time} class.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.1
  */
 public class Generic_Time extends Generic_Date {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The LocalDateTime.
+     */
     public LocalDateTime LDT;
 
+    /**
+     * Create a new instance.
+     *
+     * @param e The Generic_Environment.
+     */
     public Generic_Time(Generic_Environment e) {
         super(e);
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param t The Generic_Time.
+     */
     public Generic_Time(Generic_Time t) {
         this(t.env, t.LDT);
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param d The Generic_Date.
+     * @throws Exception If encountered.
+     */
     public Generic_Time(Generic_Date d) throws Exception {
         this(d.getEnv(), LocalDateTime.of(d.LD, LocalTime.of(0, 0)));
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param d The Generic_Date.
+     * @param t The LocalTime.
+     * @throws Exception If encountered.
+     */
     public Generic_Time(Generic_Date d, LocalTime t) throws Exception {
         this(d.getEnv(), LocalDateTime.of(d.LD, t));
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param e The Generic_Environment.
+     * @param dt The LocalDateTime.
+     */
     public Generic_Time(Generic_Environment e, LocalDateTime dt) {
         super(e, LocalDate.from(dt));
         LDT = dt;
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param e The Generic_Environment.
+     * @param year The year.
+     * @param month The month.
+     * @param day The day.
+     * @param hour The hour.
+     * @param minute The minute.
+     * @param second The second.
+     */
     public Generic_Time(Generic_Environment e, int year, int month, int day,
             int hour, int minute, int second) {
         super(e, LocalDate.of(year, month, day));
@@ -123,38 +165,55 @@ public class Generic_Time extends Generic_Date {
     }
 
     /**
-     * Adds m to {@link #LDT} and re-initialises {@link #LD}.
-     * 
-     * @param m minutes 
+     * Adds minutes to {@link #LDT} and re-initialises {@link #LD}.
+     *
+     * @param minutes The minutes to add.
      */
-    public void addMinutes(int m) {
-        LDT = LDT.plusMinutes(m);
+    public void addMinutes(int minutes) {
+        LDT = LDT.plusMinutes(minutes);
         LD = LDT.toLocalDate();
     }
 
+    /**
+     * Adds hours to {@link #LDT} and re-initialises {@link #LD}.
+     *
+     * @param hours The hours to add.
+     */
     public void addHours(int hours) {
         LDT = LDT.plusHours(hours);
         LD = LDT.toLocalDate();
     }
 
+    /**
+     * Adds days to {@link #LDT} and re-initialises {@link #LD}.
+     *
+     * @param days The hours to add.
+     */
     @Override
     public void addDays(int days) {
         super.addDays(days);
         LDT = LDT.plusDays(days);
     }
 
+    /**
+     * Sets the time of {@link #LDT}.
+     *
+     * @param hour The hour to set.
+     * @param minute The minute to set.
+     * @param second The second to set.
+     */
     public final void setTime(int hour, int minute, int second) {
         LDT = LocalDateTime.of(LD, LocalTime.of(hour, minute, second));
     }
 
+    /**
+     * @return A new Generic_Date created from this.
+     */
     public Generic_Date getDate() {
-        Generic_Date r;
-        r = new Generic_Date(this);
-        return r;
+        return new Generic_Date(this);
     }
 
     /**
-     *
      * @return YYYY-MM-DDTHH:MM:SSZ
      */
     public String toFormattedString0() {
@@ -164,7 +223,6 @@ public class Generic_Time extends Generic_Date {
     }
 
     /**
-     *
      * @return YYYY-MM-DDTHH_MM_SSZ
      */
     public String toFormattedString1() {
@@ -173,6 +231,9 @@ public class Generic_Time extends Generic_Date {
                 Generic_Strings.s_Z);
     }
 
+    /**
+     * @return YYYYMMDDHHMMSS
+     */
     public String toFormattedString2() {
         return getYYYYMMDDHHMMSS(Generic_Strings.special_emptyString,
                 Generic_Strings.special_emptyString,
@@ -180,12 +241,16 @@ public class Generic_Time extends Generic_Date {
                 Generic_Strings.special_emptyString);
     }
 
+    /**
+     * @return YYYYMMDDHHMM
+     */
     public String getYYYYMMDDHHMM() {
-        String r;
-        r = getYYYY() + getMM() + getDD() + getHH() + getMins();
-        return r;
+        return getYYYY() + getMM() + getDD() + getHH() + getMins();
     }
 
+    /**
+     * @return 01 for day 1 etc...
+     */
     @Override
     public String getDD() {
         String r = "";
@@ -197,6 +262,9 @@ public class Generic_Time extends Generic_Date {
         return r;
     }
 
+    /**
+     * @return 01 for hour 1 etc...
+     */
     public String getHH() {
         String r = "";
         int hour = LDT.getHour();
@@ -211,7 +279,7 @@ public class Generic_Time extends Generic_Date {
      * So as not to confuse with Generic_YearMonth.getMM() this is called
      * getMins() instead of getMM();
      *
-     * @return String
+     * @return 01 for minute 1 etc...
      */
     public String getMins() {
         String r = "";
@@ -223,6 +291,9 @@ public class Generic_Time extends Generic_Date {
         return r;
     }
 
+    /**
+     * @return 01 for second 1 etc...
+     */
     public String getSS() {
         String r = "";
         int second = LDT.getSecond();
@@ -233,11 +304,17 @@ public class Generic_Time extends Generic_Date {
         return r;
     }
 
+    /**
+     * @return A String representation in YYYY-MM-DDTHH:MM:SS format.
+     */
     @Override
     public String toString() {
         return getYYYYMMDDHHMMSS();
     }
 
+    /**
+     * @return A String representation in YYYY-MM-DDTHH:MM:SS format.
+     */
     public String getYYYYMMDDHHMMSS() {
         String r;
         r = super.toString();
@@ -250,6 +327,16 @@ public class Generic_Time extends Generic_Date {
         return r;
     }
 
+    /**
+     * @param dateComponentDelimitter Delimitter for date components.
+     * @param dateTimeDivider Delimitter to go between date and time components.
+     * @param timeComponentDivider Delimitter for time components.
+     * @param resultEnding A String added to the end of the result.
+     * @return A String representation using dateComponentDelimitter to delimit
+     * the date components, dateTimeDivider to divide the date and time
+     * components, timeComponentDivider to divide the time components, and adds
+     * resultEnding to the end of the resulting String.
+     */
     public String getYYYYMMDDHHMMSS(
             String dateComponentDelimitter,
             String dateTimeDivider,
@@ -300,6 +387,13 @@ public class Generic_Time extends Generic_Date {
         return hash;
     }
 
+    /**
+     * For comparing another Generic_Date with this.
+     *
+     * @param t The Generic_Time to compare.
+     * @return -1, 0, 1 depending on if this is less than, the same as, or
+     * greater than {code o}.
+     */
     public int compareTo(Generic_Time t) {
         if (LDT.isAfter(t.LDT)) {
             return 1;

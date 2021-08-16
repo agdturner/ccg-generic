@@ -28,7 +28,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.generic.math.Generic_Math;
@@ -95,17 +94,16 @@ public class Generic_Collections {
     public static CountsLabelsMins getIntervalCountsLabelsMins(BigDecimal min,
             BigDecimal w, TreeMap<?, BigDecimal> map, MathContext mc) {
         CountsLabelsMins r = new CountsLabelsMins();
-        Iterator<BigDecimal> ite = map.values().iterator();
-        while (ite.hasNext()) {
-            BigDecimal v = ite.next();
-            int interval;
+        for (BigDecimal v : map.values()) {
+            Integer interval;
             if (w.compareTo(BigDecimal.ZERO) == 0) {
                 interval = 0;
             } else {
                 interval = getInterval(min, w, v, mc);
             }
             //addToTreeMapIntegerInteger(counts, interval, 1);
-            addToMapInteger(r.counts, interval, 1);
+            //addToMapInteger(r.counts, interval, 1);
+            addToCount(r.counts, interval, 1);
             if (!r.labels.containsKey(interval)) {
                 BigDecimal imin = getIntervalMin(min, w, interval);
                 BigDecimal intervalMax = getIntervalMax(imin, w);
@@ -121,10 +119,24 @@ public class Generic_Collections {
      */
     public static class CountsLabelsMins {
 
+        /**
+         * Counts.
+         */
         public TreeMap<Integer, Integer> counts;
+
+        /**
+         * Labels.
+         */
         public TreeMap<Integer, String> labels;
+
+        /**
+         * Mins.
+         */
         public TreeMap<Integer, BigDecimal> mins;
 
+        /**
+         * Create a new instance.
+         */
         public CountsLabelsMins() {
             counts = new TreeMap<>();
             labels = new TreeMap<>();
@@ -165,7 +177,8 @@ public class Generic_Collections {
     }
 
     /**
-     * @param <K> A generic key.
+     * @param <K> A generic key type.
+     * @param <V> A generic value type.
      * @param m Map
      * @return BigDecimal[] with the minimum and maximum values in m.
      */
@@ -211,16 +224,26 @@ public class Generic_Collections {
     }
 
     /**
-     * POJO
+     * POJO for combining a BigDecimal representing a minimum value and a
+     * BigDecimal representing a maximum value.
      */
     public static class MinMaxBigDecimal {
 
+        /**
+         * The minimum value.
+         */
         public BigDecimal min;
+
+        /**
+         * The maximum value.
+         */
         public BigDecimal max;
 
+        /**
+         * Create a new instance.
+         */
         public MinMaxBigDecimal() {
         }
-
     }
 
     /**
@@ -352,7 +375,6 @@ public class Generic_Collections {
 //            }
 //        });
 //    }
-    
     /**
      * For each key in putFrom if the key is not in putTo, then the value (the
      * map) in putFrom is put into putTo. If there are maps in both putFrom and
@@ -361,14 +383,14 @@ public class Generic_Collections {
      *
      * @param <K> Key
      * @param <K2> Key2
+     * @param <V2> Value2
      * @param <V> Value
-     * @param m Map
-     * @param k key
-     * @param k2 key2
-     * @param v value
+     * @param putTo Map to put into.
+     * @param putFrom Map to put from.
      */
     public static <K, K2, V2, V extends Map<K2, V2>> void putInMap(Map<K, V> putTo,
             Map<K, V> putFrom) {
+        // The parallelStream operation seems to have a problem here!
         //putFrom.keySet().parallelStream().forEach(k -> {
         putFrom.keySet().forEach(k -> {
             if (putTo.containsKey(k)) {
@@ -775,6 +797,12 @@ public class Generic_Collections {
         return r;
     }
 
+    /**
+     * @param <K> Key.
+     * @param m Map
+     * @return A copy of m with all keys the same (not duplicated), but with all
+     * values duplicated.
+     */
     public static <K> TreeMap<K, BigInteger> deepCopyTreeMapBigInteger(
             TreeMap<K, BigInteger> m) {
         TreeMap<K, BigInteger> r = new TreeMap<>();
@@ -788,6 +816,12 @@ public class Generic_Collections {
         return r;
     }
 
+    /**
+     * @param <K> Key.
+     * @param m Map
+     * @return A copy of m with all keys the same (not duplicated), but with all
+     * values duplicated.
+     */
     public static <K> HashMap<K, String> deepCopyHashMapString(
             HashMap<K, String> m) {
         HashMap<K, String> r = new HashMap<>();
@@ -799,6 +833,12 @@ public class Generic_Collections {
         return r;
     }
 
+    /**
+     * @param <K> Key.
+     * @param m Map
+     * @return A copy of m with all keys the same (not duplicated), but with all
+     * values duplicated.
+     */
     public static <K> HashMap<K, Integer> deepCopyHashMapInteger(
             HashMap<K, Integer> m) {
         HashMap<K, Integer> r = new HashMap<>();
@@ -810,17 +850,29 @@ public class Generic_Collections {
         return r;
     }
 
-    public static <K, Integer> TreeMap<K, Integer> deepCopyTreeMapInteger(
-            TreeMap<K, Integer> map) {
+    /**
+     * @param <K> Key.
+     * @param m Map
+     * @return A copy of m with all keys the same (not duplicated), but with all
+     * values duplicated.
+     */
+    public static <K> TreeMap<K, Integer> deepCopyTreeMapInteger(
+            TreeMap<K, Integer> m) {
         TreeMap<K, Integer> r = new TreeMap<>();
-        Iterator<K> ite = map.keySet().iterator();
+        Iterator<K> ite = m.keySet().iterator();
         while (ite.hasNext()) {
             K k = ite.next();
-            r.put(k, map.get(k));
+            r.put(k, m.get(k));
         }
         return r;
     }
 
+    /**
+     * @param <K> Key.
+     * @param m Map
+     * @return A copy of m with all keys the same (not duplicated), but with all
+     * values duplicated.
+     */
     public static <K> TreeMap<K, BigDecimal> deepCopyTreeMapBigDecimal(
             TreeMap<K, BigDecimal> m) {
         TreeMap<K, BigDecimal> r = new TreeMap<>();
@@ -834,6 +886,12 @@ public class Generic_Collections {
         return r;
     }
 
+    /**
+     * @param <K> Key.
+     * @param m Map
+     * @return A copy of m with all keys the same (not duplicated), but with all
+     * values duplicated.
+     */
     public static <K> TreeMap<K, Long> deepCopyTreeMapLong(
             TreeMap<K, Long> m) {
         TreeMap<K, Long> r = new TreeMap<>();
@@ -868,6 +926,12 @@ public class Generic_Collections {
         }
     }
 
+    /**
+     * @param <K> Key.
+     * @param <V> Type of value.
+     * @param mapToAddTo Map that's values may change.
+     * @param mapToAdd Map with values to add to mapToAddTo.
+     */
     public static <K, V extends Number> void addToCount(Map<K, V> mapToAddTo,
             Map<K, V> mapToAdd) {
         Iterator<K> ite = mapToAdd.keySet().iterator();
@@ -882,6 +946,15 @@ public class Generic_Collections {
         }
     }
 
+    /**
+     * @param <K0> Key0.
+     * @param <K1> Key1.
+     * @param <V> Type of value.
+     * @param mapToAddTo Map with values that are maps for which the values may
+     * change.
+     * @param mapToAdd Map with values that are maps that has values that are
+     * added to mapToAddTo.
+     */
     public static <K0, K1, V extends Number> void addToCount1(
             Map<K0, Map<K1, V>> mapToAddTo,
             Map<K0, Map<K1, V>> mapToAdd) {
@@ -1038,6 +1111,7 @@ public class Generic_Collections {
     /**
      * For getting the maximum in a collection.
      *
+     * @param <V> Value type.
      * @param c The collection.
      * @return The maximum in {@code c}
      */
@@ -1048,6 +1122,7 @@ public class Generic_Collections {
     /**
      * For getting the minimum in a collection.
      *
+     * @param <V> Value type.
      * @param c The collection.
      * @return The minimum in {@code c}
      */

@@ -19,7 +19,7 @@
  */
 module uk.ac.leeds.ccg.generic {
     requires transitive java.logging;
-    requires java.desktop;
+    requires transitive java.desktop;
     
     /**
      * Exports.

@@ -134,7 +134,9 @@ public class Generic_IO extends Generic_Object {
     /**
      * Read an Object and check the Type.
      *
+     * @param <T> The type to cast into.
      * @param p Path to a file be read from.
+     * @param type An instance of the class type to cast into.
      * @return Object read from the file at p.
      * @throws java.io.IOException If encountered.
      * @throws java.lang.ClassNotFoundException If for some reason the Object
@@ -142,7 +144,6 @@ public class Generic_IO extends Generic_Object {
      */
     public static <T> T readObject(Path p, T type) throws IOException,
             ClassNotFoundException {
-        
         return (T) readObject(p);
     }
 
@@ -441,7 +442,6 @@ public class Generic_IO extends Generic_Object {
      * Delete file if it exists.
      *
      * @param p The path to the file to delete if it exists.
-     * @param log If true then deletions are logged.
      */
     public static void delete(Path p) {
         try {

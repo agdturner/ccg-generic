@@ -32,17 +32,34 @@ public class Generic_YearMonth extends Generic_Object implements Comparable<Gene
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The YearMonth.
+     */
     public YearMonth YM;
 
+    /**
+     * Create a new instance.
+     * @param e The Generic_Environment.
+     */
     public Generic_YearMonth(Generic_Environment e) {
         super(e);
         YM = YearMonth.now();
     }
 
+    /**
+     * Create a new instance.
+     * @param e The Generic_Environment.
+     * @param t The Generic_YearMonth to create from.
+     */
     public Generic_YearMonth(Generic_Environment e, Generic_YearMonth t) {
         this(e, t.YM);
     }
 
+    /**
+     * Create a new instance.
+     * @param e The Generic_Environment.
+     * @param t The YearMonth to create from.
+     */
     public Generic_YearMonth(Generic_Environment e, YearMonth t) {
         super(e);
         YM = t;
@@ -91,19 +108,26 @@ public class Generic_YearMonth extends Generic_Object implements Comparable<Gene
         return r;
     }
 
+    /**
+     * @return A String representation of this.
+     */
     @Override
     public String toString() {
         return YM.toString();
     }
 
     /**
-     *
      * @return String representing year and month in YYYY-MM format
      */
     public String getYYYYMM() {
         return YM.toString();
     }
 
+    /**
+     * @param delimeter The delimeter.
+     * @return String representing year and month in YYYY-MM format using the 
+     * delimeter given.
+     */
     public String getYYYYMM(String delimeter) {
         String result;
         result = getYYYY();
@@ -132,32 +156,39 @@ public class Generic_YearMonth extends Generic_Object implements Comparable<Gene
         return hash;
     }
 
+    /**
+     * For comparisons.
+     *
+     * @param ym An instance to compare with. If {@code null} then a
+     * {@link NullPointerException} is thrown.
+     * @return -1, 0, 1 depending on if this is less than, the same as, or
+     * greater than {@code o}.
+     */
     @Override
-    public int compareTo(Generic_YearMonth o) {
-        if (this instanceof Generic_Date && o instanceof Generic_Date) {
-            return ((Generic_Date) this).compareTo((Generic_Date) o);
-        }
-        int y = YM.getYear();
-        int ty = o.YM.getYear();
-        if (y > ty) {
-            return 1;
+    public int compareTo(Generic_YearMonth ym) {
+        // This appears ugly, but it is a sensible way given the way Java is 
+        // ensuring backwards compatability following the introduction of 
+        // generics.
+        if (ym instanceof Generic_Date && this instanceof Generic_Date) {
+            Generic_Date ymd = (Generic_Date) ym;
+            Generic_Date td = (Generic_Date) this;
+            return td.compareTo(ymd);
         } else {
-            if (y < ty) {
-                return -1;
+            int y = YM.getYear();
+            int ty = ym.YM.getYear();
+            if (y > ty) {
+                return 1;
             } else {
-                int m = YM.getMonthValue();
-                int tm = o.YM.getMonthValue();
-                if (m > tm) {
-                    return 1;
+                if (y < ty) {
+                    return -1;
                 } else {
-                    if (m < tm) {
-                        return -1;
+                    int m = YM.getMonthValue();
+                    int tm = ym.YM.getMonthValue();
+                    if (m > tm) {
+                        return 1;
                     } else {
-                        // Hack due to generic confusion with compareTo
-                        if (o instanceof Generic_Date && this instanceof Generic_Date) {
-                            return Integer.compare(
-                                    ((Generic_Date) this).LD.getDayOfMonth(),
-                                    ((Generic_Date) o).LD.getDayOfMonth());
+                        if (m < tm) {
+                            return -1;
                         } else {
                             return 0;
                         }

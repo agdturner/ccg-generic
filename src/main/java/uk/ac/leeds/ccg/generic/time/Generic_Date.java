@@ -16,8 +16,6 @@
 package uk.ac.leeds.ccg.generic.time;
 
 import java.time.LocalDate;
-import java.time.Month;
-//import java.time.Month;
 import java.time.YearMonth;
 import java.util.Objects;
 import uk.ac.leeds.ccg.generic.core.Generic_Environment;
@@ -31,32 +29,66 @@ public class Generic_Date extends Generic_YearMonth {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The LocalData to store.
+     */
     public LocalDate LD;
 
+    /**
+     * Create a new instance.
+     *
+     * @param e The Generic_Environment.
+     */
     public Generic_Date(Generic_Environment e) {
         super(e);
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param d The Generic_Date.
+     */
     public Generic_Date(Generic_Date d) {
         this(d.env, d.LD);
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param t The Generic_Time.
+     */
     public Generic_Date(Generic_Time t) {
         this(t.env, t.LDT.toLocalDate());
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param e The Generic_Environment.
+     * @param d The LocalDate.
+     */
     public Generic_Date(Generic_Environment e, LocalDate d) {
         super(e, YearMonth.from(d));
         LD = LocalDate.from(d);
         //LD = LocalDate.of(d.getYear(), d.getMonthValue(), d.getDayOfMonth());
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param e The Generic_Environment.
+     * @param year The year.
+     * @param month The month.
+     * @param day The day.
+     */
     public Generic_Date(Generic_Environment e, int year, int month, int day) {
         super(e, YearMonth.of(year, month));
         LD = LocalDate.of(year, month, day);
     }
 
     /**
+     * Create a new instance.
+     *
      * @param e Generic_Environment
      * @param s String expected in the form "YYYY-MM-DD"
      */
@@ -73,26 +105,56 @@ public class Generic_Date extends Generic_YearMonth {
         LD = LocalDate.of(YM.getYear(), YM.getMonth(), Integer.valueOf(s2));
     }
 
+    /**
+     * Adds days to {@link #LD}.
+     *
+     * @param days The number of days to add.
+     */
     public void addDays(int days) {
         LD = LD.plusDays(days);
     }
 
+    /**
+     * Subtracts days to {@link #LD}.
+     *
+     * @param days The number of days to subtract.
+     */
     public void minusDays(int days) {
         LD = LD.minusDays(days);
     }
 
+    /**
+     * Adds months to {@link #LD}.
+     *
+     * @param months The number of months to add.
+     */
     public void addMonths(int months) {
         LD = LD.plusMonths(months);
     }
 
+    /**
+     * Subtracts months to {@link #LD}.
+     *
+     * @param months The number of months to subtract.
+     */
     public void minusMonths(int months) {
         LD = LD.minusMonths(months);
     }
 
+    /**
+     * Adds years to {@link #LD}.
+     *
+     * @param years The number of years to add.
+     */
     public void addYears(int years) {
         LD = LD.plusYears(years);
     }
 
+    /**
+     * Subtracts years to {@link #LD}.
+     *
+     * @param years The number of years to subtract.
+     */
     public void minusYears(int years) {
         LD = LD.minusYears(years);
     }
@@ -152,6 +214,9 @@ public class Generic_Date extends Generic_YearMonth {
         return LD.isEqual(t.LD);
     }
 
+    /**
+     * @return The days in the date 01 for January etc...
+     */
     public String getDD() {
         String r = "";
         int dayOfMonth = LD.getDayOfMonth();
@@ -162,28 +227,30 @@ public class Generic_Date extends Generic_YearMonth {
         return r;
     }
 
+    /**
+     * @return A String representation of this in YYYY-MM-DD format.
+     */
     @Override
     public String toString() {
         return getYYYYMMDD();
     }
 
     /**
-     * @return A String representation of this in the format YYYY-MM-DD.
+     * @return A String representation of this in YYYY-MM-DD format.
      */
     public String getYYYYMMDD() {
         return getYYYYMMDD("-");
     }
 
     /**
-     * @param dateComponentDelimitter String used to separateComponents of the
-     * date.
+     * @param delimeter String used to separateComponents of the date.
      * @return A String representation of this in the format YYYY-MM-DD where
      * the - is replaced by dateComponentDelimitter.
      */
-    public String getYYYYMMDD(String dateComponentDelimitter) {
+    public String getYYYYMMDD(String delimeter) {
         String r;
-        r = getYYYYMM(dateComponentDelimitter);
-        r += dateComponentDelimitter;
+        r = getYYYYMM(delimeter);
+        r += delimeter;
         r += getDD();
         return r;
     }
@@ -210,15 +277,24 @@ public class Generic_Date extends Generic_YearMonth {
         return hash;
     }
 
-    public int compareTo(Generic_Date o) {
-        if (this instanceof Generic_Time && o instanceof Generic_Time) {
-            return ((Generic_Time) this).compareTo((Generic_Time) o);
+    /**
+     * For comparing another Generic_Date with this.
+     *
+     * @param d The Generic_Date to compare.
+     * @return -1, 0, 1 depending on if this is less than, the same as, or
+     * greater than {code o}.
+     */
+    public int compareTo(Generic_Date d) {
+        // This appears ugly, but it is a sensible way given the way Java is 
+        // ensuring backwards compatability following the introduction of 
+        // generics.
+        if (this instanceof Generic_Time && d instanceof Generic_Time) {
+            return ((Generic_Time) this).compareTo((Generic_Time) d);
         }
-
-        if (LD.isAfter(o.LD)) {
+        if (LD.isAfter(d.LD)) {
             return 1;
         } else {
-            if (LD.isBefore(o.LD)) {
+            if (LD.isBefore(d.LD)) {
                 return -1;
             } else {
                 return 0;

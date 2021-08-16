@@ -32,6 +32,9 @@ public class Generic_Defaults implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    /**
+     * Stores the main directory path.
+     */
     protected final Generic_Path dir;
     
     /**

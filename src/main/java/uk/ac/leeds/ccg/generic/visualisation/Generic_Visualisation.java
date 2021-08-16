@@ -35,10 +35,16 @@ import uk.ac.leeds.ccg.generic.execution.Generic_Execution;
  * A class for holding generic visualisation methods.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.1
  */
 public class Generic_Visualisation extends Generic_Object {
 
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Create new instance.
+     * @param e Generic_Environment.
+     */
     public Generic_Visualisation(Generic_Environment e) {
         super(e);
     }
@@ -115,6 +121,9 @@ public class Generic_Visualisation extends Generic_Object {
         return r;
     }
 
+    /**
+     * Inner convenience class.
+     */
     public class ImageSaver implements Runnable {
 
         Generic_Visualisation v;
@@ -124,9 +133,22 @@ public class Generic_Visualisation extends Generic_Object {
         String format;
         Path f;
 
+        /**
+         * Create new instance.
+         */
         public ImageSaver() {
         }
 
+        /**
+         * Create new instance.
+         * 
+         * @param v Generic_Visualisation
+         * @param o Object
+         * @param bi BufferedImage
+         * @param timeInMilliseconds long
+         * @param format String
+         * @param f Path
+         */
         public ImageSaver(Generic_Visualisation v, Object o, BufferedImage bi,
                 long timeInMilliseconds, String format, Path f) {
             this.v = v;

@@ -29,7 +29,7 @@ import java.util.Objects;
 
 /**
  * Serializable class for a {@link Path}.
- * 
+ *
  * @author Andy Turner
  * @version 1.0.0
  */
@@ -37,20 +37,37 @@ public class Generic_Path implements Serializable, Path {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The String representation of the Path.
+     */
     protected final String s;
 
+    /**
+     * Create a new instance.
+     *
+     * @param p The Path to store.
+     */
     public Generic_Path(Path p) {
         s = p.toString();
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param p The Generic_Path containing the String representation of the
+     * Path to store.
+     */
     public Generic_Path(Generic_Path p) {
         s = p.s;
     }
 
+    /**
+     * @return A copy of {@link #s}. 
+     */
     public Path getPath() {
         return Paths.get(s);
     }
-    
+
     @Override
     public String toString() {
         return s;
@@ -122,7 +139,7 @@ public class Generic_Path implements Serializable, Path {
     }
 
     @Override
-    public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events, 
+    public WatchKey register(WatchService watcher, WatchEvent.Kind<?>[] events,
             WatchEvent.Modifier... modifiers) throws IOException {
         return getPath().register(watcher, events, modifiers);
     }
@@ -144,9 +161,9 @@ public class Generic_Path implements Serializable, Path {
 
     @Override
     public Path resolve(Path other) {
-       return getPath().resolve(other);
+        return getPath().resolve(other);
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (o != null) {

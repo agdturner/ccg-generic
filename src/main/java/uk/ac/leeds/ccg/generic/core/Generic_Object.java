@@ -30,6 +30,10 @@ public abstract class Generic_Object implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * A reference to the Generic_Environment for memory management and file 
+     * handling.
+     */
     protected transient Generic_Environment env;
 
     /**

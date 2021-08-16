@@ -35,6 +35,10 @@ public class Generic_Execution extends Generic_Object {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Create a new instance.
+     * @param e The Generic_Environment.
+     */
     public Generic_Execution(Generic_Environment e){
         super(e);        
     }

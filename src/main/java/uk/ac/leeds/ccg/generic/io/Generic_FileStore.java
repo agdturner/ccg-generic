@@ -647,6 +647,11 @@ public class Generic_FileStore implements Serializable {
         return nextID;
     }
 
+    /**
+     * @param l The first part of the name (lower number).
+     * @param u The second part of the name (upper number).
+     * @return {@code Long.toString(l) + SEP + Long.toString(u)}
+     */
     protected final String getName(long l, long u) {
         return Long.toString(l) + SEP + Long.toString(u);
     }

@@ -803,6 +803,11 @@ public class Generic_Math {
         return compare2(x, xToCompare, epsilon);
     }
 
+    /**
+     * For getting a MathContext for {@code x} for comparison purposes.
+     * @param x A BigDecimal.
+     * @return A MathContext.
+     */
     public static MathContext getMathContextForComparison(BigDecimal x) {
         int ul = x.unscaledValue().toString().length();
         // 2 is added to precision in the MathContext to cope with any rounding.
@@ -814,6 +819,10 @@ public class Generic_Math {
 
     /**
      * Use x.precision() instead.
+     * @param x A BigDecimal.
+     * @return An integer representing the precision of {@code x}.
+     * @deprecated As of Version 1.1 - this is likely to removed in a future 
+     * release.
      */
     @Deprecated
     public static int getPrecision(BigDecimal x) {
@@ -822,7 +831,9 @@ public class Generic_Math {
     }
 
     /**
-     * x.precision() + 2
+     * {@code x.precision() + 2}
+     * @param x A BigDecimal.
+     * @return An integer representing the precision of {@code x}.
      */
     public static int getPrecisionSafe(BigDecimal x) {
         return x.precision() + 2;

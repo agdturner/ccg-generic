@@ -23,8 +23,7 @@ import java.time.LocalDate;
  * {@link java.time.LocalDate} instances - {@link #start} and {@link #end}.
  *
  * @author Andy Turner
- * @version 1.0.0
- * @Deprecated 
+ * @version 1.1
  */
 @Deprecated //Use java.time.Period.
 public class Generic_LocalDateRange {
@@ -32,6 +31,12 @@ public class Generic_LocalDateRange {
     private final LocalDate start;
     private final LocalDate end;
 
+    /**
+     * Create a new instance.
+     * 
+     * @param start Start of range.
+     * @param end End of range.
+     */
     public Generic_LocalDateRange(LocalDate start, LocalDate end) {
         this.start = start;
         this.end = end;
@@ -52,7 +57,6 @@ public class Generic_LocalDateRange {
     }
     
     /**
-     * 
      * @return the number of days between start and end. 
      */
     public int getDays(){
