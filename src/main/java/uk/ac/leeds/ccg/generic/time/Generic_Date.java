@@ -16,8 +16,10 @@
 package uk.ac.leeds.ccg.generic.time;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.YearMonth;
 import java.util.Objects;
+import java.util.TreeSet;
 import uk.ac.leeds.ccg.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.generic.core.Generic_Strings;
 
@@ -300,5 +302,25 @@ public class Generic_Date extends Generic_YearMonth {
                 return 0;
             }
         }
+    }
+    
+    /**
+     * @return The months of the year.
+     */
+    public static TreeSet<Month> getMonths() {
+        TreeSet<Month> r = new TreeSet<>();
+        r.add(Month.JANUARY);
+        r.add(Month.FEBRUARY);
+        r.add(Month.MARCH);
+        r.add(Month.APRIL);
+        r.add(Month.MAY);
+        r.add(Month.JUNE);
+        r.add(Month.JULY);
+        r.add(Month.AUGUST);
+        r.add(Month.SEPTEMBER);
+        r.add(Month.OCTOBER);
+        r.add(Month.NOVEMBER);
+        r.add(Month.DECEMBER);
+        return r;
     }
 }

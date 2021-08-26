@@ -26,9 +26,10 @@ import uk.ac.leeds.ccg.generic.core.Generic_Strings;
  * compare and process year-months.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.0
  */
-public class Generic_YearMonth extends Generic_Object implements Comparable<Generic_YearMonth> {
+public class Generic_YearMonth extends Generic_Object 
+        implements Comparable<Generic_YearMonth> {
 
     private static final long serialVersionUID = 1L;
 

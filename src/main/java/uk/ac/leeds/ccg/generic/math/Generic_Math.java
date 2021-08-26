@@ -27,7 +27,7 @@ import java.math.RoundingMode;
  * other Numbers.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.0
  */
 public class Generic_Math {
 
@@ -124,6 +124,9 @@ public class Generic_Math {
         if (x == null || y == null) {
             return null;
         }
+//        if (x instanceof BigRational) {
+//            return (T) ((BigRational) x).add((BigRational) y);
+//        } else 
         if (x instanceof BigDecimal) {
             return (T) ((BigDecimal) x).add((BigDecimal) y);
         } else if (x instanceof BigInteger) {
