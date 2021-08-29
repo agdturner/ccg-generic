@@ -1,12 +1,22 @@
 {
-  "name": "@agdturner/agdt-java-generic",
-  "version": "v1.11.0"
-  "description": "Some generally useful Java.",
+  "name": "agdt-java-generic",
+  "version": "1.11.0",
+  "description": "Generic Java",
   "main": "index.js",
   "scripts": {
-    "test": "exit 0"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "Apache 2.0"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agdturner/agdt-java-generic.git"
+  },
+  "keywords": [
+    "Java"
+  ],
+  "author": "Andy Turner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agdturner/agdt-java-generic/issues"
+  },
+  "homepage": "https://github.com/agdturner/agdt-java-generic#readme"
 }
