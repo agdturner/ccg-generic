@@ -14,8 +14,8 @@
         <url>git@github.com:agdturner/agdt-java-generic.git</url>
         <connection>scm:git:git@github.com:agdturner/agdt-java-generic.git</connection>
         <developerConnection>scm:git:git@github.com:agdturner/agdt-java-generic</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <licenses>
         <license>
             <name>APACHE LICENSE, VERSION 2.0</name>
@@ -250,19 +250,26 @@
     </profiles>
     
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <!--
         <repository>
             <id>internal</id>
             <url>file://${project.build.directory}/mvn-repo</url>
         </repository>
         -->
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>SNAPSHOT Repository OSSRH</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
             <id>ossrh</id>
+            <name>Central Repository OSSRH</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/octocat/hello-world</url>
         </repository>
     </distributionManagement>
 </project>
