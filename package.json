@@ -1,0 +1,12 @@
+{
+  "name": "@agdturner/agdt-java-generic",
+  "version": "v1.11.0"
+  "description": "Some generally useful Java.",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "author": "",
+  "license": "Apache 2.0"
+  }
+}
