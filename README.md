@@ -15,10 +15,10 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 <dependency>
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.7.3</version>
+    <version>1.11</version>
 </dependency>
 ```
-[JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.7.3/agdt-java-generic-1.7.3.jar)
+[JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.11/agdt-java-generic-1.11.jar)
 
 ## Development plans/ideas
 - There are no known issues or feature requests.
@@ -27,7 +27,7 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 - Consider if it is appropriate to [contribute](https://openjdk.java.net/contribute/) any of this.
 
 ## Development history
-The intention is to provide a summary of changes from Version 1.7.3 here.
+The intention is to provide a summary of changes from Version 1.11 here.
 ### Origin
 This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code generated from other academic research projects formed into this library.
 
