@@ -261,17 +261,17 @@
             <name>SNAPSHOT Repository OSSRH</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-        <!--
         <repository>
             <id>central</id>
             <name>Central Repository OSSRH</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
-        -->
+        <!--
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
             <url>https://maven.pkg.github.com/agdturner/agdt-java-generic</url>
         </repository>
+        -->
     </distributionManagement>
 </project>
