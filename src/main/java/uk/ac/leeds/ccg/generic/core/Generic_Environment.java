@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
 import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
-import uk.ac.leeds.ccg.generic.io.Generic_FileStore;
+import uk.ac.leeds.ccg.io.IO_Cache;
 import uk.ac.leeds.ccg.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
 
@@ -44,11 +44,6 @@ public class Generic_Environment {
      * A sharable instance of {@link Generic_Files}.
      */
     public final Generic_Files files;
-
-    /**
-     * A sharable instance of {@link Generic_IO}.
-     */
-    public final Generic_IO io;
 
     /**
      * The logging level.
@@ -177,7 +172,6 @@ public class Generic_Environment {
     public Generic_Environment(Generic_Files f, Level l, int r)
             throws IOException, Exception {
         files = f;
-        io = new Generic_IO(this);
         level = l;
         range = r;
         logs = new HashMap<>();
@@ -236,11 +230,11 @@ public class Generic_Environment {
     public Path getLogDir(String s) throws IOException, Exception {
         Path dir = Paths.get(files.getLogDir().toString(), s);
         if (Files.exists(dir)) {
-            Generic_FileStore fs = new Generic_FileStore(dir);
-            fs.addDir();
+            IO_Cache fs = new IO_Cache(dir);
+            //fs.addDir();
             return fs.getHighestLeaf();
         } else {
-            Generic_FileStore fs = new Generic_FileStore(files.getLogDir(), s);
+            IO_Cache fs = new IO_Cache(files.getLogDir(), s);
             dir = fs.getHighestLeaf();
         }
         return dir;

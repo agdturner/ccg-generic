@@ -21,6 +21,8 @@ module uk.ac.leeds.ccg.generic {
     requires transitive java.logging;
     requires transitive java.desktop;
     
+    requires transitive uk.ac.leeds.ccg.io;
+    
     /**
      * Exports.
      */
