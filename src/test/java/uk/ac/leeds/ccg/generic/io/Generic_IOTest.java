@@ -15,10 +15,6 @@
  */
 package uk.ac.leeds.ccg.generic.io;
 
-import uk.ac.leeds.ccg.generic.io.Generic_Path;
-import uk.ac.leeds.ccg.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
-import uk.ac.leeds.ccg.generic.io.Generic_Files;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +32,7 @@ import uk.ac.leeds.ccg.generic.core.Generic_Strings;
  * Tests for {@link Generic_IO} class.
  * 
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.1
  */
 
 public class Generic_IOTest {
@@ -88,12 +84,11 @@ public class Generic_IOTest {
             String suffix = Generic_Strings.symbol_dot + Generic_Strings.s_dat;
             Path f = getTestFile(prefix, suffix);
             env.log("Test file for env.files " + f);
-            Generic_IO instance = env.io;
-            instance.writeObject(env.files, f);
+            Generic_IO.writeObject(env.files, f);
             // Make sure it is a new file
             f = getNewTestFile(prefix, suffix);
             env.log("Test file for env.files " + f);
-            instance.writeObject(env.files, f);
+            Generic_IO.writeObject(env.files, f);
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
             env.log(ex.getMessage());
@@ -105,7 +100,7 @@ public class Generic_IOTest {
     }
 
     public Path getTestFile(String prefix, String suffix) throws IOException {
-        return env.io.createNewFile(env.files.getGeneratedDir().getPath(), prefix, suffix);
+        return Generic_IO.createNewFile(env.files.getGeneratedDir().getPath(), prefix, suffix);
     }
 
     /**
@@ -118,9 +113,8 @@ public class Generic_IOTest {
         env.log("getFilePathLength", logID);
         //System.out.println("getFilePathLength");
         Path f = env.files.getGeneratedDir();
-        Generic_IO instance = env.io;
         int limit = 100;
-        int result = instance.getFilePathLength(f);
+        int result = Generic_IO.getFilePathLength(f);
         System.out.println(result);
         Assertions.assertTrue(result < limit);
     }
@@ -135,8 +129,7 @@ public class Generic_IOTest {
             Generic_Path dir = env.files.getGeneratedDir();
             String prefix = "test";
             String suffix = ".dat";
-            Generic_IO instance = env.io;
-            Path f = instance.createNewFile(dir.getPath(), prefix, suffix);
+            Path f = Generic_IO.createNewFile(dir.getPath(), prefix, suffix);
             Assertions.assertTrue(Files.exists(f));
         } catch (IOException ex) {
             ex.printStackTrace(System.err);

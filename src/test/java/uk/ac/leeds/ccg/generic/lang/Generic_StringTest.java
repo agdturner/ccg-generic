@@ -16,8 +16,6 @@
 package uk.ac.leeds.ccg.generic.lang;
 
 import java.util.HashSet;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,38 +49,6 @@ public class Generic_StringTest {
 
     @AfterEach
     public void tearDown() {
-    }
-
-    @Nested
-    class TestAddNumerals {
-
-        HashSet<String> s;
-
-        @BeforeEach
-        void setUp() {
-            s = new HashSet<>();
-            s.add("0");
-            s.add("1");
-            s.add("2");
-            s.add("3");
-            s.add("4");
-            s.add("5");
-            s.add("6");
-            s.add("7");
-            s.add("8");
-            s.add("9");
-        }
-
-        /**
-         * Test of addNumerals method, of class Generic_String.
-         */
-        @Test
-        public void testAddNumerals() {
-            System.out.println("addNumerals");
-            HashSet<String> r = new HashSet<>();
-            Generic_String.addNumerals(r);
-            assertThat(r, containsInAnyOrder(s.toArray()));
-        }
     }
 
     /**

@@ -28,8 +28,6 @@ import org.junit.jupiter.api.Test;
 import uk.ac.leeds.ccg.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.generic.io.Generic_Files;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import uk.ac.leeds.ccg.generic.core.Generic_Strings;
@@ -82,20 +80,6 @@ public class Generic_CollectionsTest {
         void createAndInitialize() {
         }
 
-        @Test
-        void test1() {
-            System.out.println("testGetKeys_Map_GenericType");
-            HashSet<Integer> expResult = new HashSet<>();
-            expResult.add(0);
-            expResult.add(1);
-            HashMap<Integer, Integer> m = new HashMap<>();
-            m.put(0, 1);
-            m.put(1, 1);
-            HashSet<Integer> result = Generic_Collections.getKeys(m, 1);
-            assertThat(expResult, containsInAnyOrder(result.toArray()));
-            //assertThat(result, containsInAnyOrder(expResult));
-        }
-        
         @Nested
         class WhenX {
  

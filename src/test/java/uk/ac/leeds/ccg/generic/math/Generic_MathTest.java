@@ -278,9 +278,7 @@ public class Generic_MathTest {
         BigDecimal x = new BigDecimal(Double.toString(0.1D + 0.1D + 0.1D));
         BigDecimal xd = new BigDecimal("0.3");
         BigDecimal epsilon = BigDecimal.ZERO;
-        boolean expResult = false;
-        boolean result = Generic_Math.compare2(x, xd, epsilon);
-        assertEquals(expResult, result);
+        assertFalse(Generic_Math.compare2(x, xd, epsilon));
     }
 
 }
