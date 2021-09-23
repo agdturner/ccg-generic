@@ -343,11 +343,13 @@ public class Generic_IO extends IO_Utilities {
         st.wordChars('[', '[');
         st.wordChars(']', ']');
     }
-    
+
     /**
      * Returns a newly created file in directory returned by
      * {@link Generic_Files#getGeneratedDir()}.
      *
+     * @param files Used to get the path of the directory the generated file
+     * will be stored in.
      * @return A path for a newly created file in directory returned by
      * {@link Generic_Files#getGeneratedDir()}.
      * @throws java.io.IOException If directory returned by

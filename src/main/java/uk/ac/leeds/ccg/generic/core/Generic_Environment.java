@@ -36,7 +36,7 @@ import uk.ac.leeds.ccg.generic.io.Generic_IO;
  * instances for convenience and memory management.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.1
  */
 public class Generic_Environment {
 
@@ -155,8 +155,7 @@ public class Generic_Environment {
     }
 
     /**
-     * Creates a new instance: {@link #io} is initialised using
-     * {@code new Generic_IO(this)}; {@link #logs} is initialised using
+     * Creates a new instance: {@link #logs} is initialised to a new
      * {@code new HashMap<>()}; {@link #logNamesInUse} is initialised using
      * {@code new HashSet<>()}. {@link #initLog(String)} or
      * {@link #initLog(String,String)} still needs to be called to set up the
