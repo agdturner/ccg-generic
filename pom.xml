@@ -4,7 +4,7 @@
 
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.11</version>
+    <version>2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>agdt-java-generic</name>
@@ -14,7 +14,7 @@
         <url>git@github.com:agdturner/agdt-java-generic.git</url>
         <connection>scm:git:git@github.com:agdturner/agdt-java-generic.git</connection>
         <developerConnection>scm:git:git@github.com:agdturner/agdt-java-generic</developerConnection>
-        <tag>agdt-java-generic-1.11</tag>
+        <tag>agdt-java-generic-2.0</tag>
     </scm>
     <licenses>
         <license>
@@ -43,34 +43,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <!--
-        <log4j.version>2.12.1</log4j.version>
-        -->
         <junit.version>[5.7.0,)</junit.version>
-        <!--
-        <junit.version>5.5.2</junit.version>
-        <junit.version>[4.13.1,)</junit.version>
-        -->
-        <hamcrest.version>2.2</hamcrest.version>
-        <!--
-        <selenium.version>3.141.59</selenium.version>
-        <selenium.version>2.44.0</selenium.version>
-        -->
     </properties>
     
     <dependencies>
-        <!--
+        <!-- https://mvnrepository.com/artifact/io.github.agdturner/ccg-io -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
+            <groupId>io.github.agdturner</groupId>
+            <artifactId>ccg-io</artifactId>
+            <version>1.1.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        -->
         <!-- Temporarily added as it was not in Maven reactor
         <dependency>
             <groupId>org.sonatype.plugins</groupId>
@@ -93,32 +75,7 @@
             <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>${hamcrest.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
-        <!--
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.opera</groupId>
-            <artifactId>operadriver</artifactId>
-            <scope>test</scope>
-            <version>1.5</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-remote-driver</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        -->
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
@@ -276,7 +233,7 @@
         <!--
         <repository>
             <id>github</id>
-            <name>GitHub Packages</name>
+            <name>GitHub agdturner Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/agdturner/agdt-java-generic</url>
         </repository>
         -->
