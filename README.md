@@ -1,9 +1,8 @@
 # [agdt-java-generic](https://github.com/agdturner/agdt-java-generic)
 
 ## Description
-A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) providing:
-- [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java) - a class for storing and organising data in a tree of directories in a well organised (easy to retrieve) and extendable (easy to store more) way in a [file system](https://en.wikipedia.org/wiki/File_system). See [the section below on Generic_FileStore](#Generic_FileStore) for a more detailed description. 
-- [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory) - a package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/blob/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
+A [modularised](https://en.wikipedia.org/wiki/Java_Platform_Module_System) Java library only dependent on the [openJDK](https://openjdk.java.net/) and [ccg-io](https://github.com/agdturner/ccg-io) providing:
+- [memory](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/memory) - a package that helps avoid and handle an [OutOfMemoryError](https://cr.openjdk.java.net/~iris/se/15/latestSpec/api/java.base/java/lang/OutOfMemoryError.html) if thrown. The handling generally entails copying data from the fast access memory (RAM) to the slow access memory (Disk) and then clearing it from RAM. The data stored on disk is typically organised using a [IO_Cache](https://github.com/agdturner/ccg-io/blob/master/src/main/java/uk/ac/leeds/ccg/io/IO_Cache.java). Managing this so that algorithms remain efficient involves knowing what parts of data are likely to be needed and when. 
 - Functionality that has been found commonly useful and was not available in what was the latest [openJDK](https://openjdk.java.net/) at the time.
 
 (See below for [Details](#Details).)
@@ -15,21 +14,21 @@ Developed and tested on [Java Development Kit, version 15](https://openjdk.java.
 <dependency>
     <groupId>io.github.agdturner</groupId>
     <artifactId>agdt-java-generic</artifactId>
-    <version>1.11</version>
+    <version>2.0</version>
 </dependency>
 ```
-[JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/1.11/agdt-java-generic-1.11.jar)
+[JAR](https://repo1.maven.org/maven2/io/github/agdturner/agdt-java-generic/2.0/agdt-java-generic-2.0.jar)
 
 ## Development plans/ideas
 - There are no known issues or feature requests.
 - Develop in an [agile](https://en.wikipedia.org/wiki/Agile_software_development) way.
-- As the [OpenJDK](https://openjdk.java.net/) develops some of the functionality may become redundant.
-- Consider if it is appropriate to [contribute](https://openjdk.java.net/contribute/) any of this.
+- As the [OpenJDK](https://openjdk.java.net/) develops the functionality of this library may become redundant.
 
 ## Development history
-The intention is to provide a summary of changes from Version 1.11 here.
+### Changes from version 1.11 to version 2.0
+The part of the library that provided a cache and some generic input and output utility methods was abstracted to [ccg-io](https://github.com/agdturner/ccg-io) which became a dependency for this.
 ### Origin
-This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code generated from other academic research projects formed into this library.
+This code began development bundled together with lots of other code developed for an academic research project. Gradually, common code generated from other academic research projects formed into this library which is being rationalised.
 
 ## Contributions
 - Welcome.
@@ -62,70 +61,6 @@ Generic utility class for process execution handling.
 #### [Generic_Defaults](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_Defaults.java)
 A class for holding Input/Output (IO) defaults.
 
-#### [Generic_FileStore](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_FileStore.java)
-For storing files on disk in file store - a form of data base where each file is stored in a leaf directory. Leaf directories are found at level 0 of the file store. The 1st leaf directory has the name 0, the 2nd leaf directory has the name 1, the nth leaf directory has the name n where n is a positive integer . A file store is comprised of a base directory in which there is a root directory. The root directory indicates how many files are stored in the file store using a range given in the directory name. The minimum of the range is 0 and the maximum is a positive integer number. These two numbers are separated with by {@link #SEP} e.g. "0_99". The root directory will contain one or more subdirectories named in a similar style to the root directory e.g. "0_9". The maximum number will be less than or equal to that of the root directory. By comparing the range of numbers in the names of directories in the root directory with the range of numbers in the names of and subdirectory in the root directory it is possible to discern the range for the file store. The range is a parameter that can be set when initialising a file store. It controls how many subdirectories there can be at each level, and ultimately this controls how many levels of directories there are in the file store which is all dependent on the number of files stored in the file store.
-
-Files are to be stored in the leaf directories. Each directory is given a standardised name such that it is easy to find and infer the path to the leaf directories.
-
-If range was set to 10, there would be at most 10 subdirectories in each level of the file store.
-
-File stores are initialised with 3 levels and dynamically grow to store more files. For range = 10 the initial tree can be represented as follows:
-```
-Level
-2        - 1           - root
-
-0        - 0_9         - 0_99
-```
-For range = 10 and n = 100001 the tree can be represented as follows:
-```
-Level
-6      - 5             - 4             - 3             - 2             - 1               - root
-
-0      - 0_9           - 0_99          - 0_999         - 0_9999        - 0_99999        - 0_999999
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10     - 10_19
-11
-12
-...
-19
-20     - 20_29
-...
-...
-99     - 90_99
-100    - 100_109       - 100_199
-...
-...
-...
-999    - 990_999       - 900_999
-1000   - 1000_1009     - 1000_1099     - 1000_1999
-...
-...
-...
-...
-9999   - 9990_9999     - 9900_9999     - 9000_9999
-10000  - 10000_10009   - 10000_10099   - 10000_10999   - 10000_19999
-...
-...
-...
-...
-...
-99999  - 99990_99999   - 99900_99999   - 99000_99999   - 90000_99999
-100000 - 100000_100009 - 100000_100099 - 100000_100999 - 100000_109999 - 100000_199999
-100001
-```
-
-File stores are used for logging and may be used to store other outputs from different runs of a program. They can also be used to organise caches of data from a running program to help with memory management.
-
-Although such a file store can store many files, there are limits depending on the range value set. The theoretical limit is close to Long.MAX_VALUE / range. But there can be no more than Integer.MAX_VALUE levels. Perhaps a bigger restriction is the size of the storage element that holds the directories and files indexed by the file store.
-
 #### [Generic_Files](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_Files.java)
 A class for helping to organise data Files.
 - It is usual that for data processing tasks there is a data directory (dataDir).
@@ -134,8 +69,7 @@ A class for helping to organise data Files.
 - Output data are to be stored within dataDir in an output directory (outputDir).
 
 #### [Generic_IO](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/io/Generic_IO.java)
-General Input/Output utility class for initialising things like BufferedReaders and for setting the syntax of StreamTokenizers. 
-Also for reading from files, writing to files and copying and moving files.
+General Input/Output utility class mostly now just containing methods for setting the syntax of StreamTokenizers.
 
 
 ### 4. [lang](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/lang)
@@ -192,15 +126,3 @@ This pre-dates java.time and was used in programs that ticked through time actin
 
 #### [Generic_Visualisation](https://github.com/agdturner/agdt-java-generic/tree/master/src/main/java/uk/ac/leeds/ccg/generic/visualisation/Generic_Visualisation.java)
 A class with methods for visualisation that will work in headless environments.
-
-
-## Acknowledgements and thanks
-- The [University of Leeds](http://www.leeds.ac.uk) and externally funded research grants have supported the development of this library.
-- Thank you developers and maintainers of other useful Java libraries that provide inspiration.
-- Thank you developers and maintainers of [Apache Maven](https://maven.apache.org/), [Apache NetBeans](https://netbeans.apache.org/), and [git](https://git-scm.com/) which I use for developing code.
-- Thank you developers and maintainers of [GitHub](http://github.com) for supporting the development of this code and for providing a means of creating a community of users and  developers.
-- Thank you developers, maintainers and contributors of relevent content on:
--- [Wikimedia](https://www.wikimedia.org/) projects, in particular the [English language Wikipedia](https://en.wikipedia.org/wiki/Main_Page)
--- [StackExchange](https://stackexchange.com), in particular [StackOverflow](https://stackoverflow.com/).
-- Information that has helped me develop this library is cited in the source code.
-- Thank you to those that supported me personally and all who have made a positive contribution to society. Let us try to look after each other, look after this world, make space for wildlife, and engineer knowledge :)
