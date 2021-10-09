@@ -30,7 +30,6 @@ module uk.ac.leeds.ccg.generic {
     exports uk.ac.leeds.ccg.generic.execution;
     exports uk.ac.leeds.ccg.generic.io;
     exports uk.ac.leeds.ccg.generic.lang;
-    exports uk.ac.leeds.ccg.generic.math;
     exports uk.ac.leeds.ccg.generic.memory;
     exports uk.ac.leeds.ccg.generic.time;
     exports uk.ac.leeds.ccg.generic.util;
@@ -39,7 +38,6 @@ module uk.ac.leeds.ccg.generic {
     opens uk.ac.leeds.ccg.generic.execution;
     opens uk.ac.leeds.ccg.generic.io;
     opens uk.ac.leeds.ccg.generic.lang;
-    opens uk.ac.leeds.ccg.generic.math;
     opens uk.ac.leeds.ccg.generic.memory;
     opens uk.ac.leeds.ccg.generic.time;
     opens uk.ac.leeds.ccg.generic.util;
