@@ -15,9 +15,6 @@
  */
 package uk.ac.leeds.ccg.generic.io;
 
-import uk.ac.leeds.ccg.generic.io.Generic_Path;
-import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
-import uk.ac.leeds.ccg.generic.io.Generic_Files;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.io.IO_Path;
 
 /**
  * Tests for {@link Generic_Files} class.
@@ -78,24 +76,24 @@ public class Generic_FilesTest {
         try {
             env.log("setDir");
             //System.out.println("setDir");
-            Generic_Path d = new Generic_Path(
-                    Paths.get(env.files.getGeneratedDir().s, "test"));
+            IO_Path d = new IO_Path(
+                    Paths.get(env.files.getGeneratedDir().toString(), "test"));
             Generic_Files instance = new Generic_Files(new Generic_Defaults(d));
             //instance.setDir(d);
-            Generic_Path dir = instance.getDir();
+            IO_Path dir = instance.getDir();
             Assertions.assertEquals(d, dir);
             Assertions.assertTrue(Files.exists(d.getPath()));
-            Generic_Path genD = new Generic_Path(Paths.get(dir.s,
+            IO_Path genD = new IO_Path(Paths.get(dir.toString(),
                     Generic_Strings.s_generated));
             d = instance.getGeneratedDir();
             Assertions.assertEquals(genD, d);
             Assertions.assertTrue(Files.exists(genD.getPath()));
-            Generic_Path inputD = new Generic_Path(Paths.get(dir.s,
+            IO_Path inputD = new IO_Path(Paths.get(dir.toString(),
                     Generic_Strings.s_input));
             d = instance.getInputDir();
             Assertions.assertEquals(inputD, d);
             Assertions.assertTrue(Files.exists(inputD.getPath()));
-            Generic_Path outputD = new Generic_Path(Paths.get(dir.s,
+            IO_Path outputD = new IO_Path(Paths.get(dir.toString(),
                     Generic_Strings.s_output));
             d = instance.getOutputDir();
             Assertions.assertEquals(outputD, d);

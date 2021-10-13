@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import uk.ac.leeds.ccg.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.io.IO_Path;
 
 /**
  * Tests for {@link Generic_IO} class.
@@ -96,7 +97,7 @@ public class Generic_IOTest {
     }
 
     public Path getNewTestFile(String prefix, String suffix) throws IOException {
-        return Paths.get(env.files.getGeneratedDir().s, prefix + suffix);
+        return Paths.get(env.files.getGeneratedDir().toString(), prefix + suffix);
     }
 
     public Path getTestFile(String prefix, String suffix) throws IOException {
@@ -126,7 +127,7 @@ public class Generic_IOTest {
     public void testCreateNewFile() {
         env.log("createNewFile", logID);
         try {
-            Generic_Path dir = env.files.getGeneratedDir();
+            IO_Path dir = env.files.getGeneratedDir();
             String prefix = "test";
             String suffix = ".dat";
             Path f = Generic_IO.createNewFile(dir.getPath(), prefix, suffix);
