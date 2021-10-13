@@ -21,12 +21,13 @@ import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import uk.ac.leeds.ccg.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.io.IO_Path;
 
 /**
  * Generic Defaults. A class for holding IO defaults.
  * 
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.0
  */
 public class Generic_Defaults implements Serializable {
 
@@ -35,7 +36,7 @@ public class Generic_Defaults implements Serializable {
     /**
      * Stores the main directory path.
      */
-    protected final Generic_Path dir;
+    protected final IO_Path dir;
     
     /**
      * Defaults dir to the users home directory.
@@ -49,7 +50,7 @@ public class Generic_Defaults implements Serializable {
      * @param dir Duplicated to initialise {@link #dir}. 
      */
     public Generic_Defaults(Path dir) {
-        this.dir = new Generic_Path(Paths.get(dir.toString()));
+        this.dir = new IO_Path(Paths.get(dir.toString()));
     }
     
     /**

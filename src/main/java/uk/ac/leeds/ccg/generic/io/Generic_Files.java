@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import uk.ac.leeds.ccg.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.io.IO_Path;
 
 /**
  * Generic Files
@@ -40,27 +41,27 @@ public class Generic_Files implements Serializable {
     /**
      * The base level directory. Set from {@link #defaults}.
      */
-    protected Generic_Path dir;
+    protected IO_Path dir;
 
     /**
      * The input directory in {@link #dir}.
      */
-    protected Generic_Path inputDir;
+    protected IO_Path inputDir;
 
     /**
      * The generated directory in {@link #dir}.
      */
-    protected Generic_Path generatedDir;
+    protected IO_Path generatedDir;
 
     /**
      * The output directory in {@link #dir}.
      */
-    protected Generic_Path outputDir;
+    protected IO_Path outputDir;
 
     /**
      * The log directory in {@link #outputDir}.
      */
-    protected Generic_Path logDir;
+    protected IO_Path logDir;
 
     /**
      * @param d What {@link #dir} is set to.
@@ -76,8 +77,8 @@ public class Generic_Files implements Serializable {
      * @throws java.io.IOException If encountered.
      */
     public final void initDir(Path d) throws IOException {
-        dir = new Generic_Path(d);
-        String m = "The directory " + dir.s;
+        dir = new IO_Path(d);
+        String m = "The directory " + dir.toString();
         if (Files.exists(dir.getPath())) {
             System.out.println("Warning: " + m + " already exists. Files "
                     + "therein may be overwritten or modified.");
@@ -96,7 +97,7 @@ public class Generic_Files implements Serializable {
      * @throws java.io.IOException If {@link dir} cannot be set to {@code d}.
      */
     public final void setDir(Path d) throws IOException {
-        dir = new Generic_Path(d);
+        dir = new IO_Path(d);
         inputDir = null;
         generatedDir = null;
         outputDir = null;
@@ -105,20 +106,20 @@ public class Generic_Files implements Serializable {
     /**
      * @return A copy of {@link #dir}
      */
-    public Generic_Path getDir() {
-        return new Generic_Path(dir);
+    public IO_Path getDir() {
+        return new IO_Path(dir);
     }
 
     /**
      * @return If {@link #inputDir} is {@code null} then it is set using {@code
-     * inputDir = new Generic_Path(Paths.get(dir.s, Generic_Strings.s_input));}
+     * inputDir = new IO_Path(Paths.get(dir.s, Generic_Strings.s_input));}
      * and the directory is created then it is returned. If {@link #inputDir} is
      * not {@code null} it is returned.
      * @throws java.io.IOException If encountered.
      */
-    public Generic_Path getInputDir() throws IOException {
+    public IO_Path getInputDir() throws IOException {
         if (inputDir == null) {
-            inputDir = new Generic_Path(Paths.get(dir.s, Generic_Strings.s_input));
+            inputDir = new IO_Path(Paths.get(dir.toString(), Generic_Strings.s_input));
             Files.createDirectories(inputDir.getPath());
         }
         return inputDir;
@@ -126,14 +127,14 @@ public class Generic_Files implements Serializable {
 
     /**
      * @return If {@link #generatedDir} is {@code null} then it is set using {@code
-     * generatedDir = new Generic_Path(Paths.get(dir.s, Generic_Strings.s_generated));}
+     * generatedDir = new IO_Path(Paths.get(dir.s, Generic_Strings.s_generated));}
      * and the directory is created then it is returned. If
      * {@link #generatedDir} is not {@code null} it is returned.
      * @throws java.io.IOException If encountered.
      */
-    public Generic_Path getGeneratedDir() throws IOException {
+    public IO_Path getGeneratedDir() throws IOException {
         if (generatedDir == null) {
-            generatedDir = new Generic_Path(Paths.get(dir.s, Generic_Strings.s_generated));
+            generatedDir = new IO_Path(Paths.get(dir.toString(), Generic_Strings.s_generated));
             Files.createDirectories(generatedDir.getPath());
         }
         return generatedDir;
@@ -141,14 +142,14 @@ public class Generic_Files implements Serializable {
 
     /**
      * @return If {@link #outputDir} is {@code null} then it is set using {@code
-     * outputDir = new Generic_Path(Paths.get(dir.s, Generic_Strings.s_output));}
+     * outputDir = new IO_Path(Paths.get(dir.s, Generic_Strings.s_output));}
      * and the directory is created then it is returned. If {@link #outputDir}
      * is not {@code null} it is returned.
      * @throws java.io.IOException If encountered.
      */
-    public Generic_Path getOutputDir() throws IOException {
+    public IO_Path getOutputDir() throws IOException {
         if (outputDir == null) {
-            outputDir = new Generic_Path(Paths.get(dir.s, Generic_Strings.s_output));
+            outputDir = new IO_Path(Paths.get(dir.toString(), Generic_Strings.s_output));
             Files.createDirectories(outputDir.getPath());
         }
         return outputDir;
@@ -156,14 +157,14 @@ public class Generic_Files implements Serializable {
 
     /**
      * @return If {@link #logDir} is {@code null} then it is set using {@code
-     * logDir = new Generic_Path(Paths.get(dir.s, Generic_Strings.s_log));} and
+     * logDir = new IO_Path(Paths.get(dir.s, Generic_Strings.s_log));} and
      * the directory is created then it is returned. If {@link #logDir} is
      * not {@code null} it is returned.
      * @throws java.io.IOException If encountered.
      */
     public Path getLogDir() throws IOException {
         if (logDir == null) {
-            logDir = new Generic_Path(Paths.get(dir.s, Generic_Strings.s_log));
+            logDir = new IO_Path(Paths.get(dir.toString(), Generic_Strings.s_log));
             Files.createDirectories(logDir.getPath());
         }
         return logDir;
