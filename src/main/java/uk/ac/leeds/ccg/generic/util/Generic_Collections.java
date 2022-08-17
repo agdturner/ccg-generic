@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,9 +37,15 @@ import java.util.TreeMap;
  * Maps.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.1
  */
 public class Generic_Collections {
+
+    /**
+     * Create a new instance.
+     */
+    public Generic_Collections() {
+    }
 
     /**
      * Create and return a HashSet of keys that map to the value v.
@@ -478,5 +485,32 @@ public class Generic_Collections {
             }
         }
         return null;
+    }
+
+    /**
+     * Concatenate arrays of the same.
+     * @param <T> The array type
+     * @param first The first array.
+     * @param others The other arrays.
+     * @return The concatenated array.
+     */
+    public static <T> T[] concatenate(T[] first, T[]... others) {
+        // Calculate the length
+        long l = first.length;
+        for (T[] array : others) {
+            l += array.length;
+        }
+        if (l > Integer.MAX_VALUE) {
+            throw new RuntimeException("Unable to concatenate arrays as the "
+                    + "total length excedes " + Integer.MAX_VALUE);
+        }
+        int li = (int) l;
+        T[] r = Arrays.copyOf(first, li);
+        int offset = first.length;
+        for (T[] array : others) {
+            System.arraycopy(array, 0, r, offset, array.length);
+            offset += array.length;
+        }
+        return r;
     }
 }
