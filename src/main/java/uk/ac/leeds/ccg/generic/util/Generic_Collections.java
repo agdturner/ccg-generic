@@ -488,7 +488,7 @@ public class Generic_Collections {
     }
 
     /**
-     * Concatenate arrays of the same.
+     * Concatenate arrays of the same type.
      * @param <T> The array type
      * @param first The first array.
      * @param others The other arrays.
@@ -508,6 +508,32 @@ public class Generic_Collections {
         T[] r = Arrays.copyOf(first, li);
         int offset = first.length;
         for (T[] array : others) {
+            System.arraycopy(array, 0, r, offset, array.length);
+            offset += array.length;
+        }
+        return r;
+    }
+    
+    /**
+     * Concatenate byte arrays.
+     * @param first The first array.
+     * @param others The other arrays.
+     * @return The concatenated array.
+     */
+    public static byte[] concatenate(byte[] first, byte[]... others) {
+        // Calculate the length
+        long l = first.length;
+        for (byte[] array : others) {
+            l += array.length;
+        }
+        if (l > Integer.MAX_VALUE) {
+            throw new RuntimeException("Unable to concatenate arrays as the "
+                    + "total length excedes " + Integer.MAX_VALUE);
+        }
+        int li = (int) l;
+        byte[] r = Arrays.copyOf(first, li);
+        int offset = first.length;
+        for (byte[] array : others) {
             System.arraycopy(array, 0, r, offset, array.length);
             offset += array.length;
         }
