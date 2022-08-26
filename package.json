@@ -14,7 +14,7 @@
     "Java"
   ],
   "author": "Andy Turner",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/agdturner/agdt-java-generic/issues"
   },
