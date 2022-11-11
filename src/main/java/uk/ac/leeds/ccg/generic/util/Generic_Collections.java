@@ -260,6 +260,60 @@ public class Generic_Collections {
     }
 
     /**
+     * Adds the value to the count using key t.
+     *
+     * @param <T> The type of thing counted.
+     * @param count The map containing the counts.
+     * @param t The thing to count.
+     * @param value The number of those things being added to count (must not be
+     * null).
+     */
+    public <T> void addToCount(Map<T, Integer> count, T t, Integer value) {
+        Integer c = count.get(t);
+        if (c == null) {
+            count.put(t, value);
+        } else {
+            count.put(t, value + c);
+        }
+    }
+
+    /**
+     * Adds the value to the count using key t.
+     *
+     * @param <T> The type of thing counted.
+     * @param count The map containing the counts.
+     * @param t The thing to count.
+     * @param value The number of those things being added to count (must not be
+     * null).
+     */
+    public <T> void addToCount(Map<T, Long> count, T t, Long value) {
+        Long c = count.get(t);
+        if (c == null) {
+            count.put(t, value);
+        } else {
+            count.put(t, value + c);
+        }
+    }
+
+    /**
+     * Adds the value to the count using key t.
+     *
+     * @param <T> The type of thing counted.
+     * @param count The map containing the counts.
+     * @param t The thing to count.
+     * @param value The number of those things being added to count (must not be
+     * null).
+     */
+    public <T> void addToCount(Map<T, BigInteger> count, T t, BigInteger value) {
+        BigInteger c = count.get(t);
+        if (c == null) {
+            count.put(t, value);
+        } else {
+            count.put(t, value.add(c));
+        }
+    }
+
+    /**
      * Count: all values in {@code s0} and {@code s1}; values in {@code s1} that
      * are not in {@code s0}; and values in {@code s0} that are not in
      * {@code s1}.
@@ -489,6 +543,7 @@ public class Generic_Collections {
 
     /**
      * Concatenate arrays of the same type.
+     *
      * @param <T> The array type
      * @param first The first array.
      * @param others The other arrays.
@@ -513,9 +568,10 @@ public class Generic_Collections {
         }
         return r;
     }
-    
+
     /**
      * Concatenate byte arrays.
+     *
      * @param first The first array.
      * @param others The other arrays.
      * @return The concatenated array.

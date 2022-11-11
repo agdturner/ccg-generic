@@ -27,6 +27,7 @@ module uk.ac.leeds.ccg.generic {
      * Exports.
      */
     exports uk.ac.leeds.ccg.generic.core;
+    exports uk.ac.leeds.ccg.generic.core.id;
     exports uk.ac.leeds.ccg.generic.execution;
     exports uk.ac.leeds.ccg.generic.io;
     exports uk.ac.leeds.ccg.generic.lang;
@@ -35,6 +36,7 @@ module uk.ac.leeds.ccg.generic {
     exports uk.ac.leeds.ccg.generic.util;
     exports uk.ac.leeds.ccg.generic.visualisation;
     opens uk.ac.leeds.ccg.generic.core;
+    opens uk.ac.leeds.ccg.generic.core.id;
     opens uk.ac.leeds.ccg.generic.execution;
     opens uk.ac.leeds.ccg.generic.io;
     opens uk.ac.leeds.ccg.generic.lang;
