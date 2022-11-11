@@ -268,7 +268,7 @@ public class Generic_Collections {
      * @param value The number of those things being added to count (must not be
      * null).
      */
-    public <T> void addToCount(Map<T, Integer> count, T t, Integer value) {
+    public static <T> void addToCount(Map<T, Integer> count, T t, Integer value) {
         Integer c = count.get(t);
         if (c == null) {
             count.put(t, value);
@@ -286,7 +286,7 @@ public class Generic_Collections {
      * @param value The number of those things being added to count (must not be
      * null).
      */
-    public <T> void addToCount(Map<T, Long> count, T t, Long value) {
+    public static <T> void addToCount(Map<T, Long> count, T t, Long value) {
         Long c = count.get(t);
         if (c == null) {
             count.put(t, value);
@@ -304,7 +304,7 @@ public class Generic_Collections {
      * @param value The number of those things being added to count (must not be
      * null).
      */
-    public <T> void addToCount(Map<T, BigInteger> count, T t, BigInteger value) {
+    public static <T> void addToCount(Map<T, BigInteger> count, T t, BigInteger value) {
         BigInteger c = count.get(t);
         if (c == null) {
             count.put(t, value);

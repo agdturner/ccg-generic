@@ -15,9 +15,11 @@
  */
 package uk.ac.leeds.ccg.generic.util;
 
+import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -27,7 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.ac.leeds.ccg.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.generic.io.Generic_Files;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import uk.ac.leeds.ccg.generic.core.Generic_Strings;
@@ -39,7 +41,7 @@ import uk.ac.leeds.ccg.generic.io.Generic_FilesTest;
  * Tests for {@link Generic_Collections} class.
  *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.0
  */
 public class Generic_CollectionsTest {
 
@@ -99,6 +101,22 @@ public class Generic_CollectionsTest {
                 System.out.println("Example test for GetKeys_Map_GenericType when X is true");
             }
         }
+    }
+
+    /**
+     * Test of getMax method, of class Generic_Collections.
+     */
+    @Test
+    public void testAddToCount_BigInteger() {
+        Map<Integer, BigInteger> count = new HashMap<>();
+        Integer i = 0;
+        count.put(i, BigInteger.ZERO);
+        Generic_Collections.addToCount(count, i, BigInteger.TWO);
+        BigInteger r = count.get(i);
+        Assertions.assertTrue(r.compareTo(BigInteger.TWO) == 0);
+        Generic_Collections.addToCount(count, i, BigInteger.TWO);
+        r = count.get(i);
+        Assertions.assertTrue(r.compareTo(BigInteger.valueOf(4)) == 0);
     }
 
 //    /**
