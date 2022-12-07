@@ -4,7 +4,7 @@
 
     <groupId>io.github.agdturner</groupId>
     <artifactId>ccg-generic</artifactId>
-    <version>2.2</version>
+    <version>2.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>ccg-generic</name>
@@ -14,7 +14,7 @@
         <url>git@github.com:agdturner/ccg-generic.git</url>
         <connection>scm:git:git@github.com:agdturner/ccg-generic.git</connection>
         <developerConnection>scm:git:git@github.com:agdturner/ccg-generic</developerConnection>
-        <tag>ccg-generic-2.2</tag>
+        <tag>ccg-generic-2.3</tag>
     </scm>
     <licenses>
         <license>
