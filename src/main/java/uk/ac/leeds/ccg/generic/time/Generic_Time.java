@@ -141,12 +141,12 @@ public class Generic_Time extends Generic_Date {
             if (s0.startsWith(s_0)) {
                 s0 = s0.substring(1);
             }
-            hour = Integer.valueOf(s0);
+            hour = Integer.parseInt(s0);
             s0 = split[1];
             if (s0.startsWith(s_0)) {
                 s0 = s0.substring(1);
             }
-            minute = Integer.valueOf(s0);
+            minute = Integer.parseInt(s0);
             s0 = split[2];
             s0 = s0.substring(0, s0.length() - 1);
             if (s0.startsWith(s_0)) {
@@ -154,7 +154,7 @@ public class Generic_Time extends Generic_Date {
             }
             second = 0;
             if (s0.length() > 0) {
-                second = Integer.valueOf(s0);
+                second = Integer.parseInt(s0);
             }
         } else {
             hour = 0;
@@ -367,12 +367,12 @@ public class Generic_Time extends Generic_Date {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Generic_Time) {
+        if (o instanceof Generic_Time generic_Time) {
             if (this == o) {
                 return true;
             }
             Generic_Time t;
-            t = (Generic_Time) o;
+            t = generic_Time;
             if (hashCode() == t.hashCode()) {
                 return LDT.equals(t.LDT);
             }
