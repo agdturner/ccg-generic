@@ -714,7 +714,7 @@ public class Generic_CollectionsTest {
         expResult[3] = "Three";
         expResult[4] = "Four";
         // Result
-        String[] result = Generic_Collections.concatenate(s0, s1);
+        String[] result = Generic_Collections.concatenate(s0, s1, s2);
         int l = result.length;
         Assertions.assertTrue(l == expResult.length);
         for (int i = 0; i < l; i ++) {
