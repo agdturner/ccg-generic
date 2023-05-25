@@ -707,7 +707,7 @@ public class Generic_CollectionsTest {
         s2[0] = "Three";
         s2[1] = "Four";
         // expResult
-        String[] expResult = new String[4];
+        String[] expResult = new String[5];
         expResult[0] = "Zero";
         expResult[1] = "One";
         expResult[2] = "Two";
