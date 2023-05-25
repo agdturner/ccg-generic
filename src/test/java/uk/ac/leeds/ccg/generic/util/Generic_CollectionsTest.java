@@ -18,7 +18,6 @@ package uk.ac.leeds.ccg.generic.util;
 import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -689,4 +688,37 @@ public class Generic_CollectionsTest {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
+    
+    /**
+     * Test of sortByValue method, of class Generic_Collections.
+     */
+    @Test
+    public void testConcatenate() {
+        System.out.println("concatenate");
+        // s0
+        String[] s0 = new String[2];
+        s0[0] = "Zero";
+        s0[1] = "One";
+        // s1
+        String[] s1 = new String[1];
+        s1[0] = "Two";
+        // s1
+        String[] s2 = new String[2];
+        s2[0] = "Three";
+        s2[1] = "Four";
+        // expResult
+        String[] expResult = new String[4];
+        expResult[0] = "Zero";
+        expResult[1] = "One";
+        expResult[2] = "Two";
+        expResult[3] = "Three";
+        expResult[4] = "Four";
+        // Result
+        String[] result = Generic_Collections.concatenate(s0, s1);
+        int l = result.length;
+        Assertions.assertTrue(l == expResult.length);
+        for (int i = 0; i < l; i ++) {
+            Assertions.assertTrue(expResult[i].equalsIgnoreCase(result[i]));
+        }
+    }
 }

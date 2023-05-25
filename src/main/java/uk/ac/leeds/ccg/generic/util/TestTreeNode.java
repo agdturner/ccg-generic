@@ -22,17 +22,22 @@ package uk.ac.leeds.ccg.generic.util;
  */
 public class TestTreeNode {
 
-    public static TreeNode<String> getTestSet1() {
+    /**
+     * Create a new instance.
+     */
+    public TestTreeNode(){}
+            
+    public static TreeNode<String> getTest() {
         TreeNode<String> root = new TreeNode<>("root");
-        TreeNode<String> node0 = root.addChild("node0");
-        TreeNode<String> node1 = root.addChild("node1");
+        root.addChild("node0");
+        root.addChild("node1");
         TreeNode<String> node2 = root.addChild("node2");
-        TreeNode<String> node20 = node2.addChild(null);
+        node2.addChild(null);
         TreeNode<String> node21 = node2.addChild("node21");
-        TreeNode<String> node210 = node21.addChild("node210");
-        TreeNode<String> node211 = node21.addChild("node211");
+        node21.addChild("node210");
+        node21.addChild("node211");
         TreeNode<String> node3 = root.addChild("node3");
-        TreeNode<String> node30 = node3.addChild("node30");
+        node3.addChild("node30");
         return root;
     }
 
@@ -45,7 +50,7 @@ public class TestTreeNode {
     }
 
     public static void main(String[] args) {
-        TreeNode<String> tree = getTestSet1();
+        TreeNode<String> tree = getTest();
         for (TreeNode<String> node : tree) {
             String indent = createIndent(node.getLevel());
             System.out.println(indent + node.data);

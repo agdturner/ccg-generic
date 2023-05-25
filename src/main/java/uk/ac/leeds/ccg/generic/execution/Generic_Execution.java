@@ -61,7 +61,7 @@ public class Generic_Execution extends Generic_Object {
      * java.util.concurrent.Future, java.lang.Object, long, long)}
      */
     public void shutdownExecutorService(ExecutorService es,
-            HashSet<Future> futures, Object o) {
+            HashSet<Future<?>> futures, Object o) {
         long delay = 1000;
         long maxWait = 10;
         shutdownExecutorService(es, futures, o, delay, maxWait);
@@ -77,14 +77,14 @@ public class Generic_Execution extends Generic_Object {
      * returned
      */
     public void shutdownExecutorService(ExecutorService es,
-            HashSet<Future> futures, Object o, long delay, long maxWait) {
+            HashSet<Future<?>> futures, Object o, long delay, long maxWait) {
         // What is still left to do from futures?
-        Iterator<Future> ite = futures.iterator();
+        Iterator<Future<?>> ite = futures.iterator();
         env.log("There are " + futures.size() + " jobs to check.");
         int doneJobsCounter = 0;
         int notDoneJobsCounter = 0;
         while (ite.hasNext()) {
-            Future f = ite.next();
+            Future<?> f = ite.next();
             if (f.isDone()) {
                 doneJobsCounter++;
             } else {
@@ -96,7 +96,7 @@ public class Generic_Execution extends Generic_Object {
         ite = futures.iterator();
         long counter = 0;
         while (ite.hasNext()) {
-            Future future = ite.next();
+            Future<?> future = ite.next();
             while (!future.isDone()) {
                 counter = checkFuture(o, counter, delay);
             }
@@ -113,7 +113,7 @@ public class Generic_Execution extends Generic_Object {
      * @param o Object
      */
     public void shutdownExecutorService(ExecutorService es,
-            Future future, Object o) {
+            Future<?> future, Object o) {
         long delay = 1000;
         long maxWait = 10;
         shutdownExecutorService(es, future, o, delay, maxWait);
@@ -163,7 +163,7 @@ public class Generic_Execution extends Generic_Object {
      * @param maxWait Maximum time to wait before shutting down.
      */
     public void shutdownExecutorService(ExecutorService es,
-            Future future, Object o, long delay, long maxWait) {
+            Future<?> future, Object o, long delay, long maxWait) {
         long counter = 0;
         while (!future.isDone()) {
             counter = checkFuture(o, counter, delay);

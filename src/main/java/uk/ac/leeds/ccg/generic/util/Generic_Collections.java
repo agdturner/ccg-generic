@@ -550,6 +550,7 @@ public class Generic_Collections {
      * @param others The other arrays.
      * @return The concatenated array.
      */
+    @SafeVarargs 
     public static <T> T[] concatenate(T[] first, T[]... others) {
         // Calculate the length
         long l = first.length;

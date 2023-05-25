@@ -111,13 +111,14 @@ public class Generic_Visualisation extends Generic_Object {
      * @param f File
      * @return Future
      */
-    public Future saveImage(ExecutorService es, Object o, BufferedImage bi,
+    public Future<?> saveImage(ExecutorService es, Object o, BufferedImage bi,
             long timeInMilliseconds, String format, Path f) {
         if (es == null) {
             es = Executors.newSingleThreadExecutor();
         }
         ImageSaver is = new ImageSaver(this, o, bi, timeInMilliseconds, format, f);
-        Future r = es.submit(is);
+        //return es.submit(is);
+        Future<?> r = es.submit(is);
         return r;
     }
 

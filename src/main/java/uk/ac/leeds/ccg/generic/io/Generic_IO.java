@@ -29,6 +29,11 @@ import uk.ac.leeds.ccg.io.IO_Utilities;
 public class Generic_IO extends IO_Utilities {
 
     /**
+     * Create a new instance.
+     */
+    public Generic_IO(){}
+            
+    /**
      * Sets the syntax of st as follows:
      * <pre>{@code
      * <ul>

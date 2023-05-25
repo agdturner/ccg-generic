@@ -33,6 +33,11 @@ public abstract class Generic_MemoryManager implements Generic_Memory, Serializa
     private static final long serialVersionUID = 1L;
 
     /**
+     * Create a new instance.
+     */
+    public Generic_MemoryManager(){}
+    
+    /**
      * For tests on the available memory.
      */
     public transient Generic_MemoryTest MemoryTest;

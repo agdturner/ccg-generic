@@ -22,10 +22,15 @@ import java.util.Set;
  * Some useful methods for transforming Strings.
  *
  * @author Andy Turner
- * @version 1.0.1
+ * @version 1.1
  */
 public class Generic_String {
 
+    /**
+     * Create a new instance.
+     */
+    public Generic_String(){}
+    
     /**
      * Adds the numbers 0 to 9 inclusive to s.
      *
