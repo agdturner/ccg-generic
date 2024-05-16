@@ -131,9 +131,19 @@ public class Generic_Strings {
     public static final String symbol_forwardslash = "/";
     
     /**
+     * ">"
+     */
+    public static final String SYMBOL_GT = ">";
+
+    /**
      * "-"
      */
     public static final String symbol_minus = "-";
+    
+    /**
+     * "<"
+     */
+    public static final String SYMBOL_LT = "<";
     
     /**
      * "?"

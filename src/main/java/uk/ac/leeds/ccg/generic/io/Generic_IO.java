@@ -350,6 +350,15 @@ public class Generic_IO extends IO_Utilities {
     }
 
     /**
+     * @param st <code>StreamTokenizer</code> that's syntax is set
+     */
+    public static void setStreamTokenizerSyntax9(StreamTokenizer st) {
+        setStreamTokenizerSyntax8(st);
+        //st.wordChars(';', ';');
+        st.wordChars(59, 59); // 59 is the ASCII code for ;
+    }
+
+    /**
      * Returns a newly created file in directory returned by
      * {@link Generic_Files#getGeneratedDir()}.
      *
