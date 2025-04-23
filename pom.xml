@@ -38,11 +38,15 @@
             </roles>
         </developer>
     </developers>
-
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+        <maven.compiler.release>${maven.compiler.target}</maven.compiler.release>
+        <maven.compiler.testSource>${maven.compiler.source}</maven.compiler.testSource>
+        <maven.compiler.testTarget>${maven.compiler.testSource}</maven.compiler.testTarget>
+        <maven.compiler.testRelease>${maven.compiler.testTarget}</maven.compiler.testRelease>
     </properties>
     
     <dependencies>
@@ -59,44 +63,10 @@
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        -->
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        -->
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>5.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        -->
     </dependencies>
     
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.5</version>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -109,6 +79,16 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
         </plugins>
     </build>
             
@@ -119,7 +99,15 @@
                 <plugins>
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.7.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                        </configuration>
+                        <!--
                         <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.13</version>
                         <version>1.7.0</version>
                         <extensions>true</extensions>
                         <configuration>
@@ -127,7 +115,8 @@
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
-                    </plugin>          
+                        -->
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
@@ -211,6 +200,7 @@
             <id>central</id>
             <name>Central Repository OSSRH</name>
             <url>https://repo1.maven.org/maven2</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         -->
         <repository>
@@ -221,7 +211,6 @@
         <!--
         <repository>
             <id>github</id>
-            <name>GitHub agdturner Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/agdturner/ccg-generic</url>
         </repository>
         -->
