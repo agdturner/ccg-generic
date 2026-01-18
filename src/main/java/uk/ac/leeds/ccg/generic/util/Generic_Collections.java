@@ -176,20 +176,20 @@ public class Generic_Collections {
         m2.put(k2, v);
     }
 
-    /**
-     * For each key in putFrom if the key is not in putTo, then the value (the
-     * map) in putFrom is put into putTo. If there are maps in both putFrom and
-     * putTo for a given key then these maps are gone through putting all the
-     * map keys and values from putFrom into putTo.
-     *
-     * @param <K> Key
-     * @param <K2> Key2
-     * @param <V> Value
-     * @param m Map
-     * @param k key
-     * @param k2 key2
-     * @param v value
-     */
+//    /**
+//     * For each key in putFrom if the key is not in putTo, then the value (the
+//     * map) in putFrom is put into putTo. If there are maps in both putFrom and
+//     * putTo for a given key then these maps are gone through putting all the
+//     * map keys and values from putFrom into putTo.
+//     *
+//     * @param <K> Key
+//     * @param <K2> Key2
+//     * @param <V> Value
+//     * @param m Map
+//     * @param k key
+//     * @param k2 key2
+//     * @param v value
+//     */
 //    public static <K, K2, V> void putInMap(Map<K, Map<K2, V>> putTo,
 //            Map<K, Map<K2, V>> putFrom) {
 //        //putFrom.keySet().parallelStream().forEach(k -> {
@@ -201,6 +201,7 @@ public class Generic_Collections {
 //            }
 //        });
 //    }
+    
     /**
      * For each key in putFrom if the key is not in putTo, then the value (the
      * map) in putFrom is put into putTo. If there are maps in both putFrom and
@@ -214,8 +215,8 @@ public class Generic_Collections {
      * @param putTo Map to put into.
      * @param putFrom Map to put from.
      */
-    public static <K, K2, V2, V extends Map<K2, V2>> void putInMap(Map<K, V> putTo,
-            Map<K, V> putFrom) {
+    public static <K, K2, V2, V extends Map<K2, V2>> void putInMap(
+            Map<K, V> putTo, Map<K, V> putFrom) {
         // The parallelStream operation seems to have a problem here!
         //putFrom.keySet().parallelStream().forEach(k -> {
         putFrom.keySet().forEach(k -> {
